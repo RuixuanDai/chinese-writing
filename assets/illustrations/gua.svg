@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGua" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </radialGradient>
+    <filter id="shadowGua" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGua)"/>
+  <ellipse cx="250" cy="425" rx="180" ry="35" fill="#86efac" opacity="0.6"/>
+  <g filter="url(#shadowGua)">
+    <!-- Whole Striped Watermelon Behind -->
+    <ellipse cx="210" cy="270" rx="120" ry="110" fill="#22c55e"/>
+    <!-- Stripes -->
+    <path d="M 210 160 Q 150 270 210 380" stroke="#14532d" stroke-width="14" fill="none"/>
+    <path d="M 210 160 Q 120 270 170 375" stroke="#14532d" stroke-width="12" fill="none"/>
+    <path d="M 210 160 Q 270 270 210 380" stroke="#14532d" stroke-width="14" fill="none"/>
+    <path d="M 210 160 Q 295 270 250 375" stroke="#14532d" stroke-width="12" fill="none"/>
+    <!-- Watermelon Stem -->
+    <path d="M 210 160 Q 200 130 180 120" stroke="#14532d" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <!-- Fresh Juicy Slice in Front -->
+    <path d="M 220 380 Q 340 440 430 310 Z" fill="#15803d"/>
+    <path d="M 228 375 Q 340 430 422 312 Z" fill="#f8fafc"/>
+    <path d="M 235 370 Q 340 420 415 315 Z" fill="#ef4444"/>
+    <!-- Black seeds -->
+    <ellipse cx="290" cy="370" rx="4" ry="7" fill="#18181b" transform="rotate(30 290 370)"/>
+    <ellipse cx="330" cy="375" rx="4" ry="7" fill="#18181b" transform="rotate(10 330 375)"/>
+    <ellipse cx="370" cy="355" rx="4" ry="7" fill="#18181b" transform="rotate(-20 370 355)"/>
+    <ellipse cx="330" cy="340" rx="4" ry="7" fill="#18181b" transform="rotate(15 330 340)"/>
+  </g>
+</svg>

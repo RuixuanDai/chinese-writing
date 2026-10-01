@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgFan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <filter id="shadowFan" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgFan)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#bfdbfe" opacity="0.6"/>
+  <!-- Steam curls -->
+  <path d="M 220 120 Q 200 90 220 60 M 280 120 Q 300 90 280 60" stroke="#60a5fa" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <g filter="url(#shadowFan)">
+    <!-- Rice Mound -->
+    <ellipse cx="250" cy="240" rx="125" ry="90" fill="#ffffff"/>
+    <circle cx="210" cy="220" r="10" fill="#f8fafc"/>
+    <circle cx="250" cy="200" r="10" fill="#f8fafc"/>
+    <circle cx="290" cy="220" r="10" fill="#f8fafc"/>
+    <!-- Blue Porcelain Bowl -->
+    <path d="M 120 260 C 120 400 380 400 380 260 Z" fill="#2563eb"/>
+    <ellipse cx="250" cy="260" rx="130" ry="35" fill="#1d4ed8"/>
+    <!-- Decorative clouds / wave on bowl -->
+    <path d="M 140 310 Q 180 330 220 310 T 300 310 T 360 310" stroke="#93c5fd" stroke-width="6" fill="none"/>
+    <!-- Wooden chopsticks resting -->
+    <line x1="160" y1="210" x2="360" y2="180" stroke="#b45309" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLuDew" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </radialGradient>
+    <radialGradient id="dewGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </radialGradient>
+    <filter id="shadowLuDew" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLuDew)"/>
+  <g filter="url(#shadowLuDew)">
+    <!-- Long Arching Blade of Grass -->
+    <path d="M 60 460 Q 180 400 240 290 Q 320 160 450 120 C 370 190 280 340 120 460 Z" fill="#22c55e"/>
+    <path d="M 60 460 Q 230 330 450 120" stroke="#86efac" stroke-width="4" fill="none"/>
+    <!-- Crystal Clear Dewdrop Teardrop Shape -->
+    <path d="M 280 170 C 240 220 230 270 270 300 C 310 330 350 290 340 240 C 330 200 300 170 280 170 Z" fill="url(#dewGrad)"/>
+    <!-- White Glint Highlights -->
+    <ellipse cx="270" cy="235" rx="14" ry="22" fill="#ffffff" transform="rotate(-30 270 235)"/>
+    <circle cx="310" cy="275" r="7" fill="#ffffff" opacity="0.6"/>
+  </g>
+</svg>

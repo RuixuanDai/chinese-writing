@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDa" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </radialGradient>
+    <filter id="softShadowDa" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#64748b" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <rect width="500" height="500" rx="30" fill="url(#bgDa)"/>
+
+  <!-- Big Elephant Body (大象) -->
+  <g filter="url(#softShadowDa)">
+    <!-- Main Body -->
+    <ellipse cx="270" cy="270" rx="145" ry="120" fill="#94a3b8"/>
+    <!-- 4 Sturdy Big Legs -->
+    <rect x="160" y="320" width="45" height="110" rx="20" fill="#64748b"/>
+    <rect x="230" y="325" width="45" height="105" rx="20" fill="#94a3b8"/>
+    <rect x="300" y="320" width="45" height="110" rx="20" fill="#64748b"/>
+    <rect x="360" y="325" width="45" height="105" rx="20" fill="#94a3b8"/>
+
+    <!-- Head -->
+    <circle cx="160" cy="220" r="85" fill="#94a3b8"/>
+    
+    <!-- Long Trunk curving up joyfully -->
+    <path d="M 120 250 C 90 280 60 360 80 380 C 100 400 130 350 115 320" stroke="#94a3b8" stroke-width="36" fill="none" stroke-linecap="round"/>
+
+    <!-- Big Flapping Ear -->
+    <path d="M 160 170 C 230 150 250 240 210 290 C 180 320 160 250 160 170 Z" fill="#cbd5e1" stroke="#94a3b8" stroke-width="3"/>
+    
+    <!-- Cute Eye -->
+    <circle cx="125" cy="195" r="7" fill="#0f172a"/>
+    <circle cx="123" cy="192" r="2.5" fill="#ffffff"/>
+    
+    <!-- Rosy Cheek -->
+    <ellipse cx="140" cy="225" rx="12" ry="8" fill="#fda4af" opacity="0.6"/>
+
+    <!-- Little Tail -->
+    <path d="M 410 270 Q 435 290 425 340" stroke="#64748b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Ground -->
+  <ellipse cx="250" cy="445" rx="190" ry="18" fill="#cbd5e1" opacity="0.5"/>
+</svg>

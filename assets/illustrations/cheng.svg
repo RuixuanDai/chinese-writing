@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgCheng" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </radialGradient>
+    <filter id="shadowCheng" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgCheng)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#fed7aa" opacity="0.6"/>
+  <g filter="url(#shadowCheng)">
+    <!-- Whole Orange in back -->
+    <circle cx="200" cy="260" r="95" fill="#f97316"/>
+    <!-- Leaf on top -->
+    <path d="M 200 165 C 180 130 220 110 250 120 C 250 150 220 165 200 165 Z" fill="#16a34a"/>
+    <circle cx="200" cy="165" r="5" fill="#78350f"/>
+    <!-- Sliced Orange Half in front -->
+    <circle cx="310" cy="320" r="85" fill="#ea580c"/>
+    <circle cx="310" cy="320" r="76" fill="#ffedd5"/>
+    <circle cx="310" cy="320" r="68" fill="#f97316"/>
+    <!-- Citrus Segment Wedges -->
+    <circle cx="310" cy="320" r="8" fill="#ffedd5"/>
+    <line x1="310" y1="252" x2="310" y2="388" stroke="#ffedd5" stroke-width="4"/>
+    <line x1="242" y1="320" x2="378" y2="320" stroke="#ffedd5" stroke-width="4"/>
+    <line x1="262" y1="272" x2="358" y2="368" stroke="#ffedd5" stroke-width="4"/>
+    <line x1="262" y1="368" x2="358" y2="272" stroke="#ffedd5" stroke-width="4"/>
+  </g>
+</svg>

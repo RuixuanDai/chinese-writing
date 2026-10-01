@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGuiTrack" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowGuiTrack" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGuiTrack)"/>
+  <g filter="url(#shadowGuiTrack)">
+    <!-- Wooden Sleepers / Cross Ties -->
+    <rect x="80" y="420" width="340" height="18" fill="#78350f"/>
+    <rect x="110" y="360" width="280" height="16" fill="#78350f"/>
+    <rect x="140" y="305" width="220" height="15" fill="#78350f"/>
+    <rect x="170" y="255" width="160" height="14" fill="#78350f"/>
+    <rect x="200" y="210" width="100" height="12" fill="#78350f"/>
+    <!-- Steel Rails -->
+    <line x1="120" y1="450" x2="220" y2="200" stroke="#94a3b8" stroke-width="12" stroke-linecap="round"/>
+    <line x1="380" y1="450" x2="280" y2="200" stroke="#94a3b8" stroke-width="12" stroke-linecap="round"/>
+    <!-- High speed train coming -->
+    <polygon points="210,130 290,130 280,200 220,200" fill="#3b82f6"/>
+    <ellipse cx="250" cy="130" rx="40" ry="20" fill="#ffffff"/>
+  </g>
+</svg>

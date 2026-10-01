@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLei" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </radialGradient>
+    <filter id="shadowLei" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#475569" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLei)"/>
+  <g filter="url(#shadowLei)">
+    <!-- Electric Lightning Bolt striking below -->
+    <polygon points="260,260 210,350 260,350 230,440 310,330 265,330" fill="#facc15"/>
+    <polygon points="258,275 225,345 260,345 240,415 295,335 262,335" fill="#fef08a"/>
+    <!-- Dark Fluffy Rumbling Storm Cloud -->
+    <!-- Back layer -->
+    <circle cx="180" cy="210" r="65" fill="#475569"/>
+    <circle cx="320" cy="210" r="65" fill="#475569"/>
+    <circle cx="250" cy="160" r="75" fill="#334155"/>
+    <!-- Front puffy cloud -->
+    <circle cx="170" cy="220" r="55" fill="#64748b"/>
+    <circle cx="330" cy="220" r="55" fill="#64748b"/>
+    <circle cx="250" cy="180" r="70" fill="#64748b"/>
+    <!-- Cloud Highlight -->
+    <ellipse cx="230" cy="150" rx="40" ry="20" fill="#94a3b8" opacity="0.6"/>
+  </g>
+</svg>

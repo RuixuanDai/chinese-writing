@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgYi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <filter id="shadowYi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#854d0e" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgYi)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
+  <g filter="url(#shadowYi)">
+    <!-- Treasure Chest Base -->
+    <rect x="120" y="240" width="260" height="160" rx="16" fill="#b45309"/>
+    <rect x="135" y="250" width="230" height="140" rx="10" fill="#78350f"/>
+    <!-- Gold bands and lock -->
+    <rect x="150" y="240" width="24" height="160" fill="url(#goldGrad)"/>
+    <rect x="326" y="240" width="24" height="160" fill="url(#goldGrad)"/>
+    <circle cx="250" cy="310" r="22" fill="url(#goldGrad)"/>
+    <circle cx="250" cy="310" r="8" fill="#451a03"/>
+    <!-- Sparkling Gold Coins overflowing -->
+    <ellipse cx="250" cy="235" rx="125" ry="35" fill="url(#goldGrad)"/>
+    <circle cx="200" cy="210" r="24" fill="url(#goldGrad)" stroke="#a16207" stroke-width="3"/>
+    <circle cx="250" cy="195" r="26" fill="url(#goldGrad)" stroke="#a16207" stroke-width="3"/>
+    <circle cx="300" cy="210" r="24" fill="url(#goldGrad)" stroke="#a16207" stroke-width="3"/>
+    <circle cx="165" cy="235" r="22" fill="url(#goldGrad)" stroke="#a16207" stroke-width="3"/>
+    <circle cx="335" cy="230" r="22" fill="url(#goldGrad)" stroke="#a16207" stroke-width="3"/>
+    <!-- Sparkle Stars -->
+    <path d="M 250 110 L 256 135 L 280 140 L 256 145 L 250 170 L 244 145 L 220 140 L 244 135 Z" fill="#facc15"/>
+    <path d="M 160 150 L 164 165 L 180 170 L 164 175 L 160 190 L 156 175 L 140 170 L 156 165 Z" fill="#facc15"/>
+    <path d="M 340 140 L 344 155 L 360 160 L 344 165 L 340 180 L 336 165 L 320 160 L 336 155 Z" fill="#facc15"/>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgYuanTang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowYuanTang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgYuanTang)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#93c5fd" opacity="0.6"/>
+  <g filter="url(#shadowYuanTang)">
+    <!-- Blue Porcelain Bowl -->
+    <path d="M 110 260 C 110 400 390 400 390 260 Z" fill="#2563eb"/>
+    <ellipse cx="250" cy="260" rx="140" ry="40" fill="#1d4ed8"/>
+    <!-- Warm Sweet Soup Liquid -->
+    <ellipse cx="250" cy="260" rx="130" ry="32" fill="#e0f2fe"/>
+    <!-- Plump Round White Tangyuan (汤圆) -->
+    <circle cx="190" cy="255" r="32" fill="#ffffff"/>
+    <circle cx="250" cy="245" r="34" fill="#ffffff"/>
+    <circle cx="310" cy="255" r="32" fill="#ffffff"/>
+    <!-- Tangyuan Highlights -->
+    <ellipse cx="180" cy="245" rx="10" ry="6" fill="#f8fafc" opacity="0.8"/>
+    <ellipse cx="240" cy="235" rx="10" ry="6" fill="#f8fafc" opacity="0.8"/>
+    <ellipse cx="300" cy="245" rx="10" ry="6" fill="#f8fafc" opacity="0.8"/>
+  </g>
+</svg>

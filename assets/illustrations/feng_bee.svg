@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgFeng" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </radialGradient>
+    <filter id="shadowFeng" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgFeng)"/>
+  <g filter="url(#shadowFeng)">
+    <!-- Wings (Translucent Shiny) -->
+    <ellipse cx="200" cy="170" rx="45" ry="85" fill="#bae6fd" opacity="0.75" transform="rotate(-35 200 170)"/>
+    <ellipse cx="280" cy="170" rx="45" ry="85" fill="#bae6fd" opacity="0.75" transform="rotate(35 280 170)"/>
+    <path d="M 190 120 Q 210 170 200 220" stroke="#ffffff" stroke-width="3" fill="none"/>
+    <path d="M 290 120 Q 270 170 280 220" stroke="#ffffff" stroke-width="3" fill="none"/>
+    <!-- Stinger -->
+    <polygon points="370,300 405,300 370,312" fill="#1e293b"/>
+    <!-- Chubby Bee Body (Yellow & Black stripes) -->
+    <ellipse cx="250" cy="300" rx="120" ry="85" fill="#eab308"/>
+    <!-- Stripes -->
+    <path d="M 215 218 C 235 270 235 330 215 382 L 255 385 C 275 330 275 270 255 215 Z" fill="#1e293b"/>
+    <path d="M 295 224 C 315 270 315 330 295 376 L 335 365 C 355 320 355 280 335 235 Z" fill="#1e293b"/>
+    <!-- Head -->
+    <ellipse cx="160" cy="300" rx="45" ry="50" fill="#facc15"/>
+    <!-- Antennae -->
+    <path d="M 140 255 Q 120 205 105 210" stroke="#1e293b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <circle cx="103" cy="210" r="6" fill="#1e293b"/>
+    <path d="M 160 255 Q 150 205 135 200" stroke="#1e293b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <circle cx="133" cy="200" r="6" fill="#1e293b"/>
+    <!-- Big Eye -->
+    <circle cx="145" cy="290" r="14" fill="#1e293b"/>
+    <circle cx="140" cy="285" r="5" fill="#ffffff"/>
+    <!-- Smile & Cheeks -->
+    <path d="M 130 320 Q 145 335 160 320" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="160" cy="315" r="8" fill="#f43f5e" opacity="0.4"/>
+    <!-- Honey drop -->
+    <path d="M 130 360 Q 115 390 130 405 Q 145 405 130 360 Z" fill="#f59e0b"/>
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgXiang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#faf5ff"/>
+      <stop offset="100%" stop-color="#f3e8ff"/>
+    </radialGradient>
+    <filter id="shadowXiang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#581c87" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgXiang)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#e9d5ff" opacity="0.6"/>
+  <!-- Dreaming Cloud (梦想云朵) -->
+  <g filter="url(#shadowXiang)">
+    <!-- Thought Bubble Dots -->
+    <circle cx="160" cy="340" r="14" fill="#c084fc"/>
+    <circle cx="190" cy="300" r="20" fill="#c084fc"/>
+    <circle cx="215" cy="245" r="26" fill="#c084fc"/>
+    <!-- Big Dream Cloud -->
+    <rect x="130" y="90" width="280" height="160" rx="60" fill="#ffffff"/>
+    <circle cx="180" cy="110" r="50" fill="#ffffff"/>
+    <circle cx="260" cy="80" r="55" fill="#ffffff"/>
+    <circle cx="340" cy="110" r="50" fill="#ffffff"/>
+    <!-- Rocket Dream inside Cloud -->
+    <polygon points="260,110 240,150 280,150" fill="#ef4444"/>
+    <rect x="240" y="150" width="40" height="45" rx="6" fill="#3b82f6"/>
+    <circle cx="260" cy="170" r="8" fill="#bae6fd"/>
+    <polygon points="230,185 240,170 240,195" fill="#f97316"/>
+    <polygon points="290,185 280,170 280,195" fill="#f97316"/>
+    <!-- Yellow Sparkle Stars -->
+    <circle cx="330" cy="150" r="8" fill="#facc15"/>
+    <circle cx="190" cy="160" r="6" fill="#facc15"/>
+  </g>
+</svg>

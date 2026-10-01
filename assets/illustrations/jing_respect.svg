@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgJing" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowJing" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#be123c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgJing)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fecdd3" opacity="0.6"/>
+  <!-- Young Pioneer Standing and Saluting Respectfully -->
+  <g filter="url(#shadowJing)">
+    <!-- Head -->
+    <circle cx="230" cy="180" r="50" fill="#fed7aa"/>
+    <!-- Hair -->
+    <path d="M 180 170 C 180 110 280 110 280 170 C 265 150 195 150 180 170 Z" fill="#18181b"/>
+    <!-- Firm Energetic Eyes -->
+    <circle cx="215" cy="180" r="6" fill="#18181b"/>
+    <circle cx="250" cy="180" r="6" fill="#18181b"/>
+    <path d="M 225 200 Q 235 208 245 200" stroke="#dc2626" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- Shirt -->
+    <rect x="170" y="240" width="120" height="150" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- Red Scarf (红领巾) -->
+    <polygon points="200,240 260,240 230,270" fill="#dc2626"/>
+    <polygon points="225,270 220,330 235,310 240,340 240,270" fill="#ef4444"/>
+    <!-- Saluting Right Hand (Raised above forehead) -->
+    <path d="M 280 250 L 320 180 L 290 130" stroke="#f59e0b" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+</svg>

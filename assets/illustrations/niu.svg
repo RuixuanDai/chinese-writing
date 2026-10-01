@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgNiu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </radialGradient>
+    <filter id="shadowNiu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#16a34a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgNiu)"/>
+  <!-- Gentle Spotted Cow (小牛) -->
+  <g filter="url(#shadowNiu)">
+    <rect x="180" y="320" width="22" height="90" rx="10" fill="#475569"/>
+    <rect x="230" y="325" width="22" height="85" rx="10" fill="#cbd5e1"/>
+    <rect x="290" y="320" width="22" height="90" rx="10" fill="#475569"/>
+    <rect x="340" y="325" width="22" height="85" rx="10" fill="#cbd5e1"/>
+    <ellipse cx="280" cy="280" rx="120" ry="85" fill="#f8fafc"/>
+    <path d="M 220 240 Q 250 210 270 240 Q 260 280 230 270 Z" fill="#1e293b"/>
+    <path d="M 320 260 Q 360 250 370 290 Q 340 320 310 290 Z" fill="#1e293b"/>
+    <!-- Head -->
+    <ellipse cx="170" cy="220" rx="60" ry="55" fill="#f8fafc"/>
+    <path d="M 130 180 Q 150 160 170 180 Z" fill="#1e293b"/>
+    <!-- Horns -->
+    <path d="M 135 175 Q 115 145 130 135" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M 205 175 Q 225 145 210 135" stroke="#f59e0b" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <!-- Ears -->
+    <ellipse cx="115" cy="205" rx="20" ry="12" fill="#fda4af" transform="rotate(-20, 115, 205)"/>
+    <ellipse cx="225" cy="205" rx="20" ry="12" fill="#fda4af" transform="rotate(20, 225, 205)"/>
+    <!-- Snout & Mouth -->
+    <ellipse cx="170" cy="245" rx="35" ry="22" fill="#fda4af"/>
+    <circle cx="158" cy="240" r="4" fill="#881337"/>
+    <circle cx="182" cy="240" r="4" fill="#881337"/>
+    <!-- Eyes -->
+    <circle cx="145" cy="205" r="6" fill="#0f172a"/>
+    <circle cx="195" cy="205" r="6" fill="#0f172a"/>
+    <circle cx="143" cy="203" r="2" fill="#ffffff"/>
+    <circle cx="193" cy="203" r="2" fill="#ffffff"/>
+  </g>
+</svg>

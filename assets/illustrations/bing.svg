@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgBing" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </radialGradient>
+    <filter id="shadowBing" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0284c7" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgBing)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="30" fill="#7dd3fc" opacity="0.6"/>
+  <g filter="url(#shadowBing)">
+    <!-- Isometric Translucent Ice Cube -->
+    <!-- Top Face -->
+    <polygon points="250,130 360,185 250,240 140,185" fill="#e0f2fe" stroke="#38bdf8" stroke-width="5"/>
+    <!-- Left Face -->
+    <polygon points="140,185 250,240 250,370 140,315" fill="#7dd3fc" stroke="#38bdf8" stroke-width="5"/>
+    <!-- Right Face -->
+    <polygon points="250,240 360,185 360,315 250,370" fill="#38bdf8" stroke="#0284c7" stroke-width="5"/>
+    <!-- Crystal internal shine facets -->
+    <line x1="250" y1="160" x2="330" y2="200" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+    <line x1="170" y1="210" x2="230" y2="330" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+    <!-- Sparkles -->
+    <polygon points="380,140 385,155 400,160 385,165 380,180 375,165 360,160 375,155" fill="#ffffff"/>
+    <polygon points="120,300 124,310 135,313 124,316 120,326 116,316 105,313 116,310" fill="#ffffff"/>
+  </g>
+</svg>

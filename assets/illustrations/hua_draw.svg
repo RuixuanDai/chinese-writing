@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgHuaDraw" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <filter id="shadowHuaDraw" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHuaDraw)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#fde68a" opacity="0.6"/>
+  <g filter="url(#shadowHuaDraw)">
+    <!-- Artist Palette Wooden Board -->
+    <path d="M 100 240 C 90 120 280 80 390 150 C 470 210 440 370 340 390 C 260 410 250 320 190 320 C 140 320 110 320 100 240 Z" fill="#fde68a" stroke="#d97706" stroke-width="8"/>
+    <!-- Thumb hole -->
+    <ellipse cx="225" cy="310" rx="22" ry="28" fill="#fed7aa" stroke="#d97706" stroke-width="4"/>
+    <!-- Rainbow Paint Blobs on Palette -->
+    <circle cx="160" cy="180" r="22" fill="#ef4444"/>
+    <circle cx="220" cy="140" r="22" fill="#f97316"/>
+    <circle cx="290" cy="140" r="22" fill="#facc15"/>
+    <circle cx="360" cy="170" r="22" fill="#22c55e"/>
+    <circle cx="390" cy="240" r="22" fill="#3b82f6"/>
+    <circle cx="370" cy="310" r="22" fill="#a855f7"/>
+    <!-- Paintbrush angled across -->
+    <polygon points="120,400 320,110 335,120 135,410" fill="#92400e"/>
+    <!-- Silver ferrule -->
+    <polygon points="310,125 330,95 345,105 325,135" fill="#cbd5e1"/>
+    <!-- Brush bristles dipped in red paint -->
+    <polygon points="330,95 355,60 365,75 345,105" fill="#ef4444"/>
+  </g>
+</svg>

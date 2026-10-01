@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgPao" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowPao" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgPao)"/>
+  <!-- Track Ground -->
+  <path d="M 40 430 L 460 430" stroke="#f97316" stroke-width="12" stroke-linecap="round"/>
+  <!-- Speed lines -->
+  <line x1="80" y1="260" x2="150" y2="260" stroke="#60a5fa" stroke-width="6" stroke-linecap="round"/>
+  <line x1="60" y1="300" x2="140" y2="300" stroke="#60a5fa" stroke-width="6" stroke-linecap="round"/>
+  <line x1="90" y1="340" x2="170" y2="340" stroke="#60a5fa" stroke-width="6" stroke-linecap="round"/>
+  <g filter="url(#shadowPao)">
+    <!-- Running Child Legs -->
+    <!-- Front Leg (Bent Forward) -->
+    <path d="M 270 300 L 330 350 L 350 420" stroke="#3b82f6" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <ellipse cx="360" cy="425" rx="20" ry="12" fill="#ef4444"/>
+    <!-- Back Leg (Kicking Backward) -->
+    <path d="M 250 300 L 190 340 L 150 330" stroke="#2563eb" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <ellipse cx="140" cy="325" rx="20" ry="12" fill="#ef4444" transform="rotate(20 140 325)"/>
+    <!-- Torso Leaning Forward -->
+    <path d="M 240 200 L 270 310" stroke="#facc15" stroke-width="60" stroke-linecap="round"/>
+    <!-- Arms Pumping -->
+    <path d="M 230 220 L 170 250 L 170 290" stroke="#facc15" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M 250 220 L 310 200 L 330 240" stroke="#facc15" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Head -->
+    <circle cx="280" cy="150" r="50" fill="#fed7aa"/>
+    <path d="M 240 140 C 230 80 340 80 330 140 Z" fill="#78350f"/>
+    <!-- Happy Determined Face -->
+    <circle cx="295" cy="145" r="7" fill="#1e293b"/>
+    <path d="M 290 165 Q 305 175 315 165" stroke="#78350f" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

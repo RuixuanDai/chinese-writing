@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgQiao" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </radialGradient>
+    <filter id="shadowQiao" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0891b2" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgQiao)"/>
+  <!-- River below -->
+  <path d="M 0 340 Q 250 310 500 340 L 500 500 L 0 500 Z" fill="#38bdf8"/>
+  <g filter="url(#shadowQiao)">
+    <!-- Arched Stone Bridge Body -->
+    <path d="M 50 350 Q 250 180 450 350 L 450 290 Q 250 130 50 290 Z" fill="#94a3b8"/>
+    <!-- Arch opening under bridge -->
+    <path d="M 140 350 Q 250 220 360 350 Z" fill="#0284c7"/>
+    <!-- Railing Posts on Bridge -->
+    <rect x="100" y="240" width="10" height="40" fill="#64748b"/>
+    <rect x="170" y="195" width="10" height="40" fill="#64748b"/>
+    <rect x="245" y="175" width="10" height="40" fill="#64748b"/>
+    <rect x="320" y="195" width="10" height="40" fill="#64748b"/>
+    <rect x="390" y="240" width="10" height="40" fill="#64748b"/>
+    <path d="M 60 270 Q 250 140 440 270" stroke="#64748b" stroke-width="8" fill="none"/>
+  </g>
+</svg>

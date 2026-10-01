@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgWan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fdf4ff"/>
+      <stop offset="100%" stop-color="#fae8ff"/>
+    </radialGradient>
+    <filter id="shadowWan" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#86198f" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgWan)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#f5d0fe" opacity="0.6"/>
+  <!-- Colorful Toys (Pinwheel, Beach Ball, Building blocks) -->
+  <g filter="url(#shadowWan)">
+    <!-- Colorful Beach Ball on the left -->
+    <circle cx="160" cy="330" r="65" fill="#f43f5e"/>
+    <path d="M 160 265 A 65 65 0 0 0 160 395 Z" fill="#3b82f6"/>
+    <path d="M 160 265 A 65 65 0 0 1 160 395 Z" fill="#facc15"/>
+    <ellipse cx="160" cy="330" rx="22" ry="65" fill="#ffffff"/>
+    <!-- Spinning Pinwheel on the right -->
+    <line x1="330" y1="180" x2="330" y2="400" stroke="#b45309" stroke-width="10" stroke-linecap="round"/>
+    <!-- Pinwheel 4 blades -->
+    <polygon points="330,180 330,100 270,140" fill="#ef4444"/>
+    <polygon points="330,180 410,180 370,120" fill="#3b82f6"/>
+    <polygon points="330,180 330,260 390,220" fill="#10b981"/>
+    <polygon points="330,180 250,180 290,240" fill="#f59e0b"/>
+    <circle cx="330" cy="180" r="14" fill="#ffffff"/>
+    <circle cx="330" cy="180" r="7" fill="#dc2626"/>
+  </g>
+</svg>

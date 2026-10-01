@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgAi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fecdd3"/>
+    </radialGradient>
+    <filter id="shadowAi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgAi)"/>
+  <g filter="url(#shadowAi)">
+    <!-- Angelic Wings on Heart -->
+    <path d="M 190 230 C 110 160 50 200 60 270 C 80 320 180 310 200 280 Z" fill="#ffffff" stroke="#fbcfe8" stroke-width="4"/>
+    <path d="M 310 230 C 390 160 450 200 440 270 C 420 320 320 310 300 280 Z" fill="#ffffff" stroke="#fbcfe8" stroke-width="4"/>
+    <!-- Glowing Red/Pink Heart -->
+    <path d="M 250 410 C 130 310 110 170 250 190 C 390 170 370 310 250 410 Z" fill="#f43f5e"/>
+    <path d="M 250 395 C 145 300 125 185 250 205 C 375 185 355 300 250 395 Z" fill="#fb7185"/>
+    <!-- Highlight on Heart -->
+    <ellipse cx="190" cy="230" rx="20" ry="35" fill="#ffffff" opacity="0.4" transform="rotate(-30 190 230)"/>
+    <!-- Sparkles -->
+    <circle cx="160" cy="140" r="8" fill="#fef08a"/>
+    <circle cx="340" cy="140" r="8" fill="#fef08a"/>
+  </g>
+</svg>

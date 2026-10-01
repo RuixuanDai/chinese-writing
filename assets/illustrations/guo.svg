@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGuo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowGuo" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGuo)"/>
+  <!-- Basket of Fresh Fruit (水果) -->
+  <g filter="url(#shadowGuo)">
+    <!-- Fruits inside basket -->
+    <circle cx="210" cy="240" r="45" fill="#ef4444"/>
+    <circle cx="280" cy="235" r="42" fill="#f97316"/>
+    <circle cx="330" cy="260" r="30" fill="#a855f7"/>
+    <!-- Woven Basket -->
+    <path d="M 140 270 L 170 410 C 200 430 300 430 330 410 L 360 270 Z" fill="#d97706" stroke="#b45309" stroke-width="5"/>
+    <path d="M 120 270 Q 250 290 380 270" stroke="#92400e" stroke-width="12" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

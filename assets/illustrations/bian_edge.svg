@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgBian" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowBian" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9f1239" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgBian)"/>
+  <g filter="url(#shadowBian)">
+    <!-- Golden Border Frame -->
+    <rect x="80" y="80" width="340" height="340" rx="24" fill="#f59e0b"/>
+    <rect x="100" y="100" width="300" height="300" rx="16" fill="#fde68a"/>
+    <!-- Inside painting -->
+    <rect x="120" y="120" width="260" height="260" rx="10" fill="#67e8f9"/>
+    <!-- Sun and hills inside -->
+    <circle cx="320" cy="180" r="30" fill="#f97316"/>
+    <circle cx="180" cy="380" r="120" fill="#22c55e"/>
+    <circle cx="320" cy="380" r="140" fill="#15803d"/>
+    <!-- Sparkles on the border edge -->
+    <circle cx="80" cy="80" r="12" fill="#ef4444"/>
+    <circle cx="420" cy="80" r="12" fill="#3b82f6"/>
+    <circle cx="80" cy="420" r="12" fill="#10b981"/>
+    <circle cx="420" cy="420" r="12" fill="#eab308"/>
+  </g>
+</svg>

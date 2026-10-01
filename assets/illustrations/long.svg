@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLong" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fecdd3"/>
+    </radialGradient>
+    <filter id="shadowLong" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLong)"/>
+  <!-- Lucky Clouds -->
+  <path d="M 80 120 Q 100 90 130 110 Q 160 90 180 120 Q 190 150 160 160 Q 100 160 80 120 Z" fill="#ffffff" opacity="0.6"/>
+  <path d="M 320 380 Q 340 350 370 370 Q 400 350 420 380 Q 430 410 400 420 Q 340 420 320 380 Z" fill="#ffffff" opacity="0.6"/>
+  <g filter="url(#shadowLong)">
+    <!-- Serpentine Dragon Body -->
+    <path d="M 180 230 Q 160 340 250 360 Q 350 380 370 290 Q 380 200 300 210 Q 230 220 280 140" stroke="#10b981" stroke-width="44" stroke-linecap="round" fill="none"/>
+    <path d="M 180 230 Q 160 340 250 360 Q 350 380 370 290 Q 380 200 300 210 Q 230 220 280 140" stroke="#fef08a" stroke-width="22" stroke-linecap="round" fill="none"/>
+    <!-- Tail Fin (Fluffy) -->
+    <polygon points="280,140 260,95 310,105 295,130" fill="#f43f5e"/>
+    <polygon points="280,140 295,110 330,130" fill="#f59e0b"/>
+    <!-- Cute Dragon Head -->
+    <circle cx="165" cy="220" r="55" fill="#10b981"/>
+    <ellipse cx="140" cy="235" rx="35" ry="25" fill="#34d399"/>
+    <!-- Belly ridge scales -->
+    <circle cx="215" cy="330" r="7" fill="#fbbf24"/>
+    <circle cx="265" cy="360" r="7" fill="#fbbf24"/>
+    <circle cx="325" cy="340" r="7" fill="#fbbf24"/>
+    <circle cx="360" cy="270" r="7" fill="#fbbf24"/>
+    <!-- Little Horns -->
+    <polygon points="160,175 140,125 175,160" fill="#f59e0b"/>
+    <polygon points="185,175 205,125 195,165" fill="#f59e0b"/>
+    <!-- Whiskers -->
+    <path d="M 125 235 Q 90 220 70 250" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 130 245 Q 95 260 85 290" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- Eyes -->
+    <circle cx="150" cy="205" r="10" fill="#1e293b"/>
+    <circle cx="147" cy="201" r="3.5" fill="#ffffff"/>
+    <!-- Rosy Cheek -->
+    <circle cx="165" cy="240" r="9" fill="#f43f5e" opacity="0.4"/>
+    <!-- Nostril -->
+    <circle cx="125" cy="228" r="3" fill="#065f46"/>
+    <!-- Pearl of Wisdom -->
+    <circle cx="230" cy="260" r="18" fill="#fbbf24"/>
+    <circle cx="225" cy="255" r="5" fill="#ffffff"/>
+  </g>
+</svg>

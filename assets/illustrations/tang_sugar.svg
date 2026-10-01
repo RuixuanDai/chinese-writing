@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgTangSugar" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fdf4ff"/>
+      <stop offset="100%" stop-color="#fae8ff"/>
+    </radialGradient>
+    <filter id="shadowTangSugar" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#a855f7" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgTangSugar)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="30" fill="#f0abfc" opacity="0.6"/>
+  <g filter="url(#shadowTangSugar)">
+    <!-- Big Center Wrapped Sweet Candy -->
+    <!-- Left wrapper fringe -->
+    <polygon points="120,220 80,180 80,320 120,280" fill="#38bdf8"/>
+    <!-- Right wrapper fringe -->
+    <polygon points="380,220 420,180 420,320 380,280" fill="#38bdf8"/>
+    <!-- Candy Body -->
+    <ellipse cx="250" cy="250" rx="130" ry="85" fill="#f43f5e"/>
+    <!-- Diagonal Striped wrapper -->
+    <path d="M 180 175 L 230 325" stroke="#fef08a" stroke-width="20" stroke-linecap="round"/>
+    <path d="M 270 175 L 320 325" stroke="#fef08a" stroke-width="20" stroke-linecap="round"/>
+    <!-- Smaller Purple wrapped candy in front -->
+    <polygon points="200,360 170,340 170,410 200,390" fill="#c084fc"/>
+    <polygon points="320,360 350,340 350,410 320,390" fill="#c084fc"/>
+    <ellipse cx="260" cy="375" rx="60" ry="35" fill="#9333ea"/>
+    <ellipse cx="260" cy="375" rx="40" ry="20" fill="#ec4899"/>
+  </g>
+</svg>

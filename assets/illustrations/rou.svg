@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgRou" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </radialGradient>
+    <filter id="shadowRou" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#dc2626" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgRou)"/>
+  <ellipse cx="250" cy="425" rx="180" ry="35" fill="#fca5a5" opacity="0.6"/>
+  <g filter="url(#shadowRou)">
+    <!-- Bone Ends -->
+    <circle cx="120" cy="360" r="18" fill="#f8fafc"/>
+    <circle cx="120" cy="390" r="18" fill="#f8fafc"/>
+    <rect x="120" y="360" width="80" height="30" rx="8" fill="#f8fafc" transform="rotate(-30 120 360)"/>
+    <!-- Big Plump Savory Roasted Meat / Ham -->
+    <ellipse cx="290" cy="270" rx="125" ry="90" fill="#b91c1c" transform="rotate(-25 290 270)"/>
+    <ellipse cx="290" cy="270" rx="105" ry="75" fill="#dc2626" transform="rotate(-25 290 270)"/>
+    <!-- Cut Surface revealing succulent marrow -->
+    <ellipse cx="360" cy="235" rx="55" ry="75" fill="#f87171" transform="rotate(-25 360 235)"/>
+    <circle cx="360" cy="235" r="16" fill="#f8fafc"/>
+    <!-- Grill marks -->
+    <line x1="220" y1="260" x2="270" y2="330" stroke="#7f1d1d" stroke-width="6" stroke-linecap="round"/>
+    <line x1="260" y1="230" x2="310" y2="300" stroke="#7f1d1d" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>

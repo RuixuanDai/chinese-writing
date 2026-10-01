@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgHuFox" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </radialGradient>
+    <filter id="shadowHuFox" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#c2410c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHuFox)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#fed7aa" opacity="0.6"/>
+  <g filter="url(#shadowHuFox)">
+    <!-- Giant Fluffy Bushy Tail with White Tip -->
+    <path d="M 280 340 C 400 350 450 250 400 170 C 370 120 340 180 320 250 Z" fill="#ea580c"/>
+    <path d="M 400 170 C 370 120 340 180 350 200 C 370 215 390 195 400 170 Z" fill="#ffffff"/>
+    <!-- Body Sitting -->
+    <ellipse cx="230" cy="330" rx="75" ry="85" fill="#ea580c"/>
+    <ellipse cx="215" cy="340" rx="40" ry="60" fill="#ffffff"/>
+    <!-- Pointy Ears with Black Tips -->
+    <polygon points="150,150 120,60 190,120" fill="#ea580c"/>
+    <polygon points="120,60 135,90 150,80" fill="#1e293b"/>
+    <polygon points="145,140 135,85 175,125" fill="#ffffff"/>
+    <polygon points="270,150 300,60 230,120" fill="#ea580c"/>
+    <polygon points="300,60 285,90 270,80" fill="#1e293b"/>
+    <polygon points="275,140 285,85 245,125" fill="#ffffff"/>
+    <!-- Paws -->
+    <rect x="180" y="375" width="22" height="45" rx="10" fill="#1e293b"/>
+    <rect x="235" y="375" width="22" height="45" rx="10" fill="#1e293b"/>
+    <!-- Head -->
+    <polygon points="120,180 210,130 300,180 210,270" fill="#ea580c"/>
+    <!-- White Cheeks -->
+    <polygon points="120,180 170,225 210,270 160,260" fill="#ffffff"/>
+    <polygon points="300,180 250,225 210,270 260,260" fill="#ffffff"/>
+    <!-- Cute Nose -->
+    <circle cx="210" cy="265" r="8" fill="#1e293b"/>
+    <!-- Clever Almond Eyes -->
+    <ellipse cx="170" cy="185" rx="9" ry="12" fill="#1e293b" transform="rotate(15 170 185)"/>
+    <circle cx="168" cy="180" r="3" fill="#ffffff"/>
+    <ellipse cx="250" cy="185" rx="9" ry="12" fill="#1e293b" transform="rotate(-15 250 185)"/>
+    <circle cx="248" cy="180" r="3" fill="#ffffff"/>
+    <!-- Cheeks -->
+    <circle cx="160" cy="220" r="8" fill="#f43f5e" opacity="0.3"/>
+    <circle cx="260" cy="220" r="8" fill="#f43f5e" opacity="0.3"/>
+  </g>
+</svg>

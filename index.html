@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>快乐小书法家 · 儿童趣味练字乐园</title>
+    <!-- iPad / iOS 触屏与全屏独立 App 优化 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="快乐练字">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#ff6b6b">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
+    <link rel="stylesheet" href="css/style.css?v=20261001_v7">
+    <!-- 引入笔顺与烟花动效引擎 -->
+    <script src="lib/confetti.browser.min.js"></script>
+    <script src="lib/hanzi-writer.min.js"></script>
+    <script>
+        // CDN Fallback 如果本地文件出现异常时备用
+        if (typeof HanziWriter === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"><\/script>');
+        }
+    </script>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+        <div class="header-inner">
+            <div class="logo-area">
+                <span class="logo-icon">✏️</span>
+                <div>
+                    <h1 class="logo-title">快乐小书法家</h1>
+                    <span class="logo-subtitle">儿童趣味练字 · 笔顺跟写与毛笔临摹</span>
+                </div>
+            </div>
+
+            <!-- 自选汉字输入 -->
+            <div class="search-box">
+                <input type="text" id="custom-char-input" placeholder="输入任意字(例:福)" maxlength="1" autocomplete="off">
+                <button id="btn-custom-char">练这个字</button>
+            </div>
+
+            <!-- 成就徽章与设置 -->
+            <div class="header-actions">
+                <div class="star-badge" title="练字赚取的金星星">
+                    <span>⭐</span>
+                    <span id="total-star-count">0</span>
+                </div>
+                <div class="completed-badge" title="已经掌握的汉字数量">
+                    <span>🏆 已练</span>
+                    <span id="completed-char-count">0</span>
+                    <span>字</span>
+                </div>
+                <button id="btn-sound-toggle" class="sound-toggle-btn">🔊 声音开</button>
+                <button id="btn-ipad-modal" class="ipad-connect-btn" title="查看在 iPad / 平板上全屏书写连接指南">📱 iPad 练字</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 汉字分类与选单条 -->
+    <section class="char-selector-section">
+        <div id="category-bar" class="category-bar"></div>
+        <div id="char-list-grid" class="char-list-grid"></div>
+    </section>
+
+    <!-- 核心练习区：左边综合学习与笔顺，右边手写练习板 -->
+    <main class="main-container">
+        
+        <!-- 左侧：认知与笔顺综合大本营 -->
+        <section class="panel-card panel-left-studio">
+            
+            <!-- 上半部分：看图识字与汉字认知卡 (双列并排，既大幅展示插画，又完整展示字词句) -->
+            <div class="cognition-hero-card">
+                <!-- 左半：大幅看图识字插画 -->
+                <div id="char-illustration-large" class="ill-art-box" title="点击听朗读发音">
+                    <div class="ill-art-wrap">
+                        <img src="assets/illustrations/yi.jpg" class="ill-large-img" alt="一个">
+                    </div>
+                    <div class="ill-card-caption">
+                        <span id="large-illustration-label" class="ill-large-label">一个</span>
+                        <span id="large-illustration-en" class="ill-large-en" title="点击朗读英文">one</span>
+                        <span class="ill-speak-chip">🔊 听词</span>
+                    </div>
+                </div>
+
+                <!-- 右半：汉字详情、例句与组词 -->
+                <div class="cognition-details-box">
+                    <!-- 汉字大字、拼音、英文与部首笔画 -->
+                    <div class="cognition-char-header">
+                        <div class="cognition-char-group">
+                            <span id="current-pinyin" class="cognition-pinyin">yī</span>
+                            <div class="cognition-char-row">
+                                <span id="current-char-display" class="cognition-char">一</span>
+                                <span id="current-char-en" class="hero-en-badge" title="英文释义（点击听纯正英文朗读 🇬🇧/🇺🇸）">one</span>
+                            </div>
+                        </div>
+                        <div class="char-header-right">
+                            <button id="btn-speak-char" class="btn-speak" title="听汉字标准普通话发音">🔊</button>
+                            <div class="cognition-meta-badges">
+                                <span class="meta-pill">部首：<strong id="info-radical">一</strong></span>
+                                <span class="meta-pill">笔画：<strong id="info-stroke-count">1 画</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 经典例句 (优先置顶) -->
+                    <div class="cognition-sentence-section">
+                        <div class="cognition-section-title">💡 经典例句</div>
+                        <div id="info-sentence" class="cognition-sentence-text">我是一个活泼可爱的小朋友。</div>
+                    </div>
+
+                    <!-- 常用组词 -->
+                    <div class="cognition-words-section">
+                        <div class="cognition-section-title">📚 常用组词</div>
+                        <div id="info-words-list" class="cognition-words-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下半部分：笔顺小课堂 (大幅演示与互动闯关) -->
+            <div class="guide-studio-card">
+                <!-- 顶部标题栏与速度调节 -->
+                <div class="guide-header-row">
+                    <div class="guide-title-box">
+                        <span class="guide-icon">📖</span>
+                        <h2 class="guide-title">笔顺小课堂</h2>
+                    </div>
+                    <div class="speed-control-group">
+                        <label for="select-anim-speed" class="speed-label">演示速度：</label>
+                        <select id="select-anim-speed" class="speed-select">
+                            <option value="0.6">慢速 0.6x</option>
+                            <option value="1.0" selected>正常 1.0x</option>
+                            <option value="1.5">快速 1.5x</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 中间：大幅标准米字格笔顺框 (弹性居中自适应) -->
+                <div class="guide-frame-wrapper">
+                    <div class="hanzi-writer-frame">
+                        <div class="writer-grid-lines"></div>
+                        <div class="writer-diag-line-1"></div>
+                        <div class="writer-diag-line-2"></div>
+                        <div id="hanzi-writer-box"></div>
+                    </div>
+                </div>
+
+                <!-- 状态提示浮条 -->
+                <div id="quiz-status-msg" class="status-pill">
+                    💡 点击下方“播放笔顺”观察演示，或“跟写闯关”亲手练习！
+                </div>
+
+                <!-- 核心操作按键组 (大按键并排) -->
+                <div class="writer-action-buttons">
+                    <button id="btn-play-anim" class="btn-ctrl btn-play-anim" title="播放标准笔画演示动画">
+                        <span class="btn-icon">▶️</span>
+                        <span class="btn-text">播放笔顺</span>
+                    </button>
+                    <button id="btn-start-quiz" class="btn-ctrl btn-start-quiz" title="在上方方框内按正确笔顺临摹跟写">
+                        <span class="btn-icon">🎮</span>
+                        <span class="btn-text">笔顺跟写闯关</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 右侧：小小书法家手写画板 -->
+        <section class="panel-card panel-right">
+            <div class="canvas-panel-header">
+                <h2>🎨 小小书法家画板</h2>
+                <!-- 格线切换 -->
+                <div class="grid-selector">
+                    <button class="grid-type-btn active" data-grid="mizi" title="米字格">米字格</button>
+                    <button class="grid-type-btn" data-grid="tianzi" title="田字格">田字格</button>
+                    <button class="grid-type-btn" data-grid="huigong" title="回宫格">回宫格</button>
+                    <button class="grid-type-btn" data-grid="jiugong" title="九宫格">九宫格</button>
+                    <button class="grid-type-btn" data-grid="blank" title="空白画板">空白格</button>
+                </div>
+            </div>
+
+            <!-- 工具栏：画笔与调色盘 -->
+            <div class="canvas-toolbar">
+                <div class="brush-selector">
+                    <button class="brush-btn active" data-brush="brush" title="毛笔：带起笔收笔轻重粗细变化">🖌️ 毛笔</button>
+                    <button class="brush-btn" data-brush="pen" title="硬笔：清晰工整线条">✏️ 硬笔</button>
+                    <button class="brush-btn" data-brush="marker" title="马克笔：明亮饱满笔触">🖍️ 彩笔</button>
+                    <button class="brush-btn" data-brush="eraser" title="橡皮擦：擦除写错的笔迹">🧹 橡皮</button>
+                </div>
+
+                <!-- 颜色选择 -->
+                <div class="color-palette">
+                    <span class="color-pill active" data-color="#2d3436" style="background: #2d3436;" title="墨黑"></span>
+                    <span class="color-pill" data-color="#d63031" style="background: #d63031;" title="朱红"></span>
+                    <span class="color-pill" data-color="#0984e3" style="background: #0984e3;" title="宝石蓝"></span>
+                    <span class="color-pill" data-color="#00b894" style="background: #00b894;" title="翠竹绿"></span>
+                    <span class="color-pill" data-color="#fdcb6e" style="background: #fdcb6e;" title="金黄"></span>
+                    <span class="color-pill" data-color="#6c5ce7" style="background: #6c5ce7;" title="梦幻紫"></span>
+                </div>
+
+                <!-- 笔刷粗细调节 -->
+                <div class="slider-group">
+                    <span>粗细</span>
+                    <input type="range" id="brush-size-slider" min="6" max="28" value="14" step="2">
+                </div>
+            </div>
+
+            <!-- 描红开关与浓度调节 -->
+            <div class="trace-control-bar">
+                <label class="trace-toggle-label">
+                    <input type="checkbox" id="toggle-trace-switch" checked>
+                    <span>开启描红底样（跟着浅红字描画）</span>
+                </label>
+                <div class="slider-group">
+                    <span>浓度</span>
+                    <input type="range" id="trace-opacity-slider" min="0.1" max="0.75" value="0.35" step="0.05">
+                </div>
+            </div>
+
+            <!-- 手写画板主体 (双层 Canvas) -->
+            <div class="canvas-wrapper">
+                <div id="canvas-box" class="canvas-box">
+                    <canvas id="gridCanvas"></canvas>
+                    <canvas id="drawCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- 画板操作栏 -->
+            <div class="canvas-action-bar">
+                <div class="action-btn-group">
+                    <button id="btn-undo" class="btn-tool" title="撤销上一笔">↩️ 撤销</button>
+                    <button id="btn-clear" class="btn-tool" title="清空画板重写">🗑️ 清空</button>
+                </div>
+                <button id="btn-finish-drawing" class="btn-submit-stamp" title="智能测评笔画、笔顺、重心结构与字形并给出详细评分">
+                    <span>🏆 智能评分 & 盖章</span>
+                </button>
+            </div>
+
+            <!-- 打印字帖 -->
+            <div class="export-bar">
+                <button id="btn-print-sheet" class="btn-link-action" title="生成标准田字格纸质练字帖，支持打印机打印">
+                    <span>🖨️ 打印纸质字帖</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 胜利与奖励成就弹窗 Modal -->
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon-badge">🏆</div>
+            <h3 id="modal-title" class="modal-title">🎉 写得真棒！</h3>
+            <p id="modal-subtitle" class="modal-subtitle">你已经成功掌握了这个汉字！</p>
+            
+            <div class="modal-rewards-box">
+                <div class="reward-stat-item">
+                    <div class="stat-label">本次获得</div>
+                    <div id="modal-stars-num" class="stat-val">+10 ⭐</div>
+                </div>
+                <div class="reward-stat-item">
+                    <div class="stat-label">荣获称号</div>
+                    <div id="modal-badge-name" class="stat-val">小小书法家</div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="modal-close-btn" class="btn-modal secondary">再练一次</button>
+                <button id="modal-next-btn" class="btn-modal primary">练下一个字 ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- iPad 连接指引弹窗 Modal -->
+    <div id="ipad-guide-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 480px; text-align: left;">
+            <div style="text-align: center; font-size: 48px; margin-bottom: 8px;">📱</div>
+            <h3 class="modal-title" style="text-align: center; margin-bottom: 4px;">在 iPad 上开启全屏手写</h3>
+            <p class="modal-subtitle" style="text-align: center; margin-bottom: 16px;">支持 Apple Pencil 压感运笔，防手掌误触！</p>
+            
+            <div class="ipad-step-box" style="background: #fdfaf6; border: 2px dashed #feca57; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+                <div id="ipad-step-1" style="margin-bottom: 12px;">
+                    <strong>第 1 步：</strong>确保 iPad 和电脑连接在<strong>同一个家庭 Wi-Fi</strong> 下。
+                </div>
+                <div id="ipad-step-2" style="margin-bottom: 12px;">
+                    <strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，输入：
+                    <div style="display: flex; gap: 8px; margin-top: 6px; align-items: center;">
+                        <div id="ipad-url-display" style="flex: 1; background: #ffffff; border: 1.5px solid #0984e3; color: #0984e3; font-weight: bold; font-size: 15px; padding: 8px 12px; border-radius: 10px; text-align: center; user-select: all; word-break: break-all;">
+                            http://192.168.1.101:8080
+                        </div>
+                        <button id="ipad-copy-url-btn" style="background: #0984e3; color: #fff; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 14px;">复制</button>
+                    </div>
+                </div>
+                <div>
+                    <strong>第 3 步（推荐）：</strong>在 Safari 底部点击<strong>【分享按钮 ⎋】</strong> ➔ 向上滑选择<strong>【添加到主屏幕】</strong>。
+                    <div style="font-size: 13px; color: #7f8c8d; margin-top: 4px;">
+                        ✨ 桌面将生成「快乐练字」图标，点开即为<strong>全屏独立 App</strong>，无地址栏干扰，写字超顺畅！
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button id="ipad-guide-close-btn" class="btn-modal primary" style="width: 100%;">我知道了，去练字</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 智能书写评分报告弹窗 Modal -->
+    <div id="eval-modal" class="modal-overlay">
+        <div class="modal-content eval-modal-card">
+            <div class="eval-modal-header">
+                <div class="eval-header-title-box">
+                    <span class="eval-header-icon">📝</span>
+                    <h3 class="eval-modal-title">汉字书写智能测评报告</h3>
+                </div>
+                <span id="eval-char-badge" class="eval-char-badge">“一” 字</span>
+            </div>
+
+            <!-- 核心得分展台 -->
+            <div class="eval-hero-box">
+                <div class="eval-score-circle">
+                    <span id="eval-score-num" class="score-number">95</span>
+                    <span class="score-unit">分</span>
+                </div>
+                <div class="eval-hero-info">
+                    <div id="eval-grade-text" class="eval-grade-tag">【甲上 · 妙笔生花】</div>
+                    <div id="eval-stars-display" class="eval-stars-row">⭐⭐⭐</div>
+                    <p id="eval-teacher-comment" class="eval-comment-text">神采飞扬！间架稳固，笔顺清晰，颇有小小书法家的风采！</p>
+                </div>
+            </div>
+
+            <!-- 三维诊断指标进度条 -->
+            <div class="eval-metrics-grid">
+                <div class="eval-metric-item">
+                    <div class="metric-label-row">
+                        <span>✍️ 笔画与笔顺</span>
+                        <strong id="eval-metric-stroke">35 / 35</strong>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div id="eval-bar-stroke" class="metric-bar-fill stroke-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <div class="eval-metric-item">
+                    <div class="metric-label-row">
+                        <span>📐 间架与居中</span>
+                        <strong id="eval-metric-structure">33 / 35</strong>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div id="eval-bar-structure" class="metric-bar-fill structure-fill" style="width: 94%;"></div>
+                    </div>
+                </div>
+
+                <div class="eval-metric-item">
+                    <div class="metric-label-row">
+                        <span>✨ 字形与工整</span>
+                        <strong id="eval-metric-shape">28 / 30</strong>
+                    </div>
+                    <div class="metric-bar-track">
+                        <div id="eval-bar-shape" class="metric-bar-fill shape-fill" style="width: 93%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详细诊断与纠错提示列表 -->
+            <div class="eval-diagnosis-box">
+                <div class="diagnosis-title">💡 名师智能点拨与诊断提示：</div>
+                <ul id="eval-suggestions-list" class="diagnosis-list">
+                    <!-- 动态生成 -->
+                </ul>
+            </div>
+
+            <!-- 弹窗操作按钮组 -->
+            <div class="eval-actions-bar">
+                <button id="btn-eval-retry" class="btn-eval secondary">🔄 清空再练</button>
+                <button id="btn-eval-next" class="btn-eval primary">挑战下一个字 ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 逻辑脚本 -->
+    <script src="js/sound.js?v=20261001_v7"></script>
+    <script src="js/char-data.js?v=20261001_v7"></script>
+    <script src="js/stroke-cache.js?v=20261001_v7"></script>
+    <script src="js/canvas.js?v=20261001_v7"></script>
+    <script src="js/hanzi-guide.js?v=20261001_v7"></script>
+    <script src="js/evaluator.js?v=20261001_v7"></script>
+    <script src="js/app.js?v=20261001_v7"></script>
+</body>
+</html>

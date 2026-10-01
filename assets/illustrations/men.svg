@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgMen" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </radialGradient>
+    <filter id="shadowMen" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9a3412" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgMen)"/>
+  <!-- Cozy Cottage Door (大门) -->
+  <g filter="url(#shadowMen)">
+    <!-- Arch Doorframe -->
+    <path d="M 140 420 L 140 180 A 110 110 0 0 1 360 180 L 360 420 Z" fill="#b45309" stroke="#78350f" stroke-width="6"/>
+    <!-- Door Leaf -->
+    <path d="M 155 415 L 155 185 A 95 95 0 0 1 345 185 L 345 415 Z" fill="#f97316"/>
+    <!-- Wooden Planks Detail -->
+    <line x1="250" y1="90" x2="250" y2="415" stroke="#c2410c" stroke-width="4"/>
+    <!-- Round Golden Knocker / Handle -->
+    <circle cx="310" cy="270" r="14" fill="#facc15" stroke="#b45309" stroke-width="3"/>
+    <circle cx="310" cy="285" r="18" fill="none" stroke="#facc15" stroke-width="4"/>
+    <!-- Welcome Mat -->
+    <rect x="120" y="420" width="260" height="20" rx="6" fill="#78350f"/>
+  </g>
+</svg>

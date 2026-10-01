@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLian" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowLian" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLian)"/>
+  <g filter="url(#shadowLian)">
+    <!-- Big Chubby Child Face (脸庞) -->
+    <circle cx="250" cy="250" r="150" fill="#fed7aa"/>
+    <!-- Ears -->
+    <circle cx="95" cy="250" r="28" fill="#fed7aa"/>
+    <circle cx="95" cy="250" r="16" fill="#fca5a5"/>
+    <circle cx="405" cy="250" r="28" fill="#fed7aa"/>
+    <circle cx="405" cy="250" r="16" fill="#fca5a5"/>
+    <!-- Hair bangs on forehead -->
+    <path d="M 120 190 C 180 120 320 120 380 190 C 330 160 300 170 250 165 C 200 170 170 160 120 190 Z" fill="#78350f"/>
+    <!-- Sparkling Eyes -->
+    <circle cx="195" cy="235" r="14" fill="#1e293b"/>
+    <circle cx="190" cy="229" r="5" fill="#ffffff"/>
+    <circle cx="305" cy="235" r="14" fill="#1e293b"/>
+    <circle cx="300" cy="229" r="5" fill="#ffffff"/>
+    <!-- Big Cheerful Smile -->
+    <path d="M 205 290 Q 250 345 295 290 Z" fill="#f43f5e"/>
+    <path d="M 220 290 Q 250 310 280 290" fill="#ffffff"/>
+    <!-- Cute Pink Cheeks / Dimples -->
+    <circle cx="150" cy="285" r="22" fill="#f43f5e" opacity="0.4"/>
+    <circle cx="350" cy="285" r="22" fill="#f43f5e" opacity="0.4"/>
+  </g>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgE" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#a5f3fc"/>
+    </radialGradient>
+    <filter id="shadowE" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0891b2" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgE)"/>
+  <!-- Water Waves -->
+  <path d="M 50 380 Q 150 360 250 380 T 450 380 L 450 460 Q 350 480 250 460 T 50 460 Z" fill="#38bdf8" opacity="0.6"/>
+  <path d="M 70 410 Q 170 395 270 410 T 470 410 L 470 480 L 70 480 Z" fill="#0284c7" opacity="0.4"/>
+  <g filter="url(#shadowE)">
+    <!-- Goose Body -->
+    <ellipse cx="270" cy="340" rx="110" ry="70" fill="#ffffff"/>
+    <!-- Tail feathers -->
+    <path d="M 370 320 Q 420 300 400 345 Z" fill="#ffffff"/>
+    <!-- Wing detail -->
+    <path d="M 230 330 C 270 330 340 340 330 375 C 290 385 240 370 230 330 Z" fill="#f1f5f9"/>
+    <!-- S-curve Neck -->
+    <path d="M 180 340 Q 140 280 180 200 Q 200 150 180 110" stroke="#ffffff" stroke-width="42" stroke-linecap="round" fill="none"/>
+    <!-- Head -->
+    <ellipse cx="175" cy="115" rx="35" ry="30" fill="#ffffff"/>
+    <!-- Red/Orange Knob (鹅冠) -->
+    <circle cx="160" cy="98" r="14" fill="#ea580c"/>
+    <!-- Orange Beak -->
+    <polygon points="150,110 95,120 150,132" fill="#f97316"/>
+    <!-- Eye & Sparkle -->
+    <circle cx="175" cy="110" r="7" fill="#1e293b"/>
+    <circle cx="173" cy="108" r="2.5" fill="#ffffff"/>
+    <!-- Ripples around goose -->
+    <ellipse cx="270" cy="385" rx="130" ry="15" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.8"/>
+  </g>
+</svg>

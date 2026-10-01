@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgWuFog" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </radialGradient>
+    <filter id="shadowWuFog" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#64748b" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgWuFog)"/>
+  <!-- Mountain Silhouette in Mist -->
+  <polygon points="80,380 200,200 320,380" fill="#94a3b8" opacity="0.6"/>
+  <polygon points="220,380 340,160 460,380" fill="#64748b" opacity="0.5"/>
+  <g filter="url(#shadowWuFog)">
+    <!-- Wavy Translucent Mist Layers -->
+    <path d="M 40 220 Q 150 180 250 220 T 460 220" stroke="#ffffff" stroke-width="26" stroke-linecap="round" opacity="0.75"/>
+    <path d="M 60 290 Q 180 250 290 290 T 480 290" stroke="#ffffff" stroke-width="32" stroke-linecap="round" opacity="0.85"/>
+    <path d="M 30 360 Q 160 320 270 360 T 470 360" stroke="#ffffff" stroke-width="36" stroke-linecap="round" opacity="0.9"/>
+  </g>
+</svg>

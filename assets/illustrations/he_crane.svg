@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgHe" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowHe" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHe)"/>
+  <!-- Reeds & Water -->
+  <ellipse cx="250" cy="430" rx="180" ry="30" fill="#93c5fd" opacity="0.6"/>
+  <path d="M 370 450 L 385 350 M 385 450 L 400 330 M 395 450 L 415 360" stroke="#15803d" stroke-width="4" stroke-linecap="round"/>
+  <g filter="url(#shadowHe)">
+    <!-- Long Slender Legs -->
+    <line x1="220" y1="330" x2="215" y2="435" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+    <line x1="250" y1="330" x2="260" y2="435" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+    <!-- Claws in water -->
+    <path d="M 215 435 L 200 440 M 215 435 L 215 442 M 215 435 L 228 440" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 260 435 L 245 440 M 260 435 L 260 442 M 260 435 L 273 440" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
+    <!-- Elegant White Body -->
+    <ellipse cx="230" cy="290" rx="70" ry="45" fill="#ffffff"/>
+    <!-- Black Wing Plumes at Tail -->
+    <path d="M 260 270 Q 320 270 330 330 Q 280 330 250 310 Z" fill="#0f172a"/>
+    <!-- Long Graceful S-Curved Neck -->
+    <path d="M 180 290 Q 150 200 170 140 Q 180 110 170 95" stroke="#0f172a" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M 180 290 Q 150 200 170 140 Q 180 110 170 95" stroke="#ffffff" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <!-- Head -->
+    <ellipse cx="170" cy="95" rx="20" ry="16" fill="#ffffff"/>
+    <!-- Red Crown (丹顶) -->
+    <ellipse cx="170" cy="85" rx="10" ry="6" fill="#e11d48"/>
+    <!-- Long Stately Beak -->
+    <polygon points="160,95 90,102 160,105" fill="#facc15"/>
+    <!-- Eye & Sparkle -->
+    <circle cx="172" cy="95" r="3.5" fill="#0f172a"/>
+    <circle cx="171" cy="94" r="1.2" fill="#ffffff"/>
+  </g>
+</svg>

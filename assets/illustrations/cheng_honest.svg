@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgCheng" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowCheng" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgCheng)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
+  <!-- Pinky Promise (拉钩约定) -->
+  <g filter="url(#shadowCheng)">
+    <!-- Left Hand Pinky Hooked -->
+    <path d="M 120 280 L 190 280 C 220 280 235 240 235 210 C 235 180 215 180 215 210 L 215 250" stroke="#f59e0b" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Right Hand Pinky Hooked into it -->
+    <path d="M 380 280 L 310 280 C 280 280 265 240 265 210 C 265 180 285 180 285 210 L 285 250" stroke="#d97706" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Golden Promise Glow Star in the middle of hooked pinkies -->
+    <polygon points="250,170 258,195 285,195 264,212 272,238 250,222 228,238 236,212 215,195 242,195" fill="#eab308"/>
+    <circle cx="250" cy="205" r="8" fill="#ffffff"/>
+  </g>
+</svg>

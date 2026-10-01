@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fce7f3"/>
+    </radialGradient>
+    <filter id="shadowDu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ec4899" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDu)"/>
+  <ellipse cx="250" cy="440" rx="170" ry="30" fill="#fbcfe8" opacity="0.6"/>
+  <!-- Musical notes floating out -->
+  <path d="M 330 160 Q 350 140 370 160" stroke="#a855f7" stroke-width="4" fill="none"/>
+  <circle cx="330" cy="160" r="8" fill="#a855f7"/>
+  <circle cx="370" cy="160" r="8" fill="#a855f7"/>
+  <line x1="337" y1="160" x2="337" y2="120" stroke="#a855f7" stroke-width="4"/>
+  <line x1="377" y1="160" x2="377" y2="120" stroke="#a855f7" stroke-width="4"/>
+  <line x1="337" y1="120" x2="377" y2="120" stroke="#a855f7" stroke-width="6"/>
+  <g filter="url(#shadowDu)">
+    <!-- Child Reading behind book -->
+    <circle cx="250" cy="200" r="75" fill="#fed7aa"/>
+    <path d="M 180 180 C 180 100 320 100 320 180 Z" fill="#78350f"/>
+    <!-- Happy eyes reading down -->
+    <path d="M 215 195 Q 225 210 235 195" stroke="#1e293b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 265 195 Q 275 210 285 195" stroke="#1e293b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 240 225 Q 250 240 260 225" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Big Open Colorful Picture Book in hands -->
+    <path d="M 100 300 Q 250 330 250 280 Q 250 330 400 300 L 380 410 Q 250 380 250 410 Q 250 380 120 410 Z" fill="#ffffff" stroke="#ec4899" stroke-width="8"/>
+    <!-- Cover edge -->
+    <path d="M 100 300 L 90 415 L 250 420 L 410 415 L 400 300" stroke="#db2777" stroke-width="6" fill="none"/>
+    <!-- Child's hands holding book -->
+    <circle cx="130" cy="360" r="18" fill="#fed7aa"/>
+    <circle cx="370" cy="360" r="18" fill="#fed7aa"/>
+  </g>
+</svg>

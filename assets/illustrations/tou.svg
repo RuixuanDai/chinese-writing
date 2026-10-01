@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgTou" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowTou" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgTou)"/>
+  <g filter="url(#shadowTou)">
+    <!-- Ears -->
+    <circle cx="120" cy="260" r="28" fill="#fed7aa"/>
+    <circle cx="120" cy="260" r="16" fill="#fca5a5"/>
+    <circle cx="380" cy="260" r="28" fill="#fed7aa"/>
+    <circle cx="380" cy="260" r="16" fill="#fca5a5"/>
+    <!-- Head / Face -->
+    <circle cx="250" cy="260" r="130" fill="#fed7aa"/>
+    <!-- Cheerful Hair -->
+    <path d="M 120 250 C 110 130 180 100 250 100 C 320 100 390 130 380 250 C 350 200 320 200 280 210 C 250 220 220 200 190 205 C 160 210 140 215 120 250 Z" fill="#78350f"/>
+    <!-- Little topknot tuft -->
+    <ellipse cx="250" cy="90" rx="18" ry="25" fill="#78350f" transform="rotate(-15 250 90)"/>
+    <!-- Eyebrows -->
+    <path d="M 180 215 Q 200 205 220 215" stroke="#78350f" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 280 215 Q 300 205 320 215" stroke="#78350f" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <!-- Eyes -->
+    <circle cx="200" cy="245" r="11" fill="#1e293b"/>
+    <circle cx="197" cy="241" r="3.5" fill="#ffffff"/>
+    <circle cx="300" cy="245" r="11" fill="#1e293b"/>
+    <circle cx="297" cy="241" r="3.5" fill="#ffffff"/>
+    <!-- Button Nose -->
+    <circle cx="250" cy="270" r="6" fill="#ea580c"/>
+    <!-- Wide Smile -->
+    <path d="M 215 295 Q 250 330 285 295" stroke="#78350f" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <!-- Rosy Cheeks -->
+    <circle cx="170" cy="285" r="14" fill="#f43f5e" opacity="0.4"/>
+    <circle cx="330" cy="285" r="14" fill="#f43f5e" opacity="0.4"/>
+  </g>
+</svg>

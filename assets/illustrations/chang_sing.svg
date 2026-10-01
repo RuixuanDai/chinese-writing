@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgChang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowChang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgChang)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#fde68a" opacity="0.6"/>
+  <!-- Cute Yellow Songbird singing on a branch -->
+  <g filter="url(#shadowChang)">
+    <!-- Branch -->
+    <path d="M 60 380 Q 200 370 440 350" stroke="#78350f" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <circle cx="160" cy="370" r="10" fill="#22c55e"/>
+    <circle cx="360" cy="355" r="10" fill="#22c55e"/>
+    <!-- Bird Body -->
+    <circle cx="230" cy="270" r="65" fill="#facc15"/>
+    <circle cx="280" cy="220" r="45" fill="#fbbf24"/>
+    <!-- Wing -->
+    <path d="M 180 270 Q 230 250 250 310 Z" fill="#f59e0b"/>
+    <!-- Eye -->
+    <circle cx="295" cy="215" r="6" fill="#18181b"/>
+    <!-- Open Singing Beak -->
+    <polygon points="325,215 365,200 335,225" fill="#ea580c"/>
+    <polygon points="325,225 365,240 335,230" fill="#ea580c"/>
+    <!-- Colorful Melody Notes floating from Beak -->
+    <circle cx="390" cy="180" r="14" fill="#f43f5e"/>
+    <line x1="404" y1="180" x2="404" y2="120" stroke="#f43f5e" stroke-width="5"/>
+    <path d="M 404 120 Q 425 130 420 150" stroke="#f43f5e" stroke-width="5" fill="none"/>
+    <circle cx="340" cy="120" r="12" fill="#3b82f6"/>
+    <line x1="352" y1="120" x2="352" y2="70" stroke="#3b82f6" stroke-width="4"/>
+  </g>
+</svg>

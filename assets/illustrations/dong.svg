@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgDong" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <filter id="shadowDong" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#0284c7" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDong)"/>
+  <!-- Smiling Snowman with Red Scarf (冬天) -->
+  <g filter="url(#shadowDong)">
+    <!-- Snow Ground -->
+    <ellipse cx="250" cy="450" rx="200" ry="35" fill="#f8fafc"/>
+    <!-- Lower Body -->
+    <circle cx="250" cy="335" r="95" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- Head -->
+    <circle cx="250" cy="190" r="65" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- Eyes -->
+    <circle cx="225" cy="175" r="6" fill="#0f172a"/>
+    <circle cx="275" cy="175" r="6" fill="#0f172a"/>
+    <!-- Carrot Nose -->
+    <polygon points="250,185 295,195 250,200" fill="#f97316"/>
+    <!-- Smile -->
+    <circle cx="225" cy="215" r="3.5" fill="#0f172a"/>
+    <circle cx="240" cy="222" r="3.5" fill="#0f172a"/>
+    <circle cx="260" cy="222" r="3.5" fill="#0f172a"/>
+    <circle cx="275" cy="215" r="3.5" fill="#0f172a"/>
+    <!-- Red Scarf -->
+    <rect x="200" y="240" width="100" height="20" rx="8" fill="#ef4444"/>
+    <rect x="260" y="250" width="22" height="60" rx="6" fill="#dc2626"/>
+    <!-- Top Hat -->
+    <rect x="205" y="130" width="90" height="12" rx="4" fill="#1e293b"/>
+    <rect x="220" y="80" width="60" height="52" rx="6" fill="#1e293b"/>
+    <rect x="220" y="118" width="60" height="10" fill="#ef4444"/>
+  </g>
+</svg>

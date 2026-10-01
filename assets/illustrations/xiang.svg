@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgXiang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowXiang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgXiang)"/>
+  <ellipse cx="250" cy="430" rx="190" ry="35" fill="#93c5fd" opacity="0.6"/>
+  <g filter="url(#shadowXiang)">
+    <!-- Elephant Body -->
+    <ellipse cx="270" cy="300" rx="120" ry="95" fill="#94a3b8"/>
+    <!-- Legs -->
+    <rect x="180" y="340" width="40" height="90" rx="15" fill="#64748b"/>
+    <rect x="235" y="340" width="40" height="90" rx="15" fill="#94a3b8"/>
+    <rect x="305" y="340" width="40" height="90" rx="15" fill="#64748b"/>
+    <rect x="350" y="340" width="40" height="90" rx="15" fill="#94a3b8"/>
+    <!-- Toenails -->
+    <circle cx="190" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="200" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="210" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="245" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="255" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="265" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="360" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="370" cy="425" r="5" fill="#f8fafc"/>
+    <circle cx="380" cy="425" r="5" fill="#f8fafc"/>
+    <!-- Tail -->
+    <path d="M 385 290 Q 420 320 405 350" stroke="#64748b" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <ellipse cx="403" cy="355" rx="6" ry="10" fill="#475569"/>
+    <!-- Head -->
+    <circle cx="170" cy="225" r="75" fill="#94a3b8"/>
+    <!-- Big Ear Behind -->
+    <path d="M 125 180 C 80 180 60 250 110 280 C 135 295 155 270 145 230 Z" fill="#64748b"/>
+    <!-- Curled Trunk -->
+    <path d="M 130 250 Q 80 270 70 330 Q 60 380 100 385 Q 125 385 125 365 Q 120 345 95 345" stroke="#94a3b8" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <!-- Water drops from trunk -->
+    <circle cx="120" cy="325" r="6" fill="#38bdf8"/>
+    <circle cx="135" cy="310" r="5" fill="#38bdf8"/>
+    <circle cx="150" cy="320" r="4" fill="#38bdf8"/>
+    <!-- Tusk -->
+    <path d="M 140 270 Q 125 305 105 315" stroke="#fef08a" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <!-- Front Ear -->
+    <path d="M 190 170 C 250 170 260 250 215 285 C 185 305 165 280 175 220 Z" fill="#94a3b8"/>
+    <path d="M 195 185 C 235 185 245 240 210 268 C 185 285 175 265 182 225 Z" fill="#fecdd3"/>
+    <!-- Eye & Sparkle -->
+    <circle cx="145" cy="205" r="9" fill="#1e293b"/>
+    <circle cx="142" cy="202" r="3" fill="#ffffff"/>
+    <!-- Cheek -->
+    <circle cx="160" cy="235" r="10" fill="#f43f5e" opacity="0.3"/>
+  </g>
+</svg>

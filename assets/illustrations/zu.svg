@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </radialGradient>
+    <filter id="shadowZu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#16a34a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZu)"/>
+  <!-- Classic Soccer Ball (足球 / 双足) -->
+  <g filter="url(#shadowZu)">
+    <circle cx="250" cy="250" r="130" fill="#ffffff" stroke="#1e293b" stroke-width="6"/>
+    <!-- Center Pentagon -->
+    <polygon points="250,210 288,238 273,283 227,283 212,238" fill="#0f172a"/>
+    <!-- Lines to edges -->
+    <line x1="250" y1="210" x2="250" y2="120" stroke="#1e293b" stroke-width="5"/>
+    <line x1="288" y1="238" x2="365" y2="200" stroke="#1e293b" stroke-width="5"/>
+    <line x1="273" y1="283" x2="335" y2="345" stroke="#1e293b" stroke-width="5"/>
+    <line x1="227" y1="283" x2="165" y2="345" stroke="#1e293b" stroke-width="5"/>
+    <line x1="212" y1="238" x2="135" y2="200" stroke="#1e293b" stroke-width="5"/>
+  </g>
+</svg>

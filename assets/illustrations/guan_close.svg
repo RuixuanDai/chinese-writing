@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGuan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <filter id="shadowGuan" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e3a8a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGuan)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#bfdbfe" opacity="0.6"/>
+  <!-- Closed Door with Handle & Golden Keyhole -->
+  <g filter="url(#shadowGuan)">
+    <!-- Door Frame -->
+    <rect x="120" y="90" width="260" height="330" rx="18" fill="#1e3a8a"/>
+    <!-- Two Closed Door Panels -->
+    <rect x="135" y="105" width="110" height="300" rx="8" fill="#3b82f6"/>
+    <rect x="255" y="105" width="110" height="300" rx="8" fill="#2563eb"/>
+    <!-- Door Panel Insets -->
+    <rect x="150" y="130" width="80" height="110" rx="6" fill="#60a5fa"/>
+    <rect x="150" y="270" width="80" height="110" rx="6" fill="#60a5fa"/>
+    <rect x="270" y="130" width="80" height="110" rx="6" fill="#3b82f6"/>
+    <rect x="270" y="270" width="80" height="110" rx="6" fill="#3b82f6"/>
+    <!-- Golden Padlock & Handles in Center -->
+    <circle cx="250" cy="260" r="22" fill="#facc15" stroke="#ca8a04" stroke-width="4"/>
+    <rect x="245" y="255" width="10" height="15" rx="2" fill="#713f12"/>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgChe" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowChe" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgChe)"/>
+  <ellipse cx="250" cy="425" rx="180" ry="30" fill="#cbd5e1"/>
+  <g filter="url(#shadowChe)">
+    <!-- Car Cabin Roof -->
+    <path d="M 160 260 L 200 170 L 320 170 L 360 260 Z" fill="#ef4444"/>
+    <!-- Blue Windows -->
+    <polygon points="205,180 250,180 250,250 175,250" fill="#38bdf8"/>
+    <polygon points="265,180 310,180 345,250 265,250" fill="#38bdf8"/>
+    <!-- Car Body -->
+    <rect x="90" y="250" width="320" height="90" rx="20" fill="#dc2626"/>
+    <!-- Yellow Headlight & Taillight -->
+    <polygon points="410,270 418,275 410,295" fill="#facc15"/>
+    <rect x="90" y="270" width="8" height="25" fill="#f97316"/>
+    <!-- Wheels -->
+    <circle cx="170" cy="350" r="42" fill="#1e293b"/>
+    <circle cx="170" cy="350" r="22" fill="#94a3b8"/>
+    <circle cx="330" cy="350" r="42" fill="#1e293b"/>
+    <circle cx="330" cy="350" r="22" fill="#94a3b8"/>
+  </g>
+</svg>

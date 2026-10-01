@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgShiMarket" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowShiMarket" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgShiMarket)"/>
+  <ellipse cx="250" cy="440" rx="180" ry="30" fill="#fde68a" opacity="0.6"/>
+  <g filter="url(#shadowShiMarket)">
+    <!-- Market Stall Counter -->
+    <rect x="120" y="270" width="260" height="140" rx="8" fill="#b45309"/>
+    <!-- Striped Awning Canopy -->
+    <polygon points="100,160 400,160 380,240 120,240" fill="#ef4444"/>
+    <!-- White Stripes on Awning -->
+    <polygon points="150,160 190,160 180,240 145,240" fill="#ffffff"/>
+    <polygon points="230,160 270,160 265,240 230,240" fill="#ffffff"/>
+    <polygon points="310,160 350,160 345,240 315,240" fill="#ffffff"/>
+    <!-- Fresh Fruits displayed on counter -->
+    <circle cx="170" cy="265" r="16" fill="#ef4444"/>
+    <circle cx="210" cy="265" r="16" fill="#f97316"/>
+    <circle cx="250" cy="265" r="16" fill="#eab308"/>
+    <circle cx="290" cy="265" r="16" fill="#22c55e"/>
+    <circle cx="330" cy="265" r="16" fill="#a855f7"/>
+  </g>
+</svg>

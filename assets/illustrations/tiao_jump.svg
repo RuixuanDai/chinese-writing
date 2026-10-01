@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgTiao" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowTiao" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#be123c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgTiao)"/>
+  <ellipse cx="250" cy="435" rx="140" ry="20" fill="#fecdd3" opacity="0.6"/>
+  <!-- Jump Rope Arc in Air -->
+  <path d="M 120 250 C 120 40 380 40 380 250" stroke="#f43f5e" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <!-- Motion jumping marks -->
+  <path d="M 220 380 Q 250 365 280 380" stroke="#fb7185" stroke-width="4" fill="none"/>
+  <path d="M 210 400 Q 250 385 290 400" stroke="#fb7185" stroke-width="4" fill="none"/>
+  <!-- Happy Girl Jumping high with bent knees -->
+  <g filter="url(#shadowTiao)">
+    <!-- Head -->
+    <circle cx="250" cy="140" r="42" fill="#fed7aa"/>
+    <!-- Pigtails -->
+    <circle cx="195" cy="135" r="18" fill="#18181b"/>
+    <circle cx="305" cy="135" r="18" fill="#18181b"/>
+    <circle cx="250" cy="130" r="44" fill="#18181b"/>
+    <circle cx="250" cy="145" r="38" fill="#fed7aa"/>
+    <!-- Smiling face -->
+    <circle cx="238" cy="142" r="4" fill="#18181b"/>
+    <circle cx="262" cy="142" r="4" fill="#18181b"/>
+    <path d="M 242 155 Q 250 165 258 155" stroke="#ef4444" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Dress / Body in air -->
+    <polygon points="250,185 205,275 295,275" fill="#ec4899"/>
+    <!-- Bent Jumping Legs -->
+    <path d="M 225 275 L 210 325 L 235 340" stroke="#fed7aa" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M 275 275 L 290 325 L 265 340" stroke="#fed7aa" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Rope Handles held in hands -->
+    <rect x="110" y="240" width="16" height="35" rx="6" fill="#f59e0b"/>
+    <rect x="374" y="240" width="16" height="35" rx="6" fill="#f59e0b"/>
+  </g>
+</svg>

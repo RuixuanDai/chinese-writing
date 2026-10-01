@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGe" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fce7f3"/>
+    </radialGradient>
+    <filter id="shadowGe" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9d174d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGe)"/>
+  <ellipse cx="250" cy="435" rx="160" ry="24" fill="#fbcfe8" opacity="0.6"/>
+  <g filter="url(#shadowGe)">
+    <!-- Stage Microphone -->
+    <ellipse cx="250" cy="270" rx="40" ry="55" fill="#64748b"/>
+    <rect x="235" y="320" width="30" height="90" rx="6" fill="#334155"/>
+    <!-- Mesh pattern on mic -->
+    <line x1="215" y1="260" x2="285" y2="260" stroke="#94a3b8" stroke-width="3"/>
+    <line x1="215" y1="280" x2="285" y2="280" stroke="#94a3b8" stroke-width="3"/>
+    <!-- Floating Colorful Music Notes -->
+    <!-- Double Eighth Note -->
+    <circle cx="160" cy="180" r="18" fill="#f43f5e"/>
+    <circle cx="220" cy="150" r="18" fill="#f43f5e"/>
+    <line x1="175" y1="180" x2="175" y2="110" stroke="#f43f5e" stroke-width="7"/>
+    <line x1="235" y1="150" x2="235" y2="80" stroke="#f43f5e" stroke-width="7"/>
+    <line x1="175" y1="110" x2="235" y2="80" stroke="#f43f5e" stroke-width="12"/>
+    <!-- Quarter Note Right -->
+    <circle cx="340" cy="170" r="20" fill="#8b5cf6"/>
+    <line x1="358" y1="170" x2="358" y2="90" stroke="#8b5cf6" stroke-width="7"/>
+    <path d="M 358 90 Q 390 100 380 130" stroke="#8b5cf6" stroke-width="7" fill="none"/>
+    <!-- Treble Clef Sparkles -->
+    <circle cx="320" cy="270" r="10" fill="#38bdf8"/>
+    <circle cx="150" cy="280" r="12" fill="#10b981"/>
+  </g>
+</svg>

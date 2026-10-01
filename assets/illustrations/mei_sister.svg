@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgMeiSister" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowMeiSister" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgMeiSister)"/>
+  <g filter="url(#shadowMeiSister)">
+    <!-- Cute Pigtail Buns with Bows -->
+    <circle cx="140" cy="150" r="35" fill="#78350f"/>
+    <polygon points="140,150 110,130 110,170" fill="#f43f5e"/>
+    <polygon points="140,150 170,130 170,170" fill="#f43f5e"/>
+    <circle cx="140" cy="150" r="9" fill="#fbcfe8"/>
+    <circle cx="360" cy="150" r="35" fill="#78350f"/>
+    <polygon points="360,150 330,130 330,170" fill="#f43f5e"/>
+    <polygon points="360,150 390,130 390,170" fill="#f43f5e"/>
+    <circle cx="360" cy="150" r="9" fill="#fbcfe8"/>
+    <!-- Dress -->
+    <path d="M 160 440 C 160 360 340 360 340 440 Z" fill="#f43f5e"/>
+    <!-- Head -->
+    <circle cx="250" cy="245" r="85" fill="#fed7aa"/>
+    <!-- Front Hair Fringe -->
+    <path d="M 170 220 C 170 140 330 140 330 220 Z" fill="#78350f"/>
+    <!-- Big Sparkling Innocent Eyes -->
+    <circle cx="215" cy="235" r="12" fill="#1e293b"/>
+    <circle cx="210" cy="230" r="5" fill="#ffffff"/>
+    <circle cx="285" cy="235" r="12" fill="#1e293b"/>
+    <circle cx="280" cy="230" r="5" fill="#ffffff"/>
+    <!-- Smile & Big Blushes -->
+    <path d="M 230 270 Q 250 295 270 270" stroke="#78350f" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <circle cx="180" cy="265" r="15" fill="#f43f5e" opacity="0.45"/>
+    <circle cx="320" cy="265" r="15" fill="#f43f5e" opacity="0.45"/>
+  </g>
+</svg>

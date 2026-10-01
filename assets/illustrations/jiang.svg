@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgJiang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowJiang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgJiang)"/>
+  <!-- Distant green mountains -->
+  <polygon points="20,260 120,160 230,260" fill="#86efac"/>
+  <polygon points="180,260 290,130 400,260" fill="#4ade80"/>
+  <polygon points="320,260 410,180 500,260" fill="#22c55e"/>
+  <g filter="url(#shadowJiang)">
+    <!-- Mighty Grand River winding through -->
+    <path d="M 50 480 C 180 430 180 320 280 260 C 330 230 350 230 400 220 L 420 260 C 340 280 280 370 120 480 Z" fill="#2563eb"/>
+    <path d="M 40 480 C 160 430 170 340 270 270 L 290 285 C 190 350 180 440 60 480 Z" fill="#3b82f6"/>
+    <!-- Water Glint Currents -->
+    <path d="M 120 450 Q 200 410 240 370" stroke="#93c5fd" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M 180 440 Q 240 390 270 340" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- Little sailboat in the distance -->
+    <polygon points="340,245 355,225 355,245" fill="#ffffff"/>
+    <polygon points="335,245 365,245 355,252 345,252" fill="#92400e"/>
+  </g>
+</svg>

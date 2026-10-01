@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgXiaSummer" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </radialGradient>
+    <filter id="shadowXiaSummer" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#ef4444" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgXiaSummer)"/>
+  <!-- Juicy Watermelon Slice (夏天) -->
+  <g filter="url(#shadowXiaSummer)">
+    <!-- Sun top right -->
+    <circle cx="390" cy="110" r="45" fill="#facc15" stroke="#f59e0b" stroke-width="4"/>
+    <!-- Big Watermelon Slice -->
+    <path d="M 100 280 C 130 420 370 420 400 280 Z" fill="#15803d" stroke="#166534" stroke-width="4"/>
+    <path d="M 115 280 C 140 400 360 400 385 280 Z" fill="#86efac"/>
+    <path d="M 125 280 C 145 385 355 385 375 280 Z" fill="#ef4444"/>
+    <!-- Black Seeds -->
+    <ellipse cx="200" cy="310" rx="5" ry="9" fill="#0f172a" transform="rotate(-15, 200, 310)"/>
+    <ellipse cx="250" cy="330" rx="5" ry="9" fill="#0f172a"/>
+    <ellipse cx="300" cy="310" rx="5" ry="9" fill="#0f172a" transform="rotate(15, 300, 310)"/>
+  </g>
+</svg>

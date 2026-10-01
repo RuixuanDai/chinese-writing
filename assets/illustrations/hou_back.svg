@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgHou" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#faf5ff"/>
+      <stop offset="100%" stop-color="#f3e8ff"/>
+    </radialGradient>
+    <filter id="shadowHou" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#581c87" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHou)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#e9d5ff" opacity="0.6"/>
+  <!-- Train Track -->
+  <rect x="50" y="380" width="400" height="12" rx="4" fill="#71717a"/>
+  <!-- Caboose (Rear Carriage) -->
+  <g filter="url(#shadowHou)">
+    <!-- Front train outline faded -->
+    <rect x="310" y="240" width="110" height="130" rx="14" fill="#a855f7" opacity="0.4"/>
+    <circle cx="345" cy="380" r="20" fill="#3f3f46" opacity="0.4"/>
+    <circle cx="395" cy="380" r="20" fill="#3f3f46" opacity="0.4"/>
+    <!-- Connector -->
+    <rect x="250" y="320" width="70" height="14" fill="#52525b"/>
+    <!-- Rear Caboose (Highlighted) -->
+    <rect x="110" y="210" width="160" height="160" rx="18" fill="#8b5cf6"/>
+    <rect x="135" y="240" width="50" height="50" rx="8" fill="#bae6fd"/>
+    <rect x="200" y="240" width="50" height="50" rx="8" fill="#bae6fd"/>
+    <!-- Roof and Rear Lantern -->
+    <path d="M 95 215 L 285 215 L 270 190 L 110 190 Z" fill="#6d28d9"/>
+    <circle cx="100" cy="270" r="14" fill="#ef4444"/>
+    <circle cx="100" cy="270" r="7" fill="#fef08a"/>
+    <!-- Wheels -->
+    <circle cx="150" cy="380" r="25" fill="#27272a"/>
+    <circle cx="150" cy="380" r="10" fill="#e4e4e7"/>
+    <circle cx="230" cy="380" r="25" fill="#27272a"/>
+    <circle cx="230" cy="380" r="10" fill="#e4e4e7"/>
+    <!-- Arrow pointing to the rear -->
+    <polygon points="60,270 90,250 90,262 130,262 130,278 90,278 90,290" fill="#f59e0b"/>
+  </g>
+</svg>

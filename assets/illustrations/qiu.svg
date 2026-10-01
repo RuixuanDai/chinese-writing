@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgQiu" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+    <filter id="shadowQiu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#c2410c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgQiu)"/>
+  <!-- Golden Autumn Maple Leaves & Acorn (秋天) -->
+  <g filter="url(#shadowQiu)">
+    <!-- Big Maple Leaf -->
+    <path d="M 250 120 L 265 190 L 320 160 L 290 220 L 360 230 L 295 270 L 330 330 L 260 300 L 250 380 L 240 300 L 170 330 L 205 270 L 140 230 L 210 220 L 180 160 L 235 190 Z" fill="#ea580c" stroke="#9a3412" stroke-width="4"/>
+    <line x1="250" y1="140" x2="250" y2="380" stroke="#7c2d12" stroke-width="4"/>
+    <!-- Acorn -->
+    <ellipse cx="350" cy="360" rx="25" ry="30" fill="#92400e"/>
+    <path d="M 325 345 Q 350 330 375 345 Z" fill="#451a03"/>
+    <line x1="350" y1="335" x2="350" y2="320" stroke="#451a03" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

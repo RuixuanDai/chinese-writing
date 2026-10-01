@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZuo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </radialGradient>
+    <filter id="shadowZuo" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZuo)"/>
+  <g filter="url(#shadowZuo)">
+    <!-- Big Dynamic Left Arrow -->
+    <polygon points="200,120 70,250 200,380 200,310 410,310 410,190 200,190" fill="#22c55e" stroke="#15803d" stroke-width="8"/>
+    <!-- Inner Arrow Highlight -->
+    <polygon points="190,150 90,250 190,350 190,300 390,300 390,200 190,200" fill="#4ade80"/>
+    <text x="280" y="265" font-family="'KaiTi', 'STKaiti', sans-serif" font-size="55" font-weight="bold" fill="#ffffff" text-anchor="middle">左</text>
+  </g>
+</svg>

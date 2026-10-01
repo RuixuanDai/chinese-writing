@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgYouYoung" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fdf4ff"/>
+      <stop offset="100%" stop-color="#fae8ff"/>
+    </radialGradient>
+    <filter id="shadowYouYoung" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#a855f7" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgYouYoung)"/>
+  <ellipse cx="250" cy="440" rx="170" ry="30" fill="#f0abfc" opacity="0.6"/>
+  <g filter="url(#shadowYouYoung)">
+    <!-- Cozy Baby Bassinet / Cradle -->
+    <path d="M 120 280 C 120 400 380 400 380 280 Z" fill="#c084fc"/>
+    <!-- Cradle Hood -->
+    <path d="M 120 280 C 120 180 260 180 260 280 Z" fill="#e879f9"/>
+    <!-- Sweet Sleeping Baby inside -->
+    <circle cx="210" cy="270" r="45" fill="#fed7aa"/>
+    <ellipse cx="280" cy="300" rx="55" ry="35" fill="#fbcfe8"/>
+    <!-- Sleeping Crescent Eye -->
+    <path d="M 195 270 Q 205 280 215 270" stroke="#78350f" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="185" cy="280" r="7" fill="#f43f5e" opacity="0.4"/>
+    <!-- Cute Baby Rattle beside cradle -->
+    <circle cx="360" cy="240" r="24" fill="#facc15" stroke="#eab308" stroke-width="4"/>
+    <rect x="354" y="264" width="12" height="40" rx="6" fill="#38bdf8"/>
+    <circle cx="360" cy="310" r="10" fill="#f43f5e"/>
+  </g>
+</svg>

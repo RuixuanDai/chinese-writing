@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgMei" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <radialGradient id="berryGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="50%" stop-color="#e11d48"/>
+      <stop offset="100%" stop-color="#9f1239"/>
+    </radialGradient>
+    <filter id="shadowMei" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#be123c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgMei)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="30" fill="#fecdd3" opacity="0.6"/>
+  <g filter="url(#shadowMei)">
+    <!-- Juicy Heart-shaped Strawberry Body -->
+    <path d="M 250 420 C 130 330 120 180 250 190 C 380 180 370 330 250 420 Z" fill="url(#berryGrad)"/>
+    <!-- Green Leafy Calyx Crown -->
+    <path d="M 250 190 L 190 140 L 225 180 L 250 130 L 275 180 L 310 140 L 250 190 Z" fill="#22c55e"/>
+    <rect x="246" y="105" width="8" height="30" rx="4" fill="#15803d"/>
+    <!-- Yellow/Golden Seeds -->
+    <ellipse cx="210" cy="240" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="250" cy="235" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="290" cy="240" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="180" cy="280" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="225" cy="285" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="275" cy="285" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="320" cy="280" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="205" cy="335" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="250" cy="340" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="295" cy="335" rx="3" ry="6" fill="#fef08a"/>
+    <ellipse cx="250" cy="385" rx="3" ry="6" fill="#fef08a"/>
+  </g>
+</svg>

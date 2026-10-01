@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgKai" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowKai" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgKai)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#fde68a" opacity="0.6"/>
+  <!-- Doorway Frame with Warm Sunshine radiating inside -->
+  <g filter="url(#shadowKai)">
+    <!-- Outer Arch Frame -->
+    <rect x="110" y="100" width="280" height="310" rx="20" fill="#78350f"/>
+    <!-- Inner Sunlight Area -->
+    <rect x="130" y="120" width="240" height="290" rx="10" fill="#fef08a"/>
+    <!-- Sunbeams bursting from doorway -->
+    <polygon points="170,120 200,410 140,410" fill="#ffffff" opacity="0.5"/>
+    <polygon points="250,120 300,410 220,410" fill="#ffffff" opacity="0.5"/>
+    <!-- Left Door Leaf Swung Open at perspective angle -->
+    <polygon points="130,120 70,140 70,390 130,410" fill="#ef4444"/>
+    <circle cx="85" cy="270" r="8" fill="#facc15"/>
+    <!-- Right Door Leaf Swung Open at perspective angle -->
+    <polygon points="370,120 430,140 430,390 370,410" fill="#ef4444"/>
+    <circle cx="415" cy="270" r="8" fill="#facc15"/>
+  </g>
+</svg>

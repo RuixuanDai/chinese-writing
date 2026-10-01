@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgMei" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </radialGradient>
+    <filter id="shadowMei" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0e7490" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgMei)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="25" fill="#a5f3fc" opacity="0.6"/>
+  <!-- Peacock Tail Fan Display -->
+  <g filter="url(#shadowMei)">
+    <!-- Outer Tail Feathers -->
+    <ellipse cx="140" cy="220" rx="30" ry="90" fill="#10b981" transform="rotate(-40 140 220)"/>
+    <ellipse cx="190" cy="170" rx="30" ry="90" fill="#06b6d4" transform="rotate(-20 190 170)"/>
+    <ellipse cx="250" cy="150" rx="30" ry="90" fill="#3b82f6"/>
+    <ellipse cx="310" cy="170" rx="30" ry="90" fill="#06b6d4" transform="rotate(20 310 170)"/>
+    <ellipse cx="360" cy="220" rx="30" ry="90" fill="#10b981" transform="rotate(40 360 220)"/>
+    <!-- Feather "Eyes" / Gems -->
+    <circle cx="120" cy="170" r="14" fill="#3b82f6"/>
+    <circle cx="120" cy="170" r="6" fill="#facc15"/>
+    <circle cx="180" cy="120" r="14" fill="#8b5cf6"/>
+    <circle cx="180" cy="120" r="6" fill="#facc15"/>
+    <circle cx="250" cy="100" r="14" fill="#3b82f6"/>
+    <circle cx="250" cy="100" r="6" fill="#facc15"/>
+    <circle cx="320" cy="120" r="14" fill="#8b5cf6"/>
+    <circle cx="320" cy="120" r="6" fill="#facc15"/>
+    <circle cx="380" cy="170" r="14" fill="#3b82f6"/>
+    <circle cx="380" cy="170" r="6" fill="#facc15"/>
+    <!-- Peacock Body -->
+    <ellipse cx="250" cy="320" rx="45" ry="60" fill="#1d4ed8"/>
+    <circle cx="250" cy="250" r="26" fill="#1e40af"/>
+    <!-- Crest -->
+    <line x1="250" y1="225" x2="240" y2="200" stroke="#0284c7" stroke-width="3"/>
+    <circle cx="240" cy="200" r="5" fill="#facc15"/>
+    <line x1="250" y1="225" x2="250" y2="195" stroke="#0284c7" stroke-width="3"/>
+    <circle cx="250" cy="195" r="5" fill="#facc15"/>
+    <line x1="250" y1="225" x2="260" y2="200" stroke="#0284c7" stroke-width="3"/>
+    <circle cx="260" cy="200" r="5" fill="#facc15"/>
+    <!-- Beak -->
+    <polygon points="250,255 240,265 260,265" fill="#f59e0b"/>
+  </g>
+</svg>

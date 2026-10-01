@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgSi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowSi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgSi)"/>
+  <g filter="url(#shadowSi)">
+    <!-- 4 Colorful Wooden Toy Blocks Arranged neatly -->
+    <!-- Block 1 (Red) -->
+    <rect x="110" y="110" width="120" height="120" rx="18" fill="#ef4444"/>
+    <circle cx="170" cy="170" r="28" fill="#ffffff" opacity="0.3"/>
+    <text x="170" y="185" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#ffffff" text-anchor="middle">1</text>
+    <!-- Block 2 (Yellow) -->
+    <rect x="270" y="110" width="120" height="120" rx="18" fill="#eab308"/>
+    <circle cx="330" cy="170" r="28" fill="#ffffff" opacity="0.3"/>
+    <text x="330" y="185" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#ffffff" text-anchor="middle">2</text>
+    <!-- Block 3 (Green) -->
+    <rect x="110" y="270" width="120" height="120" rx="18" fill="#22c55e"/>
+    <circle cx="170" cy="330" r="28" fill="#ffffff" opacity="0.3"/>
+    <text x="170" y="345" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#ffffff" text-anchor="middle">3</text>
+    <!-- Block 4 (Blue) -->
+    <rect x="270" y="270" width="120" height="120" rx="18" fill="#3b82f6"/>
+    <circle cx="330" cy="330" r="28" fill="#ffffff" opacity="0.3"/>
+    <text x="330" y="345" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#ffffff" text-anchor="middle">4</text>
+  </g>
+</svg>

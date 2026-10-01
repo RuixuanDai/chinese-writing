@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgKong" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </radialGradient>
+    <filter id="shadowKong" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0369a1" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgKong)"/>
+  <g filter="url(#shadowKong)">
+    <!-- Fluffy Clouds Floating Across Vast Sky -->
+    <ellipse cx="170" cy="180" rx="80" ry="45" fill="#ffffff"/>
+    <circle cx="130" cy="165" r="40" fill="#ffffff"/>
+    <circle cx="205" cy="155" r="45" fill="#ffffff"/>
+    <ellipse cx="360" cy="270" rx="90" ry="50" fill="#ffffff"/>
+    <circle cx="320" cy="250" r="45" fill="#ffffff"/>
+    <circle cx="400" cy="245" r="50" fill="#ffffff"/>
+    <!-- Soaring Bird High in Sky -->
+    <path d="M 230 110 Q 245 95 260 110 Q 275 95 290 110" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 290 80 Q 300 70 310 80 Q 320 70 330 80" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

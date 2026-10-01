@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#faf5ff"/>
+      <stop offset="100%" stop-color="#f3e8ff"/>
+    </radialGradient>
+    <filter id="shadowZi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#7e22ce" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZi)"/>
+  <!-- Juicy Purple Grapes (紫色) -->
+  <g filter="url(#shadowZi)">
+    <!-- Vine & Leaf -->
+    <path d="M 250 140 Q 240 80 290 85" stroke="#65a30d" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M 250 130 C 180 110 180 60 245 90 Z" fill="#84cc16" stroke="#4d7c0f" stroke-width="3"/>
+    <!-- Grapes Cluster -->
+    <!-- Row 1 -->
+    <circle cx="210" cy="180" r="28" fill="#9333ea"/>
+    <circle cx="255" cy="175" r="28" fill="#a855f7"/>
+    <circle cx="295" cy="180" r="28" fill="#7e22ce"/>
+    <!-- Row 2 -->
+    <circle cx="190" cy="225" r="28" fill="#7e22ce"/>
+    <circle cx="235" cy="220" r="28" fill="#9333ea"/>
+    <circle cx="275" cy="220" r="28" fill="#a855f7"/>
+    <circle cx="315" cy="225" r="28" fill="#9333ea"/>
+    <!-- Row 3 -->
+    <circle cx="215" cy="270" r="28" fill="#a855f7"/>
+    <circle cx="255" cy="265" r="28" fill="#7e22ce"/>
+    <circle cx="295" cy="270" r="28" fill="#9333ea"/>
+    <!-- Row 4 -->
+    <circle cx="235" cy="315" r="26" fill="#7e22ce"/>
+    <circle cx="275" cy="315" r="26" fill="#9333ea"/>
+    <!-- Bottom -->
+    <circle cx="255" cy="360" r="24" fill="#a855f7"/>
+    <!-- Highlights -->
+    <circle cx="245" cy="165" r="6" fill="#ffffff" opacity="0.6"/>
+    <circle cx="265" cy="255" r="6" fill="#ffffff" opacity="0.6"/>
+  </g>
+</svg>

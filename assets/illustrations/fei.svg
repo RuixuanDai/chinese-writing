@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgFei" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowFei" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgFei)"/>
+  <!-- Wind Looping Flight Trail -->
+  <path d="M 60 410 Q 150 450 180 380 Q 210 300 150 280 Q 100 270 120 330 Q 150 400 260 300" stroke="#ffffff" stroke-width="6" stroke-dasharray="12 10" fill="none"/>
+  <g filter="url(#shadowFei)">
+    <!-- Soaring Red & Yellow Paper Airplane -->
+    <polygon points="410,110 130,290 280,310" fill="#ef4444"/>
+    <polygon points="410,110 280,310 250,370" fill="#b91c1c"/>
+    <polygon points="410,110 280,310 320,240" fill="#facc15"/>
+    <!-- Fold Highlights -->
+    <line x1="410" y1="110" x2="280" y2="310" stroke="#ffffff" stroke-width="4"/>
+    <!-- Fluffy Clouds -->
+    <ellipse cx="110" cy="140" rx="45" ry="25" fill="#ffffff" opacity="0.8"/>
+    <circle cx="90" cy="130" r="22" fill="#ffffff" opacity="0.8"/>
+    <circle cx="130" cy="130" r="22" fill="#ffffff" opacity="0.8"/>
+    <ellipse cx="380" cy="380" rx="55" ry="30" fill="#ffffff" opacity="0.8"/>
+  </g>
+</svg>

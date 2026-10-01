@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDe" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <linearGradient id="goldDe" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <filter id="shadowDe" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#854d0e" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDe)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
+  <g filter="url(#shadowDe)">
+    <!-- Red Silk Ribbons -->
+    <polygon points="220,110 180,260 210,250 250,220" fill="#dc2626"/>
+    <polygon points="280,110 320,260 290,250 250,220" fill="#ef4444"/>
+    <!-- Golden Virtue Medal -->
+    <circle cx="250" cy="270" r="105" fill="url(#goldDe)" stroke="#a16207" stroke-width="8"/>
+    <circle cx="250" cy="270" r="85" fill="#fef08a"/>
+    <!-- Radiant Star in center -->
+    <polygon points="250,200 262,238 300,240 270,265 280,305 250,282 220,305 230,265 200,240 238,238" fill="#eab308"/>
+    <circle cx="250" cy="265" r="14" fill="#ffffff"/>
+  </g>
+</svg>

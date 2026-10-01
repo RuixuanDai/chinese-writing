@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgFeng" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </radialGradient>
+    <filter id="shadowFeng" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#16a34a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgFeng)"/>
+  <!-- Wind Swirls (春风) -->
+  <path d="M 80 140 Q 260 110 320 160 Q 350 190 320 210 Q 280 220 270 190" stroke="#38bdf8" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M 120 220 Q 300 200 370 240 Q 400 270 370 290 Q 340 300 330 270" stroke="#38bdf8" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- Colorful Pinwheel spinning in the wind -->
+  <g filter="url(#shadowFeng)">
+    <!-- Stick -->
+    <line x1="250" y1="250" x2="250" y2="420" stroke="#b45309" stroke-width="8" stroke-linecap="round"/>
+    <!-- 4 Colorful Blades -->
+    <path d="M 250 250 L 250 140 L 190 190 Z" fill="#ef4444"/>
+    <path d="M 250 250 L 360 250 L 310 190 Z" fill="#3b82f6"/>
+    <path d="M 250 250 L 250 360 L 310 310 Z" fill="#eab308"/>
+    <path d="M 250 250 L 140 250 L 190 310 Z" fill="#10b981"/>
+    <!-- Center Pin -->
+    <circle cx="250" cy="250" r="10" fill="#ffffff" stroke="#475569" stroke-width="3"/>
+  </g>
+</svg>

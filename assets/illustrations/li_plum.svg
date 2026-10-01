@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLiPlum" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#faf5ff"/>
+      <stop offset="100%" stop-color="#f3e8ff"/>
+    </radialGradient>
+    <radialGradient id="plumGrad" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="50%" stop-color="#9333ea"/>
+      <stop offset="100%" stop-color="#581c87"/>
+    </radialGradient>
+    <filter id="shadowLiPlum" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#7e22ce" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLiPlum)"/>
+  <ellipse cx="250" cy="425" rx="170" ry="30" fill="#e9d5ff" opacity="0.6"/>
+  <g filter="url(#shadowLiPlum)">
+    <!-- Twig & Stem -->
+    <path d="M 250 140 Q 230 170 210 230" stroke="#78350f" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M 250 140 Q 280 180 300 230" stroke="#78350f" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <!-- Green Leaves -->
+    <path d="M 250 140 C 210 90 280 80 320 90 C 330 130 290 140 250 140 Z" fill="#22c55e"/>
+    <path d="M 250 140 C 320 90 280 80 320 90" stroke="#15803d" stroke-width="2" fill="none"/>
+    <!-- Left Plum -->
+    <circle cx="200" cy="300" r="85" fill="url(#plumGrad)"/>
+    <path d="M 200 215 Q 185 290 200 385" stroke="#4a044e" stroke-width="4" opacity="0.5" fill="none"/>
+    <circle cx="170" cy="260" r="16" fill="#ffffff" opacity="0.3"/>
+    <!-- Right Plum -->
+    <circle cx="310" cy="310" r="75" fill="url(#plumGrad)"/>
+    <path d="M 310 235 Q 295 305 310 385" stroke="#4a044e" stroke-width="4" opacity="0.5" fill="none"/>
+    <circle cx="285" cy="275" r="14" fill="#ffffff" opacity="0.3"/>
+  </g>
+</svg>

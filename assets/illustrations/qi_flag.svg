@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgQiFlag" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowQiFlag" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgQiFlag)"/>
+  <ellipse cx="250" cy="450" rx="170" ry="30" fill="#93c5fd" opacity="0.6"/>
+  <g filter="url(#shadowQiFlag)">
+    <!-- Flagpole -->
+    <rect x="120" y="70" width="14" height="380" rx="4" fill="#94a3b8"/>
+    <circle cx="127" cy="70" r="14" fill="#facc15"/>
+    <!-- Waving Red Flag Fabric -->
+    <path d="M 134 90 C 230 60 290 140 410 90 L 410 270 C 290 320 230 240 134 270 Z" fill="#ef4444"/>
+    <path d="M 134 90 C 230 60 290 140 410 90" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.4"/>
+  </g>
+</svg>

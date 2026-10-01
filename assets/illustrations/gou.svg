@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDog" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </radialGradient>
+    <filter id="shadowDog" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#d97706" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDog)"/>
+  <!-- Cheerful Puppy with Floppy Ears (小狗) -->
+  <g filter="url(#shadowDog)">
+    <!-- Floppy Ears -->
+    <ellipse cx="160" cy="210" rx="28" ry="50" fill="#92400e" transform="rotate(20, 160, 210)"/>
+    <ellipse cx="340" cy="210" rx="28" ry="50" fill="#92400e" transform="rotate(-20, 340, 210)"/>
+    <!-- Head -->
+    <circle cx="250" cy="220" r="75" fill="#f59e0b"/>
+    <!-- Body -->
+    <ellipse cx="250" cy="340" rx="80" ry="85" fill="#f59e0b"/>
+    <ellipse cx="250" cy="350" rx="50" ry="55" fill="#fef3c7"/>
+    <!-- Big Friendly Eyes -->
+    <circle cx="215" cy="205" r="9" fill="#0f172a"/>
+    <circle cx="285" cy="205" r="9" fill="#0f172a"/>
+    <circle cx="212" cy="202" r="3" fill="#ffffff"/>
+    <circle cx="282" cy="202" r="3" fill="#ffffff"/>
+    <!-- Cute Snout & Black Nose -->
+    <ellipse cx="250" cy="240" rx="35" ry="25" fill="#fef3c7"/>
+    <ellipse cx="250" cy="230" rx="14" ry="9" fill="#0f172a"/>
+    <circle cx="248" cy="228" r="2" fill="#ffffff"/>
+    <!-- Happy Panting Mouth with Tongue -->
+    <path d="M 242 245 C 242 265 258 265 258 245" fill="#f43f5e"/>
+  </g>
+</svg>

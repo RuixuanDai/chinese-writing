@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgMi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <filter id="shadowMi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgMi)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#fed7aa" opacity="0.6"/>
+  <g filter="url(#shadowMi)">
+    <!-- Wooden Rice Tub / Bowl -->
+    <path d="M 120 280 L 140 420 Q 250 450 360 420 L 380 280 Z" fill="#b45309"/>
+    <!-- Wooden grain bands -->
+    <path d="M 125 320 Q 250 350 375 320" stroke="#78350f" stroke-width="8" fill="none"/>
+    <path d="M 135 380 Q 250 410 365 380" stroke="#78350f" stroke-width="8" fill="none"/>
+    <!-- Mound of Fluffy Rice Grains -->
+    <ellipse cx="250" cy="270" rx="140" ry="60" fill="#f8fafc"/>
+    <ellipse cx="250" cy="230" rx="100" ry="50" fill="#ffffff"/>
+    <!-- Individual Detailed Rice Grains -->
+    <ellipse cx="210" cy="210" rx="8" ry="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" transform="rotate(35 210 210)"/>
+    <ellipse cx="250" cy="200" rx="8" ry="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" transform="rotate(-15 250 200)"/>
+    <ellipse cx="290" cy="215" rx="8" ry="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" transform="rotate(45 290 215)"/>
+    <ellipse cx="180" cy="240" rx="8" ry="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" transform="rotate(-25 180 240)"/>
+    <ellipse cx="230" cy="245" rx="8" ry="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" transform="rotate(20 230 245)"/>
+    <ellipse cx="280" cy="250" rx="8" ry="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" transform="rotate(-40 280 250)"/>
+    <ellipse cx="320" cy="245" rx="8" ry="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" transform="rotate(10 320 245)"/>
+  </g>
+</svg>

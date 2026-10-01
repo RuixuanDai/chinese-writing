@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgHeCongrat" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fecdd3"/>
+    </radialGradient>
+    <filter id="shadowHeCongrat" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHeCongrat)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="30" fill="#fbcfe8" opacity="0.6"/>
+  <g filter="url(#shadowHeCongrat)">
+    <!-- Red Gift Box Base -->
+    <rect x="150" y="240" width="200" height="170" rx="12" fill="#ef4444"/>
+    <!-- Gold Vertical Ribbon -->
+    <rect x="235" y="240" width="30" height="170" fill="#facc15"/>
+    <!-- Gift Box Lid -->
+    <rect x="135" y="200" width="230" height="45" rx="8" fill="#dc2626"/>
+    <rect x="235" y="200" width="30" height="45" fill="#facc15"/>
+    <!-- Big Golden Ribbon Bow -->
+    <ellipse cx="210" cy="170" rx="35" ry="25" fill="#facc15" transform="rotate(-25 210 170)"/>
+    <ellipse cx="290" cy="170" rx="35" ry="25" fill="#facc15" transform="rotate(25 290 170)"/>
+    <circle cx="250" cy="175" r="16" fill="#eab308"/>
+    <!-- Greeting Card Tucked -->
+    <rect x="270" y="110" width="90" height="110" rx="6" fill="#ffffff" stroke="#eab308" stroke-width="4" transform="rotate(15 270 110)"/>
+    <text x="310" y="165" font-family="'KaiTi', 'STKaiti', sans-serif" font-size="28" font-weight="bold" fill="#dc2626" transform="rotate(15 310 165)">祝贺</text>
+  </g>
+</svg>

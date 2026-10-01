@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowGang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGang)"/>
+  <!-- Sea Water -->
+  <path d="M 0 350 Q 250 310 500 350 L 500 500 L 0 500 Z" fill="#0284c7"/>
+  <g filter="url(#shadowGang)">
+    <!-- Red & White Striped Lighthouse -->
+    <polygon points="340,160 380,160 395,420 325,420" fill="#ffffff"/>
+    <polygon points="345,210 375,210 380,270 340,270" fill="#ef4444"/>
+    <polygon points="335,330 385,330 390,380 330,380" fill="#ef4444"/>
+    <!-- Lighthouse Lantern Room -->
+    <rect x="345" y="120" width="30" height="40" rx="4" fill="#facc15"/>
+    <polygon points="360,95 335,120 385,120" fill="#b91c1c"/>
+    <!-- Light Beam shining out -->
+    <polygon points="345,135 50,70 50,140" fill="#fef08a" opacity="0.5"/>
+  </g>
+</svg>

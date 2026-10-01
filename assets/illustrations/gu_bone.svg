@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowGu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGu)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="30" fill="#93c5fd" opacity="0.6"/>
+  <g filter="url(#shadowGu)">
+    <!-- Classic White Bone Shape -->
+    <!-- Left pair of knobs -->
+    <circle cx="130" cy="210" r="38" fill="#ffffff" stroke="#93c5fd" stroke-width="6"/>
+    <circle cx="130" cy="290" r="38" fill="#ffffff" stroke="#93c5fd" stroke-width="6"/>
+    <!-- Right pair of knobs -->
+    <circle cx="370" cy="210" r="38" fill="#ffffff" stroke="#93c5fd" stroke-width="6"/>
+    <circle cx="370" cy="290" r="38" fill="#ffffff" stroke="#93c5fd" stroke-width="6"/>
+    <!-- Central Bridge Bar -->
+    <rect x="130" y="215" width="240" height="70" rx="12" fill="#ffffff"/>
+    <line x1="130" y1="215" x2="370" y2="215" stroke="#93c5fd" stroke-width="6"/>
+    <line x1="130" y1="285" x2="370" y2="285" stroke="#93c5fd" stroke-width="6"/>
+    <!-- Bone Clean Shimmer Sparkle -->
+    <polygon points="390,130 395,145 410,150 395,155 390,170 385,155 370,150 385,145" fill="#facc15"/>
+    <polygon points="120,330 124,340 135,343 124,346 120,356 116,346 105,343 116,340" fill="#facc15"/>
+  </g>
+</svg>

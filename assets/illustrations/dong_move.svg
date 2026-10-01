@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDong" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <filter id="shadowDong" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e3a8a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDong)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#bfdbfe" opacity="0.6"/>
+  <!-- Motion Swirl Lines -->
+  <path d="M 80 320 Q 150 200 250 250" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M 120 370 Q 200 280 320 300" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- Dynamic Soccer Ball Bouncing in Air -->
+  <g filter="url(#shadowDong)">
+    <circle cx="260" cy="230" r="95" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
+    <!-- Black Pentagons -->
+    <polygon points="260,195 240,215 247,240 273,240 280,215" fill="#18181b"/>
+    <polygon points="260,140 245,155 250,170 270,170 275,155" fill="#18181b"/>
+    <polygon points="180,220 195,210 210,225 205,245 185,240" fill="#18181b"/>
+    <polygon points="340,220 325,210 310,225 315,245 335,240" fill="#18181b"/>
+    <!-- Connecting lines -->
+    <line x1="260" y1="195" x2="260" y2="170" stroke="#18181b" stroke-width="4"/>
+    <line x1="240" y1="215" x2="210" y2="225" stroke="#18181b" stroke-width="4"/>
+    <line x1="280" y1="215" x2="310" y2="225" stroke="#18181b" stroke-width="4"/>
+    <!-- Speed Motion Trails -->
+    <polygon points="380,230 450,210 420,230 460,240 380,245" fill="#f59e0b"/>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgWu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowWu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgWu)"/>
+  <g filter="url(#shadowWu)">
+    <!-- Big Cheerful Center 5-Point Star -->
+    <polygon points="250,80 290,190 405,190 315,260 350,370 250,300 150,370 185,260 95,190 210,190" fill="#facc15" stroke="#eab308" stroke-width="8"/>
+    <!-- Cute Star Face -->
+    <circle cx="215" cy="230" r="10" fill="#78350f"/>
+    <circle cx="212" cy="226" r="3.5" fill="#ffffff"/>
+    <circle cx="285" cy="230" r="10" fill="#78350f"/>
+    <circle cx="282" cy="226" r="3.5" fill="#ffffff"/>
+    <path d="M 235 255 Q 250 275 265 255" stroke="#78350f" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <circle cx="195" cy="250" r="11" fill="#f43f5e" opacity="0.4"/>
+    <circle cx="305" cy="250" r="11" fill="#f43f5e" opacity="0.4"/>
+    <!-- 4 Little Sparkling Companions in corners making 5 stars total -->
+    <polygon points="90,70 98,90 120,90 102,104 108,124 90,112 72,124 78,104 60,90 82,90" fill="#fb923c"/>
+    <polygon points="410,70 418,90 440,90 422,104 428,124 410,112 392,124 398,104 380,90 402,90" fill="#38bdf8"/>
+    <polygon points="80,390 88,410 110,410 92,424 98,444 80,432 62,444 68,424 50,410 72,410" fill="#4ade80"/>
+    <polygon points="420,390 428,410 450,410 432,424 438,444 420,432 402,444 408,424 390,410 412,410" fill="#c084fc"/>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgXia" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <filter id="shadowXia" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#2563eb" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgXia)"/>
+  <!-- Apple Falling DOWN from branch -->
+  <g filter="url(#shadowXia)">
+    <!-- Branch at top -->
+    <path d="M 80 80 Q 250 110 420 80" stroke="#78350f" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M 250 95 Q 260 130 250 160" stroke="#78350f" stroke-width="6" fill="none"/>
+    <!-- Arrow Pointing DOWN (向下) -->
+    <path d="M 250 330 L 190 250 L 225 250 L 225 170 L 275 170 L 275 250 L 310 250 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4" stroke-linejoin="round"/>
+    <!-- Cute Red Apple below -->
+    <circle cx="250" cy="385" r="45" fill="#ef4444" stroke="#b91c1c" stroke-width="3"/>
+    <ellipse cx="250" cy="340" rx="10" ry="6" fill="#15803d"/>
+    <path d="M 250 340 Q 255 330 262 335" stroke="#78350f" stroke-width="3" fill="none"/>
+  </g>
+</svg>

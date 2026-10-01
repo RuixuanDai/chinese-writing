@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgYong" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <filter id="shadowYong" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e3a8a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgYong)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#bfdbfe" opacity="0.6"/>
+  <!-- Concentric Ripples (Eternal Water) -->
+  <ellipse cx="250" cy="380" rx="140" ry="35" fill="none" stroke="#60a5fa" stroke-width="4" opacity="0.4"/>
+  <ellipse cx="250" cy="380" rx="190" ry="45" fill="none" stroke="#60a5fa" stroke-width="3" opacity="0.25"/>
+  <g filter="url(#shadowYong)">
+    <!-- Ancient Scroll for "Yong" Calligraphy -->
+    <rect x="130" y="90" width="240" height="280" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="5"/>
+    <rect x="110" y="80" width="280" height="20" rx="8" fill="#92400e"/>
+    <rect x="110" y="360" width="280" height="20" rx="8" fill="#92400e"/>
+    <!-- Classic "永" Calligraphy in Center -->
+    <text x="250" y="260" font-family="'KaiTi', 'STKaiti', serif" font-size="140" font-weight="bold" fill="#18181b" text-anchor="middle">永</text>
+    <!-- Red Seal Stamp -->
+    <rect x="300" y="270" width="40" height="40" rx="4" fill="#dc2626"/>
+    <text x="320" y="298" font-size="20" fill="#ffffff" text-anchor="middle">古</text>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgChun" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#f0fdf4"/>
+    </linearGradient>
+    <filter id="shadowChun" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#f43f5e" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgChun)"/>
+  <!-- Spring Cherry Blossoms & Swallow (春天) -->
+  <g filter="url(#shadowChun)">
+    <!-- Branch -->
+    <path d="M 50 160 Q 200 190 350 140 Q 420 110 460 80" stroke="#78350f" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <!-- Pink Flowers -->
+    <circle cx="200" cy="170" r="22" fill="#fda4af"/>
+    <circle cx="185" cy="155" r="18" fill="#fda4af"/>
+    <circle cx="215" cy="155" r="18" fill="#fda4af"/>
+    <circle cx="185" cy="185" r="18" fill="#fda4af"/>
+    <circle cx="215" cy="185" r="18" fill="#fda4af"/>
+    <circle cx="200" cy="170" r="10" fill="#facc15"/>
+
+    <circle cx="320" cy="135" r="22" fill="#f43f5e"/>
+    <circle cx="305" cy="120" r="18" fill="#f43f5e"/>
+    <circle cx="335" cy="120" r="18" fill="#f43f5e"/>
+    <circle cx="305" cy="150" r="18" fill="#f43f5e"/>
+    <circle cx="335" cy="150" r="18" fill="#f43f5e"/>
+    <circle cx="320" cy="135" r="10" fill="#facc15"/>
+    <!-- Flying Swallow (燕子) -->
+    <path d="M 230 330 Q 280 290 340 320 Q 280 340 230 330 Z" fill="#0f172a"/>
+    <path d="M 230 330 L 170 370 L 195 340 L 165 330 Z" fill="#0f172a"/>
+    <ellipse cx="280" cy="325" rx="30" ry="12" fill="#ffffff"/>
+  </g>
+</svg>

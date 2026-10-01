@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgHeng" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+    <filter id="shadowHeng" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#14532d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHeng)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="25" fill="#bbf7d0" opacity="0.6"/>
+  <!-- Evergreen Pine Standing Tall through Seasons -->
+  <g filter="url(#shadowHeng)">
+    <!-- Sturdy Trunk -->
+    <rect x="225" y="290" width="50" height="130" rx="8" fill="#78350f"/>
+    <!-- Strong Deep Roots -->
+    <path d="M 225 390 Q 180 420 160 430" stroke="#78350f" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <path d="M 275 390 Q 320 420 340 430" stroke="#78350f" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <!-- Pine Foliage Tiers (Evergreen Triangle Tiers) -->
+    <polygon points="250,90 140,200 360,200" fill="#15803d"/>
+    <polygon points="250,160 120,270 380,270" fill="#166534"/>
+    <polygon points="250,230 100,340 400,340" fill="#14532d"/>
+    <!-- Sunshine shining down on tree -->
+    <circle cx="380" cy="110" r="32" fill="#facc15" opacity="0.9"/>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLin" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </radialGradient>
+    <filter id="shadowLin" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLin)"/>
+  <!-- Layers of Rolling Green Hills -->
+  <ellipse cx="140" cy="440" rx="180" ry="50" fill="#86efac"/>
+  <ellipse cx="360" cy="440" rx="180" ry="50" fill="#4ade80"/>
+  <g filter="url(#shadowLin)">
+    <!-- Distant Trees (Lighter pine) -->
+    <polygon points="100,240 70,330 130,330" fill="#15803d" opacity="0.6"/>
+    <polygon points="100,200 75,270 125,270" fill="#16a34a" opacity="0.6"/>
+    <polygon points="400,240 370,330 430,330" fill="#15803d" opacity="0.6"/>
+    <polygon points="400,200 375,270 425,270" fill="#16a34a" opacity="0.6"/>
+    <!-- Left Main Tree -->
+    <rect x="170" y="270" width="22" height="150" rx="6" fill="#78350f"/>
+    <circle cx="180" cy="230" r="65" fill="#16a34a"/>
+    <circle cx="160" cy="180" r="50" fill="#22c55e"/>
+    <circle cx="205" cy="190" r="50" fill="#4ade80"/>
+    <!-- Right Main Tree -->
+    <rect x="310" y="250" width="24" height="170" rx="6" fill="#78350f"/>
+    <circle cx="320" cy="210" r="75" fill="#15803d"/>
+    <circle cx="295" cy="155" r="55" fill="#16a34a"/>
+    <circle cx="350" cy="165" r="55" fill="#22c55e"/>
+    <!-- Small Deer / critter footprint in forest -->
+    <circle cx="250" cy="415" r="5" fill="#15803d"/>
+    <circle cx="265" cy="405" r="5" fill="#15803d"/>
+  </g>
+</svg>

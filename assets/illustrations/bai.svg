@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgBai" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <filter id="shadowBai" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0284c7" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgBai)"/>
+  <!-- Pure White Swan (白白天鹅) -->
+  <g filter="url(#shadowBai)">
+    <!-- Water ripples -->
+    <ellipse cx="250" cy="390" rx="170" ry="25" fill="#7dd3fc" opacity="0.6"/>
+    <ellipse cx="250" cy="390" rx="120" ry="16" fill="#38bdf8" opacity="0.4"/>
+    <!-- Swan Body -->
+    <path d="M 170 320 C 130 350 170 390 280 380 C 340 375 370 340 340 300 C 300 270 240 300 210 320 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- Swan Wing -->
+    <path d="M 230 320 C 270 270 340 280 320 330 C 300 360 250 350 230 320 Z" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+    <!-- Elegant Curved Neck & Head -->
+    <path d="M 190 330 C 160 250 220 180 200 130 C 190 110 160 130 165 145 C 175 170 140 250 170 330 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- Orange Beak -->
+    <polygon points="163,135 125,142 163,148" fill="#f97316"/>
+    <!-- Eye -->
+    <circle cx="172" cy="138" r="3.5" fill="#0f172a"/>
+  </g>
+</svg>

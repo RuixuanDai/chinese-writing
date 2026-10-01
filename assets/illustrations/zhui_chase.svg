@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZhui" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </radialGradient>
+    <filter id="shadowZhui" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#047857" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZhui)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#a7f3d0" opacity="0.6"/>
+  <!-- Meadow Flowers -->
+  <circle cx="100" cy="420" r="12" fill="#f43f5e"/>
+  <circle cx="400" cy="410" r="12" fill="#fbbf24"/>
+  <!-- Fluttering Butterfly escaping ahead -->
+  <g filter="url(#shadowZhui)">
+    <!-- Butterfly Wings -->
+    <path d="M 370 170 Q 340 120 400 130 Z" fill="#ec4899"/>
+    <path d="M 370 170 Q 340 210 395 200 Z" fill="#a855f7"/>
+    <circle cx="370" cy="170" r="6" fill="#18181b"/>
+    <!-- Kitten Pouncing Forward in hot pursuit (追逐) -->
+    <!-- Tail -->
+    <path d="M 120 310 Q 90 270 110 240" stroke="#f97316" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <!-- Body -->
+    <ellipse cx="200" cy="300" rx="75" ry="50" fill="#fb923c"/>
+    <!-- Head -->
+    <circle cx="260" cy="250" r="45" fill="#fb923c"/>
+    <!-- Ears -->
+    <polygon points="245,215 235,180 265,205" fill="#ea580c"/>
+    <polygon points="275,215 295,180 290,210" fill="#ea580c"/>
+    <!-- Face -->
+    <circle cx="270" cy="245" r="5" fill="#18181b"/>
+    <polygon points="285,255 278,252 278,258" fill="#f43f5e"/>
+    <!-- Paws Reaching Forward to catch -->
+    <path d="M 250 290 L 320 250" stroke="#f97316" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M 230 310 L 300 290" stroke="#f97316" stroke-width="16" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

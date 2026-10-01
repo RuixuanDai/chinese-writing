@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgFang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowFang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgFang)"/>
+  <ellipse cx="250" cy="440" rx="190" ry="35" fill="#86efac" opacity="0.8"/>
+  <g filter="url(#shadowFang)">
+    <!-- House Body -->
+    <rect x="130" y="240" width="240" height="170" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="6"/>
+    <!-- Red Triangular Roof -->
+    <polygon points="250,110 90,250 410,250" fill="#ef4444"/>
+    <polygon points="250,130 120,240 380,240" fill="#f87171"/>
+    <!-- Chimney -->
+    <rect x="330" y="140" width="35" height="70" rx="4" fill="#991b1b"/>
+    <circle cx="347" cy="110" r="14" fill="#ffffff" opacity="0.7"/>
+    <!-- Door -->
+    <rect x="220" y="300" width="60" height="110" rx="6" fill="#b45309"/>
+    <circle cx="270" cy="360" r="5" fill="#fef08a"/>
+    <!-- Windows -->
+    <rect x="150" y="280" width="50" height="55" rx="6" fill="#38bdf8" stroke="#0284c7" stroke-width="4"/>
+    <rect x="300" y="280" width="50" height="55" rx="6" fill="#38bdf8" stroke="#0284c7" stroke-width="4"/>
+  </g>
+</svg>

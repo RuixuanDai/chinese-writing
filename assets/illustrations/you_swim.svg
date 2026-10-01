@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgYouSwim" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </radialGradient>
+    <filter id="shadowYouSwim" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0284c7" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgYouSwim)"/>
+  <!-- Pool / Ocean Water Ripples -->
+  <path d="M 50 360 Q 150 330 250 360 T 450 360 L 450 460 L 50 460 Z" fill="#0284c7" opacity="0.6"/>
+  <path d="M 70 400 Q 170 380 270 400 T 470 400 L 470 480 L 70 480 Z" fill="#0369a1" opacity="0.7"/>
+  <g filter="url(#shadowYouSwim)">
+    <!-- Cute Striped Float Ring (救生圈) -->
+    <ellipse cx="250" cy="300" rx="140" ry="70" fill="#ef4444"/>
+    <ellipse cx="250" cy="300" rx="90" ry="45" fill="#f8fafc"/>
+    <!-- Yellow stripes on float ring -->
+    <path d="M 130 280 L 160 325 M 340 325 L 370 280" stroke="#facc15" stroke-width="24"/>
+    <!-- Swimming Child Head & Arms in ring -->
+    <circle cx="250" cy="220" r="65" fill="#fed7aa"/>
+    <!-- Swim Cap & Goggles -->
+    <path d="M 190 200 C 190 130 310 130 310 200 Z" fill="#3b82f6"/>
+    <rect x="210" y="195" width="35" height="25" rx="8" fill="#38bdf8" stroke="#1d4ed8" stroke-width="4"/>
+    <rect x="255" y="195" width="35" height="25" rx="8" fill="#38bdf8" stroke="#1d4ed8" stroke-width="4"/>
+    <line x1="245" y1="207" x2="255" y2="207" stroke="#1d4ed8" stroke-width="4"/>
+    <!-- Happy Smile -->
+    <path d="M 235 245 Q 250 265 265 245" stroke="#78350f" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- Arms splashing on ring -->
+    <ellipse cx="140" cy="275" rx="20" ry="14" fill="#fed7aa"/>
+    <ellipse cx="360" cy="275" rx="20" ry="14" fill="#fed7aa"/>
+    <!-- Water Splashes -->
+    <circle cx="120" cy="250" r="6" fill="#38bdf8"/>
+    <circle cx="380" cy="250" r="6" fill="#38bdf8"/>
+  </g>
+</svg>

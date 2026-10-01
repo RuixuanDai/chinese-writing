@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgXi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <filter id="shadowXi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgXi)"/>
+  <g filter="url(#shadowXi)">
+    <!-- Sunset Glow in West (Left side) -->
+    <circle cx="100" cy="250" r="60" fill="#f97316" opacity="0.8"/>
+    <!-- Compass Housing -->
+    <circle cx="270" cy="250" r="140" fill="#ffffff" stroke="#ea580c" stroke-width="10"/>
+    <circle cx="270" cy="250" r="120" fill="#fffbeb"/>
+    <!-- Cardinal Letters -->
+    <text x="270" y="165" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">北</text>
+    <text x="270" y="355" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">南</text>
+    <text x="180" y="260" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#ef4444" text-anchor="middle">西</text>
+    <text x="360" y="260" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">东</text>
+    <!-- Pointer Arrow pointing West (Left) -->
+    <polygon points="270,235 160,250 270,265" fill="#ef4444"/>
+    <polygon points="270,235 350,250 270,265" fill="#94a3b8"/>
+    <!-- Center Pivot Pin -->
+    <circle cx="270" cy="250" r="16" fill="#1e293b"/>
+    <circle cx="270" cy="250" r="6" fill="#ffffff"/>
+  </g>
+</svg>

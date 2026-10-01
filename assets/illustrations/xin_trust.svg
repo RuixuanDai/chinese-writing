@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgXin" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <filter id="shadowXin" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgXin)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#bfdbfe" opacity="0.6"/>
+  <!-- Trust Letter Envelope with Flying Wings -->
+  <g filter="url(#shadowXin)">
+    <!-- Flying Pigeon Wings attached to letter -->
+    <path d="M 140 250 Q 80 140 180 180 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <path d="M 360 250 Q 420 140 320 180 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- Golden Envelope -->
+    <rect x="130" y="200" width="240" height="160" rx="14" fill="#fef08a" stroke="#ca8a04" stroke-width="4"/>
+    <!-- Flap Fold -->
+    <polygon points="130,200 250,290 370,200" fill="#fde047" stroke="#ca8a04" stroke-width="4"/>
+    <!-- Red Wax Seal Stamp with Heart -->
+    <circle cx="250" cy="285" r="24" fill="#dc2626"/>
+    <path d="M 250 280 C 250 274 242 274 242 280 C 242 286 250 291 250 294 C 250 291 258 286 258 280 C 258 274 250 274 250 280 Z" fill="#ffffff"/>
+  </g>
+</svg>

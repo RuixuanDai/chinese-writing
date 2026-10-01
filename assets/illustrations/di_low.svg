@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgDi" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="60%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+    <filter id="shadowDi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#082f49" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDi)"/>
+  <!-- Seabed at the bottom -->
+  <path d="M 0 410 Q 150 380 300 420 Q 400 390 500 415 L 500 500 L 0 500 Z" fill="#d97706"/>
+  <!-- Coral and Seaweed -->
+  <path d="M 80 410 Q 70 340 95 320 Q 110 350 95 410 Z" fill="#10b981"/>
+  <path d="M 110 420 Q 130 350 115 330 Q 100 360 110 420 Z" fill="#059669"/>
+  <path d="M 380 415 Q 400 330 420 350 Q 410 380 400 420 Z" fill="#f43f5e"/>
+  <!-- Yellow Submarine cruising LOW near seabed -->
+  <g filter="url(#shadowDi)">
+    <ellipse cx="250" cy="300" rx="120" ry="60" fill="#facc15"/>
+    <!-- Periscope -->
+    <rect x="235" y="210" width="16" height="40" fill="#ca8a04"/>
+    <rect x="235" y="200" width="35" height="16" rx="4" fill="#ca8a04"/>
+    <!-- Portholes -->
+    <circle cx="190" cy="300" r="18" fill="#bae6fd" stroke="#ca8a04" stroke-width="4"/>
+    <circle cx="250" cy="300" r="18" fill="#bae6fd" stroke="#ca8a04" stroke-width="4"/>
+    <circle cx="310" cy="300" r="18" fill="#bae6fd" stroke="#ca8a04" stroke-width="4"/>
+    <!-- Propeller -->
+    <polygon points="120,285 105,270 105,330 120,315" fill="#ea580c"/>
+    <!-- Downward arrow indicator -->
+    <polygon points="250,160 230,125 242,125 242,90 258,90 258,125 270,125" fill="#38bdf8"/>
+  </g>
+</svg>

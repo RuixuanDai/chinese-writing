@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgHe" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="60%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#f0fdf4"/>
+    </linearGradient>
+    <filter id="shadowHe" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0369a1" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHe)"/>
+  <!-- Gentle Rainbow in background -->
+  <path d="M 50 400 A 200 200 0 0 1 450 400" stroke="#fca5a5" stroke-width="12" fill="none" opacity="0.4"/>
+  <path d="M 62 400 A 188 188 0 0 1 438 400" stroke="#fde047" stroke-width="12" fill="none" opacity="0.4"/>
+  <path d="M 74 400 A 176 176 0 0 1 426 400" stroke="#86efac" stroke-width="12" fill="none" opacity="0.4"/>
+  <!-- Peace Dove with Olive Branch -->
+  <g filter="url(#shadowHe)">
+    <!-- Dove Body -->
+    <path d="M 180 260 Q 230 180 320 220 Q 300 280 230 300 Z" fill="#ffffff"/>
+    <!-- Left Wing -->
+    <path d="M 230 230 Q 150 140 220 110 Q 250 160 260 220 Z" fill="#ffffff"/>
+    <!-- Right Wing -->
+    <path d="M 260 230 Q 330 150 370 180 Q 330 220 280 240 Z" fill="#f8fafc"/>
+    <!-- Dove Head -->
+    <circle cx="330" cy="225" r="22" fill="#ffffff"/>
+    <circle cx="340" cy="220" r="4" fill="#0f172a"/>
+    <!-- Beak holding olive branch -->
+    <polygon points="350,225 365,228 350,233" fill="#f59e0b"/>
+    <!-- Green Olive Branch -->
+    <path d="M 365 228 Q 410 200 420 230" stroke="#15803d" stroke-width="4" fill="none"/>
+    <ellipse cx="385" cy="215" rx="8" ry="4" fill="#22c55e" transform="rotate(-30 385 215)"/>
+    <ellipse cx="405" cy="210" rx="8" ry="4" fill="#22c55e" transform="rotate(20 405 210)"/>
+  </g>
+</svg>

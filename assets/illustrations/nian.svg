@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgNian" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fecdd3"/>
+    </radialGradient>
+    <filter id="shadowNian" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgNian)"/>
+  <g filter="url(#shadowNian)">
+    <!-- String of Red Festive Firecrackers (爆竹) -->
+    <line x1="250" y1="60" x2="250" y2="400" stroke="#b45309" stroke-width="6"/>
+    <!-- Firecracker rolls attached in pairs -->
+    <g fill="#dc2626" stroke="#ca8a04" stroke-width="3">
+      <rect x="180" y="100" width="60" height="24" rx="4"/>
+      <rect x="260" y="120" width="60" height="24" rx="4"/>
+      <rect x="180" y="150" width="60" height="24" rx="4"/>
+      <rect x="260" y="170" width="60" height="24" rx="4"/>
+      <rect x="180" y="200" width="60" height="24" rx="4"/>
+      <rect x="260" y="220" width="60" height="24" rx="4"/>
+      <rect x="180" y="250" width="60" height="24" rx="4"/>
+      <rect x="260" y="270" width="60" height="24" rx="4"/>
+      <rect x="180" y="300" width="60" height="24" rx="4"/>
+      <rect x="260" y="320" width="60" height="24" rx="4"/>
+    </g>
+    <!-- Sparks flashing at bottom -->
+    <polygon points="250,400 255,415 270,410 260,425 275,435 255,435 250,450 245,435 225,435 240,425 230,410 245,415" fill="#facc15"/>
+  </g>
+</svg>

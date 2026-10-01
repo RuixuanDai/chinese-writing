@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgChuan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </radialGradient>
+    <filter id="shadowChuan" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0284c7" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgChuan)"/>
+  <!-- Sea Waves -->
+  <path d="M 40 380 Q 140 350 250 380 T 460 380 L 460 470 L 40 470 Z" fill="#0284c7" opacity="0.8"/>
+  <g filter="url(#shadowChuan)">
+    <!-- Red Chimney with Smoke -->
+    <rect x="220" y="160" width="40" height="60" fill="#ef4444"/>
+    <circle cx="240" cy="130" r="14" fill="#ffffff" opacity="0.6"/>
+    <circle cx="260" cy="105" r="18" fill="#ffffff" opacity="0.4"/>
+    <!-- White Ship Cabins Decks -->
+    <rect x="150" y="210" width="200" height="80" rx="6" fill="#ffffff"/>
+    <rect x="180" y="230" width="20" height="20" rx="4" fill="#38bdf8"/>
+    <rect x="220" y="230" width="20" height="20" rx="4" fill="#38bdf8"/>
+    <rect x="260" y="230" width="20" height="20" rx="4" fill="#38bdf8"/>
+    <rect x="300" y="230" width="20" height="20" rx="4" fill="#38bdf8"/>
+    <!-- Stately Ship Hull -->
+    <polygon points="90,290 410,290 350,390 140,390" fill="#1e293b"/>
+    <!-- Red Hull Bottom Stripe -->
+    <polygon points="120,350 370,350 350,390 140,390" fill="#dc2626"/>
+  </g>
+</svg>

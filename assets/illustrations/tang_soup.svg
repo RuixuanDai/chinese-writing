@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgTangSoup" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <filter id="shadowTangSoup" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgTangSoup)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#fdba74" opacity="0.6"/>
+  <!-- Steam rising -->
+  <path d="M 210 140 Q 230 100 210 70 M 250 130 Q 270 90 250 60 M 290 140 Q 310 100 290 70" stroke="#f97316" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <g filter="url(#shadowTangSoup)">
+    <!-- Ceramic Soup Tureen / Bowl -->
+    <path d="M 120 270 C 120 400 380 400 380 270 Z" fill="#ea580c"/>
+    <ellipse cx="250" cy="270" rx="130" ry="35" fill="#c2410c"/>
+    <!-- Golden Clear Broth -->
+    <ellipse cx="250" cy="272" rx="120" ry="30" fill="#f59e0b"/>
+    <!-- Carrot Star & Peas floating -->
+    <polygon points="210,265 214,275 224,275 216,281 219,291 210,285 201,291 204,281 196,275 206,275" fill="#ea580c"/>
+    <circle cx="270" cy="270" r="7" fill="#22c55e"/>
+    <circle cx="295" cy="280" r="6" fill="#22c55e"/>
+    <!-- Soup Ladle -->
+    <path d="M 280 270 L 370 150" stroke="#f8fafc" stroke-width="12" stroke-linecap="round"/>
+    <ellipse cx="275" cy="275" rx="20" ry="12" fill="#e2e8f0"/>
+  </g>
+</svg>

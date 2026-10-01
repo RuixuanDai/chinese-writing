@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDong" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowDong" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDong)"/>
+  <g filter="url(#shadowDong)">
+    <!-- Golden Sunrise in East (Right side) -->
+    <circle cx="400" cy="250" r="60" fill="#facc15" opacity="0.8"/>
+    <!-- Compass Housing -->
+    <circle cx="230" cy="250" r="140" fill="#ffffff" stroke="#3b82f6" stroke-width="10"/>
+    <circle cx="230" cy="250" r="120" fill="#f8fafc"/>
+    <!-- Cardinal Letters -->
+    <text x="230" y="165" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">北</text>
+    <text x="230" y="355" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">南</text>
+    <text x="140" y="260" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">西</text>
+    <text x="320" y="260" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#ef4444" text-anchor="middle">东</text>
+    <!-- Pointer Arrow pointing East (Right) -->
+    <polygon points="230,235 340,250 230,265" fill="#ef4444"/>
+    <polygon points="230,235 150,250 230,265" fill="#94a3b8"/>
+    <!-- Center Pivot Pin -->
+    <circle cx="230" cy="250" r="16" fill="#1e293b"/>
+    <circle cx="230" cy="250" r="6" fill="#ffffff"/>
+  </g>
+</svg>

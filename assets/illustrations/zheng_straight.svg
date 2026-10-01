@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZheng" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </radialGradient>
+    <filter id="shadowZheng" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#166534" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZheng)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#bbf7d0" opacity="0.6"/>
+  <g filter="url(#shadowZheng)">
+    <!-- Straight Wooden Ruler -->
+    <rect x="120" y="270" width="260" height="70" rx="8" fill="#fde047" stroke="#ca8a04" stroke-width="4"/>
+    <!-- Ruler marks -->
+    <line x1="150" y1="270" x2="150" y2="305" stroke="#713f12" stroke-width="4"/>
+    <line x1="180" y1="270" x2="180" y2="295" stroke="#713f12" stroke-width="3"/>
+    <line x1="210" y1="270" x2="210" y2="305" stroke="#713f12" stroke-width="4"/>
+    <line x1="240" y1="270" x2="240" y2="295" stroke="#713f12" stroke-width="3"/>
+    <line x1="270" y1="270" x2="270" y2="305" stroke="#713f12" stroke-width="4"/>
+    <line x1="300" y1="270" x2="300" y2="295" stroke="#713f12" stroke-width="3"/>
+    <line x1="330" y1="270" x2="330" y2="305" stroke="#713f12" stroke-width="4"/>
+    <!-- Big Bright Green Checkmark "Correct/Right" -->
+    <path d="M 180 170 L 230 220 L 330 110" stroke="#16a34a" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+</svg>

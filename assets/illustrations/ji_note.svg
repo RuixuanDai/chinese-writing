@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgJi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowJi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#92400e" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgJi)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
+  <g filter="url(#shadowJi)">
+    <!-- Spiral Notebook -->
+    <rect x="120" y="110" width="240" height="290" rx="16" fill="#f43f5e"/>
+    <rect x="150" y="125" width="190" height="260" rx="8" fill="#ffffff"/>
+    <!-- Ruled lines -->
+    <line x1="170" y1="180" x2="320" y2="180" stroke="#cbd5e1" stroke-width="4"/>
+    <line x1="170" y1="220" x2="320" y2="220" stroke="#cbd5e1" stroke-width="4"/>
+    <line x1="170" y1="260" x2="320" y2="260" stroke="#cbd5e1" stroke-width="4"/>
+    <line x1="170" y1="300" x2="270" y2="300" stroke="#cbd5e1" stroke-width="4"/>
+    <!-- Spiral Rings -->
+    <circle cx="120" cy="150" r="10" fill="#94a3b8"/>
+    <circle cx="120" cy="200" r="10" fill="#94a3b8"/>
+    <circle cx="120" cy="250" r="10" fill="#94a3b8"/>
+    <circle cx="120" cy="300" r="10" fill="#94a3b8"/>
+    <circle cx="120" cy="350" r="10" fill="#94a3b8"/>
+    <!-- Pencil -->
+    <polygon points="340,320 370,180 395,190 365,330" fill="#eab308"/>
+    <polygon points="340,320 365,330 330,355" fill="#fcd34d"/>
+    <polygon points="330,355 338,348 335,345" fill="#18181b"/>
+  </g>
+</svg>

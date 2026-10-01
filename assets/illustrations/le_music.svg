@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLe" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowLe" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLe)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
+  <!-- Colorful Child Xylophone -->
+  <g filter="url(#shadowLe)">
+    <!-- Base -->
+    <polygon points="90,340 410,340 380,365 120,365" fill="#78350f"/>
+    <!-- Rainbow keys -->
+    <rect x="110" y="140" width="34" height="190" rx="6" fill="#ef4444"/>
+    <rect x="150" y="160" width="34" height="170" rx="6" fill="#f97316"/>
+    <rect x="190" y="180" width="34" height="150" rx="6" fill="#eab308"/>
+    <rect x="230" y="200" width="34" height="130" rx="6" fill="#22c55e"/>
+    <rect x="270" y="220" width="34" height="110" rx="6" fill="#06b6d4"/>
+    <rect x="310" y="240" width="34" height="90" rx="6" fill="#3b82f6"/>
+    <rect x="350" y="260" width="34" height="70" rx="6" fill="#a855f7"/>
+    <!-- Mallet -->
+    <line x1="280" y1="110" x2="380" y2="180" stroke="#d97706" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="280" cy="110" r="16" fill="#dc2626"/>
+  </g>
+</svg>

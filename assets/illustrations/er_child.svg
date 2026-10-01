@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgErChild" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowErChild" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgErChild)"/>
+  <ellipse cx="250" cy="440" rx="160" ry="30" fill="#fed7aa" opacity="0.6"/>
+  <g filter="url(#shadowErChild)">
+    <!-- Toddler Overalls / Romper -->
+    <path d="M 170 340 L 190 430 L 230 430 L 240 370 L 260 370 L 270 430 L 310 430 L 330 340 Z" fill="#38bdf8"/>
+    <!-- Cute Yellow T-Shirt -->
+    <rect x="180" y="240" width="140" height="110" rx="20" fill="#facc15"/>
+    <!-- Arms Waving -->
+    <path d="M 180 260 L 120 210" stroke="#facc15" stroke-width="26" stroke-linecap="round"/>
+    <circle cx="115" cy="205" r="16" fill="#fed7aa"/>
+    <path d="M 320 260 L 380 210" stroke="#facc15" stroke-width="26" stroke-linecap="round"/>
+    <circle cx="385" cy="205" r="16" fill="#fed7aa"/>
+    <!-- Head -->
+    <circle cx="250" cy="170" r="75" fill="#fed7aa"/>
+    <!-- Cute Sprout Hair tuft -->
+    <path d="M 250 95 Q 230 65 220 60 M 250 95 Q 270 65 280 60" stroke="#78350f" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <!-- Big Innocent Eyes -->
+    <circle cx="220" cy="165" r="10" fill="#1e293b"/>
+    <circle cx="217" cy="161" r="3.5" fill="#ffffff"/>
+    <circle cx="280" cy="165" r="10" fill="#1e293b"/>
+    <circle cx="277" cy="161" r="3.5" fill="#ffffff"/>
+    <!-- Smile & Rosy Blushes -->
+    <path d="M 235 195 Q 250 215 265 195" stroke="#78350f" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <circle cx="190" cy="190" r="12" fill="#f43f5e" opacity="0.4"/>
+    <circle cx="310" cy="190" r="12" fill="#f43f5e" opacity="0.4"/>
+  </g>
+</svg>

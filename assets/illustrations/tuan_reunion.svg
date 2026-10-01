@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgTuan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </radialGradient>
+    <filter id="shadowTuan" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#dc2626" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgTuan)"/>
+  <g filter="url(#shadowTuan)">
+    <!-- Big Red Round Feast Table (团圆大圆桌) -->
+    <ellipse cx="250" cy="290" rx="170" ry="110" fill="#dc2626"/>
+    <ellipse cx="250" cy="290" rx="150" ry="95" fill="#ef4444"/>
+    <!-- Steaming Hotpot / Feast Bowl in Center -->
+    <ellipse cx="250" cy="280" rx="55" ry="35" fill="#facc15"/>
+    <circle cx="250" cy="275" r="16" fill="#eab308"/>
+    <!-- Delicacies & Plates around the table -->
+    <ellipse cx="160" cy="250" rx="22" ry="14" fill="#ffffff"/>
+    <ellipse cx="340" cy="250" rx="22" ry="14" fill="#ffffff"/>
+    <ellipse cx="180" cy="330" rx="22" ry="14" fill="#ffffff"/>
+    <ellipse cx="320" cy="330" rx="22" ry="14" fill="#ffffff"/>
+    <!-- Steam Curls -->
+    <path d="M 235 230 Q 245 200 235 170 M 265 230 Q 255 200 265 170" stroke="#fef08a" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+  </g>
+</svg>

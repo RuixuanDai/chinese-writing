@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgHai" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <filter id="shadowHai" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0369a1" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHai)"/>
+  <!-- Rolling Ocean Waves with White Foam (大海) -->
+  <g filter="url(#shadowHai)">
+    <!-- Back Wave -->
+    <path d="M 0 320 Q 120 260 250 320 T 500 320 L 500 500 L 0 500 Z" fill="#0284c7" opacity="0.6"/>
+    <!-- Front Wave with Crest -->
+    <path d="M 0 380 C 130 310 200 320 280 370 C 360 420 430 340 500 380 L 500 500 L 0 500 Z" fill="#0369a1"/>
+    <path d="M 0 380 C 130 310 200 320 280 370 C 360 420 430 340 500 380" stroke="#ffffff" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <!-- Jumping Dolphin -->
+    <path d="M 180 260 C 230 180 300 200 330 260 C 290 230 240 230 180 260 Z" fill="#e0f2fe"/>
+    <polygon points="330,260 355,245 345,275" fill="#e0f2fe"/>
+  </g>
+</svg>

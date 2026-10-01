@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgNi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <filter id="shadowNi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#78350f" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgNi)"/>
+  <g filter="url(#shadowNi)">
+    <!-- Wet Mud Puddle -->
+    <ellipse cx="250" cy="330" rx="180" ry="90" fill="#78350f"/>
+    <ellipse cx="250" cy="330" rx="150" ry="70" fill="#92400e"/>
+    <!-- Water Glint on Mud -->
+    <ellipse cx="220" cy="315" rx="60" ry="16" fill="#b45309" opacity="0.8"/>
+    <!-- Cute Red Rainboot Stepping in Puddle -->
+    <path d="M 280 180 L 280 300 L 350 300 C 370 300 370 270 340 270 L 320 270 L 320 180 Z" fill="#ef4444"/>
+    <rect x="275" y="170" width="50" height="15" rx="4" fill="#facc15"/>
+    <ellipse cx="320" cy="300" rx="40" ry="14" fill="#dc2626"/>
+    <!-- Mud Splashes -->
+    <circle cx="200" cy="270" r="10" fill="#78350f"/>
+    <circle cx="380" cy="290" r="12" fill="#78350f"/>
+    <circle cx="160" cy="330" r="8" fill="#78350f"/>
+  </g>
+</svg>

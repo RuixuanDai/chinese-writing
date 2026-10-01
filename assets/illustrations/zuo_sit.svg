@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZuo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </radialGradient>
+    <filter id="shadowZuo" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9a3412" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZuo)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#fed7aa" opacity="0.6"/>
+  <!-- Cozy Armchair (端坐) -->
+  <g filter="url(#shadowZuo)">
+    <!-- Chair Legs -->
+    <rect x="150" y="380" width="20" height="40" rx="6" fill="#78350f"/>
+    <rect x="330" y="380" width="20" height="40" rx="6" fill="#78350f"/>
+    <!-- Chair Back -->
+    <rect x="150" y="140" width="200" height="190" rx="30" fill="#f97316"/>
+    <!-- Chair Cushion Base -->
+    <rect x="120" y="280" width="260" height="110" rx="24" fill="#ea580c"/>
+    <!-- Armrests -->
+    <rect x="110" y="240" width="55" height="110" rx="20" fill="#f97316"/>
+    <rect x="335" y="240" width="55" height="110" rx="20" fill="#f97316"/>
+    <!-- Cozy Pillow on Chair -->
+    <circle cx="250" cy="270" r="45" fill="#fef08a"/>
+    <circle cx="250" cy="270" r="12" fill="#f59e0b"/>
+  </g>
+</svg>

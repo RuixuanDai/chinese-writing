@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgField" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </linearGradient>
+    <filter id="shadowField" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#ca8a04" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgField)"/>
+  <!-- Rice Paddy Field Grid (田) -->
+  <g filter="url(#shadowField)">
+    <!-- Main Outer Field Border -->
+    <rect x="90" y="90" width="320" height="320" rx="20" fill="#fef08a" stroke="#ca8a04" stroke-width="6"/>
+    <!-- 4 Field Plots -->
+    <rect x="105" y="105" width="135" height="135" rx="10" fill="#86efac" stroke="#16a34a" stroke-width="3"/>
+    <rect x="260" y="105" width="135" height="135" rx="10" fill="#fde047" stroke="#ca8a04" stroke-width="3"/>
+    <rect x="105" y="260" width="135" height="135" rx="10" fill="#fde047" stroke="#ca8a04" stroke-width="3"/>
+    <rect x="260" y="260" width="135" height="135" rx="10" fill="#86efac" stroke="#16a34a" stroke-width="3"/>
+    <!-- Cross paths resembling 田 character -->
+    <rect x="240" y="90" width="20" height="320" fill="#d97706"/>
+    <rect x="90" y="240" width="320" height="20" fill="#d97706"/>
+    <!-- Little green sprouts in field -->
+    <path d="M 160 170 Q 170 145 180 170" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 315 325 Q 325 300 335 325" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

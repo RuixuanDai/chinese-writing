@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZong" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </radialGradient>
+    <filter id="shadowZong" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZong)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="30" fill="#86efac" opacity="0.6"/>
+  <g filter="url(#shadowZong)">
+    <!-- Pyramid Zongzi Wrapped in Bamboo Leaves -->
+    <polygon points="250,140 130,370 290,410" fill="#15803d"/>
+    <polygon points="250,140 290,410 380,330" fill="#16a34a"/>
+    <polygon points="250,140 130,370 200,320" fill="#22c55e"/>
+    <!-- Red Tying Twine / Thread -->
+    <path d="M 180 270 Q 250 310 340 260" stroke="#ef4444" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M 195 295 Q 265 335 325 285" stroke="#ef4444" stroke-width="8" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

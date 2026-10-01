@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgBao" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowBao" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#d97706" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgBao)"/>
+  <ellipse cx="250" cy="425" rx="180" ry="35" fill="#fde68a" opacity="0.6"/>
+  <g filter="url(#shadowBao)">
+    <!-- Tail with rosettes -->
+    <path d="M 340 330 C 440 340 430 220 380 230" stroke="#f59e0b" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <circle cx="395" cy="300" r="4" fill="#78350f"/>
+    <circle cx="410" cy="260" r="4" fill="#78350f"/>
+    <!-- Body -->
+    <ellipse cx="250" cy="320" rx="95" ry="85" fill="#f59e0b"/>
+    <ellipse cx="250" cy="335" rx="55" ry="55" fill="#fef3c7"/>
+    <!-- Rosettes / Spots on body -->
+    <circle cx="210" cy="310" r="7" fill="#78350f"/>
+    <circle cx="280" cy="300" r="6" fill="#78350f"/>
+    <circle cx="230" cy="350" r="5" fill="#78350f"/>
+    <circle cx="270" cy="355" r="7" fill="#78350f"/>
+    <circle cx="310" cy="330" r="6" fill="#78350f"/>
+    <!-- Paws -->
+    <ellipse cx="195" cy="405" rx="25" ry="18" fill="#d97706"/>
+    <ellipse cx="305" cy="405" rx="25" ry="18" fill="#d97706"/>
+    <!-- Rounded Ears -->
+    <circle cx="170" cy="150" r="26" fill="#d97706"/>
+    <circle cx="170" cy="150" r="16" fill="#fef3c7"/>
+    <circle cx="330" cy="150" r="26" fill="#d97706"/>
+    <circle cx="330" cy="150" r="16" fill="#fef3c7"/>
+    <!-- Head -->
+    <circle cx="250" cy="210" r="80" fill="#f59e0b"/>
+    <!-- Spots on forehead -->
+    <circle cx="240" cy="160" r="4" fill="#78350f"/>
+    <circle cx="260" cy="160" r="4" fill="#78350f"/>
+    <circle cx="250" cy="175" r="5" fill="#78350f"/>
+    <!-- Snout & Nose -->
+    <ellipse cx="250" cy="245" rx="38" ry="26" fill="#fef3c7"/>
+    <polygon points="250,230 240,220 260,220" fill="#f43f5e"/>
+    <path d="M 250 230 L 250 245 M 240 245 Q 250 255 260 245" stroke="#78350f" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Whiskers -->
+    <line x1="170" y1="245" x2="215" y2="248" stroke="#78350f" stroke-width="2" stroke-linecap="round"/>
+    <line x1="170" y1="258" x2="215" y2="255" stroke="#78350f" stroke-width="2" stroke-linecap="round"/>
+    <line x1="330" y1="245" x2="285" y2="248" stroke="#78350f" stroke-width="2" stroke-linecap="round"/>
+    <line x1="330" y1="258" x2="285" y2="255" stroke="#78350f" stroke-width="2" stroke-linecap="round"/>
+    <!-- Big Emerald Eyes -->
+    <circle cx="210" cy="205" r="11" fill="#15803d"/>
+    <circle cx="210" cy="205" r="7" fill="#1e293b"/>
+    <circle cx="207" cy="201" r="3" fill="#ffffff"/>
+    <circle cx="290" cy="205" r="11" fill="#15803d"/>
+    <circle cx="290" cy="205" r="7" fill="#1e293b"/>
+    <circle cx="287" cy="201" r="3" fill="#ffffff"/>
+  </g>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDie" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#faf5ff"/>
+      <stop offset="100%" stop-color="#e9d5ff"/>
+    </radialGradient>
+    <filter id="shadowDie" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#7e22ce" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDie)"/>
+  <g filter="url(#shadowDie)">
+    <!-- Upper Wings (Left & Right) -->
+    <path d="M 240 230 C 180 120 70 110 70 210 C 70 280 170 300 240 260 Z" fill="#c084fc"/>
+    <path d="M 260 230 C 320 120 430 110 430 210 C 430 280 330 300 260 260 Z" fill="#c084fc"/>
+    <!-- Wing Inner Glow & Patterns -->
+    <ellipse cx="150" cy="200" rx="45" ry="35" fill="#f472b6" transform="rotate(-15 150 200)"/>
+    <ellipse cx="350" cy="200" rx="45" ry="35" fill="#f472b6" transform="rotate(15 350 200)"/>
+    <circle cx="130" cy="180" r="12" fill="#fef08a"/>
+    <circle cx="370" cy="180" r="12" fill="#fef08a"/>
+    <circle cx="160" cy="220" r="8" fill="#38bdf8"/>
+    <circle cx="340" cy="220" r="8" fill="#38bdf8"/>
+    <!-- Lower Wings -->
+    <path d="M 240 270 C 170 310 120 410 200 420 C 250 430 250 340 245 290 Z" fill="#a855f7"/>
+    <path d="M 260 270 C 330 310 380 410 300 420 C 250 430 250 340 255 290 Z" fill="#a855f7"/>
+    <circle cx="190" cy="360" r="14" fill="#f472b6"/>
+    <circle cx="310" cy="360" r="14" fill="#f472b6"/>
+    <circle cx="190" cy="360" r="6" fill="#fef08a"/>
+    <circle cx="310" cy="360" r="6" fill="#fef08a"/>
+    <!-- Antennae -->
+    <path d="M 245 150 Q 200 90 170 95" stroke="#581c87" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <circle cx="168" cy="95" r="6" fill="#e879f9"/>
+    <path d="M 255 150 Q 300 90 330 95" stroke="#581c87" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <circle cx="332" cy="95" r="6" fill="#e879f9"/>
+    <!-- Butterfly Body -->
+    <ellipse cx="250" cy="270" rx="14" ry="75" fill="#581c87"/>
+    <!-- Head -->
+    <circle cx="250" cy="165" r="18" fill="#581c87"/>
+    <!-- Cute Eyes -->
+    <circle cx="243" cy="160" r="3.5" fill="#ffffff"/>
+    <circle cx="257" cy="160" r="3.5" fill="#ffffff"/>
+  </g>
+</svg>

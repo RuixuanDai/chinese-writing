@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgQin" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#fecdd3"/>
+    </radialGradient>
+    <filter id="shadowQin" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgQin)"/>
+  <g filter="url(#shadowQin)">
+    <!-- Big Parent Head & Small Child Head Embracing -->
+    <circle cx="190" cy="240" r="85" fill="#fed7aa"/>
+    <path d="M 120 220 C 120 120 260 120 260 220 Z" fill="#78350f"/>
+    <!-- Child Head Nestled -->
+    <circle cx="310" cy="270" r="65" fill="#fed7aa"/>
+    <path d="M 260 250 C 260 170 370 170 370 250 Z" fill="#b45309"/>
+    <!-- Closed Happy Smiling Eyes -->
+    <path d="M 160 235 Q 175 245 190 235" stroke="#78350f" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 290 265 Q 305 275 320 265" stroke="#78350f" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- Floating Red Love Hearts (亲亲/关爱) -->
+    <path d="M 250 160 C 235 130 205 140 215 170 Q 250 205 250 205 Q 250 205 285 170 C 295 140 265 130 250 160 Z" fill="#f43f5e"/>
+    <path d="M 360 190 C 350 170 330 175 335 195 Q 360 220 360 220 Q 360 220 385 195 C 390 175 370 170 360 190 Z" fill="#fb7185"/>
+  </g>
+</svg>

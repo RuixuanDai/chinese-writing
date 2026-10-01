@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgWen" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#faf5ff"/>
+      <stop offset="100%" stop-color="#f3e8ff"/>
+    </radialGradient>
+    <filter id="shadowWen" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#581c87" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgWen)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#e9d5ff" opacity="0.6"/>
+  <g filter="url(#shadowWen)">
+    <!-- Wooden Branch -->
+    <rect x="80" y="380" width="340" height="20" rx="10" fill="#78350f"/>
+    <!-- Cute Owl Body -->
+    <ellipse cx="250" cy="300" rx="85" ry="95" fill="#a855f7"/>
+    <ellipse cx="250" cy="320" rx="60" ry="65" fill="#f3e8ff"/>
+    <!-- Big Curious Eyes -->
+    <circle cx="210" cy="260" r="32" fill="#ffffff"/>
+    <circle cx="290" cy="260" r="32" fill="#ffffff"/>
+    <circle cx="210" cy="260" r="16" fill="#1e1b4b"/>
+    <circle cx="290" cy="260" r="16" fill="#1e1b4b"/>
+    <circle cx="215" cy="255" r="5" fill="#ffffff"/>
+    <circle cx="295" cy="255" r="5" fill="#ffffff"/>
+    <!-- Beak -->
+    <polygon points="250,285 240,305 260,305" fill="#f59e0b"/>
+    <!-- Golden Glowing Question Mark overhead -->
+    <path d="M 230 110 C 230 80 270 80 270 105 C 270 130 250 135 250 155" fill="none" stroke="#f59e0b" stroke-width="16" stroke-linecap="round"/>
+    <circle cx="250" cy="185" r="9" fill="#f59e0b"/>
+  </g>
+</svg>

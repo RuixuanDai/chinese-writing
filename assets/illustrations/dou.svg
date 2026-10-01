@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgDou" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </radialGradient>
+    <filter id="shadowDou" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgDou)"/>
+  <ellipse cx="250" cy="425" rx="170" ry="30" fill="#86efac" opacity="0.6"/>
+  <g filter="url(#shadowDou)">
+    <!-- Pea Pod Back Shell -->
+    <path d="M 90 230 Q 250 380 410 210 Q 250 430 90 230 Z" fill="#15803d"/>
+    <path d="M 95 235 Q 250 375 405 215 Q 250 415 95 235 Z" fill="#16a34a"/>
+    <!-- Smiling Round Sweet Peas (豆子) -->
+    <!-- Pea 1 -->
+    <circle cx="170" cy="285" r="38" fill="#4ade80"/>
+    <circle cx="155" cy="275" r="4.5" fill="#1e293b"/>
+    <circle cx="175" cy="275" r="4.5" fill="#1e293b"/>
+    <path d="M 160 290 Q 165 298 170 290" stroke="#166534" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <circle cx="155" cy="272" r="1.5" fill="#ffffff"/>
+    <circle cx="175" cy="272" r="1.5" fill="#ffffff"/>
+    <circle cx="180" cy="285" r="5" fill="#f43f5e" opacity="0.4"/>
+    <!-- Pea 2 -->
+    <circle cx="250" cy="305" r="42" fill="#4ade80"/>
+    <circle cx="235" cy="295" r="5" fill="#1e293b"/>
+    <circle cx="260" cy="295" r="5" fill="#1e293b"/>
+    <path d="M 242 312 Q 248 322 254 312" stroke="#166534" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="235" cy="292" r="1.8" fill="#ffffff"/>
+    <circle cx="260" cy="292" r="1.8" fill="#ffffff"/>
+    <circle cx="230" cy="305" r="6" fill="#f43f5e" opacity="0.4"/>
+    <circle cx="265" cy="305" r="6" fill="#f43f5e" opacity="0.4"/>
+    <!-- Pea 3 -->
+    <circle cx="330" cy="275" r="38" fill="#4ade80"/>
+    <circle cx="315" cy="265" r="4.5" fill="#1e293b"/>
+    <circle cx="335" cy="265" r="4.5" fill="#1e293b"/>
+    <path d="M 320 280 Q 325 288 330 280" stroke="#166534" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <circle cx="315" cy="262" r="1.5" fill="#ffffff"/>
+    <circle cx="335" cy="262" r="1.5" fill="#ffffff"/>
+    <circle cx="340" cy="275" r="5" fill="#f43f5e" opacity="0.4"/>
+    <!-- Pod Stem & Leaf -->
+    <path d="M 90 230 Q 70 210 50 220" stroke="#15803d" stroke-width="6" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

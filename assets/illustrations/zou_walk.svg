@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZou" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </radialGradient>
+    <filter id="shadowZou" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#065f46" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZou)"/>
+  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#a7f3d0" opacity="0.6"/>
+  <!-- Stepping Stones / Path -->
+  <ellipse cx="140" cy="410" rx="35" ry="14" fill="#cbd5e1"/>
+  <ellipse cx="230" cy="430" rx="40" ry="15" fill="#cbd5e1"/>
+  <ellipse cx="330" cy="415" rx="35" ry="14" fill="#cbd5e1"/>
+  <!-- Cheerful Walking Kid -->
+  <g filter="url(#shadowZou)">
+    <!-- Backpack -->
+    <rect x="175" y="180" width="45" height="85" rx="16" fill="#3b82f6"/>
+    <!-- Head -->
+    <circle cx="255" cy="140" r="42" fill="#fed7aa"/>
+    <path d="M 220 130 C 220 85 295 85 295 130 C 280 115 235 115 220 130 Z" fill="#18181b"/>
+    <circle cx="265" cy="140" r="5" fill="#18181b"/>
+    <path d="M 260 155 Q 270 162 280 155" stroke="#ef4444" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Body -->
+    <rect x="215" y="185" width="75" height="100" rx="14" fill="#10b981"/>
+    <!-- Walking Legs (One forward, one back) -->
+    <path d="M 235 285 L 210 375 L 185 385" stroke="#1e293b" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M 265 285 L 305 365 L 335 370" stroke="#1e293b" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Swinging Arms -->
+    <path d="M 220 200 L 190 250" stroke="#10b981" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M 285 200 L 320 240" stroke="#10b981" stroke-width="16" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

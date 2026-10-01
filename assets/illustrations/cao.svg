@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgCao" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+    <filter id="shadowCao" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#15803d" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgCao)"/>
+  <!-- Fresh Green Grass Meadow with Ladybug (青草) -->
+  <g filter="url(#shadowCao)">
+    <path d="M 120 420 Q 150 250 110 160 Q 190 280 180 420 Z" fill="#22c55e"/>
+    <path d="M 180 420 Q 220 220 200 130 Q 270 250 240 420 Z" fill="#16a34a"/>
+    <path d="M 240 420 Q 270 190 290 100 Q 330 230 300 420 Z" fill="#4ade80"/>
+    <path d="M 300 420 Q 360 210 390 150 Q 390 290 360 420 Z" fill="#22c55e"/>
+    <!-- Sparkling morning dew drop -->
+    <circle cx="280" cy="180" r="7" fill="#ffffff" opacity="0.8"/>
+  </g>
+</svg>

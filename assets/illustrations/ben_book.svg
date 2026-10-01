@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgBen" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowBen" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9f1239" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgBen)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fecdd3" opacity="0.6"/>
+  <g filter="url(#shadowBen)">
+    <!-- Open Book Left and Right Pages -->
+    <path d="M 250 340 C 200 340 140 330 90 350 L 90 190 C 140 170 200 180 250 180 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
+    <path d="M 250 340 C 300 340 360 330 410 350 L 410 190 C 360 170 300 180 250 180 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
+    <!-- Book Hardcover bottom -->
+    <path d="M 80 355 C 130 335 195 345 250 345 C 305 345 370 335 420 355" stroke="#0284c7" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <!-- Lines of Text in Book -->
+    <line x1="120" y1="220" x2="220" y2="220" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="120" y1="250" x2="220" y2="250" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="120" y1="280" x2="190" y2="280" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="280" y1="220" x2="380" y2="220" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="280" y1="250" x2="380" y2="250" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="280" y1="280" x2="340" y2="280" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+    <!-- Ribbon Bookmark -->
+    <path d="M 250 170 L 250 370 L 265 355 L 280 370 L 280 170 Z" fill="#ef4444"/>
+    <!-- Magic Stars Floating from Pages -->
+    <circle cx="210" cy="140" r="8" fill="#facc15"/>
+    <circle cx="290" cy="130" r="10" fill="#facc15"/>
+    <circle cx="250" cy="110" r="6" fill="#facc15"/>
+  </g>
+</svg>

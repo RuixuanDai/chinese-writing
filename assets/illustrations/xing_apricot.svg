@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgXing" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <radialGradient id="apricotGrad" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </radialGradient>
+    <filter id="shadowXing" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgXing)"/>
+  <ellipse cx="250" cy="425" rx="170" ry="30" fill="#fed7aa" opacity="0.6"/>
+  <g filter="url(#shadowXing)">
+    <!-- Stem and Leaf -->
+    <path d="M 250 160 Q 230 115 210 105" stroke="#78350f" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M 245 135 C 290 100 330 120 320 155 C 280 165 255 145 245 135 Z" fill="#22c55e"/>
+    <!-- Ripe Golden Apricot -->
+    <circle cx="250" cy="290" r="120" fill="url(#apricotGrad)"/>
+    <!-- Velvety Center Crease -->
+    <path d="M 250 175 Q 235 285 250 405" stroke="#c2410c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <!-- Highlight Glow -->
+    <ellipse cx="205" cy="250" rx="25" ry="40" fill="#ffffff" opacity="0.3" transform="rotate(-15 205 250)"/>
+  </g>
+</svg>

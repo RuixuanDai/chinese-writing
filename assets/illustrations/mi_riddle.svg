@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgMiRiddle" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowMiRiddle" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgMiRiddle)"/>
+  <g filter="url(#shadowMiRiddle)">
+    <!-- Lantern Base at top -->
+    <rect x="180" y="50" width="140" height="40" rx="8" fill="#dc2626"/>
+    <!-- Red Ribbon Hanging Down -->
+    <line x1="250" y1="90" x2="250" y2="150" stroke="#ca8a04" stroke-width="6"/>
+    <!-- Yellow Riddle Banner Paper (灯谜条) -->
+    <rect x="170" y="150" width="160" height="280" rx="10" fill="#fef08a" stroke="#ca8a04" stroke-width="6"/>
+    <text x="250" y="210" font-family="'KaiTi', 'STKaiti', sans-serif" font-size="34" font-weight="bold" fill="#dc2626" text-anchor="middle">猜灯谜</text>
+    <text x="250" y="260" font-family="'KaiTi', 'STKaiti', sans-serif" font-size="26" fill="#1e293b" text-anchor="middle">白白身子圆溜溜</text>
+    <text x="250" y="300" font-family="'KaiTi', 'STKaiti', sans-serif" font-size="26" fill="#1e293b" text-anchor="middle">滚在水里翻跟斗</text>
+    <!-- Big Question Mark -->
+    <text x="250" y="380" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="#ea580c" text-anchor="middle">?</text>
+  </g>
+</svg>

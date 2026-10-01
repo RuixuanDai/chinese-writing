@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZhou" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowZhou" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZhou)"/>
+  <!-- Water Waves -->
+  <path d="M 40 370 Q 150 340 250 370 T 460 370 L 460 460 L 40 460 Z" fill="#38bdf8" opacity="0.6"/>
+  <g filter="url(#shadowZhou)">
+    <!-- Wooden Canoe / Rowboat -->
+    <path d="M 80 290 Q 250 390 420 290 Q 250 330 80 290 Z" fill="#b45309"/>
+    <!-- Inner Hull -->
+    <path d="M 90 290 Q 250 325 410 290 Q 250 305 90 290 Z" fill="#d97706"/>
+    <!-- Wooden Oar resting -->
+    <line x1="160" y1="210" x2="330" y2="350" stroke="#78350f" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="340" cy="355" rx="14" ry="24" fill="#92400e" transform="rotate(-40 340 355)"/>
+  </g>
+</svg>

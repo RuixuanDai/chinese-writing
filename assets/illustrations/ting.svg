@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgTing" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowTing" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgTing)"/>
+  <ellipse cx="250" cy="440" rx="180" ry="35" fill="#86efac" opacity="0.8"/>
+  <g filter="url(#shadowTing)">
+    <!-- Classical Chinese Pavilion Roof (Flying eaves) -->
+    <path d="M 250 110 C 190 170 120 180 80 190 C 130 190 200 170 250 160 C 300 170 370 190 420 190 C 380 180 310 170 250 110 Z" fill="#dc2626"/>
+    <polygon points="250,90 240,115 260,115" fill="#facc15"/>
+    <!-- Red Pillars Supporting Pavilion -->
+    <rect x="140" y="190" width="18" height="190" rx="4" fill="#b91c1c"/>
+    <rect x="200" y="180" width="16" height="200" rx="4" fill="#b91c1c"/>
+    <rect x="284" y="180" width="16" height="200" rx="4" fill="#b91c1c"/>
+    <rect x="342" y="190" width="18" height="190" rx="4" fill="#b91c1c"/>
+    <!-- Base stone pedestal -->
+    <rect x="110" y="380" width="280" height="35" rx="6" fill="#94a3b8"/>
+  </g>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgShi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </radialGradient>
+    <filter id="shadowShi" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgShi)"/>
+  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#fcd34d" opacity="0.6"/>
+  <g filter="url(#shadowShi)">
+    <!-- Big Fluffy Mane Behind Head -->
+    <circle cx="250" cy="210" r="120" fill="#b45309"/>
+    <!-- Mane wavy clouds -->
+    <circle cx="160" cy="140" r="45" fill="#d97706"/>
+    <circle cx="250" cy="110" r="45" fill="#d97706"/>
+    <circle cx="340" cy="140" r="45" fill="#d97706"/>
+    <circle cx="130" cy="220" r="45" fill="#d97706"/>
+    <circle cx="370" cy="220" r="45" fill="#d97706"/>
+    <circle cx="160" cy="300" r="45" fill="#d97706"/>
+    <circle cx="340" cy="300" r="45" fill="#d97706"/>
+    <!-- Body Sitting -->
+    <ellipse cx="250" cy="340" rx="85" ry="80" fill="#fbbf24"/>
+    <ellipse cx="250" cy="355" rx="50" ry="50" fill="#fffbeb"/>
+    <!-- Tail with fluffy tuft -->
+    <path d="M 330 350 Q 420 360 410 270" stroke="#f59e0b" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <circle cx="410" cy="265" r="18" fill="#b45309"/>
+    <!-- Paws -->
+    <ellipse cx="205" cy="410" rx="28" ry="18" fill="#f59e0b"/>
+    <ellipse cx="295" cy="410" rx="28" ry="18" fill="#f59e0b"/>
+    <!-- Ears -->
+    <circle cx="175" cy="145" r="22" fill="#fbbf24"/>
+    <circle cx="175" cy="145" r="12" fill="#fef3c7"/>
+    <circle cx="325" cy="145" r="22" fill="#fbbf24"/>
+    <circle cx="325" cy="145" r="12" fill="#fef3c7"/>
+    <!-- Lion Face -->
+    <circle cx="250" cy="210" r="75" fill="#fbbf24"/>
+    <!-- Snout & Nose -->
+    <ellipse cx="250" cy="240" rx="36" ry="25" fill="#fffbeb"/>
+    <polygon points="250,225 238,212 262,212" fill="#92400e"/>
+    <path d="M 250 225 L 250 240 M 238 240 Q 250 252 262 240" stroke="#92400e" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Confident Warm Eyes -->
+    <circle cx="215" cy="200" r="10" fill="#78350f"/>
+    <circle cx="212" cy="196" r="3.5" fill="#ffffff"/>
+    <circle cx="285" cy="200" r="10" fill="#78350f"/>
+    <circle cx="282" cy="196" r="3.5" fill="#ffffff"/>
+    <!-- Rosy Cheeks -->
+    <circle cx="195" cy="230" r="9" fill="#f43f5e" opacity="0.35"/>
+    <circle cx="305" cy="230" r="9" fill="#f43f5e" opacity="0.35"/>
+  </g>
+</svg>

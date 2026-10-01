@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgRabbit" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </radialGradient>
+    <filter id="shadowRabbit" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#f43f5e" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgRabbit)"/>
+  <!-- Cute Bunny with Long Ears (小白兔) -->
+  <g filter="url(#shadowRabbit)">
+    <!-- Long Ears -->
+    <ellipse cx="215" cy="140" rx="22" ry="70" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <ellipse cx="215" cy="145" rx="12" ry="50" fill="#fda4af"/>
+    <ellipse cx="285" cy="140" rx="22" ry="70" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <ellipse cx="285" cy="145" rx="12" ry="50" fill="#fda4af"/>
+    <!-- Body -->
+    <ellipse cx="250" cy="330" rx="85" ry="90" fill="#ffffff"/>
+    <!-- Head -->
+    <circle cx="250" cy="235" r="70" fill="#ffffff"/>
+    <!-- Big Sparkling Eyes -->
+    <circle cx="220" cy="225" r="8" fill="#e11d48"/>
+    <circle cx="280" cy="225" r="8" fill="#e11d48"/>
+    <circle cx="218" cy="222" r="3" fill="#ffffff"/>
+    <circle cx="278" cy="222" r="3" fill="#ffffff"/>
+    <!-- Pink Nose and Mouth -->
+    <polygon points="250,245 244,239 256,239" fill="#f43f5e"/>
+    <path d="M 244 250 Q 250 256 256 250" stroke="#f43f5e" stroke-width="2.5" fill="none"/>
+    <!-- Rosy Cheeks -->
+    <circle cx="195" cy="245" r="9" fill="#fda4af" opacity="0.7"/>
+    <circle cx="305" cy="245" r="9" fill="#fda4af" opacity="0.7"/>
+    <!-- Cute Carrot held in front -->
+    <polygon points="250,335 235,290 265,290" fill="#f97316"/>
+    <path d="M 250 290 Q 240 270 235 275 M 250 290 Q 260 270 265 275" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

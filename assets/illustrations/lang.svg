@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+    <filter id="shadowLang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#38bdf8" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLang)"/>
+  <!-- Crescent Moon in night sky -->
+  <path d="M 380 90 A 40 40 0 1 0 420 160 A 32 32 0 1 1 380 90 Z" fill="#fef08a"/>
+  <!-- Stars -->
+  <circle cx="100" cy="110" r="3" fill="#ffffff"/>
+  <circle cx="160" cy="80" r="2" fill="#ffffff"/>
+  <circle cx="320" cy="85" r="2.5" fill="#ffffff"/>
+  <!-- Mountain ridge -->
+  <polygon points="20,480 180,380 340,480" fill="#334155"/>
+  <polygon points="180,480 320,390 480,480" fill="#1e293b"/>
+  <g filter="url(#shadowLang)">
+    <!-- Fluffy Gray Wolf Pup Tail -->
+    <path d="M 310 370 C 400 370 410 280 350 270" stroke="#94a3b8" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <!-- Body Sitting -->
+    <ellipse cx="230" cy="340" rx="75" ry="85" fill="#94a3b8"/>
+    <ellipse cx="220" cy="350" rx="45" ry="60" fill="#f1f5f9"/>
+    <!-- Pointy Wolf Ears -->
+    <polygon points="150,160 130,80 190,130" fill="#64748b"/>
+    <polygon points="148,150 140,95 180,130" fill="#e2e8f0"/>
+    <polygon points="260,160 280,80 220,130" fill="#64748b"/>
+    <polygon points="262,150 270,95 230,130" fill="#e2e8f0"/>
+    <!-- Paws -->
+    <rect x="180" y="380" width="25" height="50" rx="12" fill="#64748b"/>
+    <rect x="235" y="380" width="25" height="50" rx="12" fill="#64748b"/>
+    <!-- Head -->
+    <circle cx="210" cy="205" r="75" fill="#94a3b8"/>
+    <!-- Cheek fluff -->
+    <polygon points="135,210 160,230 145,245" fill="#94a3b8"/>
+    <polygon points="285,210 260,230 275,245" fill="#94a3b8"/>
+    <!-- Muzzle -->
+    <ellipse cx="210" cy="235" rx="35" ry="25" fill="#f8fafc"/>
+    <polygon points="210,225 198,212 222,212" fill="#0f172a"/>
+    <path d="M 210 225 L 210 240 M 200 240 Q 210 248 220 240" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Amber Golden Eyes -->
+    <circle cx="180" cy="195" r="10" fill="#f59e0b"/>
+    <circle cx="180" cy="195" r="6" fill="#0f172a"/>
+    <circle cx="178" cy="192" r="2.5" fill="#ffffff"/>
+    <circle cx="240" cy="195" r="10" fill="#f59e0b"/>
+    <circle cx="240" cy="195" r="6" fill="#0f172a"/>
+    <circle cx="238" cy="192" r="2.5" fill="#ffffff"/>
+  </g>
+</svg>

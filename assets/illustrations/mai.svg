@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgMai" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowMai" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgMai)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="30" fill="#fde68a" opacity="0.6"/>
+  <g filter="url(#shadowMai)">
+    <!-- Stalks -->
+    <path d="M 250 430 Q 230 250 210 100" stroke="#ca8a04" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M 250 430 Q 290 280 320 120" stroke="#ca8a04" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <!-- Wheat Grains on Left Stalk -->
+    <ellipse cx="190" cy="120" rx="12" ry="24" fill="#eab308" transform="rotate(-30 190 120)"/>
+    <ellipse cx="230" cy="130" rx="12" ry="24" fill="#facc15" transform="rotate(30 230 130)"/>
+    <ellipse cx="195" cy="165" rx="13" ry="26" fill="#eab308" transform="rotate(-30 195 165)"/>
+    <ellipse cx="235" cy="175" rx="13" ry="26" fill="#facc15" transform="rotate(30 235 175)"/>
+    <ellipse cx="205" cy="215" rx="14" ry="28" fill="#eab308" transform="rotate(-30 205 215)"/>
+    <ellipse cx="245" cy="225" rx="14" ry="28" fill="#facc15" transform="rotate(30 245 225)"/>
+    <ellipse cx="215" cy="265" rx="14" ry="28" fill="#eab308" transform="rotate(-30 215 265)"/>
+    <ellipse cx="255" cy="275" rx="14" ry="28" fill="#facc15" transform="rotate(30 255 275)"/>
+    <!-- Grains on Right Stalk -->
+    <ellipse cx="305" cy="140" rx="12" ry="24" fill="#facc15" transform="rotate(-25 305 140)"/>
+    <ellipse cx="345" cy="150" rx="12" ry="24" fill="#eab308" transform="rotate(25 345 150)"/>
+    <ellipse cx="295" cy="185" rx="13" ry="26" fill="#facc15" transform="rotate(-25 295 185)"/>
+    <ellipse cx="335" cy="195" rx="13" ry="26" fill="#eab308" transform="rotate(25 335 195)"/>
+    <ellipse cx="285" cy="235" rx="14" ry="28" fill="#facc15" transform="rotate(-25 285 235)"/>
+    <ellipse cx="325" cy="245" rx="14" ry="28" fill="#eab308" transform="rotate(25 325 245)"/>
+  </g>
+</svg>

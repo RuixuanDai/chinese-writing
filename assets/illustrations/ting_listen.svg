@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgTing" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <filter id="shadowTing" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgTing)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#bfdbfe" opacity="0.6"/>
+  <g filter="url(#shadowTing)">
+    <!-- Headphone Band -->
+    <path d="M 120 280 C 120 120 380 120 380 280" stroke="#3b82f6" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <path d="M 140 280 C 140 145 360 145 360 280" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <!-- Left Earcup -->
+    <rect x="90" y="240" width="55" height="110" rx="24" fill="#1e40af"/>
+    <rect x="135" y="250" width="22" height="90" rx="10" fill="#93c5fd"/>
+    <!-- Right Earcup -->
+    <rect x="355" y="240" width="55" height="110" rx="24" fill="#1e40af"/>
+    <rect x="343" y="250" width="22" height="90" rx="10" fill="#93c5fd"/>
+    <!-- Sound Waves / Notes in between -->
+    <path d="M 210 270 Q 200 300 210 330" stroke="#60a5fa" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M 290 270 Q 300 300 290 330" stroke="#60a5fa" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <circle cx="250" cy="300" r="14" fill="#f59e0b"/>
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZao" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <filter id="shadowZao" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZao)"/>
+  <!-- Morning Horizon Hills -->
+  <polygon points="0,380 180,300 360,400 500,340 500,500 0,500" fill="#4ade80"/>
+  <g filter="url(#shadowZao)">
+    <!-- Glorious Golden Morning Sun Rising over Hill -->
+    <circle cx="250" cy="270" r="100" fill="#facc15"/>
+    <circle cx="250" cy="270" r="80" fill="#fef08a"/>
+    <!-- Warm Beams -->
+    <line x1="250" y1="140" x2="250" y2="90" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+    <line x1="160" y1="180" x2="125" y2="145" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+    <line x1="340" y1="180" x2="375" y2="145" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+    <!-- Cheerful Rooster Crowing on hill -->
+    <circle cx="160" cy="300" r="32" fill="#ffffff"/>
+    <polygon points="175,295 205,302 175,310" fill="#f97316"/>
+    <!-- Rooster Red Comb -->
+    <circle cx="150" cy="275" r="10" fill="#ef4444"/>
+    <circle cx="162" cy="272" r="12" fill="#ef4444"/>
+    <circle cx="174" cy="276" r="10" fill="#ef4444"/>
+    <!-- Eye -->
+    <circle cx="165" cy="295" r="4" fill="#1e293b"/>
+    <!-- "早" text in morning clouds -->
+    <text x="350" y="240" font-family="'KaiTi', 'STKaiti', sans-serif" font-size="70" font-weight="bold" fill="#ea580c">早！</text>
+  </g>
+</svg>

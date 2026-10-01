@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </radialGradient>
+    <filter id="shadowLu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLu)"/>
+  <!-- Grass ground -->
+  <ellipse cx="250" cy="420" rx="190" ry="40" fill="#86efac"/>
+  <g filter="url(#shadowLu)">
+    <!-- Body -->
+    <ellipse cx="270" cy="310" rx="90" ry="60" fill="#d97706"/>
+    <!-- Tail -->
+    <ellipse cx="360" cy="285" rx="14" ry="12" fill="#d97706" transform="rotate(-15 360 285)"/>
+    <ellipse cx="365" cy="287" rx="8" ry="6" fill="#fffbeb"/>
+    <!-- Spots on body -->
+    <circle cx="270" cy="290" r="6" fill="#fef3c7"/>
+    <circle cx="300" cy="295" r="7" fill="#fef3c7"/>
+    <circle cx="250" cy="320" r="5" fill="#fef3c7"/>
+    <circle cx="285" cy="325" r="6" fill="#fef3c7"/>
+    <circle cx="320" cy="315" r="5" fill="#fef3c7"/>
+    <!-- Legs -->
+    <rect x="210" y="340" width="16" height="80" rx="8" fill="#b45309"/>
+    <rect x="245" y="345" width="16" height="75" rx="8" fill="#b45309"/>
+    <rect x="300" y="345" width="16" height="75" rx="8" fill="#b45309"/>
+    <rect x="330" y="340" width="16" height="80" rx="8" fill="#b45309"/>
+    <!-- Hooves -->
+    <rect x="210" y="410" width="16" height="12" rx="4" fill="#78350f"/>
+    <rect x="245" y="410" width="16" height="12" rx="4" fill="#78350f"/>
+    <rect x="300" y="410" width="16" height="12" rx="4" fill="#78350f"/>
+    <rect x="330" y="410" width="16" height="12" rx="4" fill="#78350f"/>
+    <!-- Neck -->
+    <path d="M 210 310 L 195 210 L 230 205 L 250 300 Z" fill="#d97706"/>
+    <!-- Head -->
+    <ellipse cx="185" cy="185" rx="45" ry="40" fill="#d97706"/>
+    <ellipse cx="160" cy="195" rx="25" ry="20" fill="#fef3c7"/>
+    <!-- Ears -->
+    <polygon points="195,160 230,120 220,175" fill="#d97706"/>
+    <polygon points="198,162 222,130 216,170" fill="#fbcfe8"/>
+    <!-- Antlers (Cute small branches) -->
+    <path d="M 180 155 Q 170 120 160 100 Q 155 90 145 85" stroke="#78350f" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M 166 118 Q 180 105 185 95" stroke="#78350f" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M 195 150 Q 200 120 205 100 Q 210 90 220 85" stroke="#78350f" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M 201 118 Q 190 105 185 95" stroke="#78350f" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <!-- Eyes -->
+    <circle cx="170" cy="175" r="9" fill="#1e293b"/>
+    <circle cx="167" cy="172" r="3" fill="#ffffff"/>
+    <!-- Nose & Mouth -->
+    <ellipse cx="145" cy="192" rx="6" ry="5" fill="#1e293b"/>
+    <path d="M 148 198 Q 155 204 162 198" stroke="#78350f" stroke-width="2.5" fill="none"/>
+    <!-- Cheeks -->
+    <circle cx="180" cy="195" r="8" fill="#f43f5e" opacity="0.3"/>
+  </g>
+</svg>

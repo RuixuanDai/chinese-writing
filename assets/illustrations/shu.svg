@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgShu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <filter id="shadowShu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgShu)"/>
+  <!-- Colorful Open Book with Bookmark (看书) -->
+  <g filter="url(#shadowShu)">
+    <!-- Cover -->
+    <path d="M 250 350 Q 160 340 90 360 L 90 170 Q 160 150 250 170 Q 340 150 410 170 L 410 360 Q 340 340 250 350 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/>
+    <!-- Left Page -->
+    <path d="M 250 340 Q 165 330 100 350 L 100 180 Q 165 160 250 180 Z" fill="#ffffff"/>
+    <!-- Right Page -->
+    <path d="M 250 340 Q 335 330 400 350 L 400 180 Q 335 160 250 180 Z" fill="#ffffff"/>
+    <!-- Red Ribbon Bookmark -->
+    <path d="M 245 170 L 255 170 L 255 270 L 250 260 L 245 270 Z" fill="#ef4444"/>
+  </g>
+</svg>

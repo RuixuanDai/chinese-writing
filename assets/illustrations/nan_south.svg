@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgNan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#a5f3fc"/>
+    </radialGradient>
+    <filter id="shadowNan" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0891b2" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgNan)"/>
+  <g filter="url(#shadowNan)">
+    <!-- Tropical Palm Fronds at South (Bottom) -->
+    <path d="M 210 440 C 210 400 230 380 250 380 C 270 380 290 400 290 440 Z" fill="#16a34a"/>
+    <!-- Compass Housing -->
+    <circle cx="250" cy="230" r="140" fill="#ffffff" stroke="#0891b2" stroke-width="10"/>
+    <circle cx="250" cy="230" r="120" fill="#f0fdfa"/>
+    <!-- Cardinal Letters -->
+    <text x="250" y="145" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">北</text>
+    <text x="250" y="335" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#ef4444" text-anchor="middle">南</text>
+    <text x="160" y="240" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">西</text>
+    <text x="340" y="240" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#64748b" text-anchor="middle">东</text>
+    <!-- Pointer Arrow pointing South (Down) -->
+    <polygon points="235,230 250,340 265,230" fill="#ef4444"/>
+    <polygon points="235,230 250,150 265,230" fill="#94a3b8"/>
+    <!-- Center Pivot Pin -->
+    <circle cx="250" cy="230" r="16" fill="#1e293b"/>
+    <circle cx="250" cy="230" r="6" fill="#ffffff"/>
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGuang" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </radialGradient>
+    <filter id="shadowGuang" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGuang)"/>
+  <g filter="url(#shadowGuang)">
+    <!-- Prismatic Rainbow Light Beams -->
+    <polygon points="250,220 50,450 120,450" fill="#facc15" opacity="0.4"/>
+    <polygon points="250,220 120,450 200,450" fill="#fb923c" opacity="0.35"/>
+    <polygon points="250,220 200,450 300,450" fill="#38bdf8" opacity="0.35"/>
+    <polygon points="250,220 300,450 380,450" fill="#4ade80" opacity="0.35"/>
+    <polygon points="250,220 380,450 450,450" fill="#c084fc" opacity="0.4"/>
+    <!-- Shining Star of Light (光源) -->
+    <circle cx="250" cy="220" r="45" fill="#fef08a"/>
+    <circle cx="250" cy="220" r="25" fill="#ffffff"/>
+    <!-- 4 Major Beams -->
+    <polygon points="250,90 240,220 260,220" fill="#ffffff"/>
+    <polygon points="250,350 240,220 260,220" fill="#ffffff"/>
+    <polygon points="120,220 250,210 250,230" fill="#ffffff"/>
+    <polygon points="380,220 250,210 250,230" fill="#ffffff"/>
+    <!-- Diagonal Beams -->
+    <polygon points="150,120 245,215 255,225" fill="#ffffff" opacity="0.8"/>
+    <polygon points="350,320 245,215 255,225" fill="#ffffff" opacity="0.8"/>
+    <polygon points="150,320 245,225 255,215" fill="#ffffff" opacity="0.8"/>
+    <polygon points="350,120 245,225 255,215" fill="#ffffff" opacity="0.8"/>
+  </g>
+</svg>

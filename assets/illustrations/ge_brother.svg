@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGe" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowGe" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgGe)"/>
+  <g filter="url(#shadowGe)">
+    <!-- Sporty Jacket & Shoulders -->
+    <path d="M 130 440 C 130 330 370 330 370 440 Z" fill="#3b82f6"/>
+    <path d="M 230 330 L 250 440 L 270 330 Z" fill="#ffffff"/>
+    <!-- Head -->
+    <circle cx="250" cy="220" r="85" fill="#fed7aa"/>
+    <!-- Sporty Baseball Cap -->
+    <path d="M 160 190 C 160 110 340 110 340 190 Z" fill="#ef4444"/>
+    <ellipse cx="320" cy="180" rx="60" ry="14" fill="#b91c1c" transform="rotate(-10 320 180)"/>
+    <!-- Eyes -->
+    <circle cx="215" cy="215" r="9" fill="#1e293b"/>
+    <circle cx="212" cy="211" r="3" fill="#ffffff"/>
+    <circle cx="285" cy="215" r="9" fill="#1e293b"/>
+    <circle cx="282" cy="211" r="3" fill="#ffffff"/>
+    <!-- Joyful Smile -->
+    <path d="M 225 250 Q 250 275 275 250" stroke="#78350f" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <circle cx="185" cy="245" r="10" fill="#f43f5e" opacity="0.35"/>
+    <circle cx="315" cy="245" r="10" fill="#f43f5e" opacity="0.35"/>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgShuo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fdf4ff"/>
+      <stop offset="100%" stop-color="#fae8ff"/>
+    </radialGradient>
+    <filter id="shadowShuo" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#86198f" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgShuo)"/>
+  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#f5d0fe" opacity="0.6"/>
+  <g filter="url(#shadowShuo)">
+    <!-- Large Speech Bubble (Left, Pink/Red) -->
+    <path d="M 100 130 C 100 90 270 90 270 130 C 270 200 230 220 230 220 L 190 260 L 190 220 C 100 220 100 170 100 130 Z" fill="#ec4899"/>
+    <!-- Happy Dots inside Left Bubble -->
+    <circle cx="150" cy="155" r="12" fill="#ffffff"/>
+    <circle cx="185" cy="155" r="12" fill="#ffffff"/>
+    <circle cx="220" cy="155" r="12" fill="#ffffff"/>
+    <!-- Small Speech Bubble (Right, Blue/Teal) -->
+    <path d="M 400 250 C 400 210 240 210 240 250 C 240 310 275 330 275 330 L 310 370 L 310 330 C 400 330 400 290 400 250 Z" fill="#06b6d4"/>
+    <!-- Heart inside Right Bubble -->
+    <path d="M 320 260 A 10 10 0 0 0 305 275 L 320 290 L 335 275 A 10 10 0 0 0 320 260 Z" fill="#ffffff"/>
+  </g>
+</svg>

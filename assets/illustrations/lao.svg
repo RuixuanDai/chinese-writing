@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLao" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="shadowLao" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLao)"/>
+  <ellipse cx="250" cy="440" rx="170" ry="30" fill="#93c5fd" opacity="0.6"/>
+  <g filter="url(#shadowLao)">
+    <!-- Wooden Walking Cane -->
+    <path d="M 360 430 L 360 270 Q 360 230 330 230" stroke="#92400e" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <!-- Traditional Warm Robe -->
+    <path d="M 130 440 C 130 310 330 310 330 440 Z" fill="#475569"/>
+    <!-- Head -->
+    <circle cx="230" cy="210" r="85" fill="#fed7aa"/>
+    <!-- Silver White Hair & Long Beard -->
+    <path d="M 150 200 C 145 100 315 100 310 200 Z" fill="#f1f5f9"/>
+    <path d="M 180 240 C 180 340 280 340 280 240 Z" fill="#f8fafc"/>
+    <!-- Spectacles -->
+    <circle cx="200" cy="195" r="18" fill="none" stroke="#ca8a04" stroke-width="4"/>
+    <circle cx="260" cy="195" r="18" fill="none" stroke="#ca8a04" stroke-width="4"/>
+    <line x1="218" y1="195" x2="242" y2="195" stroke="#ca8a04" stroke-width="4"/>
+    <!-- Kind smiling eyes -->
+    <path d="M 190 195 Q 200 190 210 195" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M 250 195 Q 260 190 270 195" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
