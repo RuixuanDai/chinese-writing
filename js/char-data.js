@@ -22,7 +22,8 @@ const CHARACTER_CATEGORIES = [
                 ],
                 "sentence": "我是一个活泼可爱的小朋友。",
                 "icon": "☝️",
-                "label": "一个"
+                "label": "一个",
+                "image": "assets/illustrations/yi_one.jpg"
             },
             {
                 "char": "二",
@@ -4935,7 +4936,7 @@ window.CHARACTER_EN_MAP = {
 
 // --- 高品质专属看图识字插画库 (高清绘本水彩插画与精细矢量图，替代粗糙emoji) ---
 window.CHARACTER_ILLUSTRATION_MAP = {
-    "一": "assets/illustrations/yi.jpg?v=20261003_v3",
+    "一": "assets/illustrations/yi_one.jpg",
     "二": "assets/illustrations/er.jpg",
     "三": "assets/illustrations/san.jpg",
     "十": "assets/illustrations/shi.svg",
