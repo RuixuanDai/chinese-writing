@@ -49,57 +49,79 @@ class ChineseWritingEvaluator {
             };
         }
 
-        // 2. 维度一：笔画数、笔画顺序与运笔走向评测 (满分 35 分)
+        // 2. 维度一：笔画数、笔画顺序与运笔走向评测 (满分 40 分)
         const strokeEval = this.evaluateStrokes(strokeList, charInfo, hanziData, bounds, cssSize);
 
-        // 3. 维度二：间架结构与居中布白评测 (满分 35 分)
+        // 3. 维度二：间架结构与居中布白评测 (满分 30 分)
         const structureEval = this.evaluateStructure(bounds, width, height);
 
         // 4. 维度三：字形饱满度与重合匹配度 (满分 30 分)
         const shapeEval = this.evaluateShape(userPixels, charInfo.char, width, height, bounds, hanziData, cssSize);
 
-        // 5. 综合总分计算 (加权总分 100 分)
+        // 5. 综合总分计算 (满分 100 分 = 40 + 30 + 30)
         let totalScore = strokeEval.score + structureEval.score + shapeEval.score;
-        // 适当控制在儿童激励的合理心理区间 (70 ~ 99)
-        totalScore = Math.max(68, Math.min(99, Math.round(totalScore)));
 
-        // 6. 确定评级等级
+        // 笔画顺序与方向对总分的严格封顶与约束
+        const hasOrderError = strokeEval.inversionsCount > 0;
+        const hasReverseError = strokeEval.reverseCount > 0;
+
+        if (strokeEval.inversionsCount >= 2 || (hasOrderError && hasReverseError)) {
+            // 严重笔顺错误或倒插笔：最高不超过 72 分 (仅及格/需加强，坚决不给虚假高分)
+            totalScore = Math.min(totalScore, 72);
+        } else if (strokeEval.inversionsCount === 1) {
+            // 单处笔顺颠倒：最高不超过 82 分 (封顶良好，绝不可获得优等或甲上)
+            totalScore = Math.min(totalScore, 82);
+        } else if (hasReverseError) {
+            // 运笔方向错误：最高不超过 84 分
+            totalScore = Math.min(totalScore, 84);
+        }
+
+        // 最低底线控制在 30 分，最高 99 分
+        totalScore = Math.max(30, Math.min(99, Math.round(totalScore)));
+
+        // 6. 确定评级等级与印章评语
         let grade = '';
         let stars = 3;
         let sealText = '妙笔生花';
+        let teacherComment = '';
+
         if (totalScore >= 93) {
             grade = '【甲上 · 妙笔生花】';
             stars = 3;
             sealText = '妙笔生花';
+            teacherComment = '神采飞扬！间架稳固，笔顺如流，颇有小小书法家的风采！';
         } else if (totalScore >= 85) {
             grade = '【优等 · 书写新星】';
             stars = 3;
             sealText = '书写新星';
-        } else if (totalScore >= 78) {
+            teacherComment = '字形端正工整，笔顺规范，注意起笔与收笔细节会更完美！';
+        } else if (totalScore >= 75) {
             grade = '【良好 · 工整大方】';
             stars = 2;
-            sealText = '工整大方';
+            if (hasOrderError) {
+                sealText = '规范笔顺';
+                teacherComment = '字形整体协调，但笔画顺序存在颠倒，请严格遵循汉字笔顺规范！';
+            } else {
+                sealText = '工整大方';
+                teacherComment = '字形端正，结构稳健，注意细节运笔会更出色！';
+            }
         } else {
-            grade = '【及格 · 渐入佳境】';
+            grade = '【需加强 · 循序渐进】';
             stars = 1;
-            sealText = '继续加油';
+            if (hasOrderError) {
+                sealText = '规范笔顺';
+                teacherComment = '笔顺是汉字书写的根本！正确的笔顺才能写好结构，快去左侧“笔顺跟写闯关”强化练习吧！';
+            } else {
+                sealText = '继续加油';
+                teacherComment = '很有潜力的练习！跟着左边笔顺多临摹两遍，一定会越写越漂亮！';
+            }
         }
 
-        // 7. 汇总个性化诊断建议
+        // 7. 汇总个性化诊断建议 (笔顺严重警告排在最前面)
         const suggestions = [];
         suggestions.push(...strokeEval.feedback);
         suggestions.push(...structureEval.feedback);
         suggestions.push(...shapeEval.feedback);
-
-        // 鼓励结语
-        let teacherComment = '';
-        if (totalScore >= 90) {
-            teacherComment = '神采飞扬！间架稳固，笔顺清晰，颇有小小书法家的风采！';
-        } else if (totalScore >= 80) {
-            teacherComment = '字形端正工整，结构协调，注意细节起笔会更出色！';
-        } else {
-            teacherComment = '很有潜力的练习！跟着左边笔顺多临摹两遍，一定会更稳当！';
-        }
 
         return {
             valid: true,
@@ -110,9 +132,9 @@ class ChineseWritingEvaluator {
             teacherComment,
             metrics: {
                 strokeScore: strokeEval.score,
-                strokeMax: 35,
+                strokeMax: 40,
                 structureScore: structureEval.score,
-                structureMax: 35,
+                structureMax: 30,
                 shapeScore: shapeEval.score,
                 shapeMax: 30
             },
@@ -215,7 +237,7 @@ class ChineseWritingEvaluator {
     }
 
     /**
-     * 计算用户笔画与标准笔画骨架间的双向距离与走向匹配 (判断是否倒下笔)
+     * 计算用户笔画与标准笔画骨架间的双向距离、夹角及走向匹配 (高精度检测倒插笔与笔画对应)
      */
     calcStrokeDistance(userStroke, stdStrokePoints) {
         const K = 12;
@@ -234,19 +256,39 @@ class ChineseWritingEvaluator {
         fwdDist /= K;
         revDist /= K;
 
-        // 反向判定：反向距离明显小于正向距离 (差值>20px)，且笔画有足够长度 (避免微短点产生误判)
-        const isReverse = (revDist < fwdDist - 20) && (u.len > 30 && s.len > 30);
+        // 反向判定：反向距离明显小于正向距离 (差值>18px)，且笔画有足够长度 (避免微短点产生误判)
+        const isReverse = (revDist < fwdDist - 18) && (u.len > 22 && s.len > 22);
         const spatialDist = Math.min(fwdDist, revDist);
 
-        return { fwdDist, revDist, spatialDist, isReverse, uLen: u.len, sLen: s.len };
+        // 几何匹配代价优化：综合考虑走向夹角与长度比例，防止“点”错配给“横/竖”
+        let anglePenalty = 0;
+        let lenPenalty = 0;
+        if (u.len > 20 && s.len > 20) {
+            const uAngle = Math.atan2(u.points[K - 1].y - u.points[0].y, u.points[K - 1].x - u.points[0].x);
+            const sAngle = Math.atan2(s.points[K - 1].y - s.points[0].y, s.points[K - 1].x - s.points[0].x);
+            let diffAngle = Math.abs(uAngle - sAngle) % Math.PI;
+            if (diffAngle > Math.PI / 2) diffAngle = Math.PI - diffAngle;
+            // 夹角接近90度时增加代价
+            anglePenalty = Math.sin(diffAngle) * 35;
+
+            const lenRatio = Math.max(u.len / Math.max(s.len, 1), s.len / Math.max(u.len, 1));
+            if (lenRatio > 2.0) {
+                lenPenalty = Math.min(40, (lenRatio - 2.0) * 20);
+            }
+        }
+
+        const matchCost = spatialDist + anglePenalty + lenPenalty;
+
+        return { fwdDist, revDist, spatialDist, matchCost, isReverse, uLen: u.len, sLen: s.len };
     }
 
     /**
-     * 维度一：笔画数、笔画顺序与运笔走向智能评测
+     * 维度一：笔画数、笔画顺序与运笔走向智能评测 (满分 40 分)
      */
     evaluateStrokes(strokeList, charInfo, hanziData, bounds, canvasSize = 360) {
-        let score = 35;
+        let score = 40; // 满分 40 分
         const feedback = [];
+        const warnings = []; // 紧急严重警告优先置顶
 
         // 过滤由于手掌误触或极轻抖动产生的微小杂点 (总长度 < 6px)
         let validStrokes = strokeList.filter(s => {
@@ -277,19 +319,22 @@ class ChineseWritingEvaluator {
         if (diff === 0) {
             feedback.push(`✅ 笔画数量完全正确：标准 ${targetStrokeCount} 笔，你正好写了 ${userStrokeCount} 笔！`);
         } else if (diff === 1) {
-            score -= 4;
+            score -= 6;
             if (userStrokeCount < targetStrokeCount) {
-                feedback.push(`⚠️ 笔画少了一笔：标准应为 ${targetStrokeCount} 笔，你写了 ${userStrokeCount} 笔，可能漏写了点或短撇。`);
+                warnings.push(`⚠️ 笔画少写了 1 笔：标准应为 ${targetStrokeCount} 笔，你写了 ${userStrokeCount} 笔，可能漏写了点、提或短撇。`);
             } else {
-                feedback.push(`⚠️ 笔画多了一笔：标准应为 ${targetStrokeCount} 笔，你写了 ${userStrokeCount} 笔，注意连笔一气呵成。`);
+                warnings.push(`⚠️ 笔画多写了 1 笔：标准应为 ${targetStrokeCount} 笔，你写了 ${userStrokeCount} 笔，注意转折处一气呵成，不要断开。`);
             }
         } else if (diff === 2) {
-            score -= 7;
-            feedback.push(`💡 笔画数差异较大：标准为 ${targetStrokeCount} 笔，实际书写 ${userStrokeCount} 笔，建议观察左侧笔画拆解。`);
+            score -= 12;
+            warnings.push(`💡 笔画数差异较大：标准为 ${targetStrokeCount} 笔，实际书写 ${userStrokeCount} 笔，请对照左侧笔顺拆解补齐或合并。`);
         } else {
-            score -= 10;
-            feedback.push(`💡 笔画数偏差提醒：标准为 ${targetStrokeCount} 笔，请点击左侧“播放笔顺”一步步跟写。`);
+            score -= 18;
+            warnings.push(`💡 笔画数偏差明显：标准为 ${targetStrokeCount} 笔，请点击左侧“播放笔顺”认真观看并一步步跟写。`);
         }
+
+        let inversionsCount = 0;
+        let reverseCount = 0;
 
         // 2. 笔画空间关联、顺序与走向综合评测
         if (hanziData && hanziData.medians && hanziData.medians.length > 0) {
@@ -306,7 +351,7 @@ class ChineseWritingEvaluator {
                 detailsMatrix[u] = [];
                 for (let s = 0; s < N; s++) {
                     const res = this.calcStrokeDistance(validStrokes[u], stdTransformed[s]);
-                    costMatrix[u][s] = res.spatialDist;
+                    costMatrix[u][s] = res.matchCost;
                     detailsMatrix[u][s] = res;
                 }
             }
@@ -348,7 +393,7 @@ class ChineseWritingEvaluator {
                 }
             }
 
-            // A. 运笔方向检测 (倒下笔检测)
+            // A. 运笔方向检测 (倒插笔检测)
             const reverseStrokes = [];
             for (let u = 0; u < M; u++) {
                 const d = userStrokeDetails[u];
@@ -356,14 +401,15 @@ class ChineseWritingEvaluator {
                     reverseStrokes.push(u + 1);
                 }
             }
+            reverseCount = reverseStrokes.length;
 
             if (reverseStrokes.length > 0) {
-                const penalty = Math.min(6, reverseStrokes.length * 3);
-                score -= penalty;
-                feedback.push(`💡 运笔方向提醒：第 ${reverseStrokes.join('、')} 笔的方向反了哦，注意横自左向右、竖自上而下书写！`);
+                const dirPenalty = Math.min(18, reverseStrokes.length * 8);
+                score -= dirPenalty;
+                warnings.push(`🚨 运笔方向错误（倒插笔重点扣分）：第 ${reverseStrokes.join('、')} 笔的方向反了！横应由左向右，竖应自上而下书写！`);
             }
 
-            // B. 笔顺先后次序检测 (逆序对检测)
+            // B. 笔顺先后次序检测 (逆序对检测 - 核心加大扣分)
             const inversions = [];
             for (let i = 0; i < M - 1; i++) {
                 for (let j = i + 1; j < M; j++) {
@@ -377,17 +423,22 @@ class ChineseWritingEvaluator {
                     }
                 }
             }
+            inversionsCount = inversions.length;
 
             if (inversions.length > 0) {
-                const orderPenalty = Math.min(7, inversions.length >= 2 ? 6 : 4);
-                score -= orderPenalty;
+                let orderPenalty = 0;
                 if (inversions.length === 1) {
+                    orderPenalty = 14; // 单处颠倒扣 14 分
                     const inv = inversions[0];
-                    feedback.push(`💡 笔画顺序提示：第 ${inv.firstUser + 1} 笔与第 ${inv.secondUser + 1} 笔顺序颠倒了，标准笔顺建议先写第 ${inv.secondStd + 1} 笔，再写第 ${inv.firstStd + 1} 笔！`);
+                    warnings.push(`🚨 笔画顺序错误（重点扣分）：第 ${inv.firstUser + 1} 笔与第 ${inv.secondUser + 1} 笔颠倒了！你先写了标准笔顺的【第 ${inv.firstStd + 1} 笔】，后写了【第 ${inv.secondStd + 1} 笔】！请牢记标准笔顺！`);
+                } else if (inversions.length === 2) {
+                    orderPenalty = 22; // 两处颠倒扣 22 分
+                    warnings.push(`🚨 笔画顺序严重错误（重点扣分）：检测到 2 处笔顺颠倒！汉字必须遵循“从上到下、先横后竖、先撇后捺”，不可随意下笔！`);
                 } else {
-                    const inv = inversions[0];
-                    feedback.push(`💡 笔画顺序提示：部分笔画书写顺序颠倒了（如先写了第 ${inv.firstStd + 1} 笔，后写了第 ${inv.secondStd + 1} 笔），建议观察左侧笔画拆解按顺序书写！`);
+                    orderPenalty = 30; // 3处及以上扣 30 分
+                    warnings.push(`🚨 笔顺严重错乱（重点扣分）：多处笔画书写顺序不符合规范！请点击左侧“播放笔顺”一步步仔细跟写！`);
                 }
+                score -= orderPenalty;
             }
 
             // C. 漏写具体笔画提醒 (当写得比标准少时)
@@ -398,28 +449,33 @@ class ChineseWritingEvaluator {
                         missingStd.push(s + 1);
                     }
                 }
-                if (missingStd.length > 0 && missingStd.length <= 2) {
-                    feedback.push(`📌 漏笔提醒：似乎漏写了标准第 ${missingStd.join('、')} 笔，请对照笔顺补齐。`);
+                if (missingStd.length > 0 && missingStd.length <= 3) {
+                    warnings.push(`📌 漏笔提醒：似乎漏写了标准笔顺的第 ${missingStd.join('、')} 笔，请对照笔顺补齐。`);
                 }
             }
 
             // 笔顺与方向皆规范时的鼓励
             if (diff === 0 && inversions.length === 0 && reverseStrokes.length === 0) {
-                feedback.push(`✨ 笔画顺序与行笔方向非常标准，按部就班，规范工整！`);
+                feedback.push(`✨ 笔画顺序与运笔走向非常标准规范，按部就班，工整严谨！`);
             }
         }
 
+        const allFeedback = [...warnings, ...feedback];
+
         return {
-            score: Math.max(16, score),
-            feedback
+            score: Math.max(6, score),
+            feedback: allFeedback,
+            inversionsCount,
+            reverseCount,
+            diff
         };
     }
 
     /**
-     * 维度二：间架结构与居中布白评测
+     * 维度二：间架结构与居中布白评测 (满分 30 分)
      */
     evaluateStructure(bounds, canvasWidth, canvasHeight) {
-        let score = 35;
+        let score = 30; // 满分 30 分
         const feedback = [];
 
         const centerX = canvasWidth / 2;
@@ -447,7 +503,7 @@ class ChineseWritingEvaluator {
             feedback.push(`⚠️ 重心提示：整个字稍微${dirText}了一点，练习时注意把主笔写在米字格十字中线上。`);
         }
 
-        // 2. 占格比例大小评测 (理想字形应占田字格约 60% ~ 82%)
+        // 2. 占格比例大小评测 (理想字形应占田字格约 55% ~ 85%)
         const fillRatioW = bounds.boxWidth / canvasWidth;
         const fillRatioH = bounds.boxHeight / canvasHeight;
         const avgFill = (fillRatioW + fillRatioH) / 2;
@@ -463,13 +519,13 @@ class ChineseWritingEvaluator {
         }
 
         return {
-            score: Math.max(18, score),
+            score: Math.max(10, score),
             feedback
         };
     }
 
     /**
-     * 维度三：字形饱满度与重合匹配度
+     * 维度三：字形饱满度与重合匹配度 (满分 30 分)
      */
     evaluateShape(userPixels, char, width, height, bounds, hanziData, canvasSize = 360) {
         let score = 30;
@@ -574,13 +630,16 @@ class ChineseWritingEvaluator {
 
         if (coverageRate > 0.6) {
             feedback.push('✅ 笔画完整，汉字关键骨架都写得很扎实。');
-        } else {
-            score -= 4;
+        } else if (coverageRate > 0.45) {
+            score -= 3;
             feedback.push('💡 部分笔画偏细或偏短，可以多练几次加深印象。');
+        } else {
+            score -= 7;
+            feedback.push('💡 字形覆盖率偏低，笔画不够饱满，请完整描绘汉字骨架。');
         }
 
         return {
-            score: Math.max(15, score),
+            score: Math.max(8, score),
             feedback
         };
     }

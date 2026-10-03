@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#ff6b6b">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261001_v7">
+    <link rel="stylesheet" href="css/style.css?v=20261003_v1">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -54,6 +54,7 @@
                     <span>字</span>
                 </div>
                 <button id="btn-sound-toggle" class="sound-toggle-btn">🔊 声音开</button>
+                <button id="btn-print-sheet" class="print-sheet-btn" title="生成标准田字格纸质练字帖，支持打印机打印">🖨️ 打印字帖</button>
                 <button id="btn-ipad-modal" class="ipad-connect-btn" title="查看在 iPad / 平板上全屏书写连接指南">📱 iPad 练字</button>
             </div>
         </div>
@@ -73,22 +74,17 @@
             
             <!-- 上半部分：看图识字与汉字认知卡 (双列并排，既大幅展示插画，又完整展示字词句) -->
             <div class="cognition-hero-card">
-                <!-- 左半：大幅看图识字插画 -->
+                <!-- 左半：大幅看图识字插画 (纯净无字大图) -->
                 <div id="char-illustration-large" class="ill-art-box" title="点击听朗读发音">
                     <div class="ill-art-wrap">
-                        <img src="assets/illustrations/yi.jpg" class="ill-large-img" alt="一个">
-                    </div>
-                    <div class="ill-card-caption">
-                        <span id="large-illustration-label" class="ill-large-label">一个</span>
-                        <span id="large-illustration-en" class="ill-large-en" title="点击朗读英文">one</span>
-                        <span class="ill-speak-chip">🔊 听词</span>
+                        <img src="assets/illustrations/yi.jpg" class="ill-large-img" alt="看图识字">
                     </div>
                 </div>
 
                 <!-- 右半：汉字详情、例句与组词 -->
                 <div class="cognition-details-box">
-                    <!-- 汉字大字、拼音、英文与部首笔画 -->
-                    <div class="cognition-char-header">
+                    <!-- 汉字大字、拼音、英文与部首笔画 (点击整块发音) -->
+                    <div id="cognition-char-header-block" class="cognition-char-header" title="点击朗读汉字标准普通话发音">
                         <div class="cognition-char-group">
                             <span id="current-pinyin" class="cognition-pinyin">yī</span>
                             <div class="cognition-char-row">
@@ -236,13 +232,6 @@
                     <span>🏆 智能评分 & 盖章</span>
                 </button>
             </div>
-
-            <!-- 打印字帖 -->
-            <div class="export-bar">
-                <button id="btn-print-sheet" class="btn-link-action" title="生成标准田字格纸质练字帖，支持打印机打印">
-                    <span>🖨️ 打印纸质字帖</span>
-                </button>
-            </div>
         </section>
 
     </main>
@@ -335,7 +324,7 @@
                 <div class="eval-metric-item">
                     <div class="metric-label-row">
                         <span>✍️ 笔画与笔顺</span>
-                        <strong id="eval-metric-stroke">35 / 35</strong>
+                        <strong id="eval-metric-stroke">40 / 40</strong>
                     </div>
                     <div class="metric-bar-track">
                         <div id="eval-bar-stroke" class="metric-bar-fill stroke-fill" style="width: 100%;"></div>
@@ -345,20 +334,20 @@
                 <div class="eval-metric-item">
                     <div class="metric-label-row">
                         <span>📐 间架与居中</span>
-                        <strong id="eval-metric-structure">33 / 35</strong>
+                        <strong id="eval-metric-structure">30 / 30</strong>
                     </div>
                     <div class="metric-bar-track">
-                        <div id="eval-bar-structure" class="metric-bar-fill structure-fill" style="width: 94%;"></div>
+                        <div id="eval-bar-structure" class="metric-bar-fill structure-fill" style="width: 100%;"></div>
                     </div>
                 </div>
 
                 <div class="eval-metric-item">
                     <div class="metric-label-row">
                         <span>✨ 字形与工整</span>
-                        <strong id="eval-metric-shape">28 / 30</strong>
+                        <strong id="eval-metric-shape">30 / 30</strong>
                     </div>
                     <div class="metric-bar-track">
-                        <div id="eval-bar-shape" class="metric-bar-fill shape-fill" style="width: 93%;"></div>
+                        <div id="eval-bar-shape" class="metric-bar-fill shape-fill" style="width: 100%;"></div>
                     </div>
                 </div>
             </div>
@@ -380,12 +369,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261001_v7"></script>
-    <script src="js/char-data.js?v=20261001_v7"></script>
-    <script src="js/stroke-cache.js?v=20261001_v7"></script>
-    <script src="js/canvas.js?v=20261001_v7"></script>
-    <script src="js/hanzi-guide.js?v=20261001_v7"></script>
-    <script src="js/evaluator.js?v=20261001_v7"></script>
-    <script src="js/app.js?v=20261001_v7"></script>
+    <script src="js/sound.js?v=20261003_v2"></script>
+    <script src="js/char-data.js?v=20261003_v2"></script>
+    <script src="js/stroke-cache.js?v=20261003_v2"></script>
+    <script src="js/canvas.js?v=20261003_v2"></script>
+    <script src="js/hanzi-guide.js?v=20261003_v2"></script>
+    <script src="js/evaluator.js?v=20261003_v2"></script>
+    <script src="js/app.js?v=20261003_v2"></script>
 </body>
 </html>

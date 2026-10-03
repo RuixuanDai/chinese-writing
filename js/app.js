@@ -319,12 +319,18 @@ class KidWritingApp {
             speakBtn.addEventListener('click', triggerCharSpeech);
         }
 
-        // 点击大字卡片也能直接触发朗读
-        const charBox = document.querySelector('.hero-character-box');
-        if (charBox) {
-            charBox.style.cursor = 'pointer';
-            charBox.title = '点击听汉字标准发音 🔊';
-            charBox.addEventListener('click', triggerCharSpeech);
+        // 点击汉字信息block也能直接触发朗读 (响应用户需求：点击block就发音)
+        const charHeaderBlock = document.getElementById('cognition-char-header-block') || document.querySelector('.cognition-char-header') || document.querySelector('.hero-character-box');
+        if (charHeaderBlock) {
+            charHeaderBlock.style.cursor = 'pointer';
+            charHeaderBlock.title = '点击听汉字标准发音 🔊';
+            charHeaderBlock.addEventListener('click', (e) => {
+                // 如果点击的是英文释义标签，让它自己播放纯正英文，不触发汉语发音
+                if (e.target.closest('#current-char-en')) return;
+                charHeaderBlock.classList.add('pop-anim');
+                setTimeout(() => charHeaderBlock.classList.remove('pop-anim'), 300);
+                triggerCharSpeech();
+            });
         }
 
         // 2. 音效总开关 (初始化状态显示)
@@ -701,13 +707,18 @@ class KidWritingApp {
         if (mShape) mShape.textContent = `${result.metrics.shapeScore} / ${result.metrics.shapeMax}`;
         if (bShape) bShape.style.width = `${Math.round((result.metrics.shapeScore / result.metrics.shapeMax) * 100)}%`;
 
-        // 诊断建议列表
+        // 诊断建议列表 (严重笔顺错误突出红框高亮显示)
         const sugList = document.getElementById('eval-suggestions-list');
         if (sugList) {
             sugList.innerHTML = '';
             result.suggestions.forEach(item => {
                 const li = document.createElement('li');
                 li.textContent = item;
+                if (item.startsWith('🚨')) {
+                    li.classList.add('eval-warning-item', 'eval-severe-item');
+                } else if (item.startsWith('⚠️')) {
+                    li.classList.add('eval-warning-item');
+                }
                 sugList.appendChild(li);
             });
         }
