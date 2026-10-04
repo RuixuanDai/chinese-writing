@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgHu" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </radialGradient>
+    <filter id="shadowHu" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgHu)"/>
+  
+  <!-- Grassy Ground -->
+  <ellipse cx="250" cy="445" rx="180" ry="26" fill="#86efac" opacity="0.6"/>
+  <ellipse cx="250" cy="435" rx="140" ry="16" fill="#4ade80" opacity="0.5"/>
+
+  <!-- Cute Brave Tiger Cub (老虎 / 百兽之王) -->
+  <g filter="url(#shadowHu)">
+    <!-- Tail with stripes -->
+    <path d="M 340 370 Q 420 370 415 310 Q 410 270 380 280" stroke="#f97316" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <path d="M 405 345 L 425 340" stroke="#18181b" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 412 315 L 424 305" stroke="#18181b" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 390 285 L 380 275" stroke="#18181b" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Tiger Body -->
+    <ellipse cx="250" cy="350" rx="110" ry="90" fill="#f97316" stroke="#ea580c" stroke-width="4"/>
+    <!-- Cream White Belly -->
+    <ellipse cx="250" cy="365" rx="65" ry="60" fill="#fffbeb"/>
+
+    <!-- Paws sitting in front -->
+    <ellipse cx="190" cy="415" rx="35" ry="24" fill="#f97316" stroke="#ea580c" stroke-width="3"/>
+    <ellipse cx="310" cy="415" rx="35" ry="24" fill="#f97316" stroke="#ea580c" stroke-width="3"/>
+    <!-- Paw pads -->
+    <ellipse cx="190" cy="420" rx="18" ry="12" fill="#fffbeb"/>
+    <ellipse cx="310" cy="420" rx="18" ry="12" fill="#fffbeb"/>
+    <circle cx="172" cy="408" r="5" fill="#fffbeb"/>
+    <circle cx="188" cy="404" r="5.5" fill="#fffbeb"/>
+    <circle cx="206" cy="408" r="5" fill="#fffbeb"/>
+    <circle cx="294" cy="408" r="5" fill="#fffbeb"/>
+    <circle cx="310" cy="404" r="5.5" fill="#fffbeb"/>
+    <circle cx="328" cy="408" r="5" fill="#fffbeb"/>
+
+    <!-- Round Ears with black rims and white inside -->
+    <circle cx="155" cy="150" r="36" fill="#f97316" stroke="#18181b" stroke-width="4"/>
+    <circle cx="155" cy="150" r="20" fill="#fffbeb"/>
+    <circle cx="345" cy="150" r="36" fill="#f97316" stroke="#18181b" stroke-width="4"/>
+    <circle cx="345" cy="150" r="20" fill="#fffbeb"/>
+
+    <!-- Big Round Tiger Head -->
+    <circle cx="250" cy="225" r="105" fill="#f97316" stroke="#ea580c" stroke-width="4"/>
+
+    <!-- Fluffy white cheeks -->
+    <ellipse cx="170" cy="255" rx="36" ry="28" fill="#fffbeb"/>
+    <ellipse cx="330" cy="255" rx="36" ry="28" fill="#fffbeb"/>
+
+    <!-- Black Tiger Side Stripes on Face -->
+    <polygon points="148,200 185,206 150,214" fill="#18181b"/>
+    <polygon points="150,230 188,234 152,242" fill="#18181b"/>
+    <polygon points="352,200 315,206 350,214" fill="#18181b"/>
+    <polygon points="350,230 312,234 348,242" fill="#18181b"/>
+
+    <!-- The iconic "王" mark on the tiger forehead (额头“王”字) -->
+    <g stroke="#18181b" stroke-width="7" stroke-linecap="round">
+      <!-- top horizontal -->
+      <line x1="225" y1="145" x2="275" y2="145"/>
+      <!-- middle horizontal -->
+      <line x1="232" y1="165" x2="268" y2="165"/>
+      <!-- bottom horizontal -->
+      <line x1="220" y1="185" x2="280" y2="185"/>
+      <!-- vertical stem -->
+      <line x1="250" y1="145" x2="250" y2="185"/>
+    </g>
+
+    <!-- Cute Big Sparkling Eyes -->
+    <circle cx="205" cy="215" r="14" fill="#18181b"/>
+    <circle cx="295" cy="215" r="14" fill="#18181b"/>
+    <circle cx="200" cy="210" r="5" fill="#ffffff"/>
+    <circle cx="290" cy="210" r="5" fill="#ffffff"/>
+    <circle cx="208" cy="222" r="2" fill="#ffffff"/>
+    <circle cx="298" cy="222" r="2" fill="#ffffff"/>
+
+    <!-- Pink Nose & Cute Mouth -->
+    <polygon points="250,250 236,236 264,236" fill="#fb7185" rx="3"/>
+    <path d="M 250 250 L 250 262 Q 240 274 228 266 M 250 262 Q 260 274 272 266" stroke="#18181b" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <!-- Whiskers -->
+    <line x1="175" y1="252" x2="140" y2="250" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="175" y1="262" x2="142" y2="268" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="325" y1="252" x2="360" y2="250" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="325" y1="262" x2="358" y2="268" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+</svg>

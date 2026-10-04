@@ -1,39 +1,78 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
     <radialGradient id="bgZhui" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ecfdf5"/>
-      <stop offset="100%" stop-color="#d1fae5"/>
+      <stop offset="0%" stop-color="#fdf4ff"/>
+      <stop offset="100%" stop-color="#fae8ff"/>
     </radialGradient>
     <filter id="shadowZhui" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#047857" flood-opacity="0.2"/>
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#a21caf" flood-opacity="0.2"/>
     </filter>
   </defs>
   <rect width="500" height="500" rx="30" fill="url(#bgZhui)"/>
-  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#a7f3d0" opacity="0.6"/>
-  <!-- Meadow Flowers -->
-  <circle cx="100" cy="420" r="12" fill="#f43f5e"/>
-  <circle cx="400" cy="410" r="12" fill="#fbbf24"/>
-  <!-- Fluttering Butterfly escaping ahead -->
+  <ellipse cx="250" cy="445" rx="180" ry="24" fill="#f0abfc" opacity="0.4"/>
+
+  <!-- Little Child Running Forward Chasing Soap Bubbles (追逐肥皂泡) -->
+  
+  <!-- Shimmering Rainbow Soap Bubbles floating ahead -->
+  <g>
+    <!-- Big bubble right -->
+    <g transform="translate(390, 160)">
+      <circle cx="0" cy="0" r="50" fill="#e0f2fe" fill-opacity="0.45" stroke="#38bdf8" stroke-width="4"/>
+      <!-- Iridescent rainbow swirl inside bubble -->
+      <path d="M -30 -20 A 40 40 0 0 1 30 -10" stroke="#f472b6" stroke-width="6" fill="none" opacity="0.7"/>
+      <path d="M -35 10 A 40 40 0 0 0 25 25" stroke="#38bdf8" stroke-width="6" fill="none" opacity="0.7"/>
+      <ellipse cx="-16" cy="-24" rx="10" ry="6" fill="#ffffff" opacity="0.8" transform="rotate(-30 -16 -24)"/>
+    </g>
+    <!-- Medium bubble top center -->
+    <g transform="translate(290, 95)">
+      <circle cx="0" cy="0" r="34" fill="#fce7f3" fill-opacity="0.45" stroke="#ec4899" stroke-width="3"/>
+      <path d="M -20 -10 A 25 25 0 0 1 20 -5" stroke="#c084fc" stroke-width="5" fill="none" opacity="0.7"/>
+      <ellipse cx="-10" cy="-14" rx="7" ry="4" fill="#ffffff" opacity="0.8" transform="rotate(-30 -10 -14)"/>
+    </g>
+    <!-- Tiny bubble lower right -->
+    <g transform="translate(430, 290)">
+      <circle cx="0" cy="0" r="24" fill="#ecfdf5" fill-opacity="0.45" stroke="#34d399" stroke-width="3"/>
+      <ellipse cx="-6" cy="-8" rx="5" ry="3" fill="#ffffff" opacity="0.8"/>
+    </g>
+    <g transform="translate(330, 220)">
+      <circle cx="0" cy="0" r="18" fill="#fef9c3" fill-opacity="0.45" stroke="#facc15" stroke-width="2.5"/>
+    </g>
+  </g>
+
+  <!-- Joyful Running Child Leaning Forward (欢快向前奔跑追逐) -->
   <g filter="url(#shadowZhui)">
-    <!-- Butterfly Wings -->
-    <path d="M 370 170 Q 340 120 400 130 Z" fill="#ec4899"/>
-    <path d="M 370 170 Q 340 210 395 200 Z" fill="#a855f7"/>
-    <circle cx="370" cy="170" r="6" fill="#18181b"/>
-    <!-- Kitten Pouncing Forward in hot pursuit (追逐) -->
-    <!-- Tail -->
-    <path d="M 120 310 Q 90 270 110 240" stroke="#f97316" stroke-width="14" stroke-linecap="round" fill="none"/>
-    <!-- Body -->
-    <ellipse cx="200" cy="300" rx="75" ry="50" fill="#fb923c"/>
-    <!-- Head -->
-    <circle cx="260" cy="250" r="45" fill="#fb923c"/>
-    <!-- Ears -->
-    <polygon points="245,215 235,180 265,205" fill="#ea580c"/>
-    <polygon points="275,215 295,180 290,210" fill="#ea580c"/>
-    <!-- Face -->
-    <circle cx="270" cy="245" r="5" fill="#18181b"/>
-    <polygon points="285,255 278,252 278,258" fill="#f43f5e"/>
-    <!-- Paws Reaching Forward to catch -->
-    <path d="M 250 290 L 320 250" stroke="#f97316" stroke-width="16" stroke-linecap="round" fill="none"/>
-    <path d="M 230 310 L 300 290" stroke="#f97316" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <!-- Legs running -->
+    <!-- Back leg kicking up high -->
+    <path d="M 140 370 Q 100 370 80 400" stroke="#1d4ed8" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <ellipse cx="75" cy="405" rx="16" ry="12" fill="#ef4444"/>
+    <!-- Front leg reaching forward -->
+    <path d="M 180 370 Q 210 400 240 430" stroke="#1d4ed8" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <ellipse cx="245" cy="435" rx="18" ry="12" fill="#ef4444"/>
+
+    <!-- Torso leaning forward in red/yellow sweater -->
+    <path d="M 130 350 L 210 320 L 225 375 L 145 390 Z" fill="#f59e0b"/>
+
+    <!-- Left Arm swinging back -->
+    <path d="M 150 320 Q 110 310 95 330" stroke="#fed7aa" stroke-width="20" stroke-linecap="round" fill="none"/>
+
+    <!-- Right Arm reaching FAR FORWARD toward the bubbles (伸手追赶) -->
+    <path d="M 195 310 Q 250 280 295 240" stroke="#fed7aa" stroke-width="22" stroke-linecap="round" fill="none"/>
+    <!-- Open reaching hand -->
+    <circle cx="300" cy="235" r="14" fill="#fed7aa"/>
+    <ellipse cx="308" cy="230" rx="6" ry="4" fill="#fed7aa"/>
+    <ellipse cx="308" cy="238" rx="6" ry="4" fill="#fed7aa"/>
+
+    <!-- Head & Neck leaning into the run -->
+    <circle cx="215" cy="240" r="55" fill="#fed7aa"/>
+    <!-- Hair with wind movement blowing back -->
+    <path d="M 155 230 C 150 150 270 170 275 220 C 260 190 180 190 155 230 Z" fill="#3b1f13"/>
+    <path d="M 170 190 Q 130 200 120 220" stroke="#3b1f13" stroke-width="12" stroke-linecap="round" fill="none"/>
+
+    <!-- Big joyful laughing eyes & open mouth -->
+    <ellipse cx="230" cy="230" rx="7" ry="9" fill="#18181b"/>
+    <circle cx="228" cy="227" r="3" fill="#ffffff"/>
+    <circle cx="240" cy="245" r="9" fill="#fda4af" opacity="0.7"/>
+    <!-- Wide happy open mouth -->
+    <ellipse cx="240" cy="255" rx="14" ry="12" fill="#e11d48"/>
   </g>
 </svg>

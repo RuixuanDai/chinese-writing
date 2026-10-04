@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgJianK" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </radialGradient>
+    <filter id="bgJianKSh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#a16207" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgJianK)"/>
+  <!-- 俭 = frugal / saving: a glass saving jar filling up with coins (勤俭节约) -->
+  <ellipse cx="250" cy="430" rx="150" ry="22" fill="#facc15" opacity="0.35"/>
+  <g filter="url(#bgJianKSh)">
+    <path d="M 165 170 L 335 170 C 370 200 380 250 380 320 C 380 400 350 425 250 425 C 150 425 120 400 120 320 C 120 250 130 200 165 170 Z" fill="#e0f2fe" fill-opacity="0.55" stroke="#38bdf8" stroke-width="6"/>
+    <ellipse cx="171" cy="398" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="203" cy="397" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="232" cy="399" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="258" cy="400" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="288" cy="400" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="319" cy="398" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="183" cy="376" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="211" cy="372" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="245" cy="377" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="275" cy="373" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="308" cy="371" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="337" cy="373" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="169" cy="346" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="200" cy="350" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="229" cy="348" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="263" cy="347" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="292" cy="345" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="318" cy="346" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="185" cy="322" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="213" cy="323" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="244" cy="321" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="276" cy="323" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="302" cy="322" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="334" cy="324" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="174" cy="295" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="206" cy="294" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="231" cy="298" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="259" cy="296" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="288" cy="297" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="186" cy="270" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="217" cy="269" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="246" cy="271" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="275" cy="270" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <ellipse cx="307" cy="273" rx="22" ry="10" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+    <rect x="150" y="140" width="200" height="36" rx="10" fill="#f59e0b" stroke="#b45309" stroke-width="4"/>
+    <rect x="215" y="152" width="70" height="10" rx="5" fill="#78350f"/>
+    <path d="M 150 230 C 140 270 140 330 152 370" stroke="#ffffff" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.7"/>
+  </g>
+  <!-- A coin dropping into the slot -->
+  <g>
+    <circle cx="250" cy="88" r="28" fill="#facc15" stroke="#ca8a04" stroke-width="4"/>
+    <circle cx="250" cy="88" r="18" fill="none" stroke="#ca8a04" stroke-width="3"/>
+    <rect x="244" y="82" width="12" height="12" fill="#ca8a04" rx="2"/>
+    <path d="M 208 70 l -14 -6 M 205 92 l -16 0 M 292 70 l 14 -6 M 295 92 l 16 0" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

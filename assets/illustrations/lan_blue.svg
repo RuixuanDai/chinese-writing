@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgLanK" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </radialGradient>
+    <filter id="bgLanKSh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#1e3a8a" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgLanK)"/>
+  <!-- 蓝 = blue: big paint splash + paintbrush + crayon of the same color (pure color concept, no animals) -->
+  <g filter="url(#bgLanKSh)">
+    <path d="M 250 95 C 300 90 330 130 362 128 C 400 126 418 170 400 205 C 388 230 420 255 410 292 C 398 336 352 330 332 358 C 310 390 262 395 236 372 C 212 350 176 372 148 345 C 118 316 140 284 120 258 C 96 228 108 180 140 168 C 170 157 168 118 200 106 C 220 98 232 97 250 95 Z" fill="#2563eb" stroke="#1e3a8a" stroke-width="4"/>
+    <circle cx="110" cy="130" r="14" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+    <circle cx="425" cy="125" r="10" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+    <circle cx="430" cy="345" r="13" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+    <circle cx="95" cy="330" r="9" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+    <circle cx="300" cy="410" r="8" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+    <ellipse cx="205" cy="170" rx="34" ry="16" fill="#ffffff" opacity="0.35" transform="rotate(-25 205 170)"/>
+  </g>
+  <!-- Paintbrush dipped in the color -->
+  <g transform="translate(-25 -25) rotate(-38 380 420)">
+    <rect x="300" y="410" width="150" height="18" rx="9" fill="#b45309"/>
+    <rect x="285" y="406" width="26" height="26" rx="4" fill="#94a3b8"/>
+    <path d="M 287 408 C 260 404 238 414 230 419 C 238 424 260 434 287 430 Z" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+  </g>
+  <!-- Crayon of the same color (lower left) -->
+  <g transform="translate(15 -20) rotate(28 120 430)">
+    <rect x="60" y="415" width="120" height="30" rx="5" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/>
+    <rect x="88" y="415" width="62" height="30" fill="#ffffff" opacity="0.55"/>
+    <polygon points="180,415 212,430 180,445" fill="#2563eb" stroke="#1e3a8a" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+</svg>

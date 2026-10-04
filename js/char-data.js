@@ -312,7 +312,8 @@ const CHARACTER_CATEGORIES = [
                     ],
                 "sentence": "蓝天上飘着几朵雪白的云。",
                 "icon": "🌤️",
-                "label": "天空"
+                "label": "天空",
+                "image": "assets/illustrations/tian_sky.svg"
             },
             {
                 "char": "子",
@@ -372,7 +373,8 @@ const CHARACTER_CATEGORIES = [
                     ],
                 "sentence": "天上飘着朵朵雪白的云朵。",
                 "icon": "⚪",
-                "label": "白色"
+                "label": "白色",
+                "image": "assets/illustrations/bai_white.svg"
             },
             {
                 "char": "门",
@@ -600,8 +602,9 @@ const CHARACTER_CATEGORIES = [
                     "三只"
                     ],
                 "sentence": "树林里有一只百灵鸟在欢快地歌唱。",
-                "icon": "🐤",
-                "label": "一只"
+                "icon": "🐾",
+                "label": "一只",
+                "image": "assets/illustrations/zhi_measure.svg"
             },
             {
                 "char": "个",
@@ -615,8 +618,9 @@ const CHARACTER_CATEGORIES = [
                     "个人"
                     ],
                 "sentence": "每个小朋友都有一双灵巧的小手。",
-                "icon": "🍎",
-                "label": "一个"
+                "icon": "🎈",
+                "label": "一个",
+                "image": "assets/illustrations/ge_measure.svg"
             }
         ]
     },
@@ -893,7 +897,8 @@ const CHARACTER_CATEGORIES = [
                 ],
                 "sentence": "威猛的老虎是森林之王。",
                 "icon": "🐯",
-                "label": "老虎"
+                "label": "老虎",
+                "image": "assets/illustrations/hu_tiger.svg"
             },
             {
                 "char": "猴",
@@ -1651,13 +1656,14 @@ const CHARACTER_CATEGORIES = [
                 "strokes": 7,
                 "radical": "足",
                 "words": [
-                    "足球",
                     "双足",
-                    "手足"
+                    "手足",
+                    "足迹"
                     ],
-                "sentence": "课后我们到绿茵场上痛快地踢足球。",
+                "sentence": "一双可爱的小脚丫留下了欢快的足迹。",
                 "icon": "🦶",
-                "label": "双足"
+                "label": "双足",
+                "image": "assets/illustrations/zu_feet.svg"
             },
             {
                 "char": "心",
@@ -2541,7 +2547,8 @@ const CHARACTER_CATEGORIES = [
                 ],
                 "sentence": "九九乘法表，我们牢牢记心间。",
                 "icon": "🎈",
-                "label": "九个"
+                "label": "九个",
+                "image": "assets/illustrations/jiu_nine.svg"
             },
             {
                 "char": "百",
@@ -2570,8 +2577,9 @@ const CHARACTER_CATEGORIES = [
                     "一千"
                     ],
                 "sentence": "千里之行，始于足下，我们要脚踏实地。",
-                "icon": "🏅",
-                "label": "一千"
+                "icon": "🧊",
+                "label": "一千",
+                "image": "assets/illustrations/qian_thousand.svg"
             },
             {
                 "char": "万",
@@ -2585,8 +2593,9 @@ const CHARACTER_CATEGORIES = [
                     "千万"
                 ],
                 "sentence": "万里长城蜿蜒起伏，气势雄伟。",
-                "icon": "🏰",
-                "label": "一万"
+                "icon": "🔢",
+                "label": "一万",
+                "image": "assets/illustrations/wan_tenthousand.svg"
             },
             {
                 "char": "亿",
@@ -2600,8 +2609,9 @@ const CHARACTER_CATEGORIES = [
                     "十亿"
                 ],
                 "sentence": "十三亿中华儿女心连心。",
-                "icon": "✨",
-                "label": "亿万"
+                "icon": "🌌",
+                "label": "亿万",
+                "image": "assets/illustrations/yi_hundredmillion.svg"
             },
             {
                 "char": "东",
@@ -2794,9 +2804,10 @@ const CHARACTER_CATEGORIES = [
                     "半天",
                     "半月"
                 ],
-                "sentence": "小松鼠把采到的松果分给小刺猬一半。",
+                "sentence": "圆圆的饼干分成两半，和小伙伴一起分享。",
                 "icon": "🌗",
-                "label": "一半"
+                "label": "一半",
+                "image": "assets/illustrations/ban_cookie.svg"
             },
             {
                 "char": "零",
@@ -3290,7 +3301,8 @@ const CHARACTER_CATEGORIES = [
                     ],
                 "sentence": "在蔚蓝的天空下，白鸽自由自在地飞翔。",
                 "icon": "🔷",
-                "label": "蓝色"
+                "label": "蓝色",
+                "image": "assets/illustrations/lan_blue.svg"
             },
             {
                 "char": "绿",
@@ -3320,7 +3332,8 @@ const CHARACTER_CATEGORIES = [
                     ],
                 "sentence": "夜晚的天空是深黑色的，繁星闪烁。",
                 "icon": "🖤",
-                "label": "黑色"
+                "label": "黑色",
+                "image": "assets/illustrations/hei_black.svg"
             },
             {
                 "char": "爱",
@@ -3530,7 +3543,8 @@ const CHARACTER_CATEGORIES = [
                 ],
                 "sentence": "勤俭节约是中华民族世代相传的传统美德。",
                 "icon": "🪙",
-                "label": "节俭"
+                "label": "节俭",
+                "image": "assets/illustrations/jian_jar.svg"
             },
             {
                 "char": "宽",
@@ -3926,8 +3940,9 @@ const CHARACTER_CATEGORIES = [
                     "快慢"
                 ],
                 "sentence": "高铁列车在平稳的钢轨上飞快地疾驰。",
-                "icon": "⚡",
-                "label": "飞快"
+                "icon": "🚄",
+                "label": "飞快",
+                "image": "assets/illustrations/kuai_fast.svg"
             }
         ]
     },
@@ -4960,7 +4975,7 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "土": "assets/illustrations/tu.svg",
     "木": "assets/illustrations/mu.jpg",
     "禾": "assets/illustrations/he.svg",
-    "天": "assets/illustrations/tian.svg",
+    "天": "assets/illustrations/tian_sky.svg",
     "大": "assets/illustrations/da_big.jpg",
     "小": "assets/illustrations/xiao_small.jpg",
     "上": "assets/illustrations/shang.svg",
@@ -4968,7 +4983,7 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "子": "assets/illustrations/zi.jpg",
     "中": "assets/illustrations/zhong.jpg",
     "文": "assets/illustrations/wen.jpg",
-    "白": "assets/illustrations/bai.svg",
+    "白": "assets/illustrations/bai_white.svg",
     "门": "assets/illustrations/men.svg",
     "云": "assets/illustrations/yun.svg",
     "风": "assets/illustrations/feng.svg",
@@ -4982,8 +4997,8 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "出": "assets/illustrations/chu_exit.jpg",
     "入": "assets/illustrations/ru.jpg",
     "见": "assets/illustrations/jian.jpg",
-    "只": "assets/illustrations/zhi.svg",
-    "个": "assets/illustrations/ge.svg",
+    "只": "assets/illustrations/zhi_measure.svg",
+    "个": "assets/illustrations/ge_measure.svg",
     "马": "assets/illustrations/ma.jpg",
     "牛": "assets/illustrations/niu.svg",
     "羊": "assets/illustrations/yang.svg",
@@ -5001,7 +5016,7 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "猪": "assets/illustrations/zhu.svg",
     "熊": "assets/illustrations/xiong.svg",
     "龙": "assets/illustrations/long.svg",
-    "虎": "assets/illustrations/hu.svg",
+    "虎": "assets/illustrations/hu_tiger.svg",
     "猴": "assets/illustrations/hou.svg",
     "龟": "assets/illustrations/gui.svg",
     "蝶": "assets/illustrations/die.svg",
@@ -5051,7 +5066,7 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "目": "assets/illustrations/mu_eye.svg",
     "耳": "assets/illustrations/er_ear.svg",
     "手": "assets/illustrations/shou.svg",
-    "足": "assets/illustrations/zu.svg",
+    "足": "assets/illustrations/zu_feet.svg",
     "心": "assets/illustrations/xin.svg",
     "牙": "assets/illustrations/ya_tooth.svg",
     "爸": "assets/illustrations/ba.svg",
@@ -5139,10 +5154,10 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "六": "assets/illustrations/liu.svg",
     "七": "assets/illustrations/qi.svg",
     "八": "assets/illustrations/ba_num.svg",
-    "九": "assets/illustrations/jiu.svg",
+    "九": "assets/illustrations/jiu_nine.svg",
     "百": "assets/illustrations/bai_hundred.svg",
-    "千": "assets/illustrations/qian.svg",
-    "万": "assets/illustrations/wan.svg",
+    "千": "assets/illustrations/qian_thousand.svg",
+    "万": "assets/illustrations/wan_tenthousand.svg",
     "东": "assets/illustrations/dong_east.svg",
     "西": "assets/illustrations/xi_west.svg",
     "南": "assets/illustrations/nan_south.svg",
@@ -5159,22 +5174,22 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "早": "assets/illustrations/zao.svg",
     "红": "assets/illustrations/hong.jpg",
     "黄": "assets/illustrations/huang.svg",
-    "蓝": "assets/illustrations/lan.svg",
+    "蓝": "assets/illustrations/lan_blue.svg",
     "绿": "assets/illustrations/lv.svg",
-    "黑": "assets/illustrations/hei.svg",
+    "黑": "assets/illustrations/hei_black.svg",
     "紫": "assets/illustrations/zi_color.svg",
     "爱": "assets/illustrations/ai_love.svg",
     "跑": "assets/illustrations/pao.svg",
     "飞": "assets/illustrations/fei.svg",
     "游": "assets/illustrations/you_swim.svg",
-    "亿": "assets/illustrations/yi_billion.svg",
+    "亿": "assets/illustrations/yi_hundredmillion.svg",
     "前": "assets/illustrations/qian_front.svg",
     "后": "assets/illustrations/hou_back.svg",
     "边": "assets/illustrations/bian_edge.svg",
     "间": "assets/illustrations/jian_room.svg",
     "里": "assets/illustrations/li_inside.svg",
     "外": "assets/illustrations/wai_outside.svg",
-    "半": "assets/illustrations/ban_half.svg",
+    "半": "assets/illustrations/ban_cookie.svg",
     "零": "assets/illustrations/ling_zero.svg",
     "初": "assets/illustrations/chu_beginning.svg",
     "末": "assets/illustrations/mo_end.svg",
@@ -5213,7 +5228,7 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "青": "assets/illustrations/qing_cyan.svg",
     "敬": "assets/illustrations/jing_respect.svg",
     "勤": "assets/illustrations/qin_diligent.svg",
-    "俭": "assets/illustrations/jian_frugal.svg",
+    "俭": "assets/illustrations/jian_jar.svg",
     "宽": "assets/illustrations/kuan_wide.svg",
     "勇": "assets/illustrations/yong_brave.svg",
     "恒": "assets/illustrations/heng_constant.svg",

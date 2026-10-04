@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgZhiM" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </radialGradient>
+    <filter id="shadowZhiM" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgZhiM)"/>
+  <ellipse cx="250" cy="440" rx="170" ry="24" fill="#86efac" opacity="0.5"/>
+
+  <!-- Measure Word "只" (一只可爱小动物量词) -->
+  <g filter="url(#shadowZhiM)">
+    <!-- Cute Little White Kitten sitting neatly -->
+    <g transform="translate(250, 260)">
+      <!-- Tail -->
+      <path d="M 60 90 Q 110 80 100 40 Q 90 20 80 30" stroke="#ffffff" stroke-width="18" stroke-linecap="round" fill="none"/>
+      <!-- Body -->
+      <ellipse cx="0" cy="50" rx="65" ry="60" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+      <!-- Paws -->
+      <ellipse cx="-25" cy="100" rx="18" ry="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+      <ellipse cx="25" cy="100" rx="18" ry="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+      <!-- Pink collar with golden bell -->
+      <rect x="-40" y="-8" width="80" height="12" rx="6" fill="#f43f5e"/>
+      <circle cx="0" cy="6" r="10" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
+      <!-- Ears -->
+      <polygon points="-55,-60 -25,-120 -5,-70" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+      <polygon points="-45,-65 -25,-105 -12,-72" fill="#fda4af"/>
+      <polygon points="55,-60 25,-120 5,-70" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+      <polygon points="45,-65 25,-105 12,-72" fill="#fda4af"/>
+      <!-- Head -->
+      <circle cx="0" cy="-45" r="58" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+      <!-- Big Blue Eyes -->
+      <ellipse cx="-20" cy="-50" rx="10" ry="12" fill="#0284c7"/>
+      <ellipse cx="20" cy="-50" rx="10" ry="12" fill="#0284c7"/>
+      <circle cx="-23" cy="-54" r="4" fill="#ffffff"/>
+      <circle cx="17" cy="-54" r="4" fill="#ffffff"/>
+      <!-- Nose & Mouth -->
+      <polygon points="0,-35 -5,-40 5,-40" fill="#fb7185"/>
+      <path d="M 0 -35 L 0 -28 Q -8 -20 -15 -25 M 0 -28 Q 8 -20 15 -25" stroke="#64748b" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <!-- Pink blush -->
+      <circle cx="-35" cy="-35" r="8" fill="#fda4af" opacity="0.6"/>
+      <circle cx="35" cy="-35" r="8" fill="#fda4af" opacity="0.6"/>
+    </g>
+
+    <!-- Prominent Counting Measure Badge "1 只" (量词标牌) -->
+    <g transform="translate(250, 95)">
+      <rect x="-85" y="-35" width="170" height="70" rx="35" fill="#ffffff" stroke="#22c55e" stroke-width="5"/>
+      <text x="0" y="14" font-family="'Arial Rounded MT Bold', sans-serif" font-size="40" font-weight="bold" fill="#15803d" text-anchor="middle" letter-spacing="2">1 只</text>
+    </g>
+    <!-- Pointer Arrow pointing down to the kitten -->
+    <polygon points="250,145 238,132 262,132" fill="#22c55e"/>
+  </g>
+</svg>

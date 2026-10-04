@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgBanK" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </radialGradient>
+    <filter id="bgBanKSh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#9a3412" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="500" height="500" rx="30" fill="url(#bgBanK)"/>
+  <!-- 半 = half: a round cookie broken into two equal halves (一半) -->
+  <ellipse cx="250" cy="400" rx="190" ry="26" fill="#fdba74" opacity="0.5"/>
+  <g filter="url(#bgBanKSh)">
+    <path d="M 228 110 A 140 140 0 0 0 228 390 L 222 360 L 233 330 L 221 295 L 232 260 L 222 225 L 233 190 L 222 150 Z" fill="#f59e0b" stroke="#b45309" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M 228 128 A 122 122 0 0 0 228 372" fill="none" stroke="#fcd34d" stroke-width="7" opacity="0.6"/>
+    <ellipse cx="168" cy="210" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="198" cy="300" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="148" cy="280" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="203" cy="165" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="133" cy="235" rx="11" ry="9" fill="#78350f"/>
+  </g>
+  <g filter="url(#bgBanKSh)">
+    <path d="M 272 110 A 140 140 0 0 1 272 390 L 278 360 L 267 330 L 279 295 L 268 260 L 278 225 L 267 190 L 278 150 Z" fill="#f59e0b" stroke="#b45309" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M 272 128 A 122 122 0 0 1 272 372" fill="none" stroke="#fcd34d" stroke-width="7" opacity="0.6"/>
+    <ellipse cx="332" cy="210" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="302" cy="300" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="352" cy="280" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="297" cy="165" rx="11" ry="9" fill="#78350f"/>
+    <ellipse cx="367" cy="235" rx="11" ry="9" fill="#78350f"/>
+  </g>
+  <!-- dashed middle line showing two equal parts -->
+  <line x1="250" y1="80" x2="250" y2="420" stroke="#ea580c" stroke-width="4" stroke-dasharray="12 10" stroke-linecap="round"/>
+</svg>
