@@ -361,30 +361,11 @@ class KidWritingApp {
         const ipadBtn = document.getElementById('btn-ipad-modal');
         const ipadModal = document.getElementById('ipad-guide-modal');
         const ipadCloseBtn = document.getElementById('ipad-guide-close-btn');
-        const ipadCopyBtn = document.getElementById('ipad-copy-url-btn');
 
         if (ipadBtn) {
             ipadBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
                 this.openIpadGuideModal();
-            });
-        }
-        if (ipadCopyBtn) {
-            ipadCopyBtn.addEventListener('click', () => {
-                const urlDisplay = document.getElementById('ipad-url-display');
-                if (urlDisplay) {
-                    navigator.clipboard.writeText(urlDisplay.textContent.trim()).then(() => {
-                        const originalText = ipadCopyBtn.textContent;
-                        ipadCopyBtn.textContent = '已复制!';
-                        ipadCopyBtn.style.background = '#2ed573';
-                        setTimeout(() => {
-                            ipadCopyBtn.textContent = originalText;
-                            ipadCopyBtn.style.background = '#0984e3';
-                        }, 2000);
-                    }).catch(() => {
-                        alert('网址为：' + urlDisplay.textContent.trim());
-                    });
-                }
             });
         }
         if (ipadCloseBtn && ipadModal) {
@@ -959,28 +940,6 @@ class KidWritingApp {
     openIpadGuideModal() {
         const ipadModal = document.getElementById('ipad-guide-modal');
         if (!ipadModal) return;
-        const urlDisplay = document.getElementById('ipad-url-display');
-        const step1 = document.getElementById('ipad-step-1');
-        const step2 = document.getElementById('ipad-step-2');
-        const isOnline = window.location.protocol.startsWith('http') &&
-                         !['localhost', '127.0.0.1'].includes(window.location.hostname) &&
-                         !/^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname);
-
-        if (urlDisplay) {
-            if (isOnline) {
-                urlDisplay.textContent = window.location.href;
-                if (step1) step1.innerHTML = '<strong>第 1 步：</strong>本应用已在线发布，iPad 连接<strong>任意 Wi-Fi 或蜂窝网络</strong>均可打开！';
-                if (step2) step2.innerHTML = '<strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，访问：';
-            } else if (window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                urlDisplay.textContent = `http://${window.location.hostname}:8080`;
-                if (step1) step1.innerHTML = '<strong>第 1 步：</strong>确保 iPad 和电脑连接在<strong>同一个家庭 Wi-Fi</strong> 下。';
-                if (step2) step2.innerHTML = '<strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，输入：';
-            } else {
-                urlDisplay.textContent = window.location.href;
-                if (step1) step1.innerHTML = '<strong>第 1 步：</strong>本应用支持全平台运行，iPad 连接<strong>任意网络</strong>均可打开！';
-                if (step2) step2.innerHTML = '<strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，访问：';
-            }
-        }
         ipadModal.classList.add('visible');
     }
 
