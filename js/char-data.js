@@ -38,7 +38,8 @@ const CHARACTER_CATEGORIES = [
                     ],
                 "sentence": "一年有十二个月，二月有立春。",
                 "icon": "✌️",
-                "label": "两个"
+                "label": "两个",
+                "image": "assets/illustrations/er_two.jpg"
             },
             {
                 "char": "三",
@@ -51,9 +52,10 @@ const CHARACTER_CATEGORIES = [
                     "三天",
                     "三月"
                     ],
-                "sentence": "树上有三个又红又大的苹果。",
-                "icon": "🍎",
-                "label": "三个"
+                "sentence": "天空中飘着三个美丽的小气球。",
+                "icon": "👌",
+                "label": "三个",
+                "image": "assets/illustrations/san_three.jpg"
             },
             {
                 "char": "十",
@@ -111,9 +113,10 @@ const CHARACTER_CATEGORIES = [
                     "大树",
                     "大家"
                     ],
-                "sentence": "森林里有一棵巨大的榕树。",
-                "icon": "🐘",
-                "label": "巨大"
+                "sentence": "我张开双手，大声说：我长大了！",
+                "icon": "🙆",
+                "label": "长大",
+                "image": "assets/illustrations/da_big.jpg"
             },
             {
                 "char": "小",
@@ -122,13 +125,14 @@ const CHARACTER_CATEGORIES = [
                 "strokes": 3,
                 "radical": "小",
                 "words": [
-                    "小鸟",
+                    "小草",
                     "小孩",
                     "小心"
                     ],
-                "sentence": "小鸭子在清清的池塘里游水。",
-                "icon": "🐥",
-                "label": "微小"
+                "sentence": "手心里捧着一棵小小的绿芽。",
+                "icon": "🤏",
+                "label": "小苗",
+                "image": "assets/illustrations/xiao_small.jpg"
             },
             {
                 "char": "上",
@@ -456,9 +460,10 @@ const CHARACTER_CATEGORIES = [
                     "几天",
                     "几点"
                     ],
-                "sentence": "池塘里有几只小天鹅在嬉戏。",
-                "icon": "🪑",
-                "label": "几个"
+                "sentence": "地毯上有几块彩色的积木。",
+                "icon": "🧱",
+                "label": "几个",
+                "image": "assets/illustrations/ji_few.jpg"
             },
             {
                 "char": "太",
@@ -501,9 +506,10 @@ const CHARACTER_CATEGORIES = [
                     "学会",
                     "体会"
                 ],
-                "sentence": "多动脑筋，我们就能学会很多新本领。",
-                "icon": "🤝",
-                "label": "学会"
+                "sentence": "我学会了搭积木城堡，真有成就感！",
+                "icon": "👍",
+                "label": "学会",
+                "image": "assets/illustrations/hui_can.jpg"
             },
             {
                 "char": "来",
@@ -516,9 +522,10 @@ const CHARACTER_CATEGORIES = [
                     "回来",
                     "未来"
                 ],
-                "sentence": "春天悄悄地来到了我们身边。",
+                "sentence": "小朋友张开双手，欢迎大家来到这里一起玩。",
                 "icon": "👋",
-                "label": "来到"
+                "label": "来到",
+                "image": "assets/illustrations/lai_come.jpg"
             },
             {
                 "char": "去",
@@ -546,9 +553,10 @@ const CHARACTER_CATEGORIES = [
                     "出去",
                     "出发"
                 ],
-                "sentence": "小草从肥沃的泥土里探出了小脑袋。",
+                "sentence": "小朋友推开家门，高高兴兴地出门去玩耍。",
                 "icon": "🚪",
-                "label": "出门"
+                "label": "出门",
+                "image": "assets/illustrations/chu_exit.jpg"
             },
             {
                 "char": "入",
@@ -2517,7 +2525,7 @@ const CHARACTER_CATEGORIES = [
                     "八月"
                 ],
                 "sentence": "八月桂花开，满园飘清香。",
-                "icon": "🐙",
+                "icon": "🪙",
                 "label": "八个"
             },
             {
@@ -4937,8 +4945,8 @@ window.CHARACTER_EN_MAP = {
 // --- 高品质专属看图识字插画库 (高清绘本水彩插画与精细矢量图，替代粗糙emoji) ---
 window.CHARACTER_ILLUSTRATION_MAP = {
     "一": "assets/illustrations/yi_one.jpg",
-    "二": "assets/illustrations/er.jpg",
-    "三": "assets/illustrations/san.jpg",
+    "二": "assets/illustrations/er_two.jpg",
+    "三": "assets/illustrations/san_three.jpg",
     "十": "assets/illustrations/shi.svg",
     "人": "assets/illustrations/ren.jpg",
     "口": "assets/illustrations/kou.svg",
@@ -4953,8 +4961,8 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "木": "assets/illustrations/mu.jpg",
     "禾": "assets/illustrations/he.svg",
     "天": "assets/illustrations/tian.svg",
-    "大": "assets/illustrations/da.svg",
-    "小": "assets/illustrations/xiao.svg",
+    "大": "assets/illustrations/da_big.jpg",
+    "小": "assets/illustrations/xiao_small.jpg",
     "上": "assets/illustrations/shang.svg",
     "下": "assets/illustrations/xia.svg",
     "子": "assets/illustrations/zi.jpg",
@@ -4965,13 +4973,13 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "云": "assets/illustrations/yun.svg",
     "风": "assets/illustrations/feng.svg",
     "雨": "assets/illustrations/yu.svg",
-    "几": "assets/illustrations/ji.jpg",
+    "几": "assets/illustrations/ji_few.jpg",
     "太": "assets/illustrations/tai.jpg",
     "生": "assets/illustrations/sheng.jpg",
-    "会": "assets/illustrations/hui.jpg",
-    "来": "assets/illustrations/lai.jpg",
+    "会": "assets/illustrations/hui_can.jpg",
+    "来": "assets/illustrations/lai_come.jpg",
     "去": "assets/illustrations/qu.jpg",
-    "出": "assets/illustrations/chu.jpg",
+    "出": "assets/illustrations/chu_exit.jpg",
     "入": "assets/illustrations/ru.jpg",
     "见": "assets/illustrations/jian.jpg",
     "只": "assets/illustrations/zhi.svg",

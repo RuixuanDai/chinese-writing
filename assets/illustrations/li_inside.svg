@@ -9,26 +9,47 @@
     </filter>
   </defs>
   <rect width="500" height="500" rx="30" fill="url(#bgLi)"/>
-  <ellipse cx="250" cy="435" rx="160" ry="24" fill="#fed7aa" opacity="0.6"/>
+  <ellipse cx="250" cy="440" rx="170" ry="22" fill="#fed7aa" opacity="0.6"/>
+
+  <!-- Glowing Heart nestled safe and snug INSIDE the open box (里 / 里面 / 心里) -->
   <g filter="url(#shadowLi)">
-    <!-- Cute Teddy Bear popping OUT from INSIDE the box -->
-    <circle cx="205" cy="175" r="26" fill="#92400e"/>
-    <circle cx="205" cy="175" r="14" fill="#fcd34d"/>
-    <circle cx="295" cy="175" r="26" fill="#92400e"/>
-    <circle cx="295" cy="175" r="14" fill="#fcd34d"/>
-    <circle cx="250" cy="210" r="60" fill="#b45309"/>
-    <!-- Bear muzzle and eyes -->
-    <ellipse cx="250" cy="225" rx="26" ry="18" fill="#fef3c7"/>
-    <ellipse cx="250" cy="218" rx="10" ry="7" fill="#451a03"/>
-    <circle cx="230" cy="195" r="6" fill="#1e293b"/>
-    <circle cx="270" cy="195" r="6" fill="#1e293b"/>
-    <!-- Bear hands on box rim -->
-    <circle cx="185" cy="265" r="20" fill="#b45309"/>
-    <circle cx="315" cy="265" r="20" fill="#b45309"/>
-    <!-- Gift Box (Front) -->
-    <rect x="150" y="260" width="200" height="150" rx="14" fill="#ec4899"/>
-    <rect x="235" y="260" width="30" height="150" fill="#facc15"/>
-    <!-- Open Lid angled behind/side -->
-    <polygon points="120,240 240,210 260,225 140,255" fill="#db2777"/>
+    <!-- Box Back / Interior Wall (darker to show depth inside) -->
+    <rect x="130" y="220" width="240" height="190" rx="16" fill="#be185d"/>
+    <polygon points="130,220 180,180 370,180 370,220" fill="#9d174d"/>
+
+    <!-- Glowing Sweet Heart safe INSIDE the box -->
+    <g transform="translate(250, 245)">
+      <circle cx="-25" cy="-20" r="45" fill="#f43f5e"/>
+      <circle cx="25" cy="-20" r="45" fill="#f43f5e"/>
+      <polygon points="-65,-7 65,-7 0,65" fill="#f43f5e"/>
+      <!-- Soft highlight on heart -->
+      <circle cx="-30" cy="-35" r="14" fill="#fb7185" opacity="0.8"/>
+      <circle cx="-35" cy="-40" r="5" fill="#ffffff" opacity="0.9"/>
+      <!-- Cute happy face on heart -->
+      <path d="M -20 -15 Q -10 -25 0 -15" stroke="#881337" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M 0 -15 Q 10 -25 20 -15" stroke="#881337" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M -10 0 Q 0 12 10 0" stroke="#881337" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <circle cx="-22" cy="-5" r="6" fill="#fda4af"/>
+      <circle cx="22" cy="-5" r="6" fill="#fda4af"/>
+    </g>
+
+    <!-- Box Front & Sides (Wrapping around, so heart is clearly INSIDE) -->
+    <path d="M 120 270 L 380 270 L 370 420 L 130 420 Z" fill="#ec4899"/>
+    
+    <!-- Golden ribbon & bow on box front -->
+    <rect x="235" y="270" width="30" height="150" fill="#facc15"/>
+    <ellipse cx="230" cy="275" rx="20" ry="12" fill="#facc15" transform="rotate(-25, 230, 275)"/>
+    <ellipse cx="270" cy="275" rx="20" ry="12" fill="#facc15" transform="rotate(25, 270, 275)"/>
+    <circle cx="250" cy="275" r="9" fill="#eab308"/>
+
+    <!-- Arrow indicating "INSIDE" (从外到内 / 在里面) -->
+    <g transform="translate(100, 150)">
+      <path d="M 20 20 Q 60 40 85 85" stroke="#3b82f6" stroke-width="6" stroke-dasharray="8 6" stroke-linecap="round" fill="none"/>
+      <polygon points="95,95 80,80 92,72" fill="#3b82f6"/>
+    </g>
+
+    <!-- Sparkles inside box -->
+    <polygon points="175,200 178,210 188,213 178,216 175,226 172,216 162,213 172,210" fill="#fde047"/>
+    <polygon points="325,190 328,198 336,200 328,202 325,210 322,202 314,200 322,198" fill="#fde047"/>
   </g>
 </svg>
