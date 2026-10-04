@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#ff6b6b">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261003_v7">
+    <link rel="stylesheet" href="css/style.css?v=20261004_v1">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -74,8 +74,18 @@
         <div id="char-list-grid" class="char-list-grid"></div>
     </section>
 
+    <!-- 移动端手机专属模式切换标签栏 (仅在手机窄屏幕下展现，iPad与电脑端完全隐藏) -->
+    <div id="mobile-mode-tabs" class="mobile-mode-tabs">
+        <button id="tab-btn-studio" class="mobile-tab-btn active" data-tab="studio">
+            <span>📖 认字与笔顺</span>
+        </button>
+        <button id="tab-btn-canvas" class="mobile-tab-btn" data-tab="canvas">
+            <span>✍️ 书法画板</span>
+        </button>
+    </div>
+
     <!-- 核心练习区：左边综合学习与笔顺，右边手写练习板 -->
-    <main class="main-container">
+    <main id="main-container" class="main-container mobile-tab-studio">
         
         <!-- 左侧：认知与笔顺综合大本营 -->
         <section class="panel-card panel-left-studio">
@@ -167,11 +177,28 @@
                         <span class="btn-text">笔顺跟写闯关</span>
                     </button>
                 </div>
+
+                <!-- 手机端便捷操作：学完笔顺一键前往画板 -->
+                <div class="mobile-studio-footer-action">
+                    <button id="btn-mobile-goto-canvas" class="btn-mobile-switch">✍️ 前往画板亲手写一写 ➔</button>
+                </div>
             </div>
         </section>
 
         <!-- 右侧：小小书法家手写画板 -->
         <section class="panel-card panel-right">
+            <!-- 手机端练字顶栏：显示当前练习字并提供快捷查看笔顺 -->
+            <div class="mobile-canvas-ref-banner" id="mobile-canvas-ref-banner">
+                <div class="ref-char-info" id="mobile-ref-info-box" title="点击听朗读发音">
+                    <span class="ref-label">练：</span>
+                    <span id="mobile-ref-char" class="ref-char-text">一</span>
+                    <span id="mobile-ref-py" class="ref-py-text">yī</span>
+                    <span id="mobile-ref-radical" class="ref-sub-pill">一</span>
+                    <button id="btn-mobile-speak-ref" class="btn-ref-speak" title="听发音">🔊</button>
+                </div>
+                <button id="btn-mobile-goto-studio" class="btn-mobile-switch-back">📖 查看标准笔顺</button>
+            </div>
+
             <div class="canvas-panel-header">
                 <h2>🎨 小小书法家画板</h2>
                 <!-- 格线切换 -->
@@ -439,12 +466,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261003_v7"></script>
-    <script src="js/char-data.js?v=20261003_v7"></script>
-    <script src="js/stroke-cache.js?v=20261003_v7"></script>
-    <script src="js/canvas.js?v=20261003_v7"></script>
-    <script src="js/hanzi-guide.js?v=20261003_v7"></script>
-    <script src="js/evaluator.js?v=20261003_v7"></script>
-    <script src="js/app.js?v=20261003_v7"></script>
+    <script src="js/sound.js?v=20261004_v1"></script>
+    <script src="js/char-data.js?v=20261004_v1"></script>
+    <script src="js/stroke-cache.js?v=20261004_v1"></script>
+    <script src="js/canvas.js?v=20261004_v1"></script>
+    <script src="js/hanzi-guide.js?v=20261004_v1"></script>
+    <script src="js/evaluator.js?v=20261004_v1"></script>
+    <script src="js/app.js?v=20261004_v1"></script>
 </body>
 </html>

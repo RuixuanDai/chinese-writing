@@ -402,9 +402,13 @@ img, svg, canvas {
     gap: 6px;
     overflow-x: auto; /* 允许汉字行横向滚动 */
     overflow-y: hidden;
-    padding: 2px 2px 4px;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
+}
+
+.char-list-grid::-webkit-scrollbar {
+    display: none;
 }
 
 .char-card-btn {
@@ -1550,32 +1554,598 @@ img, svg, canvas {
     }
 }
 
-/* 针对手机等超窄视口（宽 < 760px）自适应 */
-@media (max-width: 760px) {
+/* ========================================================
+   移动端专属组件默认样式 (桌面/iPad端完全隐藏)
+   ======================================================== */
+.mobile-mode-tabs {
+    display: none;
+}
+
+.mobile-studio-footer-action {
+    display: none;
+}
+
+.mobile-canvas-ref-banner {
+    display: none;
+}
+
+/* ========================================================
+   针对手机等窄屏设备（宽 <= 768px）深度优化与自适应
+   彻底解决顶栏截断、生硬滚动条、词句被压扁、画板溢出及书写遮挡问题
+   ======================================================== */
+@media (max-width: 768px) {
+    /* 1. 顶部模式切换标签栏 (识字与笔顺 vs 书法画板) */
+    .mobile-mode-tabs {
+        display: flex;
+        background: #f1f2f6;
+        border-radius: 20px;
+        padding: 3px;
+        margin: 4px 10px 2px;
+        gap: 4px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .mobile-tab-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 7px 12px;
+        border-radius: 16px;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .mobile-tab-btn.active {
+        background: #ffffff;
+        color: var(--primary);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* 主容器：在手机端根据当前激活标签智能显隐面板，杜绝超长滚动与视线丢失 */
     .main-container {
         grid-template-columns: 1fr;
+        padding: 4px 8px 12px;
+        gap: 8px;
         overflow-y: auto;
-    }
-    .panel-left-studio {
         height: auto;
-        min-height: 500px;
+        min-height: 0;
     }
+
+    .main-container.mobile-tab-studio .panel-right {
+        display: none !important;
+    }
+
+    .main-container.mobile-tab-canvas .panel-left-studio {
+        display: none !important;
+    }
+
+    .main-container.mobile-tab-studio .panel-left-studio,
+    .main-container.mobile-tab-canvas .panel-right {
+        display: flex !important;
+        width: 100%;
+        height: auto;
+        min-height: 0;
+    }
+
+    /* 2. 顶栏导航自适应 (两行排版，永不截断) */
     .header-inner {
-        padding: 6px 12px;
+        padding: 6px 10px;
+        gap: 6px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
     }
+
+    .logo-area {
+        flex: 0 0 auto;
+        gap: 6px;
+    }
+
+    .logo-icon {
+        font-size: 20px;
+    }
+
+    .logo-title {
+        font-size: 17px;
+    }
+
     .logo-subtitle {
         display: none;
     }
-    .header-actions {
-        gap: 6px;
-        flex-wrap: wrap;
+
+    .search-box {
+        flex: 0 1 auto;
+        margin-left: auto;
+        padding: 2px 3px 2px 8px;
     }
+
+    .search-box input {
+        width: 72px;
+        font-size: 12px;
+    }
+
+    .search-box button {
+        padding: 3px 8px;
+        font-size: 12px;
+        border-radius: 12px;
+    }
+
+    .header-actions {
+        flex: 1 0 100%; /* 独占整整一行，平滑横向滑动 */
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 2px 0 4px;
+        width: 100%;
+    }
+
+    .header-actions::-webkit-scrollbar {
+        display: none;
+    }
+
+    .header-actions > * {
+        flex-shrink: 0;
+    }
+
+    .star-badge,
+    .completed-badge,
     .sound-toggle-btn,
     .fullscreen-toggle-btn,
     .clear-data-btn,
     .print-sheet-btn,
     .ipad-connect-btn {
         padding: 3px 8px;
+        font-size: 11.5px;
+        border-radius: 14px;
+        white-space: nowrap;
+    }
+
+    /* 3. 分类与汉字选单条 */
+    .char-selector-section {
+        padding: 3px 10px 5px;
+    }
+
+    .cat-tab-btn {
+        padding: 2px 10px;
+        font-size: 12px;
+        border-radius: 12px;
+    }
+
+    .char-card-btn {
+        width: 44px;
+        height: 48px;
+        border-radius: 6px;
+    }
+
+    .char-card-btn .char-hz {
+        font-size: 20px;
+    }
+
+    .char-card-btn .char-py {
+        font-size: 10px;
+    }
+
+    /* 4. 看图识字认知卡：彻底修复文本被压缩成单列竖条严重变形的问题 */
+    .panel-left-studio {
+        padding: 8px;
+        gap: 8px;
+        height: auto;
+        min-height: 0;
+    }
+
+    .cognition-hero-card {
+        height: auto !important;
+        min-height: 0;
+        padding: 8px 10px;
+        gap: 10px;
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .ill-art-box {
+        width: 105px !important;
+        min-width: 105px !important;
+        max-width: 105px !important;
+        height: auto;
+        padding: 4px;
+        border-radius: 12px;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ill-art-wrap {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .ill-large-img {
+        max-width: 95px !important;
+        max-height: 105px !important;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .ill-fallback-card {
+        width: 95px !important;
+        height: 95px !important;
+        border-radius: 12px;
+    }
+
+    .ill-fallback-card .fallback-char {
+        font-size: 44px !important;
+    }
+
+    .ill-fallback-card .fallback-pinyin {
+        font-size: 13px !important;
+        margin-top: 2px;
+    }
+
+    .ill-large-art {
+        font-size: 52px !important;
+    }
+
+    .cognition-details-box {
+        flex: 1;
+        min-width: 0;
+        gap: 4px;
+        justify-content: space-between;
+    }
+
+    .cognition-char-header {
+        padding: 3px 8px;
+        margin-bottom: 2px;
+    }
+
+    .cognition-pinyin {
+        font-size: 14px;
+        line-height: 1.1;
+    }
+
+    .cognition-char {
+        font-size: 32px;
+        line-height: 1;
+    }
+
+    .hero-en-badge {
+        font-size: 11px;
+        padding: 1px 6px;
+    }
+
+    .char-header-right {
+        gap: 2px;
+    }
+
+    .btn-speak {
+        width: 26px;
+        height: 26px;
+        font-size: 13px;
+    }
+
+    .cognition-meta-badges {
+        gap: 4px;
+    }
+
+    .meta-pill {
+        font-size: 10px;
+        padding: 1px 4px;
+    }
+
+    .cognition-sentence-section {
+        padding: 3px 6px;
+        margin-bottom: 2px;
+    }
+
+    .cognition-section-title {
+        font-size: 10.5px;
+        margin-bottom: 2px;
+    }
+
+    .cognition-sentence-text {
+        font-size: 12.5px;
+        line-height: 1.4;
+        word-break: break-all;
+    }
+
+    .cognition-words-section {
+        margin-top: 0;
+    }
+
+    .cognition-words-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .word-pill {
+        font-size: 11.5px;
+        padding: 2px 6px;
+    }
+
+    /* 5. 笔顺小课堂 */
+    .guide-studio-card {
+        padding: 8px 10px;
+        gap: 6px;
+        height: auto;
+    }
+
+    .guide-header-row {
+        margin-bottom: 2px;
+    }
+
+    .guide-title {
+        font-size: 15px;
+    }
+
+    .speed-control-group {
+        font-size: 12px;
+    }
+
+    .speed-select {
+        font-size: 12px;
+        padding: 2px 4px;
+    }
+
+    .hanzi-writer-frame {
+        width: 155px;
+        height: 155px;
+    }
+
+    .status-pill {
+        font-size: 11.5px;
+        padding: 4px 8px;
+    }
+
+    .writer-action-buttons {
+        gap: 8px;
+    }
+
+    .btn-ctrl {
+        padding: 7px 12px;
+        font-size: 13px;
+        border-radius: 18px;
+    }
+
+    /* 手机端一键切换到画板按钮 */
+    .mobile-studio-footer-action {
+        display: block;
+        margin-top: 6px;
+    }
+
+    .btn-mobile-switch {
+        width: 100%;
+        background: linear-gradient(135deg, #ff7675, #ff6b6b);
+        color: #fff;
+        border: none;
+        border-radius: 18px;
+        padding: 9px 16px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+        transition: transform 0.15s;
+    }
+
+    .btn-mobile-switch:active {
+        transform: scale(0.97);
+    }
+
+    /* 6. 小小书法家画板面板 */
+    .panel-right {
+        padding: 8px;
+        gap: 6px;
+        height: auto;
+        min-height: 0;
+    }
+
+    /* 手机端画板顶部当前字提醒条 */
+    .mobile-canvas-ref-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(135deg, #fffcf5, #fff5eb);
+        border: 1.5px solid #fed385;
+        border-radius: 14px;
+        padding: 4px 10px;
+        margin-bottom: 4px;
+    }
+
+    .ref-char-info {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+        cursor: pointer;
+    }
+
+    .ref-label {
+        font-size: 11.5px;
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    .ref-char-text {
+        font-size: 22px;
+        font-weight: 800;
+        font-family: "KaiTi", "STKaiti", serif;
+        color: var(--dark);
+        line-height: 1;
+    }
+
+    .ref-py-text {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .ref-sub-pill {
+        font-size: 10.5px;
+        background: #fff;
+        border: 1px solid #ffd8a8;
+        color: #d35400;
+        padding: 1px 5px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .btn-ref-speak {
+        background: none;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 0 2px;
+    }
+
+    .btn-mobile-switch-back {
+        background: #ffffff;
+        border: 1.5px solid #e17055;
+        color: #d63031;
+        border-radius: 14px;
+        padding: 3px 9px;
+        font-size: 11.5px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-mobile-switch-back:active {
+        transform: scale(0.96);
+    }
+
+    .canvas-panel-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+        padding-bottom: 4px;
+    }
+
+    .canvas-panel-header h2 {
+        font-size: 14.5px;
+    }
+
+    .grid-selector {
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        gap: 4px;
+        padding-bottom: 2px;
+        width: 100%;
+    }
+
+    .grid-selector::-webkit-scrollbar {
+        display: none;
+    }
+
+    .grid-type-btn {
+        flex-shrink: 0;
+        padding: 3px 8px;
+        font-size: 11.5px;
+    }
+
+    .canvas-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 5px 8px;
+    }
+
+    .brush-selector {
+        flex: 1 0 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 4px;
+    }
+
+    .brush-btn {
+        flex: 1;
+        padding: 3px 2px;
+        font-size: 11.5px;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    .color-palette {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .color-pill {
+        width: 21px;
+        height: 21px;
+    }
+
+    .slider-group {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 11px;
+    }
+
+    .slider-group input[type="range"] {
+        width: 50px;
+    }
+
+    .trace-control-bar {
+        font-size: 11px;
+        padding: 0 2px;
+    }
+
+    .trace-toggle-label {
+        font-size: 11.5px;
+    }
+
+    .canvas-wrapper {
+        padding: 4px;
+        margin: 2px 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .canvas-box {
+        max-width: 320px;
+        max-height: 320px;
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .canvas-action-bar {
+        gap: 6px;
+        padding-top: 2px;
+    }
+
+    .btn-tool {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .btn-submit-stamp {
+        padding: 6px 12px;
         font-size: 12px;
     }
 }

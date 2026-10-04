@@ -88,6 +88,9 @@ class KidWritingApp {
                 }
             } catch (e) {}
         }
+
+        // 9. 初始化手机端标签页切换与便捷跳转
+        this.initMobileTabs();
     }
 
     // 渲染分类标签栏
@@ -329,6 +332,78 @@ class KidWritingApp {
                     window.soundManager.speak(info.sentence || sentenceEl.textContent);
                 }
             };
+        }
+
+        // 手机端顶部练字参考条同步更新
+        const mobRefChar = document.getElementById('mobile-ref-char');
+        const mobRefPy = document.getElementById('mobile-ref-py');
+        const mobRefRad = document.getElementById('mobile-ref-radical');
+        if (mobRefChar) mobRefChar.textContent = info.char;
+        if (mobRefPy) mobRefPy.textContent = info.pinyin;
+        if (mobRefRad) mobRefRad.textContent = info.radical ? `部首:${info.radical}` : '';
+    }
+
+    // 初始化移动端手机模式标签切换 (认字与笔顺 vs 书法画板)
+    initMobileTabs() {
+        const tabStudio = document.getElementById('tab-btn-studio');
+        const tabCanvas = document.getElementById('tab-btn-canvas');
+        const mainContainer = document.getElementById('main-container') || document.querySelector('.main-container');
+        const btnGotoCanvas = document.getElementById('btn-mobile-goto-canvas');
+        const btnGotoStudio = document.getElementById('btn-mobile-goto-studio');
+        const btnSpeakRef = document.getElementById('btn-mobile-speak-ref');
+        const refInfoBox = document.getElementById('mobile-ref-info-box');
+
+        const switchTab = (target) => {
+            if (!mainContainer) return;
+            if (target === 'studio') {
+                mainContainer.classList.remove('mobile-tab-canvas');
+                mainContainer.classList.add('mobile-tab-studio');
+                if (tabStudio) tabStudio.classList.add('active');
+                if (tabCanvas) tabCanvas.classList.remove('active');
+            } else if (target === 'canvas') {
+                mainContainer.classList.remove('mobile-tab-studio');
+                mainContainer.classList.add('mobile-tab-canvas');
+                if (tabCanvas) tabCanvas.classList.add('active');
+                if (tabStudio) tabStudio.classList.remove('active');
+                // 切换到画板时，触发一次画布重测绘，确保在移动端尺寸精准无误
+                setTimeout(() => {
+                    if (this.canvasEngine) {
+                        this.canvasEngine.resize();
+                    }
+                }, 60);
+            }
+            if (window.soundManager) window.soundManager.playPop();
+        };
+
+        if (tabStudio) {
+            tabStudio.addEventListener('click', () => switchTab('studio'));
+        }
+        if (tabCanvas) {
+            tabCanvas.addEventListener('click', () => switchTab('canvas'));
+        }
+        if (btnGotoCanvas) {
+            btnGotoCanvas.addEventListener('click', () => switchTab('canvas'));
+        }
+        if (btnGotoStudio) {
+            btnGotoStudio.addEventListener('click', () => switchTab('studio'));
+        }
+
+        // 手机端画板顶部汉字卡片点击发音
+        const triggerRefSpeech = () => {
+            if (window.soundManager) {
+                const sampleWord = (this.charInfo && this.charInfo.words && this.charInfo.words[0]) ? this.charInfo.words[0] : '';
+                window.soundManager.speakChar(this.currentChar, sampleWord);
+            }
+        };
+
+        if (btnSpeakRef) {
+            btnSpeakRef.addEventListener('click', (e) => {
+                e.stopPropagation();
+                triggerRefSpeech();
+            });
+        }
+        if (refInfoBox) {
+            refInfoBox.addEventListener('click', triggerRefSpeech);
         }
     }
 
