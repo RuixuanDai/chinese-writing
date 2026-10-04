@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#ff6b6b">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261003_v4">
+    <link rel="stylesheet" href="css/style.css?v=20261003_v5">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -54,8 +54,10 @@
                     <span>字</span>
                 </div>
                 <button id="btn-sound-toggle" class="sound-toggle-btn">🔊 声音开</button>
+                <button id="btn-toggle-fullscreen" class="fullscreen-toggle-btn" title="切换浏览器全屏显示，沉浸式练字">⛶ 全屏</button>
+                <button id="btn-clear-data" class="clear-data-btn" title="清除本地所有练字记录与星星数据">🗑️ 清除数据</button>
                 <button id="btn-print-sheet" class="print-sheet-btn" title="生成标准田字格纸质练字帖，支持打印机打印">🖨️ 打印字帖</button>
-                <button id="btn-ipad-modal" class="ipad-connect-btn" title="查看在 iPad / 平板上全屏书写连接指南">📱 iPad 练字</button>
+                <button id="btn-ipad-modal" class="ipad-connect-btn" title="查看在 iPad / 平板上全屏书写连接指南与关于说明">📱 iPad 练字</button>
             </div>
         </div>
     </header>
@@ -261,22 +263,22 @@
         </div>
     </div>
 
-    <!-- iPad 连接指引弹窗 Modal -->
+    <!-- iPad 连接指引与隐私免责声明弹窗 Modal -->
     <div id="ipad-guide-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 480px; text-align: left;">
-            <div style="text-align: center; font-size: 48px; margin-bottom: 8px;">📱</div>
+        <div class="modal-content" style="max-width: 520px; max-height: 90vh; overflow-y: auto; text-align: left;">
+            <div style="text-align: center; font-size: 46px; margin-bottom: 6px;">📱</div>
             <h3 class="modal-title" style="text-align: center; margin-bottom: 4px;">在 iPad 上开启全屏手写</h3>
             <p class="modal-subtitle" style="text-align: center; margin-bottom: 16px;">支持 Apple Pencil 压感运笔，防手掌误触！</p>
             
-            <div class="ipad-step-box" style="background: #fdfaf6; border: 2px dashed #feca57; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+            <div class="ipad-step-box" style="background: #fdfaf6; border: 2px dashed #feca57; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
                 <div id="ipad-step-1" style="margin-bottom: 12px;">
-                    <strong>第 1 步：</strong>确保 iPad 和电脑连接在<strong>同一个家庭 Wi-Fi</strong> 下。
+                    <strong>第 1 步：</strong>本应用已在线发布，iPad 连接<strong>任意 Wi-Fi 或蜂窝网络</strong>均可打开！
                 </div>
                 <div id="ipad-step-2" style="margin-bottom: 12px;">
-                    <strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，输入：
+                    <strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，访问：
                     <div style="display: flex; gap: 8px; margin-top: 6px; align-items: center;">
                         <div id="ipad-url-display" style="flex: 1; background: #ffffff; border: 1.5px solid #0984e3; color: #0984e3; font-weight: bold; font-size: 15px; padding: 8px 12px; border-radius: 10px; text-align: center; user-select: all; word-break: break-all;">
-                            http://192.168.1.101:8080
+                            https://ruixuandai.github.io/chinese-writing/
                         </div>
                         <button id="ipad-copy-url-btn" style="background: #0984e3; color: #fff; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 14px;">复制</button>
                     </div>
@@ -289,8 +291,44 @@
                 </div>
             </div>
 
+            <!-- 隐私承诺与免责声明 -->
+            <div class="privacy-disclaimer-box" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 13px 15px; margin-bottom: 18px; font-size: 12.5px; color: #475569; line-height: 1.6;">
+                <div style="font-weight: 700; color: #1e293b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>🛡️</span> <span>隐私承诺与免责声明</span>
+                </div>
+                <div style="margin-bottom: 4px;">
+                    • <strong>零数据收集承诺：</strong>本应用为纯前端本地运行程序，<strong>我们不收集、不存储、不上传任何个人信息、个人身份、面部/音视频或儿童资料</strong>。所有练字进度、星星成就及偏好设置均严格仅保存在您当前设备的本地浏览器中。
+                </div>
+                <div style="margin-bottom: 4px;">
+                    • <strong>交流与学习用途：</strong>本应用旨在为书法爱好者提供研习交流、为儿童汉字启蒙提供家庭自主学习与练习辅助，属于非商业性质的公益开源学习项目。
+                </div>
+                <div>
+                    • <strong>免责声明：</strong>软件内所有笔画顺序、间架结构分析与智能评分结果均由算法动态生成，仅供自主练习参考与激励成长，不具备权威书法等级考核或教学评估依据。
+                </div>
+            </div>
+
             <div style="text-align: center;">
                 <button id="ipad-guide-close-btn" class="btn-modal primary" style="width: 100%;">我知道了，去练字</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 清除本地数据确认弹窗 Modal -->
+    <div id="clear-data-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 440px; text-align: center;">
+            <div style="font-size: 46px; margin-bottom: 10px;">⚠️</div>
+            <h3 class="modal-title" style="margin-bottom: 8px; color: #e84118;">确认清除所有本地数据？</h3>
+            <div style="font-size: 14px; color: #57606f; line-height: 1.6; margin-bottom: 20px; text-align: left; background: #fff5f5; border: 1.5px solid #ffd2d2; padding: 14px 16px; border-radius: 14px;">
+                <p style="margin: 0 0 8px 0; font-weight: bold; color: #c0392b;">此操作将重置以下数据且无法恢复：</p>
+                <div style="padding-left: 4px;">
+                    • 练字所赚取的所有 <strong>⭐ 金星星</strong>（当前已获：<span id="clear-modal-stars" style="color: #e67e22; font-weight: bold;">0</span> 颗）<br>
+                    • 所有已掌握汉字的 <strong>🏆 练习记录</strong>（当前已练：<span id="clear-modal-chars" style="color: #16a085; font-weight: bold;">0</span> 个字）<br>
+                    • 当前画板历史书写笔迹与练习记忆
+                </div>
+            </div>
+            <div class="modal-actions" style="display: flex; gap: 12px; justify-content: center;">
+                <button id="btn-cancel-clear-data" class="btn-modal secondary" style="flex: 1;">取消</button>
+                <button id="btn-confirm-clear-data" class="btn-modal" style="flex: 1; background: linear-gradient(135deg, #e84118, #c23616); color: #fff; box-shadow: 0 4px 12px rgba(232, 65, 24, 0.3);">确定清除</button>
             </div>
         </div>
     </div>
@@ -369,12 +407,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261003_v4"></script>
-    <script src="js/char-data.js?v=20261003_v4"></script>
-    <script src="js/stroke-cache.js?v=20261003_v4"></script>
-    <script src="js/canvas.js?v=20261003_v4"></script>
-    <script src="js/hanzi-guide.js?v=20261003_v4"></script>
-    <script src="js/evaluator.js?v=20261003_v4"></script>
-    <script src="js/app.js?v=20261003_v4"></script>
+    <script src="js/sound.js?v=20261003_v5"></script>
+    <script src="js/char-data.js?v=20261003_v5"></script>
+    <script src="js/stroke-cache.js?v=20261003_v5"></script>
+    <script src="js/canvas.js?v=20261003_v5"></script>
+    <script src="js/hanzi-guide.js?v=20261003_v5"></script>
+    <script src="js/evaluator.js?v=20261003_v5"></script>
+    <script src="js/app.js?v=20261003_v5"></script>
 </body>
 </html>

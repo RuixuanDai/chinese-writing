@@ -259,6 +259,55 @@ img, svg, canvas {
     transform: scale(0.96);
 }
 
+.fullscreen-toggle-btn {
+    background: #f1f2f6;
+    border: 1.5px solid #dcdde1;
+    border-radius: 16px;
+    padding: 3px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.fullscreen-toggle-btn:hover {
+    background: #e4e7eb;
+    border-color: #ced6e0;
+}
+
+.fullscreen-toggle-btn.active {
+    background: #e8f0fe;
+    border-color: #1a73e8;
+    color: #1a73e8;
+}
+
+.clear-data-btn {
+    background: #fff5f5;
+    border: 1.5px solid #ffccd2;
+    color: #e84118;
+    border-radius: 16px;
+    padding: 3px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.clear-data-btn:hover {
+    background: #ffe3e3;
+    border-color: #e84118;
+    transform: translateY(-1px);
+}
+
 /* 分类与汉字选单条 - 汉字选择行除外（允许横向滑动选字） */
 .char-selector-section {
     background: #ffffff;
@@ -1480,6 +1529,18 @@ img, svg, canvas {
     }
     .logo-subtitle {
         display: none;
+    }
+    .header-actions {
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    .sound-toggle-btn,
+    .fullscreen-toggle-btn,
+    .clear-data-btn,
+    .print-sheet-btn,
+    .ipad-connect-btn {
+        padding: 3px 8px;
+        font-size: 12px;
     }
 }
 

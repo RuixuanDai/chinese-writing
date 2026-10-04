@@ -60,6 +60,16 @@ class KidWritingApp {
 
         // 7. 更新星数显示
         this.updateStarUI();
+
+        // 8. 首次打开 App 时，自动弹出简介与隐私免责声明弹窗
+        try {
+            const hasSeenIntro = localStorage.getItem('kid_app_intro_seen');
+            if (!hasSeenIntro) {
+                setTimeout(() => {
+                    this.openIpadGuideModal();
+                }, 350);
+            }
+        } catch (e) {}
     }
 
     // 渲染分类标签栏
@@ -347,31 +357,16 @@ class KidWritingApp {
             });
         }
 
-        // 2.1 iPad 连线弹窗控制
+        // 2.1 iPad 连线与简介说明弹窗控制
         const ipadBtn = document.getElementById('btn-ipad-modal');
         const ipadModal = document.getElementById('ipad-guide-modal');
         const ipadCloseBtn = document.getElementById('ipad-guide-close-btn');
         const ipadCopyBtn = document.getElementById('ipad-copy-url-btn');
-        if (ipadBtn && ipadModal) {
+
+        if (ipadBtn) {
             ipadBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
-                const urlDisplay = document.getElementById('ipad-url-display');
-                const step1 = document.getElementById('ipad-step-1');
-                const step2 = document.getElementById('ipad-step-2');
-                const isOnline = window.location.protocol.startsWith('http') &&
-                                 !['localhost', '127.0.0.1'].includes(window.location.hostname) &&
-                                 !/^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname);
-
-                if (urlDisplay) {
-                    if (isOnline) {
-                        urlDisplay.textContent = window.location.href;
-                        if (step1) step1.innerHTML = '<strong>第 1 步：</strong>本应用已在线发布，iPad 连接<strong>任意 Wi-Fi 或蜂窝网络</strong>均可打开！';
-                        if (step2) step2.innerHTML = '<strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，访问：';
-                    } else if (window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                        urlDisplay.textContent = `http://${window.location.hostname}:8080`;
-                    }
-                }
-                ipadModal.classList.add('visible');
+                this.openIpadGuideModal();
             });
         }
         if (ipadCopyBtn) {
@@ -393,12 +388,61 @@ class KidWritingApp {
             });
         }
         if (ipadCloseBtn && ipadModal) {
-            ipadCloseBtn.addEventListener('click', () => {
+            const handleCloseIntro = () => {
                 if (window.soundManager) window.soundManager.playPop();
                 ipadModal.classList.remove('visible');
-            });
+                try {
+                    localStorage.setItem('kid_app_intro_seen', 'true');
+                } catch (e) {}
+            };
+            ipadCloseBtn.addEventListener('click', handleCloseIntro);
             ipadModal.addEventListener('click', (e) => {
-                if (e.target === ipadModal) ipadModal.classList.remove('visible');
+                if (e.target === ipadModal) handleCloseIntro();
+            });
+        }
+
+        // 2.2 全屏切换控制
+        const fsBtn = document.getElementById('btn-toggle-fullscreen');
+        if (fsBtn) {
+            fsBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.toggleFullscreen();
+            });
+        }
+        document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
+        document.addEventListener('webkitfullscreenchange', () => this.updateFullscreenButton());
+
+        // 2.3 清除本地数据控制 (带确认弹窗)
+        const clearDataBtn = document.getElementById('btn-clear-data');
+        const clearModal = document.getElementById('clear-data-modal');
+        const cancelClearBtn = document.getElementById('btn-cancel-clear-data');
+        const confirmClearBtn = document.getElementById('btn-confirm-clear-data');
+        const clearStarsEl = document.getElementById('clear-modal-stars');
+        const clearCharsEl = document.getElementById('clear-modal-chars');
+
+        if (clearDataBtn && clearModal) {
+            clearDataBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                if (clearStarsEl) clearStarsEl.textContent = this.stars || 0;
+                if (clearCharsEl) clearCharsEl.textContent = (this.completedChars && this.completedChars.length) || 0;
+                clearModal.classList.add('visible');
+            });
+        }
+        if (cancelClearBtn && clearModal) {
+            cancelClearBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                clearModal.classList.remove('visible');
+            });
+        }
+        if (clearModal) {
+            clearModal.addEventListener('click', (e) => {
+                if (e.target === clearModal) clearModal.classList.remove('visible');
+            });
+        }
+        if (confirmClearBtn && clearModal) {
+            confirmClearBtn.addEventListener('click', () => {
+                clearModal.classList.remove('visible');
+                this.clearAllLocalData();
             });
         }
 
@@ -909,6 +953,133 @@ class KidWritingApp {
             `;
         }
         return html;
+    }
+
+    // 打开 iPad 连接指南与简介说明弹窗
+    openIpadGuideModal() {
+        const ipadModal = document.getElementById('ipad-guide-modal');
+        if (!ipadModal) return;
+        const urlDisplay = document.getElementById('ipad-url-display');
+        const step1 = document.getElementById('ipad-step-1');
+        const step2 = document.getElementById('ipad-step-2');
+        const isOnline = window.location.protocol.startsWith('http') &&
+                         !['localhost', '127.0.0.1'].includes(window.location.hostname) &&
+                         !/^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname);
+
+        if (urlDisplay) {
+            if (isOnline) {
+                urlDisplay.textContent = window.location.href;
+                if (step1) step1.innerHTML = '<strong>第 1 步：</strong>本应用已在线发布，iPad 连接<strong>任意 Wi-Fi 或蜂窝网络</strong>均可打开！';
+                if (step2) step2.innerHTML = '<strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，访问：';
+            } else if (window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                urlDisplay.textContent = `http://${window.location.hostname}:8080`;
+                if (step1) step1.innerHTML = '<strong>第 1 步：</strong>确保 iPad 和电脑连接在<strong>同一个家庭 Wi-Fi</strong> 下。';
+                if (step2) step2.innerHTML = '<strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，输入：';
+            } else {
+                urlDisplay.textContent = window.location.href;
+                if (step1) step1.innerHTML = '<strong>第 1 步：</strong>本应用支持全平台运行，iPad 连接<strong>任意网络</strong>均可打开！';
+                if (step2) step2.innerHTML = '<strong>第 2 步：</strong>在 iPad 上打开自带的 <strong>Safari 浏览器</strong>，访问：';
+            }
+        }
+        ipadModal.classList.add('visible');
+    }
+
+    // 全屏切换控制
+    toggleFullscreen() {
+        const doc = document;
+        const docEl = document.documentElement;
+
+        const isFullscreen = !!(doc.fullscreenElement || 
+                               doc.webkitFullscreenElement || 
+                               doc.mozFullScreenElement || 
+                               doc.msFullscreenElement);
+
+        if (!isFullscreen) {
+            const req = docEl.requestFullscreen || 
+                        docEl.webkitRequestFullscreen || 
+                        docEl.mozRequestFullScreen || 
+                        docEl.msRequestFullscreen;
+            if (req) {
+                req.call(docEl).catch(err => {
+                    console.warn('全屏请求未成功:', err);
+                    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                        this.openIpadGuideModal();
+                    }
+                });
+            } else {
+                if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                    this.openIpadGuideModal();
+                } else {
+                    alert('提示：当前浏览器暂不支持全屏 API，建议使用 Chrome/Safari 快捷键 F11 或全屏模式。');
+                }
+            }
+        } else {
+            const exit = doc.exitFullscreen || 
+                         doc.webkitExitFullscreen || 
+                         doc.mozCancelFullScreen || 
+                         doc.msExitFullscreen;
+            if (exit) {
+                exit.call(doc).catch(err => console.warn('退出全屏失败:', err));
+            }
+        }
+    }
+
+    // 更新全屏按钮显示状态
+    updateFullscreenButton() {
+        const btn = document.getElementById('btn-toggle-fullscreen');
+        if (!btn) return;
+        const isFullscreen = !!(document.fullscreenElement || 
+                               document.webkitFullscreenElement || 
+                               document.mozFullScreenElement || 
+                               document.msFullscreenElement);
+        if (isFullscreen) {
+            btn.innerHTML = '🗗 退出全屏';
+            btn.classList.add('active');
+            btn.title = '退出浏览器全屏显示';
+        } else {
+            btn.innerHTML = '⛶ 全屏';
+            btn.classList.remove('active');
+            btn.title = '切换浏览器全屏显示，沉浸式练字';
+        }
+    }
+
+    // 清空本地数据
+    clearAllLocalData() {
+        try {
+            // 清理本地练习与成就数据
+            localStorage.removeItem('kid_app_stars');
+            localStorage.removeItem('kid_app_completed');
+            localStorage.removeItem('kid_app_last_completed');
+            localStorage.removeItem('kid_app_last_char');
+            localStorage.removeItem('kid_app_last_category');
+
+            // 保持已阅读简介状态，避免清除数据后立刻弹窗打扰
+            const keepIntro = localStorage.getItem('kid_app_intro_seen');
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('kid_app_')) {
+                    localStorage.removeItem(key);
+                }
+            }
+            if (keepIntro) {
+                localStorage.setItem('kid_app_intro_seen', keepIntro);
+            }
+        } catch (e) {
+            console.error('清除本地数据失败:', e);
+        }
+
+        // 重置内部状态并刷新 UI
+        this.stars = 0;
+        this.completedChars = [];
+        this.updateStarUI();
+        this.renderCharList(this.currentCategory);
+        if (this.canvasEngine) {
+            this.canvasEngine.clear();
+        }
+        if (window.soundManager) {
+            window.soundManager.playPop();
+        }
+        alert('✅ 本地所有练字记录、金星星及画板数据已成功清空重置！');
     }
 }
 
