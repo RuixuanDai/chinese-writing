@@ -308,6 +308,42 @@ img, svg, canvas {
     transform: translateY(-1px);
 }
 
+/* 移动端手机小屏提示条 */
+.mobile-hint-banner {
+    background: linear-gradient(90deg, #fff3cd, #ffeaa7);
+    border-bottom: 1px solid #feca57;
+    color: #8c5300;
+    font-size: 12.5px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: relative;
+    z-index: 90;
+}
+
+.mobile-hint-banner strong {
+    color: #d35400;
+}
+
+.mobile-hint-banner button {
+    background: #e67e22;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.mobile-hint-banner button:hover {
+    background: #d35400;
+}
+
 /* 分类与汉字选单条 - 汉字选择行除外（允许横向滑动选字） */
 .char-selector-section {
     background: #ffffff;

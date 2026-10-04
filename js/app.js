@@ -61,15 +61,33 @@ class KidWritingApp {
         // 7. 更新星数显示
         this.updateStarUI();
 
-        // 8. 首次打开 App 时，自动弹出简介与隐私免责声明弹窗
-        try {
-            const hasSeenIntro = localStorage.getItem('kid_app_intro_seen');
-            if (!hasSeenIntro) {
-                setTimeout(() => {
-                    this.openIpadGuideModal();
-                }, 350);
-            }
-        } catch (e) {}
+        // 8. 设备检测与针对性弹窗提示
+        const isMobile = this.isMobilePhone();
+        if (isMobile) {
+            // 在手机端显示顶部温馨提醒条
+            const hintBanner = document.getElementById('mobile-hint-banner');
+            if (hintBanner) hintBanner.style.display = 'flex';
+
+            // 手机打开时，提示使用 iPad 或大屏幕设备
+            try {
+                const mobilePromptSeen = sessionStorage.getItem('kid_app_mobile_prompt_seen');
+                if (!mobilePromptSeen) {
+                    setTimeout(() => {
+                        this.openMobileDeviceModal();
+                    }, 350);
+                }
+            } catch (e) {}
+        } else {
+            // 平板/电脑端：首次打开 App 时，自动弹出简介与隐私免责声明弹窗
+            try {
+                const hasSeenIntro = localStorage.getItem('kid_app_intro_seen');
+                if (!hasSeenIntro) {
+                    setTimeout(() => {
+                        this.openIpadGuideModal();
+                    }, 350);
+                }
+            } catch (e) {}
+        }
     }
 
     // 渲染分类标签栏
@@ -424,6 +442,59 @@ class KidWritingApp {
             confirmClearBtn.addEventListener('click', () => {
                 clearModal.classList.remove('visible');
                 this.clearAllLocalData();
+            });
+        }
+
+        // 2.4 手机访问提示弹窗事件绑定
+        const mobileModal = document.getElementById('mobile-device-modal');
+        const copyForIpadBtn = document.getElementById('btn-copy-link-for-ipad');
+        const continueMobileBtn = document.getElementById('btn-continue-on-mobile');
+        const bannerGuideBtn = document.getElementById('btn-banner-guide');
+
+        if (copyForIpadBtn) {
+            copyForIpadBtn.addEventListener('click', () => {
+                const currentUrl = window.location.href;
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    const originalText = copyForIpadBtn.textContent;
+                    copyForIpadBtn.textContent = '✅ 已复制网址！可在 iPad/电脑打开';
+                    copyForIpadBtn.style.background = '#2ed573';
+                    setTimeout(() => {
+                        copyForIpadBtn.textContent = originalText;
+                        copyForIpadBtn.style.background = 'linear-gradient(135deg, #0984e3, #74b9ff)';
+                    }, 2500);
+                }).catch(() => {
+                    alert('网址为：' + currentUrl);
+                });
+            });
+        }
+
+        if (continueMobileBtn && mobileModal) {
+            continueMobileBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                mobileModal.classList.remove('visible');
+                try {
+                    sessionStorage.setItem('kid_app_mobile_prompt_seen', 'true');
+                    localStorage.setItem('kid_app_intro_seen', 'true');
+                } catch (e) {}
+            });
+        }
+
+        if (mobileModal) {
+            mobileModal.addEventListener('click', (e) => {
+                if (e.target === mobileModal) {
+                    mobileModal.classList.remove('visible');
+                    try {
+                        sessionStorage.setItem('kid_app_mobile_prompt_seen', 'true');
+                        localStorage.setItem('kid_app_intro_seen', 'true');
+                    } catch (e) {}
+                }
+            });
+        }
+
+        if (bannerGuideBtn) {
+            bannerGuideBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.openMobileDeviceModal();
             });
         }
 
@@ -934,6 +1005,40 @@ class KidWritingApp {
             `;
         }
         return html;
+    }
+
+    // 设备类型检测：是否为小屏手机（精确识别手机，排除 iPad、平板及电脑设备）
+    isMobilePhone() {
+        const ua = navigator.userAgent;
+        // 明确排除 iPad (包含现代 iPadOS 桌面 UA: MacIntel + touchPoints) 与各类平板
+        const isIPad = /iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isTablet = /Tablet/i.test(ua) || (/Android/i.test(ua) && !/Mobile/i.test(ua));
+        if (isIPad || isTablet) {
+            return false;
+        }
+
+        // 明确识别手机 UA：iPhone, iPod, Android Mobile 等
+        const isPhoneUA = /iPhone|iPod/i.test(ua) || (/Android/i.test(ua) && /Mobile/i.test(ua)) || /Windows Phone/i.test(ua);
+        if (isPhoneUA) {
+            return true;
+        }
+
+        // 触屏移动设备且视口极窄（适配部分自定义内核移动浏览器）
+        const hasTouch = (navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
+        const isSmallViewport = window.innerWidth <= 640;
+        if (hasTouch && isSmallViewport) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // 打开手机设备提示弹窗
+    openMobileDeviceModal() {
+        const modal = document.getElementById('mobile-device-modal');
+        if (modal) {
+            modal.classList.add('visible');
+        }
     }
 
     // 打开 iPad 连接指南与简介说明弹窗

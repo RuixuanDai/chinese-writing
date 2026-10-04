@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#ff6b6b">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261003_v6">
+    <link rel="stylesheet" href="css/style.css?v=20261003_v7">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -61,6 +61,12 @@
             </div>
         </div>
     </header>
+
+    <!-- 移动端手机小屏提示条 -->
+    <div id="mobile-hint-banner" class="mobile-hint-banner" style="display: none;">
+        <span>📱 手机屏幕较小，建议使用 <strong>iPad 或大屏设备</strong> 配合手写笔练字</span>
+        <button id="btn-banner-guide">查看建议</button>
+    </div>
 
     <!-- 汉字分类与选单条 -->
     <section class="char-selector-section">
@@ -263,6 +269,41 @@
         </div>
     </div>
 
+    <!-- 手机访问设备提示弹窗 Modal -->
+    <div id="mobile-device-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 480px; max-height: 90vh; overflow-y: auto; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 8px;">📱➔💻</div>
+            <h3 class="modal-title" style="margin-bottom: 6px; color: #ff6b6b; font-size: 21px;">建议使用 iPad 或大屏设备</h3>
+            <p class="modal-subtitle" style="font-size: 14px; margin-bottom: 16px;">开阔视野 · 舒展运笔 · 保护视力</p>
+
+            <div style="background: #fff9e6; border: 1.5px dashed #feca57; border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; text-align: left; font-size: 13.5px; color: #4b4b4b; line-height: 1.6;">
+                <div style="font-weight: 700; color: #d35400; margin-bottom: 8px; font-size: 14px;">
+                    亲爱的小朋友和家长：
+                </div>
+                <div style="margin-bottom: 10px;">
+                    检测到您当前正在使用<strong>手机设备</strong>访问。汉字练字讲究间架结构与运笔舒展，手机屏幕尺寸较小，容易局限手腕施展，且长时间凝视小屏幕容易导致用眼疲劳。
+                </div>
+                <div style="background: #ffffff; border: 1px solid #ffeaa7; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;">
+                    🌟 <strong>推荐使用大屏设备获得最佳效果：</strong><br>
+                    • <strong>iPad 或各类平板电脑</strong>：屏幕开阔，配合 Apple Pencil 或触控笔，防手掌误触，练字体验最佳！<br>
+                    • <strong>电脑浏览器</strong>：大屏幕全景展示汉字笔顺动画、看图识字与田字格。
+                </div>
+                <div style="font-size: 12.5px; color: #7f8c8d;">
+                    💡 您可以复制下方网址，在 iPad 的 Safari 或电脑浏览器中直接打开。
+                </div>
+            </div>
+
+            <div class="modal-actions" style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="btn-copy-link-for-ipad" class="btn-modal" style="background: linear-gradient(135deg, #0984e3, #74b9ff); color: #fff; font-size: 14.5px; font-weight: bold; padding: 12px; border-radius: 20px; box-shadow: 0 4px 12px rgba(9, 132, 227, 0.3);">
+                    📋 复制本站网址（前往 iPad / 平板打开）
+                </button>
+                <button id="btn-continue-on-mobile" class="btn-modal secondary" style="padding: 10px; border-radius: 20px; font-size: 13px; color: #747d8c;">
+                    我知道了，继续在手机上浏览 ➔
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- iPad 连接指引与隐私免责声明弹窗 Modal -->
     <div id="ipad-guide-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 520px; max-height: 90vh; overflow-y: auto; text-align: left;">
@@ -398,12 +439,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261003_v6"></script>
-    <script src="js/char-data.js?v=20261003_v6"></script>
-    <script src="js/stroke-cache.js?v=20261003_v6"></script>
-    <script src="js/canvas.js?v=20261003_v6"></script>
-    <script src="js/hanzi-guide.js?v=20261003_v6"></script>
-    <script src="js/evaluator.js?v=20261003_v6"></script>
-    <script src="js/app.js?v=20261003_v6"></script>
+    <script src="js/sound.js?v=20261003_v7"></script>
+    <script src="js/char-data.js?v=20261003_v7"></script>
+    <script src="js/stroke-cache.js?v=20261003_v7"></script>
+    <script src="js/canvas.js?v=20261003_v7"></script>
+    <script src="js/hanzi-guide.js?v=20261003_v7"></script>
+    <script src="js/evaluator.js?v=20261003_v7"></script>
+    <script src="js/app.js?v=20261003_v7"></script>
 </body>
 </html>
