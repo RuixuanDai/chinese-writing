@@ -207,6 +207,11 @@ class SoundManager {
         });
     }
 
+    // 胜利号角音效 (Fanfare)
+    playFanfare() {
+        this.playVictory();
+    }
+
     // 6. 星星获取光芒音效 (Twinkle)
     playStar() {
         if (!this.enabled) return;

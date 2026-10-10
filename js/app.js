@@ -1,7 +1,27 @@
 /**
  * app.js - 儿童练字App 主控制器
- * 联动汉字题库、手写画板、笔顺动画、语音朗读、积分成就、打印字帖
+ * 联动汉字题库、手写画板、笔顺动画、语音朗读、积分成就、打印字帖、幸运扭蛋机与贴纸乐园
  */
+
+// 16款超萌书法与国风萌宠贴纸图鉴库
+const CALLIGRAPHY_STICKERS = [
+    { id: 'maliang', name: '神笔马良', emoji: '🖌️', title: '妙笔生花', soundText: '我有一支神奇画笔，落笔生花，画什么变什么！' },
+    { id: 'lion', name: '小狮子波波', emoji: '🦁', title: '威武墨客', soundText: '吼~ 我的毛笔字写得有力拔山兮的大气魄！' },
+    { id: 'panda', name: '胖达熊猫', emoji: '🐼', title: '竹林隐士', soundText: '呼噜噜，吃完脆嫩的竹子，写一幅漂亮对联！' },
+    { id: 'wukong', name: '齐天大圣', emoji: '🐵', title: '字里乾坤', soundText: '俺老孙来也！一个筋斗十万八千里，落笔惊风雨！' },
+    { id: 'dragon', name: '祥瑞金龙', emoji: '🐉', title: '笔走龙蛇', soundText: '飞龙在天，你的汉字笔画宛如蛟龙出海般苍劲！' },
+    { id: 'zhuangyuan', name: '状元郎豆豆', emoji: '👑', title: '金榜题名', soundText: '十年磨一剑，字写得端端正正，高中状元！' },
+    { id: 'scholar_cat', name: '状元喵乐乐', emoji: '🐱', title: '书香门第', soundText: '喵呜~ 蘸一蘸墨水，我的猫爪字写得最工整！' },
+    { id: 'phoenix', name: '七彩彩凤', emoji: '🦚', title: '凤舞九天', soundText: '笔若游龙，墨如彩凤，飞舞在万里晴空！' },
+    { id: 'inkstone', name: '神奇砚台宝', emoji: '🪨', title: '文房四宝', soundText: '磨呀磨，磨出最香最浓郁的陈年古墨！' },
+    { id: 'owl', name: '博学猫头鹰', emoji: '🦉', title: '学富五车', soundText: '咕咕咕，多读书多练字，胸藏万卷书！' },
+    { id: 'rocket', name: '星空火箭', emoji: '🚀', title: '小小探险家', soundText: '3、2、1，带着漂亮的中国汉字飞向浩瀚太空！' },
+    { id: 'rainbow', name: '彩虹仙子', emoji: '🌈', title: '七彩翰墨', soundText: '挥一挥画笔，让古老汉字变成绚烂彩虹！' },
+    { id: 'tiger', name: '小萌虎泰戈', emoji: '🐯', title: '虎步生风', soundText: '生龙活虎，下笔有神，今天又练好了三个字！' },
+    { id: 'koi', name: '锦鲤福宝', emoji: '🐟', title: '好运连连', soundText: '咕噜咕噜，认真写好每一个字，每天都有好运气！' },
+    { id: 'scroll', name: '千年圣旨卷', emoji: '📜', title: '御赐金卷', soundText: '奉天承运，小书法家今日字写得极其端庄！' },
+    { id: 'trophy', name: '黄金翰墨鼎', emoji: '🏆', title: '书法大宗师', soundText: '恭喜你！持之以恒天天练字，终成小小书法大师！' }
+];
 
 class KidWritingApp {
     constructor() {
@@ -13,6 +33,8 @@ class KidWritingApp {
         // 积分与激励
         this.stars = parseInt(localStorage.getItem('kid_app_stars') || '0', 10);
         this.completedChars = JSON.parse(localStorage.getItem('kid_app_completed') || '[]');
+        this.unlockedStickers = JSON.parse(localStorage.getItem('kid_app_stickers') || '["maliang", "zhuangyuan", "panda"]');
+        this.eggCost = 3; // 每 3 颗星扭蛋一次
 
         this.canvasEngine = null;
         this.hanziGuide = null;
@@ -91,6 +113,10 @@ class KidWritingApp {
 
         // 9. 初始化手机端标签页切换与便捷跳转
         this.initMobileTabs();
+
+        // 10. 初始化奖励系统与扭蛋徽章
+        this.updateGashaponBadge();
+        this.bindRewardEvents();
     }
 
     // 渲染分类标签栏
@@ -748,6 +774,15 @@ class KidWritingApp {
                 this.selectNextChar();
             });
         }
+
+        const evalGashaponBtn = document.getElementById('btn-eval-gashapon');
+        if (evalGashaponBtn && evalModal) {
+            evalGashaponBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                evalModal.classList.remove('visible');
+                this.openGashapon();
+            });
+        }
     }
 
     // 设置状态提示文本
@@ -907,6 +942,12 @@ class KidWritingApp {
         this.addStars(starsAwarded, '智能书写评测');
         this.markCharCompleted(this.currentChar);
 
+        // 如果拥有足够星星，显示扭蛋快捷按钮
+        const evalGashaponBtn = document.getElementById('btn-eval-gashapon');
+        if (evalGashaponBtn) {
+            evalGashaponBtn.style.display = (this.stars >= this.eggCost) ? 'inline-flex' : 'none';
+        }
+
         // 弹出报告弹窗
         const modal = document.getElementById('eval-modal');
         if (modal) modal.classList.add('visible');
@@ -943,6 +984,7 @@ class KidWritingApp {
         if (completedEl) {
             completedEl.textContent = this.completedChars.length;
         }
+        this.updateGashaponBadge();
     }
 
     // 炫酷五彩纸屑庆祝
@@ -1191,6 +1233,7 @@ class KidWritingApp {
             localStorage.removeItem('kid_app_last_completed');
             localStorage.removeItem('kid_app_last_char');
             localStorage.removeItem('kid_app_last_category');
+            localStorage.removeItem('kid_app_stickers');
 
             // 保持已阅读简介状态，避免清除数据后立刻弹窗打扰
             const keepIntro = localStorage.getItem('kid_app_intro_seen');
@@ -1210,7 +1253,9 @@ class KidWritingApp {
         // 重置内部状态并刷新 UI
         this.stars = 0;
         this.completedChars = [];
+        this.unlockedStickers = ['maliang', 'zhuangyuan', 'panda'];
         this.updateStarUI();
+        this.updateGashaponBadge();
         this.renderCharList(this.currentCategory);
         if (this.canvasEngine) {
             this.canvasEngine.clear();
@@ -1219,6 +1264,352 @@ class KidWritingApp {
             window.soundManager.playPop();
         }
         alert('✅ 本地所有练字记录、金星星及画板数据已成功清空重置！');
+    }
+
+    // ================= 16. 奖励系统：扭蛋机与贴纸乐园 =================
+    updateGashaponBadge() {
+        const badge = document.getElementById('gashapon-badge-count');
+        if (!badge) return;
+        const availableDraws = Math.floor(this.stars / this.eggCost);
+        if (availableDraws > 0) {
+            badge.textContent = availableDraws;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    bindRewardEvents() {
+        // 扭蛋机触发按钮
+        const btnGashapon = document.getElementById('btn-gashapon');
+        const gashaponModal = document.getElementById('gashapon-modal');
+        const btnCloseGashapon = document.getElementById('btn-close-gashapon');
+
+        if (btnGashapon) {
+            btnGashapon.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.openGashapon();
+            });
+        }
+
+        if (btnCloseGashapon && gashaponModal) {
+            btnCloseGashapon.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                gashaponModal.classList.remove('visible');
+            });
+        }
+
+        if (gashaponModal) {
+            gashaponModal.addEventListener('click', (e) => {
+                if (e.target === gashaponModal) {
+                    if (window.soundManager) window.soundManager.playPop();
+                    gashaponModal.classList.remove('visible');
+                }
+            });
+        }
+
+        // 贴纸乐园触发按钮
+        const btnStickerBook = document.getElementById('btn-sticker-book');
+        const stickerBookModal = document.getElementById('sticker-book-modal');
+        const btnCloseStickerBook = document.getElementById('btn-close-sticker-book');
+
+        if (btnStickerBook) {
+            btnStickerBook.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.openStickerBook();
+            });
+        }
+
+        if (btnCloseStickerBook && stickerBookModal) {
+            btnCloseStickerBook.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                stickerBookModal.classList.remove('visible');
+            });
+        }
+
+        if (stickerBookModal) {
+            stickerBookModal.addEventListener('click', (e) => {
+                if (e.target === stickerBookModal) {
+                    if (window.soundManager) window.soundManager.playPop();
+                    stickerBookModal.classList.remove('visible');
+                }
+            });
+        }
+
+        // 贴纸乐园选项卡切换 (荣誉图鉴 vs 宣纸创意乐园)
+        const tabBtns = document.querySelectorAll('.sticker-tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const targetTab = btn.dataset.tab;
+                const panels = document.querySelectorAll('.sticker-tab-panel');
+                panels.forEach(p => p.classList.remove('active'));
+
+                const targetPanel = document.getElementById(`tab-${targetTab}`);
+                if (targetPanel) targetPanel.classList.add('active');
+            });
+        });
+
+        // 清空创意乐园画布
+        const btnClearPlayground = document.getElementById('btn-clear-playground');
+        if (btnClearPlayground) {
+            btnClearPlayground.addEventListener('click', () => {
+                const canvas = document.getElementById('sticker-playground-canvas');
+                if (canvas) {
+                    canvas.innerHTML = '';
+                    if (window.soundManager) window.soundManager.playEraser();
+                }
+            });
+        }
+    }
+
+    openGashapon() {
+        const modal = document.getElementById('gashapon-modal');
+        if (modal) {
+            modal.classList.add('visible');
+            this.updateGashaponUI();
+        }
+    }
+
+    updateGashaponUI() {
+        const costText = document.getElementById('gashapon-cost-text');
+        const drawBtn = document.getElementById('draw-egg-btn');
+        const prizeDisplay = document.getElementById('gashapon-prize-display');
+
+        if (costText) {
+            costText.textContent = `当前金星: ⭐ ${this.stars} (每 ${this.eggCost} 颗金星可扭一次)`;
+        }
+
+        if (drawBtn) {
+            if (this.stars >= this.eggCost) {
+                drawBtn.disabled = false;
+                drawBtn.textContent = `🎰 消耗 ${this.eggCost} 颗⭐ 扭蛋！`;
+                drawBtn.onclick = () => this.drawEgg();
+            } else {
+                drawBtn.disabled = true;
+                drawBtn.textContent = `还需要 ${this.eggCost - this.stars} 颗⭐ 才能扭蛋`;
+                drawBtn.onclick = null;
+            }
+        }
+    }
+
+    drawEgg() {
+        if (this.stars < this.eggCost) return;
+
+        this.stars -= this.eggCost;
+        localStorage.setItem('kid_app_stars', this.stars.toString());
+        this.updateStarUI();
+
+        const drawBtn = document.getElementById('draw-egg-btn');
+        if (drawBtn) drawBtn.disabled = true;
+
+        const prizeDisplay = document.getElementById('gashapon-prize-display');
+        if (prizeDisplay) {
+            prizeDisplay.innerHTML = `
+                <div class="egg-rolling">
+                    <div class="egg-animated">🔮</div>
+                    <p class="rolling-text">扭蛋滚动中... 墨香溢出啦~</p>
+                </div>
+            `;
+        }
+
+        if (window.soundManager) window.soundManager.playPop();
+
+        setTimeout(() => {
+            const uncollected = CALLIGRAPHY_STICKERS.filter(s => !this.unlockedStickers.includes(s.id));
+            let randomSticker;
+            let isNew = false;
+
+            // 80% 几率优先抽中未收集到的萌宠
+            if (uncollected.length > 0 && Math.random() < 0.8) {
+                randomSticker = uncollected[Math.floor(Math.random() * uncollected.length)];
+                isNew = true;
+            } else {
+                randomSticker = CALLIGRAPHY_STICKERS[Math.floor(Math.random() * CALLIGRAPHY_STICKERS.length)];
+                isNew = !this.unlockedStickers.includes(randomSticker.id);
+            }
+
+            if (isNew) {
+                this.unlockedStickers.push(randomSticker.id);
+                localStorage.setItem('kid_app_stickers', JSON.stringify(this.unlockedStickers));
+            }
+
+            if (window.soundManager) {
+                window.soundManager.playVictory();
+                window.soundManager.playFanfare();
+            }
+            this.fireConfetti();
+
+            if (prizeDisplay) {
+                prizeDisplay.innerHTML = `
+                    <div class="prize-card pop-in">
+                        <div class="prize-badge">${isNew ? '✨ 新伙伴加入！' : '🎉 获得闪亮金光贴纸！'}</div>
+                        <div class="prize-emoji">${randomSticker.emoji}</div>
+                        <div class="prize-name">${randomSticker.name}</div>
+                        <div class="prize-title">【${randomSticker.title}】</div>
+                    </div>
+                `;
+            }
+
+            const voiceMsg = isNew 
+                ? `恭喜你！解锁了新伙伴：${randomSticker.name}！` 
+                : `获得了闪亮贴纸：${randomSticker.name}！`;
+            if (window.soundManager) window.soundManager.speak(voiceMsg);
+
+            this.updateGashaponUI();
+            this.updateGashaponBadge();
+        }, 1200);
+    }
+
+    openStickerBook() {
+        const modal = document.getElementById('sticker-book-modal');
+        if (modal) {
+            modal.classList.add('visible');
+            this.renderStickerBook();
+            this.renderPlaygroundBar();
+        }
+    }
+
+    renderStickerBook() {
+        const grid = document.getElementById('stickers-grid');
+        const unlockedCountEl = document.getElementById('unlocked-sticker-count');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        if (unlockedCountEl) {
+            unlockedCountEl.textContent = `${this.unlockedStickers.length} / ${CALLIGRAPHY_STICKERS.length}`;
+        }
+
+        CALLIGRAPHY_STICKERS.forEach(item => {
+            const isUnlocked = this.unlockedStickers.includes(item.id);
+            const card = document.createElement('div');
+            card.className = `sticker-grid-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+
+            if (isUnlocked) {
+                card.innerHTML = `
+                    <div class="sticker-icon">${item.emoji}</div>
+                    <div class="sticker-lbl">${item.name}</div>
+                    <div class="sticker-tag">${item.title}</div>
+                `;
+                card.addEventListener('click', () => {
+                    if (window.soundManager) {
+                        window.soundManager.playStar();
+                        window.soundManager.speak(item.soundText || item.name);
+                    }
+                    card.classList.add('wobble');
+                    setTimeout(() => card.classList.remove('wobble'), 500);
+                });
+            } else {
+                card.innerHTML = `
+                    <div class="sticker-icon locked-icon">🔒</div>
+                    <div class="sticker-lbl">???</div>
+                    <div class="sticker-tag">扭蛋解锁</div>
+                `;
+            }
+
+            grid.appendChild(card);
+        });
+    }
+
+    renderPlaygroundBar() {
+        const bar = document.getElementById('playground-stickers-bar');
+        const playground = document.getElementById('sticker-playground-canvas');
+        if (!bar || !playground) return;
+
+        bar.innerHTML = '';
+        const unlockedItems = CALLIGRAPHY_STICKERS.filter(s => this.unlockedStickers.includes(s.id));
+
+        unlockedItems.forEach(item => {
+            const chip = document.createElement('button');
+            chip.className = 'playground-chip';
+            chip.innerHTML = `${item.emoji} <span>${item.name}</span>`;
+            chip.title = '点击放入宣纸卷轴';
+
+            chip.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.addStickerToPlayground(item, playground);
+            });
+
+            bar.appendChild(chip);
+        });
+    }
+
+    addStickerToPlayground(item, playground) {
+        const el = document.createElement('div');
+        el.className = 'placed-playground-sticker pop-in';
+        el.textContent = item.emoji;
+
+        const pWidth = playground.clientWidth > 100 ? playground.clientWidth : 360;
+        const pHeight = playground.clientHeight > 80 ? playground.clientHeight : 220;
+
+        const x = Math.floor(Math.random() * (pWidth - 80)) + 20;
+        const y = Math.floor(Math.random() * (pHeight - 80)) + 20;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+
+        let isDragging = false;
+        let startX, startY, origX, origY;
+        let moved = false;
+
+        const onPointerDown = (e) => {
+            isDragging = true;
+            moved = false;
+            el.style.zIndex = '100';
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            startX = clientX;
+            startY = clientY;
+            origX = el.offsetLeft;
+            origY = el.offsetTop;
+            if (window.soundManager) window.soundManager.playPop();
+        };
+
+        const onPointerMove = (e) => {
+            if (!isDragging) return;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                moved = true;
+            }
+
+            const curW = playground.clientWidth > 100 ? playground.clientWidth : 360;
+            const curH = playground.clientHeight > 80 ? playground.clientHeight : 220;
+            el.style.left = `${Math.max(0, Math.min(curW - 60, origX + dx))}px`;
+            el.style.top = `${Math.max(0, Math.min(curH - 60, origY + dy))}px`;
+        };
+
+        const onPointerEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            el.style.zIndex = '10';
+        };
+
+        el.addEventListener('mousedown', onPointerDown);
+        document.addEventListener('mousemove', onPointerMove);
+        document.addEventListener('mouseup', onPointerEnd);
+
+        el.addEventListener('touchstart', onPointerDown, { passive: true });
+        document.addEventListener('touchmove', onPointerMove, { passive: true });
+        document.addEventListener('touchend', onPointerEnd);
+
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (moved) return; // 如果在拖动则不触发跳跃发声
+            if (window.soundManager) {
+                window.soundManager.playStar();
+                window.soundManager.speak(item.soundText || item.name);
+            }
+            el.classList.add('jumping');
+            setTimeout(() => el.classList.remove('jumping'), 600);
+        });
+
+        playground.appendChild(el);
     }
 }
 

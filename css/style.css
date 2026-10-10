@@ -308,6 +308,75 @@ img, svg, canvas {
     transform: translateY(-1px);
 }
 
+/* 幸运扭蛋机与贴纸乐园入口按键 */
+.gashapon-trigger-btn {
+    background: linear-gradient(135deg, #ff9f43, #ee5253);
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(238, 82, 83, 0.28);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+}
+
+.gashapon-trigger-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(238, 82, 83, 0.4);
+}
+
+.gashapon-trigger-btn:active {
+    transform: scale(0.96);
+}
+
+.gashapon-bubble-badge {
+    background: #ff4757;
+    color: #ffffff;
+    border: 1.5px solid #ffffff;
+    border-radius: 10px;
+    padding: 0 5px;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 14px;
+    min-width: 14px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: bounce 1.8s infinite ease-in-out;
+}
+
+.sticker-book-trigger-btn {
+    background: linear-gradient(135deg, #a55eea, #8854d0);
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(136, 84, 208, 0.28);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sticker-book-trigger-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(136, 84, 208, 0.4);
+}
+
+.sticker-book-trigger-btn:active {
+    transform: scale(0.96);
+}
+
 /* 移动端手机小屏提示条 */
 .mobile-hint-banner {
     background: linear-gradient(90deg, #fff3cd, #ffeaa7);
@@ -1702,6 +1771,8 @@ img, svg, canvas {
 
     .star-badge,
     .completed-badge,
+    .gashapon-trigger-btn,
+    .sticker-book-trigger-btn,
     .sound-toggle-btn,
     .fullscreen-toggle-btn,
     .clear-data-btn,
@@ -2148,6 +2219,25 @@ img, svg, canvas {
         padding: 6px 12px;
         font-size: 12px;
     }
+
+    /* 手机端奖励弹窗与乐园自适应 */
+    .stickers-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        max-height: 280px !important;
+    }
+
+    .sticker-playground-canvas {
+        height: 190px !important;
+    }
+
+    .gashapon-modal-card {
+        padding: 18px 14px !important;
+    }
+
+    .sticker-book-modal-card {
+        padding: 16px 12px !important;
+    }
 }
 
 /* 智能评测报告弹窗专用样式 */
@@ -2523,4 +2613,450 @@ img, svg, canvas {
         border-top: 1px dashed #ccc;
         padding-top: 10px;
     }
+}
+
+/* ========================================================
+   🎰 墨宝幸运扭蛋机与 📖 贴纸乐园弹窗样式
+   ======================================================== */
+
+.gashapon-modal-card {
+    max-width: 440px !important;
+    padding: 24px 22px !important;
+    text-align: center !important;
+    position: relative;
+    border-radius: 26px !important;
+    border: 2px solid #fed385;
+}
+
+.sticker-book-modal-card {
+    max-width: 680px !important;
+    width: 95% !important;
+    padding: 22px 20px !important;
+    text-align: center !important;
+    position: relative;
+    border-radius: 26px !important;
+    border: 2px solid #e0c3fc;
+}
+
+.btn-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: #f1f2f6;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 20px;
+    line-height: 1;
+    color: #747d8c;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    z-index: 10;
+}
+
+.btn-modal-close:hover {
+    background: #ff4757;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.modal-header-simple {
+    margin-bottom: 16px;
+}
+
+.gashapon-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.gashapon-header-icon {
+    font-size: 26px;
+}
+
+.gashapon-title-row .modal-title {
+    margin-bottom: 0;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.egg-display-box {
+    background: linear-gradient(135deg, #fffcf5, #fff5eb);
+    border: 3px dashed #fed385;
+    border-radius: 20px;
+    padding: 20px 14px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.egg-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.egg-shell {
+    font-size: 68px;
+    line-height: 1;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+.egg-preview-hint {
+    font-size: 14px;
+    color: #8c5300;
+    font-weight: 600;
+    max-width: 280px;
+    line-height: 1.45;
+}
+
+.egg-rolling {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.egg-animated {
+    font-size: 72px;
+    line-height: 1;
+    animation: spinEgg 0.7s infinite linear;
+}
+
+@keyframes spinEgg {
+    0% { transform: rotate(0deg) scale(1.05); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1.05); }
+}
+
+.rolling-text {
+    font-size: 16px;
+    font-weight: 800;
+    color: #e17055;
+    animation: pulse 1s infinite alternate;
+}
+
+.prize-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.prize-badge {
+    background: #fff3cd;
+    color: #b7791f;
+    border: 1px solid #fefcbf;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 14px;
+    margin-bottom: 6px;
+}
+
+.prize-emoji {
+    font-size: 72px;
+    line-height: 1.1;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+    margin-bottom: 4px;
+    animation: gentleBob 2s infinite ease-in-out alternate;
+}
+
+.prize-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--dark);
+    font-family: "KaiTi", "STKaiti", serif;
+}
+
+.prize-title {
+    font-size: 14px;
+    color: #e17055;
+    font-weight: 800;
+    margin-top: 2px;
+}
+
+.draw-action-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #ff7675, #ee5253);
+    color: #ffffff;
+    border: none;
+    font-size: 17px;
+    font-weight: 800;
+    padding: 13px 20px;
+    border-radius: 24px;
+    box-shadow: 0 5px 0 #c23616, 0 8px 16px rgba(238, 82, 83, 0.35);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.draw-action-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 #c23616, 0 10px 20px rgba(238, 82, 83, 0.45);
+}
+
+.draw-action-btn:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #c23616;
+}
+
+.draw-action-btn:disabled {
+    background: #dcdde1;
+    box-shadow: none;
+    cursor: not-allowed;
+    color: #7f8c8d;
+}
+
+.gashapon-footer-tip {
+    font-size: 12px;
+    color: #747d8c;
+    margin-top: 12px;
+}
+
+/* 贴纸乐园 Tab 标签 */
+.sticker-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.sticker-tab-btn {
+    background: #f1f2f6;
+    border: 1.5px solid #dcdde1;
+    border-radius: 20px;
+    padding: 8px 24px;
+    font-size: 14.5px;
+    font-weight: 800;
+    color: #4b6584;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 135px;
+}
+
+.sticker-tab-btn:hover {
+    background: #f7f1fc;
+    border-color: #a55eea;
+    color: #8854d0;
+    transform: translateY(-1px);
+}
+
+.sticker-tab-btn.active {
+    background: linear-gradient(135deg, #a55eea, #8854d0);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(136, 84, 208, 0.35);
+    transform: none;
+}
+
+.sticker-tab-panel {
+    display: none;
+}
+
+.sticker-tab-panel.active {
+    display: block;
+}
+
+/* Tab 1: 荣誉图鉴 */
+.stickers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 6px;
+    scrollbar-width: thin;
+}
+
+.sticker-grid-item {
+    background: #ffffff;
+    border: 2px solid #ecf0f1;
+    border-radius: 16px;
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sticker-grid-item.unlocked {
+    background: #ffffff;
+    border-color: #feca57;
+    box-shadow: 0 3px 8px rgba(254, 202, 87, 0.2);
+}
+
+.sticker-grid-item.unlocked:hover {
+    transform: scale(1.06);
+    border-color: #ff9f43;
+    box-shadow: 0 6px 14px rgba(254, 202, 87, 0.35);
+}
+
+.sticker-grid-item.locked {
+    opacity: 0.55;
+    background: #f8f9fa;
+    cursor: default;
+}
+
+.sticker-icon {
+    font-size: 38px;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.sticker-lbl {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #2d3436;
+    font-family: "KaiTi", "STKaiti", serif;
+    white-space: nowrap;
+}
+
+.sticker-tag {
+    font-size: 11px;
+    color: #8854d0;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.sticker-grid-item.wobble {
+    animation: wobbleAnim 0.5s ease;
+}
+
+@keyframes wobbleAnim {
+    0%, 100% { transform: scale(1.06) rotate(0); }
+    25% { transform: scale(1.12) rotate(-8deg); }
+    75% { transform: scale(1.12) rotate(8deg); }
+}
+
+/* Tab 2: 宣纸创意乐园画布 */
+.sticker-playground-canvas {
+    width: 100%;
+    height: 250px;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, #fffdfa 0%, #f7f1e5 100%);
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #fed385;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.04);
+    margin-bottom: 10px;
+    touch-action: none;
+}
+
+.placed-playground-sticker {
+    position: absolute;
+    font-size: 48px;
+    line-height: 1;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.16));
+    transition: transform 0.1s;
+}
+
+.placed-playground-sticker:active {
+    cursor: grabbing;
+}
+
+.placed-playground-sticker.jumping {
+    animation: jumpSticker 0.6s ease;
+}
+
+@keyframes jumpSticker {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-28px) scale(1.2); }
+    100% { transform: translateY(0); }
+}
+
+.playground-control-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.sub-explain {
+    font-size: 12px;
+    color: #747d8c;
+    text-align: left;
+    flex: 1;
+}
+
+.btn-clear-playground {
+    background: #f1f2f6;
+    border: 1px solid #dcdde1;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #57606f;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.btn-clear-playground:hover {
+    background: #ffeaa7;
+    border-color: #fdcb6e;
+    color: #d35400;
+}
+
+.playground-stickers-bar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px;
+    scrollbar-width: none;
+}
+
+.playground-stickers-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.playground-chip {
+    background: #ffffff;
+    border: 2px solid #ecf0f1;
+    border-radius: 18px;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2d3436;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+
+.playground-chip:hover {
+    border-color: #ff7675;
+    background: #fff5f5;
+    transform: translateY(-2px);
+}
+
+.btn-eval.reward-gashapon-action {
+    background: linear-gradient(135deg, #ff9f43, #ee5253);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(238, 82, 83, 0.35);
+    animation: pulse 1.8s infinite;
 }
