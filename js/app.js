@@ -506,6 +506,13 @@ class KidWritingApp {
                 this.openIpadGuideModal();
             });
         }
+        const topFsBtn = document.getElementById('btn-toggle-fullscreen');
+        if (topFsBtn) {
+            topFsBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.toggleFullscreen();
+            });
+        }
         if (settingsFsBtn) {
             settingsFsBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();

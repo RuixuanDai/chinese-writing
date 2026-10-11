@@ -628,10 +628,11 @@ img, svg, canvas {
     border: 1.5px solid #fae3d9;
     border-radius: var(--radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    padding: 8px 12px;
+    padding: 6px 12px;
     display: flex;
-    gap: 12px;
-    flex: 1.1;
+    gap: 10px;
+    flex: 0 0 216px;
+    height: 216px;
     min-height: 0;
     box-sizing: border-box;
     transition: all 0.2s ease;
@@ -1089,8 +1090,8 @@ img, svg, canvas {
 }
 
 .hanzi-writer-frame {
-    width: 140px;
-    height: 140px;
+    width: 172px;
+    height: 172px;
     aspect-ratio: 1 / 1;
     position: relative;
     background: #ffffff;
@@ -1858,7 +1859,7 @@ img, svg, canvas {
     .header-actions {
         gap: 5px;
     }
-    .gashapon-trigger-btn, .sticker-book-trigger-btn, .settings-trigger-btn {
+    .gashapon-trigger-btn, .sticker-book-trigger-btn, .fullscreen-toggle-btn, .settings-trigger-btn {
         padding: 4px 10px;
         font-size: 13px;
     }
@@ -1866,6 +1867,19 @@ img, svg, canvas {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
         padding: 4px 8px;
+    }
+    .cognition-hero-card {
+        height: 216px;
+        flex: 0 0 216px;
+        padding: 6px 10px;
+    }
+    .guide-studio-card {
+        flex: 1;
+        padding: 6px 10px 8px;
+    }
+    .hanzi-writer-frame {
+        width: 165px;
+        height: 165px;
     }
     .ill-art-box {
         width: 170px;
