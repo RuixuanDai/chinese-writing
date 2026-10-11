@@ -47,7 +47,13 @@ class HandwritingCanvas {
             setTimeout(() => this.resize(), 150);
         });
 
-        if (typeof ResizeObserver !== 'undefined' && this.container) {
+        const wrapper = this.container ? this.container.parentElement : null;
+        if (typeof ResizeObserver !== 'undefined' && wrapper) {
+            this.resizeObserver = new ResizeObserver(() => {
+                this.resize();
+            });
+            this.resizeObserver.observe(wrapper);
+        } else if (typeof ResizeObserver !== 'undefined' && this.container) {
             this.resizeObserver = new ResizeObserver(() => {
                 this.resize();
             });
@@ -61,14 +67,20 @@ class HandwritingCanvas {
     // 处理高分屏 (Retina / 移动端高清屏)，根据视口自适应尺寸并防模糊
     resize() {
         if (!this.container) return;
-        const rect = this.container.getBoundingClientRect();
-        const size = Math.floor(Math.min(rect.width, rect.height));
+        const wrapper = this.container.parentElement || this.container;
+        const rect = wrapper.getBoundingClientRect();
+        const padding = 2;
+        const availW = Math.max(0, rect.width - padding * 2);
+        const availH = Math.max(0, rect.height - padding * 2);
+        const size = Math.floor(Math.min(availW, availH));
         if (size <= 0) return;
         if (this.cssSize === size) return; // 尺寸未变无需重复重绘
 
         const dpr = window.devicePixelRatio || 1;
 
-        // 设置 CSS 样式尺寸
+        // 设置外层正方形容器与画布精确尺寸，消灭任何多余留白
+        this.container.style.width = `${size}px`;
+        this.container.style.height = `${size}px`;
         this.gridCanvas.style.width = `${size}px`;
         this.gridCanvas.style.height = `${size}px`;
         this.drawCanvas.style.width = `${size}px`;
@@ -322,24 +334,17 @@ class HandwritingCanvas {
         }
     }
 
-    // 绘制各种练习格线
+    // 绘制各种练习格线 (最大化可用书写空间，四周仅留6px呼吸边距)
     drawGrid(ctx, size) {
         ctx.save();
-        const padding = 12;
-        const boxSize = size - padding * 2;
-        const left = padding;
-        const top = padding;
-        const right = left + boxSize;
-        const bottom = top + boxSize;
-        const centerX = left + boxSize / 2;
-        const centerY = top + boxSize / 2;
+        const left = 0;
+        const top = 0;
+        const right = size;
+        const bottom = size;
+        const centerX = size / 2;
+        const centerY = size / 2;
 
-        const gridColor = '#e17055'; // 经典朱砂红
-
-        // 外边框
-        ctx.strokeStyle = gridColor;
-        ctx.lineWidth = 2.5;
-        ctx.strokeRect(left, top, boxSize, boxSize);
+        const gridColor = '#e17055'; // 经典朱砂红 (与左侧笔顺框统一)
 
         if (this.gridType === 'blank') {
             ctx.restore();

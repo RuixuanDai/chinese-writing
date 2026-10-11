@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#ff6b6b">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261010_v2">
+    <link rel="stylesheet" href="css/style.css?v=20261010_v3">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -36,13 +36,13 @@
                 </div>
             </div>
 
-            <!-- 自选汉字输入 -->
+            <!-- 自选汉字输入 (加宽且提示更精炼) -->
             <div class="search-box">
-                <input type="text" id="custom-char-input" placeholder="输入任意字(例:福)" maxlength="1" autocomplete="off">
-                <button id="btn-custom-char">练这个字</button>
+                <input type="text" id="custom-char-input" placeholder="输入汉字" maxlength="1" autocomplete="off">
+                <button id="btn-custom-char">练字</button>
             </div>
 
-            <!-- 成就徽章与设置 -->
+            <!-- 成就徽章与核心操作 (危险及系统操作移至设置弹窗) -->
             <div class="header-actions">
                 <div class="star-badge" title="练字赚取的金星星">
                     <span>⭐</span>
@@ -61,10 +61,9 @@
                     <span>📖 贴纸乐园</span>
                 </button>
                 <button id="btn-sound-toggle" class="sound-toggle-btn">🔊 声音开</button>
-                <button id="btn-toggle-fullscreen" class="fullscreen-toggle-btn" title="切换浏览器全屏显示，沉浸式练字">⛶ 全屏</button>
-                <button id="btn-clear-data" class="clear-data-btn" title="清除本地所有练字记录与星星数据">🗑️ 清除数据</button>
-                <button id="btn-print-sheet" class="print-sheet-btn" title="生成标准田字格纸质练字帖，支持打印机打印">🖨️ 打印字帖</button>
-                <button id="btn-ipad-modal" class="ipad-connect-btn" title="查看在 iPad / 平板上全屏书写连接指南与关于说明">📱 iPad 练字</button>
+                <button id="btn-open-settings" class="settings-trigger-btn" title="家长区与设置：打印字帖、全屏、清除数据">
+                    <span>⚙️ 设置</span>
+                </button>
             </div>
         </div>
     </header>
@@ -108,17 +107,22 @@
 
                 <!-- 右半：汉字详情、例句与组词 -->
                 <div class="cognition-details-box">
-                    <!-- 汉字大字、拼音、英文与部首笔画 (点击整块发音) -->
+                    <!-- 汉字大字、拼音、英文与部首笔画 (层次清晰、英文不重叠汉字) -->
                     <div id="cognition-char-header-block" class="cognition-char-header" title="点击朗读汉字标准普通话发音">
                         <div class="cognition-char-group">
-                            <span id="current-pinyin" class="cognition-pinyin">yī</span>
+                            <div class="cognition-pinyin-row">
+                                <span id="current-pinyin" class="cognition-pinyin">yī</span>
+                                <span id="current-char-en" class="hero-en-badge" title="英文释义（点击听纯正英文朗读 🇬🇧/🇺🇸）">one</span>
+                            </div>
                             <div class="cognition-char-row">
                                 <span id="current-char-display" class="cognition-char">一</span>
-                                <span id="current-char-en" class="hero-en-badge" title="英文释义（点击听纯正英文朗读 🇬🇧/🇺🇸）">one</span>
                             </div>
                         </div>
                         <div class="char-header-right">
-                            <button id="btn-speak-char" class="btn-speak" title="听汉字标准普通话发音">🔊</button>
+                            <button id="btn-speak-char" class="btn-speak" title="听汉字标准普通话发音">
+                                <span class="btn-speak-icon">🔊</span>
+                                <span class="btn-speak-text">点我读</span>
+                            </button>
                             <div class="cognition-meta-badges">
                                 <span class="meta-pill">部首：<strong id="info-radical">一</strong></span>
                                 <span class="meta-pill">笔画：<strong id="info-stroke-count">1 画</strong></span>
@@ -140,17 +144,22 @@
                 </div>
             </div>
 
-            <!-- 下半部分：笔顺小课堂 (大幅演示与互动闯关) -->
+            <!-- 下半部分：笔顺小课堂 (精致小巧演示与互动闯关) -->
             <div class="guide-studio-card">
-                <!-- 顶部标题栏与速度调节 -->
+                <!-- 顶部标题栏与分段速度调节 -->
                 <div class="guide-header-row">
                     <div class="guide-title-box">
                         <span class="guide-icon">📖</span>
                         <h2 class="guide-title">笔顺小课堂</h2>
                     </div>
                     <div class="speed-control-group">
-                        <label for="select-anim-speed" class="speed-label">演示速度：</label>
-                        <select id="select-anim-speed" class="speed-select">
+                        <span class="speed-label">速度：</span>
+                        <div class="speed-segmented-ctrl" id="speed-segmented-ctrl">
+                            <button type="button" class="speed-seg-btn" data-speed="0.6" title="慢速演示">🐢 慢</button>
+                            <button type="button" class="speed-seg-btn active" data-speed="1.0" title="正常速度">正常</button>
+                            <button type="button" class="speed-seg-btn" data-speed="1.5" title="快速演示">🐇 快</button>
+                        </div>
+                        <select id="select-anim-speed" class="speed-select" style="display: none;">
                             <option value="0.6">慢速 0.6x</option>
                             <option value="1.0" selected>正常 1.0x</option>
                             <option value="1.5">快速 1.5x</option>
@@ -158,7 +167,7 @@
                     </div>
                 </div>
 
-                <!-- 中间：大幅标准米字格笔顺框 (弹性居中自适应) -->
+                <!-- 中间：标准米字格笔顺演示框 (精致适中比例) -->
                 <div class="guide-frame-wrapper">
                     <div class="hanzi-writer-frame">
                         <div class="writer-grid-lines"></div>
@@ -168,12 +177,12 @@
                     </div>
                 </div>
 
-                <!-- 状态提示浮条 -->
+                <!-- 状态提示浮条 (带动态小手引导) -->
                 <div id="quiz-status-msg" class="status-pill">
-                    💡 点击下方“播放笔顺”观察演示，或“跟写闯关”亲手练习！
+                    <span class="hand-pointer-icon">👆</span> 点击下方“播放笔顺”观察演示，或“跟写闯关”亲手练习！
                 </div>
 
-                <!-- 核心操作按键组 (大按键并排) -->
+                <!-- 核心操作按键组 (大按键并排，饱和度高对比) -->
                 <div class="writer-action-buttons">
                     <button id="btn-play-anim" class="btn-ctrl btn-play-anim" title="播放标准笔画演示动画">
                         <span class="btn-icon">▶️</span>
@@ -218,8 +227,8 @@
                 </div>
             </div>
 
-            <!-- 工具栏：画笔与调色盘 -->
-            <div class="canvas-toolbar">
+            <!-- 画板工具栏第 1 层：笔刷选择与大号描红开关 -->
+            <div class="canvas-toolbar-tier1">
                 <div class="brush-selector">
                     <button class="brush-btn active" data-brush="brush" title="毛笔：带起笔收笔轻重粗细变化">🖌️ 毛笔</button>
                     <button class="brush-btn" data-brush="pen" title="硬笔：清晰工整线条">✏️ 硬笔</button>
@@ -227,8 +236,20 @@
                     <button class="brush-btn" data-brush="eraser" title="橡皮擦：擦除写错的笔迹">🧹 橡皮</button>
                 </div>
 
-                <!-- 颜色选择 -->
-                <div class="color-palette">
+                <!-- 开启描红底样大开关 (Toggle Switch，整块可点，触控友好) -->
+                <label class="trace-toggle-switch-wrap" title="跟着浅红底样笔画描画">
+                    <span class="trace-toggle-label-text">描红底样</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggle-trace-switch" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- 画板工具栏第 2 层：调色盘、粗细调节与底样浓度 -->
+            <div class="canvas-toolbar-tier2">
+                <!-- 颜色选择 (大号圆点 ≥ 32px，触控精准) -->
+                <div class="color-palette" id="canvas-color-palette">
                     <span class="color-pill active" data-color="#2d3436" style="background: #2d3436;" title="墨黑"></span>
                     <span class="color-pill" data-color="#d63031" style="background: #d63031;" title="朱红"></span>
                     <span class="color-pill" data-color="#0984e3" style="background: #0984e3;" title="宝石蓝"></span>
@@ -237,22 +258,21 @@
                     <span class="color-pill" data-color="#6c5ce7" style="background: #6c5ce7;" title="梦幻紫"></span>
                 </div>
 
-                <!-- 笔刷粗细调节 -->
-                <div class="slider-group">
-                    <span>粗细</span>
-                    <input type="range" id="brush-size-slider" min="6" max="28" value="14" step="2">
+                <!-- 笔刷粗细：快捷细/中/粗分段 + 舒适长滑块 -->
+                <div class="brush-size-control-group">
+                    <span class="control-label">粗细</span>
+                    <div class="size-segmented-ctrl">
+                        <button type="button" class="size-seg-btn" data-size="8">细</button>
+                        <button type="button" class="size-seg-btn active" data-size="14">中</button>
+                        <button type="button" class="size-seg-btn" data-size="22">粗</button>
+                    </div>
+                    <input type="range" id="brush-size-slider" min="6" max="28" value="14" step="2" class="enhanced-slider" title="笔画粗细微调">
                 </div>
-            </div>
 
-            <!-- 描红开关与浓度调节 -->
-            <div class="trace-control-bar">
-                <label class="trace-toggle-label">
-                    <input type="checkbox" id="toggle-trace-switch" checked>
-                    <span>开启描红底样（跟着浅红字描画）</span>
-                </label>
-                <div class="slider-group">
-                    <span>浓度</span>
-                    <input type="range" id="trace-opacity-slider" min="0.1" max="0.75" value="0.35" step="0.05">
+                <!-- 描红底样浓度调节 -->
+                <div class="trace-opacity-group" id="trace-opacity-group">
+                    <span class="control-label">浓度</span>
+                    <input type="range" id="trace-opacity-slider" min="0.1" max="0.75" value="0.35" step="0.05" class="enhanced-slider" title="描红底样深浅调节">
                 </div>
             </div>
 
@@ -375,6 +395,70 @@
 
             <div style="text-align: center;">
                 <button id="ipad-guide-close-btn" class="btn-modal primary" style="width: 100%;">我知道了，去练字</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 家长区与系统设置弹窗 Modal -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-content settings-modal-card">
+            <button id="btn-close-settings" class="btn-modal-close" aria-label="关闭">&times;</button>
+            <div class="modal-header-simple">
+                <div class="gashapon-title-row">
+                    <span class="gashapon-header-icon">⚙️</span>
+                    <h3 class="modal-title">家长区与设置</h3>
+                </div>
+                <div class="modal-subtitle">家长管控 · 打印字帖 · 全屏与设备指南</div>
+            </div>
+
+            <div class="settings-options-list">
+                <!-- 打印字帖 -->
+                <div class="settings-item-row" id="setting-row-print">
+                    <div class="settings-item-info">
+                        <span class="settings-item-icon">🖨️</span>
+                        <div>
+                            <div class="settings-item-title">打印纸质字帖</div>
+                            <div class="settings-item-desc">生成标准田字格练字单，支持 A4 / Letter 打印机打印</div>
+                        </div>
+                    </div>
+                    <button id="btn-settings-print" class="btn-settings-action primary">打印字帖</button>
+                </div>
+
+                <!-- iPad 全屏指引与隐私免责声明 -->
+                <div class="settings-item-row" id="setting-row-ipad">
+                    <div class="settings-item-info">
+                        <span class="settings-item-icon">📱</span>
+                        <div>
+                            <div class="settings-item-title">iPad 全屏指南与隐私免责</div>
+                            <div class="settings-item-desc">添加到主屏幕全屏独立运行说明及零个人数据收集申明</div>
+                        </div>
+                    </div>
+                    <button id="btn-settings-ipad" class="btn-settings-action">查看指引</button>
+                </div>
+
+                <!-- 沉浸式全屏切换 -->
+                <div class="settings-item-row" id="setting-row-fullscreen">
+                    <div class="settings-item-info">
+                        <span class="settings-item-icon">⛶</span>
+                        <div>
+                            <div class="settings-item-title">切换浏览器全屏</div>
+                            <div class="settings-item-desc">隐藏浏览器地址栏与边框，沉浸式练字体验</div>
+                        </div>
+                    </div>
+                    <button id="btn-settings-fullscreen" class="btn-settings-action">进入全屏</button>
+                </div>
+
+                <!-- 危险操作：清除本地数据 (带家长安全锁) -->
+                <div class="settings-item-row danger" id="setting-row-clear">
+                    <div class="settings-item-info">
+                        <span class="settings-item-icon">🗑️</span>
+                        <div>
+                            <div class="settings-item-title text-danger">重置与清除本地数据</div>
+                            <div class="settings-item-desc">清空所有星星、已练记录及画板数据（带家长算术安全锁）</div>
+                        </div>
+                    </div>
+                    <button id="btn-settings-cleardata" class="btn-settings-action danger">清除数据</button>
+                </div>
             </div>
         </div>
     </div>
@@ -541,12 +625,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261010_v2"></script>
-    <script src="js/char-data.js?v=20261010_v2"></script>
-    <script src="js/stroke-cache.js?v=20261010_v2"></script>
-    <script src="js/canvas.js?v=20261010_v2"></script>
-    <script src="js/hanzi-guide.js?v=20261010_v2"></script>
-    <script src="js/evaluator.js?v=20261010_v2"></script>
-    <script src="js/app.js?v=20261010_v2"></script>
+    <script src="js/sound.js?v=20261010_v3"></script>
+    <script src="js/char-data.js?v=20261010_v3"></script>
+    <script src="js/stroke-cache.js?v=20261010_v3"></script>
+    <script src="js/canvas.js?v=20261010_v3"></script>
+    <script src="js/hanzi-guide.js?v=20261010_v3"></script>
+    <script src="js/evaluator.js?v=20261010_v3"></script>
+    <script src="js/app.js?v=20261010_v3"></script>
 </body>
 </html>

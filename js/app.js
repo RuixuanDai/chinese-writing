@@ -462,17 +462,67 @@ class KidWritingApp {
             });
         }
 
-        // 2.1 iPad 连线与简介说明弹窗控制
-        const ipadBtn = document.getElementById('btn-ipad-modal');
-        const ipadModal = document.getElementById('ipad-guide-modal');
-        const ipadCloseBtn = document.getElementById('ipad-guide-close-btn');
+        // 2.1 家长区与系统设置弹窗控制 (归集全屏、打印、iPad指引与清除数据)
+        const openSettingsBtn = document.getElementById('btn-open-settings');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettingsBtn = document.getElementById('btn-close-settings');
+        const settingsPrintBtn = document.getElementById('btn-settings-print');
+        const settingsIpadBtn = document.getElementById('btn-settings-ipad');
+        const settingsFsBtn = document.getElementById('btn-settings-fullscreen');
+        const settingsClearBtn = document.getElementById('btn-settings-cleardata');
 
-        if (ipadBtn) {
-            ipadBtn.addEventListener('click', () => {
+        if (openSettingsBtn && settingsModal) {
+            openSettingsBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
+                this.updateFullscreenButton();
+                settingsModal.classList.add('visible');
+            });
+        }
+        if (closeSettingsBtn && settingsModal) {
+            closeSettingsBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                settingsModal.classList.remove('visible');
+            });
+        }
+        if (settingsModal) {
+            settingsModal.addEventListener('click', (e) => {
+                if (e.target === settingsModal) {
+                    if (window.soundManager) window.soundManager.playPop();
+                    settingsModal.classList.remove('visible');
+                }
+            });
+        }
+        if (settingsPrintBtn) {
+            settingsPrintBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                if (settingsModal) settingsModal.classList.remove('visible');
+                this.printWorksheet();
+            });
+        }
+        if (settingsIpadBtn) {
+            settingsIpadBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                if (settingsModal) settingsModal.classList.remove('visible');
                 this.openIpadGuideModal();
             });
         }
+        if (settingsFsBtn) {
+            settingsFsBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.toggleFullscreen();
+            });
+        }
+        if (settingsClearBtn) {
+            settingsClearBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                if (settingsModal) settingsModal.classList.remove('visible');
+                this.requestClearDataWithParentGate();
+            });
+        }
+
+        // iPad 连线与简介说明弹窗内部关闭
+        const ipadModal = document.getElementById('ipad-guide-modal');
+        const ipadCloseBtn = document.getElementById('ipad-guide-close-btn');
         if (ipadCloseBtn && ipadModal) {
             const handleCloseIntro = () => {
                 if (window.soundManager) window.soundManager.playPop();
@@ -487,33 +537,15 @@ class KidWritingApp {
             });
         }
 
-        // 2.2 全屏切换控制
-        const fsBtn = document.getElementById('btn-toggle-fullscreen');
-        if (fsBtn) {
-            fsBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.toggleFullscreen();
-            });
-        }
+        // 全屏状态改变监听
         document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
         document.addEventListener('webkitfullscreenchange', () => this.updateFullscreenButton());
 
-        // 2.3 清除本地数据控制 (带确认弹窗)
-        const clearDataBtn = document.getElementById('btn-clear-data');
+        // 清除本地数据二次确认弹窗
         const clearModal = document.getElementById('clear-data-modal');
         const cancelClearBtn = document.getElementById('btn-cancel-clear-data');
         const confirmClearBtn = document.getElementById('btn-confirm-clear-data');
-        const clearStarsEl = document.getElementById('clear-modal-stars');
-        const clearCharsEl = document.getElementById('clear-modal-chars');
 
-        if (clearDataBtn && clearModal) {
-            clearDataBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                if (clearStarsEl) clearStarsEl.textContent = this.stars || 0;
-                if (clearCharsEl) clearCharsEl.textContent = (this.completedChars && this.completedChars.length) || 0;
-                clearModal.classList.add('visible');
-            });
-        }
         if (cancelClearBtn && clearModal) {
             cancelClearBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
@@ -656,12 +688,28 @@ class KidWritingApp {
             });
         }
 
-        // 速度调节
+        // 5.1 演示速度调节 (分段大按钮 + 兼容下拉框)
+        const speedSegBtns = document.querySelectorAll('.speed-seg-btn');
         const speedSelect = document.getElementById('select-anim-speed');
+
+        speedSegBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                speedSegBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const spd = parseFloat(btn.dataset.speed);
+                this.hanziGuide.setSpeed(spd);
+                if (speedSelect) speedSelect.value = spd.toString();
+            });
+        });
+
         if (speedSelect) {
             speedSelect.addEventListener('change', (e) => {
                 const spd = parseFloat(e.target.value);
                 this.hanziGuide.setSpeed(spd);
+                speedSegBtns.forEach(b => {
+                    b.classList.toggle('active', parseFloat(b.dataset.speed) === spd);
+                });
             });
         }
 
@@ -679,6 +727,7 @@ class KidWritingApp {
 
         // 7. 画笔类型切换
         const brushBtns = document.querySelectorAll('.brush-btn');
+        const colorPaletteEl = document.getElementById('canvas-color-palette');
         brushBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
@@ -686,10 +735,15 @@ class KidWritingApp {
                 btn.classList.add('active');
                 const bType = btn.dataset.brush;
                 this.canvasEngine.setBrushType(bType);
+
+                // 如果是橡皮擦，调色盘略微淡化提示无需选色
+                if (colorPaletteEl) {
+                    colorPaletteEl.style.opacity = bType === 'eraser' ? '0.45' : '1';
+                }
             });
         });
 
-        // 8. 颜色选择器
+        // 8. 颜色选择器 (大号触控圆点)
         const colorPills = document.querySelectorAll('.color-pill');
         colorPills.forEach(pill => {
             pill.addEventListener('click', () => {
@@ -698,27 +752,63 @@ class KidWritingApp {
                 pill.classList.add('active');
                 const col = pill.dataset.color;
                 this.canvasEngine.setBrushColor(col);
+
+                // 若之前在橡皮擦状态，选颜色时自动切回毛笔
+                const eraserBtn = document.querySelector('.brush-btn[data-brush="eraser"]');
+                const brushBtn = document.querySelector('.brush-btn[data-brush="brush"]');
+                if (eraserBtn && eraserBtn.classList.contains('active') && brushBtn) {
+                    eraserBtn.classList.remove('active');
+                    brushBtn.classList.add('active');
+                    this.canvasEngine.setBrushType('brush');
+                    if (colorPaletteEl) colorPaletteEl.style.opacity = '1';
+                }
             });
         });
 
-        // 9. 画笔粗细滑动条
+        // 9. 画笔粗细：细/中/粗分段按键 + 长滑块双向联动
+        const sizeSegBtns = document.querySelectorAll('.size-seg-btn');
         const sizeSlider = document.getElementById('brush-size-slider');
+
+        sizeSegBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                sizeSegBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const sz = parseInt(btn.dataset.size, 10);
+                this.canvasEngine.setBrushSize(sz);
+                if (sizeSlider) sizeSlider.value = sz;
+            });
+        });
+
         if (sizeSlider) {
             sizeSlider.addEventListener('input', (e) => {
-                this.canvasEngine.setBrushSize(parseInt(e.target.value, 10));
+                const val = parseInt(e.target.value, 10);
+                this.canvasEngine.setBrushSize(val);
+                sizeSegBtns.forEach(b => {
+                    b.classList.toggle('active', parseInt(b.dataset.size, 10) === val);
+                });
             });
         }
 
-        // 10. 描红开关与透明度
+        // 10. 描红大开关 (iOS-Toggle) 与浓度调节
         const traceToggle = document.getElementById('toggle-trace-switch');
         const traceSlider = document.getElementById('trace-opacity-slider');
+        const traceOpacityGroup = document.getElementById('trace-opacity-group');
+
         const updateTrace = () => {
             const show = traceToggle ? traceToggle.checked : true;
             const opacity = traceSlider ? parseFloat(traceSlider.value) : 0.35;
+            if (traceOpacityGroup) {
+                traceOpacityGroup.style.opacity = show ? '1' : '0.35';
+                traceOpacityGroup.style.pointerEvents = show ? 'auto' : 'none';
+            }
             this.canvasEngine.setTraceSettings(show, opacity);
         };
 
-        if (traceToggle) traceToggle.addEventListener('change', updateTrace);
+        if (traceToggle) traceToggle.addEventListener('change', () => {
+            if (window.soundManager) window.soundManager.playPop();
+            updateTrace();
+        });
         if (traceSlider) traceSlider.addEventListener('input', updateTrace);
 
         // 11. 撤销按钮
@@ -1216,23 +1306,45 @@ class KidWritingApp {
         }
     }
 
-    // 更新全屏按钮显示状态
+    // 更新全屏按钮显示状态 (同步顶栏与设置弹窗按键)
     updateFullscreenButton() {
-        const btn = document.getElementById('btn-toggle-fullscreen');
-        if (!btn) return;
         const isFullscreen = !!(document.fullscreenElement || 
                                document.webkitFullscreenElement || 
                                document.mozFullScreenElement || 
                                document.msFullscreenElement);
-        if (isFullscreen) {
-            btn.innerHTML = '🗗 退出全屏';
-            btn.classList.add('active');
-            btn.title = '退出浏览器全屏显示';
-        } else {
-            btn.innerHTML = '⛶ 全屏';
-            btn.classList.remove('active');
-            btn.title = '切换浏览器全屏显示，沉浸式练字';
+        const btn = document.getElementById('btn-toggle-fullscreen');
+        if (btn) {
+            btn.innerHTML = isFullscreen ? '🗗 退出全屏' : '⛶ 全屏';
+            btn.classList.toggle('active', isFullscreen);
+            btn.title = isFullscreen ? '退出浏览器全屏显示' : '切换浏览器全屏显示，沉浸式练字';
         }
+        const settingsFsBtn = document.getElementById('btn-settings-fullscreen');
+        if (settingsFsBtn) {
+            settingsFsBtn.textContent = isFullscreen ? '退出全屏' : '进入全屏';
+            settingsFsBtn.classList.toggle('active', isFullscreen);
+        }
+    }
+
+    // 家长算术安全验证锁：杜绝小朋友误操作清空星星与记录
+    requestClearDataWithParentGate() {
+        const num1 = Math.floor(Math.random() * 8) + 3; // 3 ~ 10
+        const num2 = Math.floor(Math.random() * 8) + 2; // 2 ~ 9
+        const expected = num1 + num2;
+        const answer = prompt(`🛡️ 家长安全验证锁（防止小朋友误触数据清空）\n\n请家长口算作答：${num1} + ${num2} = ?`);
+        if (answer === null) return; // 家长主动取消
+        if (parseInt(answer.trim(), 10) !== expected) {
+            alert('❌ 口算验证未通过，已取消清除数据操作。');
+            if (window.soundManager) window.soundManager.playPop();
+            return;
+        }
+
+        // 验证通过，弹出二次确认与数据统计展示
+        const clearModal = document.getElementById('clear-data-modal');
+        const clearStarsEl = document.getElementById('clear-modal-stars');
+        const clearCharsEl = document.getElementById('clear-modal-chars');
+        if (clearStarsEl) clearStarsEl.textContent = this.stars || 0;
+        if (clearCharsEl) clearCharsEl.textContent = (this.completedChars && this.completedChars.length) || 0;
+        if (clearModal) clearModal.classList.add('visible');
     }
 
     // 清空本地数据
