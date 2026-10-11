@@ -851,6 +851,18 @@ img, svg, canvas {
     line-height: 1.4;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    padding: 2px 4px;
+}
+
+.cognition-sentence-text:hover {
+    background: #fff8e7;
+    color: #d35400;
+}
+
+.cognition-sentence-text:active, .cognition-sentence-text.pop-anim {
+    transform: scale(0.98);
 }
 
 /* 常用组词 */
@@ -880,18 +892,26 @@ img, svg, canvas {
 .word-tag {
     background: #e3f2fd;
     color: #0984e3;
-    padding: 3px 10px;
-    border-radius: 8px;
+    padding: 4px 11px;
+    border-radius: 10px;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15.5px;
     cursor: pointer;
     white-space: nowrap;
-    transition: transform 0.15s ease;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(9, 132, 227, 0.12);
+    user-select: none;
 }
 
 .word-tag:hover {
-    transform: scale(1.06);
-    background: #bbdefb;
+    transform: translateY(-2px) scale(1.06);
+    background: #d0e7ff;
+    box-shadow: 0 3px 8px rgba(9, 132, 227, 0.2);
+    border-color: #0984e3;
+}
+
+.word-tag:active, .word-tag.pop-anim {
+    transform: scale(0.94);
 }
 
 /* ========================================================
@@ -1548,6 +1568,16 @@ img, svg, canvas {
     0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 118, 117, 0.6); }
     70% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(255, 118, 117, 0); }
     100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); }
+}
+
+.pop-anim {
+    animation: quickPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes quickPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.92); }
+    100% { transform: scale(1); }
 }
 
 /* 针对较小屏幕高度（如 < 680px）的弹性微调，确保绝对不发生滚动 */
@@ -2569,15 +2599,18 @@ img, svg, canvas {
 
     .print-row {
         display: flex;
+        justify-content: space-between;
         gap: 4px;
         margin-bottom: 8px;
     }
 
     .print-cell {
-        width: 68px;
-        height: 68px;
+        flex: 1;
+        max-width: 68px;
+        aspect-ratio: 1;
         border: 1.5px solid #e17055;
         position: relative;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: center;

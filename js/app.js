@@ -256,18 +256,9 @@ class KidWritingApp {
         const wordsEl = document.getElementById('info-words-list');
         const sentenceEl = document.getElementById('info-sentence');
         const enEl = document.getElementById('current-char-en');
-        const illEnEl = document.getElementById('large-illustration-en');
-        // 更新大幅看图识字插画卡
-        const illCardEl = document.getElementById('char-illustration-large') || document.getElementById('char-illustration-box');
-        const illArtEl = document.getElementById('large-illustration-art') || document.getElementById('char-illustration-icon');
-        const illLabelEl = document.getElementById('large-illustration-label') || document.getElementById('char-illustration-label');
+        const illCardEl = document.getElementById('char-illustration-large');
 
         const enText = info.en || (window.CHARACTER_EN_MAP && window.CHARACTER_EN_MAP[info.char]) || '';
-
-        const catTagEl = document.getElementById('cognition-cat-tag');
-        if (catTagEl) {
-            catTagEl.textContent = info.category ? info.category.replace(/^[^\u4e00-\u9fa5\w]+/, '') : '常用字';
-        }
 
         if (pyEl) pyEl.textContent = info.pinyin;
         if (hzEl) hzEl.textContent = info.char;
@@ -307,19 +298,6 @@ class KidWritingApp {
                 `;
             }
         }
-        if (illLabelEl) illLabelEl.textContent = info.label || info.char;
-        if (illEnEl) {
-            illEnEl.textContent = enText;
-            illEnEl.style.display = enText ? 'inline-block' : 'none';
-            illEnEl.title = `英文：${enText}（点击朗读英文）`;
-            illEnEl.onclick = (e) => {
-                e.stopPropagation();
-                if (window.soundManager) {
-                    window.soundManager.playPop();
-                    window.soundManager.speakEn(enText);
-                }
-            };
-        }
 
         if (illCardEl) {
             illCardEl.title = `看图识字：${info.label || info.char} ${enText ? '(' + enText + ')' : ''}（点击朗读）`;
@@ -340,9 +318,14 @@ class KidWritingApp {
                     const tag = document.createElement('span');
                     tag.className = 'word-tag';
                     tag.textContent = w;
-                    tag.title = '点击朗读词语';
+                    tag.title = `点击朗读词语：“${w}” 🔊`;
                     tag.addEventListener('click', () => {
-                        if (window.soundManager) window.soundManager.speak(w);
+                        tag.classList.add('pop-anim');
+                        setTimeout(() => tag.classList.remove('pop-anim'), 300);
+                        if (window.soundManager) {
+                            window.soundManager.playPop();
+                            window.soundManager.speak(w);
+                        }
                     });
                     wordsEl.appendChild(tag);
                 });
@@ -354,7 +337,10 @@ class KidWritingApp {
             sentenceEl.style.cursor = 'pointer';
             sentenceEl.title = '点击朗读例句 🔊';
             sentenceEl.onclick = () => {
+                sentenceEl.classList.add('pop-anim');
+                setTimeout(() => sentenceEl.classList.remove('pop-anim'), 300);
                 if (window.soundManager) {
+                    window.soundManager.playPop();
                     window.soundManager.speak(info.sentence || sentenceEl.textContent);
                 }
             };
@@ -555,17 +541,23 @@ class KidWritingApp {
         if (copyForIpadBtn) {
             copyForIpadBtn.addEventListener('click', () => {
                 const currentUrl = window.location.href;
-                navigator.clipboard.writeText(currentUrl).then(() => {
+                const copySuccess = () => {
                     const originalText = copyForIpadBtn.textContent;
                     copyForIpadBtn.textContent = '✅ 已复制网址！可在 iPad/电脑打开';
                     copyForIpadBtn.style.background = '#2ed573';
+                    if (window.soundManager) window.soundManager.playCorrect();
                     setTimeout(() => {
                         copyForIpadBtn.textContent = originalText;
                         copyForIpadBtn.style.background = 'linear-gradient(135deg, #0984e3, #74b9ff)';
                     }, 2500);
-                }).catch(() => {
-                    alert('网址为：' + currentUrl);
-                });
+                };
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(currentUrl).then(copySuccess).catch(() => {
+                        this.fallbackCopyText(currentUrl, copySuccess);
+                    });
+                } else {
+                    this.fallbackCopyText(currentUrl, copySuccess);
+                }
             });
         }
 
@@ -626,9 +618,13 @@ class KidWritingApp {
                 if (window.soundManager) window.soundManager.playPop();
                 this.setQuizStatus('正在演示标准笔顺，请仔细观察起笔和笔画方向...');
                 playAnimBtn.disabled = true;
-                this.hanziGuide.animate(() => {
+                this.hanziGuide.animate((res) => {
                     playAnimBtn.disabled = false;
-                    this.setQuizStatus('笔顺演示完成！现在轮到你在右边画板练字啦！');
+                    if (res && res.success === false) {
+                        this.setQuizStatus('💡 暂无该生僻字笔顺矢量，请在右侧画板直接临摹！');
+                    } else {
+                        this.setQuizStatus('笔顺演示完成！现在轮到你在右边画板练字啦！');
+                    }
                 });
             });
         }
@@ -642,6 +638,10 @@ class KidWritingApp {
                 startQuizBtn.classList.add('pulse');
 
                 this.hanziGuide.startQuiz({
+                    onUnavailable: () => {
+                        startQuizBtn.classList.remove('pulse');
+                        this.setQuizStatus('💡 此字暂未收录跟写数据，请在右侧画板亲手书写！');
+                    },
                     onStrokeSuccess: (data) => {
                         this.setQuizStatus(`👏 太棒了！第 ${data.strokeNum} 笔书写正确！继续加油！`);
                     },
@@ -783,6 +783,17 @@ class KidWritingApp {
                 this.openGashapon();
             });
         }
+
+        // 键盘快捷键支持：按 Escape 键优雅退出当前所有弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+                const openModals = document.querySelectorAll('.modal-overlay.visible');
+                if (openModals.length > 0) {
+                    openModals.forEach(m => m.classList.remove('visible'));
+                    if (window.soundManager) window.soundManager.playPop();
+                }
+            }
+        });
     }
 
     // 设置状态提示文本
@@ -1580,8 +1591,8 @@ class KidWritingApp {
 
             const curW = playground.clientWidth > 100 ? playground.clientWidth : 360;
             const curH = playground.clientHeight > 80 ? playground.clientHeight : 220;
-            el.style.left = `${Math.max(0, Math.min(curW - 60, origX + dx))}px`;
-            el.style.top = `${Math.max(0, Math.min(curH - 60, origY + dy))}px`;
+            el.style.left = `${Math.max(4, Math.min(curW - 56, origX + dx))}px`;
+            el.style.top = `${Math.max(4, Math.min(curH - 56, origY + dy))}px`;
         };
 
         const onPointerEnd = () => {
@@ -1610,6 +1621,23 @@ class KidWritingApp {
         });
 
         playground.appendChild(el);
+    }
+
+    // 剪贴板复制兜底处理
+    fallbackCopyText(text, callback) {
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (callback) callback();
+        } catch (e) {
+            prompt('请长按复制本站网址：', text);
+        }
     }
 }
 

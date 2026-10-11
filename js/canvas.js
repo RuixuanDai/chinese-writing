@@ -116,10 +116,13 @@ class HandwritingCanvas {
 
         const getPos = (e) => {
             const rect = canvas.getBoundingClientRect();
+            // 支持 Apple Pencil / 触控笔压感检测 (0 ~ 1)
+            const pressure = (e.pressure !== undefined && e.pressure > 0) ? e.pressure : 0.5;
             return {
                 x: e.clientX - rect.left,
                 y: e.clientY - rect.top,
-                pressure: e.pressure || 0.5,
+                pressure: pressure,
+                pointerType: e.pointerType || 'touch',
                 time: Date.now()
             };
         };
@@ -133,6 +136,13 @@ class HandwritingCanvas {
             this.lastTime = pos.time;
             this.lastWidth = this.brushSize;
             this.points = [pos];
+
+            // 尝试捕获指针，避免贴近边缘书写或轻微划出画布时笔画突发中断
+            try {
+                if (canvas.setPointerCapture && e.pointerId) {
+                    canvas.setPointerCapture(e.pointerId);
+                }
+            } catch (err) {}
 
             // 记录笔画元数据
             this.currentStroke = {
@@ -176,6 +186,12 @@ class HandwritingCanvas {
             this.isDrawing = false;
             this.points = [];
 
+            try {
+                if (canvas.releasePointerCapture && e.pointerId) {
+                    canvas.releasePointerCapture(e.pointerId);
+                }
+            } catch (err) {}
+
             if (this.currentStroke && this.brushType !== 'eraser') {
                 this.strokeList.push(this.currentStroke);
             }
@@ -189,7 +205,6 @@ class HandwritingCanvas {
         canvas.addEventListener('pointermove', drawMove);
         canvas.addEventListener('pointerup', stopDrawing);
         canvas.addEventListener('pointercancel', stopDrawing);
-        canvas.addEventListener('pointerleave', stopDrawing);
     }
 
     // 绘制起始圆点
@@ -248,10 +263,16 @@ class HandwritingCanvas {
             const speed = distance / timeDiff;
 
             // 速度快时笔画变细，速度慢时笔画饱满
-            const targetWidth = Math.max(
+            let targetWidth = Math.max(
                 this.brushSize * 0.45,
                 Math.min(this.brushSize * 1.6, this.brushSize * (1.1 - speed * 0.18))
             );
+
+            // 如果使用手写笔 (如 iPad Apple Pencil)，融合真实压感系数，呈现极致书法锋芒
+            if (p2.pointerType === 'pen' && p2.pressure !== undefined && p2.pressure > 0) {
+                const pressureFactor = 0.5 + p2.pressure * 0.9;
+                targetWidth = Math.max(this.brushSize * 0.35, Math.min(this.brushSize * 2.0, targetWidth * pressureFactor));
+            }
 
             // 线性缓动平滑笔画粗细变化，避免突变
             const currentWidth = this.lastWidth * 0.65 + targetWidth * 0.35;
@@ -453,7 +474,11 @@ class HandwritingCanvas {
 
     // 清空书写画布
     clear() {
+        this.drawCtx.save();
+        this.drawCtx.setTransform(1, 0, 0, 1, 0, 0);
         this.drawCtx.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.drawCtx.restore();
+
         this.history = [];
         this.strokeList = [];
         this.currentStroke = null;

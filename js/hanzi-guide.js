@@ -138,7 +138,10 @@ class HanziGuide {
 
     // 播放完整笔顺动画
     animate(onComplete) {
-        if (!this.writer) return;
+        if (!this.writer || !this.charData) {
+            if (onComplete) onComplete({ success: false });
+            return;
+        }
         this.isQuizMode = false;
         this.writer.showCharacter();
         this.writer.animateCharacter({
@@ -146,14 +149,14 @@ class HanziGuide {
                 if (window.soundManager) {
                     window.soundManager.playCorrect();
                 }
-                if (onComplete) onComplete();
+                if (onComplete) onComplete({ success: true });
             }
         });
     }
 
     // 循环单笔动画 (用于学习某特定笔画)
     animateSingleStroke(strokeNum) {
-        if (!this.writer) return;
+        if (!this.writer || !this.charData) return;
         this.writer.animateStroke(strokeNum);
     }
 
@@ -169,7 +172,12 @@ class HanziGuide {
 
     // 开始互动跟写闯关模式 (Quiz Mode)
     startQuiz(options = {}) {
-        if (!this.writer) return;
+        if (!this.writer || !this.charData) {
+            if (options.onUnavailable) {
+                options.onUnavailable();
+            }
+            return;
+        }
         this.isQuizMode = true;
         this.currentStrokeIndex = 0;
         this.onQuizCompleteCallback = options.onComplete;

@@ -34,7 +34,7 @@ class SoundManager {
                 } catch (e) {}
             }
         };
-        ['touchstart', 'touchend', 'click'].forEach(evt => {
+        ['touchstart', 'touchend', 'click', 'pointerdown'].forEach(evt => {
             document.addEventListener(evt, unlock, { once: true, passive: true });
         });
     }
