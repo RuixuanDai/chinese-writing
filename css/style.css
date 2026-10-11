@@ -791,12 +791,12 @@ img, svg, canvas {
 
 .cognition-char-row {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 8px;
 }
 
 .cognition-char {
-    font-size: 58px;
+    font-size: 52px;
     font-family: "KaiTi", "STKaiti", serif;
     font-weight: bold;
     color: var(--dark);
@@ -1090,8 +1090,8 @@ img, svg, canvas {
 }
 
 .hanzi-writer-frame {
-    width: 172px;
-    height: 172px;
+    width: 215px;
+    height: 215px;
     aspect-ratio: 1 / 1;
     position: relative;
     background: #ffffff;
@@ -1869,8 +1869,8 @@ img, svg, canvas {
         padding: 4px 8px;
     }
     .cognition-hero-card {
-        height: 216px;
-        flex: 0 0 216px;
+        height: 220px;
+        flex: 0 0 220px;
         padding: 6px 10px;
     }
     .guide-studio-card {
@@ -1878,8 +1878,8 @@ img, svg, canvas {
         padding: 6px 10px 8px;
     }
     .hanzi-writer-frame {
-        width: 165px;
-        height: 165px;
+        width: 205px;
+        height: 205px;
     }
     .ill-art-box {
         width: 170px;
