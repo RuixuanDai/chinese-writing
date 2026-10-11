@@ -631,8 +631,8 @@ img, svg, canvas {
     padding: 6px 12px;
     display: flex;
     gap: 10px;
-    flex: 0 0 216px;
-    height: 216px;
+    flex: 0 0 228px;
+    height: 228px;
     min-height: 0;
     box-sizing: border-box;
     transition: all 0.2s ease;
@@ -640,7 +640,7 @@ img, svg, canvas {
 
 /* 大幅插画卡 (纯净全幅展示) */
 .ill-art-box {
-    width: 250px;
+    width: 155px;
     flex-shrink: 0;
     background: linear-gradient(145deg, #fffcf5 0%, #fff4e6 50%, #ffe9d9 100%);
     border: 1.5px solid #fed385;
@@ -838,23 +838,24 @@ img, svg, canvas {
 .char-header-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
 .btn-speak {
     background: #ffbe76;
     border: none;
-    border-radius: 22px;
-    height: 44px;
-    min-height: 44px;
-    padding: 0 14px;
-    font-size: 15px;
+    border-radius: 20px;
+    height: 38px;
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(255, 190, 118, 0.45);
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     color: #8c5300;
     flex-shrink: 0;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.2s;
@@ -870,12 +871,12 @@ img, svg, canvas {
 }
 
 .btn-speak-icon {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1;
 }
 
 .btn-speak-text {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 800;
     white-space: nowrap;
 }
@@ -883,18 +884,19 @@ img, svg, canvas {
 .cognition-meta-badges {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    font-size: 14px;
+    gap: 3px;
+    font-size: 12px;
     color: var(--text-muted);
+    flex-shrink: 0;
 }
 
 .meta-pill {
     background: #ffffff;
     border: 1px solid #fae3d9;
     border-radius: 8px;
-    padding: 3px 8px;
+    padding: 2px 6px;
     white-space: nowrap;
-    font-size: 13.5px;
+    font-size: 12px;
 }
 
 .meta-pill strong {
@@ -1090,8 +1092,8 @@ img, svg, canvas {
 }
 
 .hanzi-writer-frame {
-    width: 215px;
-    height: 215px;
+    width: 230px;
+    height: 230px;
     aspect-ratio: 1 / 1;
     position: relative;
     background: #ffffff;
@@ -1869,8 +1871,8 @@ img, svg, canvas {
         padding: 4px 8px;
     }
     .cognition-hero-card {
-        height: 220px;
-        flex: 0 0 220px;
+        height: 228px;
+        flex: 0 0 228px;
         padding: 6px 10px;
     }
     .guide-studio-card {
@@ -1878,19 +1880,19 @@ img, svg, canvas {
         padding: 6px 10px 8px;
     }
     .hanzi-writer-frame {
-        width: 205px;
-        height: 205px;
+        width: 225px;
+        height: 225px;
     }
     .ill-art-box {
-        width: 170px;
+        width: 135px;
     }
     .ill-large-img {
-        max-width: 150px;
-        max-height: 150px;
+        max-width: 125px;
+        max-height: 125px;
     }
     .ill-fallback-card {
-        width: 140px;
-        height: 140px;
+        width: 125px;
+        height: 125px;
     }
     .ill-fallback-card .fallback-char {
         font-size: 68px;

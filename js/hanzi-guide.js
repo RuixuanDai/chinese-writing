@@ -103,12 +103,12 @@ class HanziGuide {
             this.writer = HanziWriter.create(this.targetEl, char, {
                 width: size,
                 height: size,
-                padding: 18,
+                padding: 8,
                 strokeColor: '#2d3436',
                 radicalColor: '#e17055', // 部首突出朱砂红
                 outlineColor: '#dfe6e9',
                 drawingColor: '#0984e3',
-                drawingWidth: 16,
+                drawingWidth: 20,
                 showOutline: true,
                 showCharacter: true,
                 strokeAnimationSpeed: this.speed,
