@@ -1339,24 +1339,24 @@ img, svg, canvas {
 
 .brush-selector {
     display: flex;
-    gap: 6px;
+    gap: 3px;
 }
 
 .brush-btn {
     background: #ffffff;
     border: 1.5px solid #dcdde1;
-    border-radius: 16px;
-    height: 42px;
-    min-height: 42px;
-    padding: 0 14px;
-    font-size: 14.5px;
+    border-radius: 14px;
+    height: 38px;
+    min-height: 38px;
+    padding: 0 7px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.15s ease;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     color: var(--text-main);
 }
 
@@ -1378,13 +1378,13 @@ img, svg, canvas {
 .trace-toggle-switch-wrap {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
     cursor: pointer;
     user-select: none;
-    height: 42px;
-    min-height: 42px;
-    padding: 0 10px;
-    border-radius: 20px;
+    height: 38px;
+    min-height: 38px;
+    padding: 0 6px;
+    border-radius: 18px;
     background: #fdfaf6;
     border: 1.5px solid #fae3d9;
     transition: all 0.2s ease;
@@ -1396,7 +1396,7 @@ img, svg, canvas {
 }
 
 .trace-toggle-label-text {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 700;
     color: #2d3436;
     white-space: nowrap;
@@ -1404,10 +1404,10 @@ img, svg, canvas {
 
 .toggle-switch {
     position: relative;
-    width: 48px;
-    height: 26px;
+    width: 38px;
+    height: 22px;
     background: #dcdde1;
-    border-radius: 13px;
+    border-radius: 11px;
     transition: background 0.25s ease;
     flex-shrink: 0;
 }
@@ -1423,8 +1423,8 @@ img, svg, canvas {
     position: absolute;
     top: 2px;
     left: 2px;
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
     background: #ffffff;
     border-radius: 50%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
@@ -1432,11 +1432,89 @@ img, svg, canvas {
 }
 
 .toggle-switch input:checked + .toggle-slider {
-    transform: translateX(22px);
+    transform: translateX(16px);
 }
 
 .trace-toggle-switch-wrap:has(input:checked) .toggle-switch {
     background: #10ac84;
+}
+
+/* 辅控操作区 (描红开关 + 防误触按钮) */
+.canvas-aux-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* 手写笔防误触切换按钮 */
+.btn-stylus-guard {
+    background: #ffffff;
+    border: 1.5px solid #dcdde1;
+    border-radius: 18px;
+    height: 38px;
+    min-height: 38px;
+    padding: 0 7px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--text-main);
+    user-select: none;
+}
+
+.btn-stylus-guard:hover {
+    background: #f8fafc;
+    border-color: #0984e3;
+    transform: translateY(-1px);
+}
+
+.btn-stylus-guard:active {
+    transform: scale(0.96);
+}
+
+.guard-icon {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.guard-text {
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.guard-badge {
+    background: #2ed573;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 10px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.btn-stylus-guard.mode-pen_only {
+    border-color: #0984e3;
+    background: #f0f7ff;
+}
+
+.btn-stylus-guard.mode-pen_only .guard-badge {
+    background: #0984e3;
+}
+
+.btn-stylus-guard.mode-off {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+
+.btn-stylus-guard.mode-off .guard-badge {
+    background: #94a3b8;
 }
 
 /* 画板工具栏第 2 层：调色盘、粗细分段与浓度 */
@@ -1542,6 +1620,7 @@ img, svg, canvas {
     margin: 2px 0;
     width: 100%;
     box-sizing: border-box;
+    position: relative; /* 为手腕防触垫等提供相对定位基准 */
 }
 
 .canvas-box {
@@ -1582,24 +1661,24 @@ img, svg, canvas {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
     padding: 6px 0 env(safe-area-inset-bottom, 4px);
     flex-shrink: 0;
 }
 
 .action-btn-group {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .btn-tool {
     background: #f1f2f6;
     border: 1.5px solid #dcdde1;
-    border-radius: 22px;
-    height: 44px;
-    min-height: 44px;
-    padding: 0 18px;
-    font-size: 15px;
+    border-radius: 20px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0 11px;
+    font-size: 13.5px;
     font-weight: 700;
     color: var(--text-main);
     cursor: pointer;
@@ -1607,7 +1686,7 @@ img, svg, canvas {
     transition: all 0.15s ease;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
 }
 
 .btn-tool:hover {
@@ -1620,11 +1699,11 @@ img, svg, canvas {
     background: linear-gradient(135deg, #1dd1a1, #10ac84);
     color: #fff;
     border: none;
-    border-radius: 24px;
-    height: 46px;
-    min-height: 46px;
-    padding: 0 24px;
-    font-size: 17px;
+    border-radius: 22px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0 16px;
+    font-size: 15px;
     font-weight: 800;
     cursor: pointer;
     box-shadow: 0 4px 14px rgba(29, 209, 161, 0.38);
@@ -1632,7 +1711,7 @@ img, svg, canvas {
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
 }
 
 .btn-submit-stamp:hover {
@@ -1667,9 +1746,132 @@ img, svg, canvas {
     color: var(--primary);
 }
 
+/* ========================================================
+   运笔期间全局防误触机制 (Writing Active Lockout)
+   当孩子落笔书写时，外部操作栏与工具按钮立即进入保护态，防止手腕/手掌误触
+   ======================================================== */
+body.writing-active .canvas-action-bar,
+body.writing-active .canvas-toolbar-tier1,
+body.writing-active .canvas-toolbar-tier2,
+body.writing-active .category-bar,
+body.writing-active .char-list-grid {
+    pointer-events: none !important;
+}
 
+body.writing-active .canvas-box {
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.4), 0 6px 20px rgba(0, 0, 0, 0.08);
+}
 
-/* 奖励胜利弹窗 Modal */
+/* 按钮防误触手腕垫状态 */
+.btn-wrist-guard.active {
+    background: #e0f2fe;
+    border-color: #38bdf8;
+    color: #0369a1;
+}
+
+/* 可展开式手腕防误触虚拟垫板 (Wrist Guard / Palm Shield) */
+.wrist-guard-bar {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    background: rgba(248, 250, 252, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 10px 16px;
+    z-index: 20;
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.08);
+    touch-action: none; /* 彻底拦截所有触控，防止手掌触控穿透 */
+    user-select: none;
+    -webkit-user-select: none;
+    animation: slideUpGuard 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUpGuard {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.wrist-guard-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.wrist-guard-icon {
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.wrist-guard-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-close-wrist {
+    background: #e2e8f0;
+    border: none;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #475569;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.btn-close-wrist:hover {
+    background: #cbd5e1;
+    color: #0f172a;
+}
+
+/* 全局轻量浮动 Toast 消息提示 */
+.app-toast-container {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-24px);
+    background: rgba(30, 41, 59, 0.94);
+    color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 28px;
+    padding: 10px 22px;
+    font-size: 14.5px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 999999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 90vw;
+    text-align: center;
+}
+
+.app-toast-container.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
 .modal-overlay {
     position: fixed;
     inset: 0;

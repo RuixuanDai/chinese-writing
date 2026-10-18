@@ -21,6 +21,13 @@ class HandwritingCanvas {
         this.currentChar = '一'; // 当前练习的字
         this.showTrace = true; // 是否显示描红
 
+        // 智能手掌防误触与指针控制 (解决孩子使用 Apple Pencil / 触控笔时手腕误触问题)
+        this.palmRejection = 'auto'; // 'auto' (检测到手写笔后自动屏蔽手掌触控), 'pen_only' (强制仅笔触), 'off' (手笔通用)
+        this.isStylusDetected = false; // 是否已检测到手写笔介入
+        this.activePointerId = null; // 当前正在书写的活跃指针 ID (单点锁定防串笔)
+        this.lastClearedBackup = null; // 清空画板时的即时备份 (支持一键撤销找回，防止误触清空)
+        this.onPalmRejectionChange = null; // 状态改变回调函数
+
         // 书写状态
         this.isDrawing = false;
         this.lastX = 0;
@@ -122,7 +129,7 @@ class HandwritingCanvas {
         this.saveHistory();
     }
 
-    // 绑定指针事件 (支持触屏触控笔、手指、鼠标)
+    // 绑定指针事件 (支持触屏触控笔、手指、鼠标，内置硬件级手掌防误触与指针单点锁定)
     bindEvents() {
         const canvas = this.drawCanvas;
 
@@ -140,8 +147,42 @@ class HandwritingCanvas {
         };
 
         const startDrawing = (e) => {
+            // 1. 若当前已有活跃指针正在书写，忽略其他触控 (单点锁定，防止手掌下压产生第二触点)
+            if (this.isDrawing && this.activePointerId !== null && this.activePointerId !== e.pointerId) {
+                e.preventDefault();
+                return;
+            }
+
+            // 2. 检测指针类型：如果是手写笔 (Apple Pencil 等)，更新标记并开启硬件级防误触
+            const isPen = e.pointerType === 'pen';
+            if (isPen && !this.isStylusDetected) {
+                this.isStylusDetected = true;
+                if (typeof this.onPalmRejectionChange === 'function') {
+                    this.onPalmRejectionChange(this.palmRejection, true);
+                }
+            }
+
+            // 3. 防误触过滤：在'pen_only'模式或'auto'(且已检测到笔)模式下，直接忽略任何手指/手掌 touch 触控
+            const isTouch = e.pointerType === 'touch';
+            const isPenOnlyActive = this.palmRejection === 'pen_only' || (this.palmRejection === 'auto' && this.isStylusDetected);
+            if (isTouch && isPenOnlyActive) {
+                e.preventDefault();
+                return;
+            }
+
+            // 4. 触控面积过滤：手掌或小鱼际触屏通常接触面积较大 (width 或 height > 26px)，自动丢弃
+            if (isTouch && ((e.width && e.width > 26) || (e.height && e.height > 26))) {
+                e.preventDefault();
+                return;
+            }
+
             e.preventDefault();
             this.isDrawing = true;
+            this.activePointerId = e.pointerId;
+
+            // 运笔期间给 body 添加 writing-active 状态，临时阻断外部按钮误触 (运笔中不可点清空/撤销等)
+            document.body.classList.add('writing-active');
+
             const pos = getPos(e);
             this.lastX = pos.x;
             this.lastY = pos.y;
@@ -175,6 +216,9 @@ class HandwritingCanvas {
 
         const drawMove = (e) => {
             if (!this.isDrawing) return;
+            // 仅响应当前活跃书写指针，手掌侧滑或第二个手指移动直接丢弃
+            if (this.activePointerId !== null && e.pointerId !== this.activePointerId) return;
+
             e.preventDefault();
             const pos = getPos(e);
             this.points.push(pos);
@@ -195,7 +239,11 @@ class HandwritingCanvas {
 
         const stopDrawing = (e) => {
             if (!this.isDrawing) return;
+            // 如果抬起的不是活跃书写指针 (比如抬起的是搭在屏幕上的手掌)，绝不能中断画笔的书写！
+            if (this.activePointerId !== null && e.pointerId !== this.activePointerId) return;
+
             this.isDrawing = false;
+            this.activePointerId = null;
             this.points = [];
 
             try {
@@ -203,6 +251,13 @@ class HandwritingCanvas {
                     canvas.releasePointerCapture(e.pointerId);
                 }
             } catch (err) {}
+
+            // 延时清除 writing-active，给手掌抬起留出防误触安全缓冲
+            setTimeout(() => {
+                if (!this.isDrawing) {
+                    document.body.classList.remove('writing-active');
+                }
+            }, 180);
 
             if (this.currentStroke && this.brushType !== 'eraser') {
                 this.strokeList.push(this.currentStroke);
@@ -455,8 +510,23 @@ class HandwritingCanvas {
         }
     }
 
-    // 撤销上一步
+    // 撤销上一步 (支持误触清空后的一键恢复)
     undo() {
+        // 如果刚刚被清空过且存在备份，一键完整恢复！
+        if (this.lastClearedBackup && (!this.hasDrawing() || this.history.length <= 1)) {
+            if (this.lastClearedBackup.imgData) {
+                this.drawCtx.putImageData(this.lastClearedBackup.imgData, 0, 0);
+            }
+            this.history = [...this.lastClearedBackup.history];
+            this.strokeList = [...this.lastClearedBackup.strokeList];
+            this.lastClearedBackup = null;
+
+            if (window.soundManager) {
+                window.soundManager.playPop();
+            }
+            return true;
+        }
+
         if (this.history.length > 1) {
             this.history.pop(); // 弹出当前状态
             const previous = this.history[this.history.length - 1];
@@ -471,14 +541,24 @@ class HandwritingCanvas {
             }
             return true;
         } else if (this.history.length === 1) {
-            this.clear();
+            this.clear(false);
             return true;
         }
         return false;
     }
 
-    // 清空书写画布
-    clear() {
+    // 清空书写画布 (自动保留恢复备份，防止手腕误触清空)
+    clear(saveBackup = true) {
+        if (saveBackup && this.hasDrawing()) {
+            try {
+                this.lastClearedBackup = {
+                    imgData: this.drawCtx.getImageData(0, 0, this.drawCanvas.width, this.drawCanvas.height),
+                    history: [...this.history],
+                    strokeList: [...this.strokeList]
+                };
+            } catch (e) {}
+        }
+
         this.drawCtx.save();
         this.drawCtx.setTransform(1, 0, 0, 1, 0, 0);
         this.drawCtx.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
@@ -491,6 +571,24 @@ class HandwritingCanvas {
         if (window.soundManager) {
             window.soundManager.playEraser();
         }
+    }
+
+    // 设置防误触模式 ('auto', 'pen_only', 'off')
+    setPalmRejection(mode) {
+        this.palmRejection = mode;
+        if (typeof this.onPalmRejectionChange === 'function') {
+            this.onPalmRejectionChange(this.palmRejection, this.isStylusDetected);
+        }
+    }
+
+    // 获取当前防误触状态信息
+    getPalmRejectionInfo() {
+        const isPenOnly = this.palmRejection === 'pen_only' || (this.palmRejection === 'auto' && this.isStylusDetected);
+        return {
+            mode: this.palmRejection,
+            isStylusDetected: this.isStylusDetected,
+            isPenOnlyActive: isPenOnly
+        };
     }
 
     // 获取当前笔画列表数据

@@ -43,6 +43,9 @@ class KidWritingApp {
     init() {
         // 1. 初始化手写画板
         this.canvasEngine = new HandwritingCanvas('gridCanvas', 'drawCanvas', 'canvas-box');
+        this.canvasEngine.onPalmRejectionChange = (mode, isStylusDetected) => {
+            this.updateStylusModeUI(mode, isStylusDetected);
+        };
 
         // 2. 初始化笔顺引擎
         this.hanziGuide = new HanziGuide('hanzi-writer-box');
@@ -506,6 +509,14 @@ class KidWritingApp {
                 this.openIpadGuideModal();
             });
         }
+        const settingsStylusBtn = document.getElementById('btn-settings-stylus-guide');
+        if (settingsStylusBtn) {
+            settingsStylusBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                if (settingsModal) settingsModal.classList.remove('visible');
+                this.openIpadGuideModal();
+            });
+        }
         const topFsBtn = document.getElementById('btn-toggle-fullscreen');
         if (topFsBtn) {
             topFsBtn.addEventListener('click', () => {
@@ -818,19 +829,71 @@ class KidWritingApp {
         });
         if (traceSlider) traceSlider.addEventListener('input', updateTrace);
 
-        // 11. 撤销按钮
-        const undoBtn = document.getElementById('btn-undo');
-        if (undoBtn) {
-            undoBtn.addEventListener('click', () => {
-                this.canvasEngine.undo();
+        // 10.1 手写笔手掌防误触切换控制
+        const stylusBtn = document.getElementById('btn-toggle-stylus');
+        if (stylusBtn) {
+            stylusBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                const currentMode = this.canvasEngine.palmRejection;
+                let newMode = 'auto';
+                if (currentMode === 'auto') newMode = 'pen_only';
+                else if (currentMode === 'pen_only') newMode = 'off';
+                else newMode = 'auto';
+
+                this.canvasEngine.setPalmRejection(newMode);
+                this.updateStylusModeUI(newMode, this.canvasEngine.isStylusDetected, true);
             });
         }
 
-        // 12. 清空画板按钮
+        // 10.2 手腕防误触虚拟垫板控制
+        const wristGuardBtn = document.getElementById('btn-toggle-wrist-guard');
+        const wristGuardBar = document.getElementById('wrist-guard-bar');
+        const closeWristBtn = document.getElementById('btn-close-wrist-guard');
+
+        if (wristGuardBtn && wristGuardBar) {
+            wristGuardBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                const isHidden = wristGuardBar.style.display === 'none' || !wristGuardBar.style.display;
+                if (isHidden) {
+                    wristGuardBar.style.display = 'block';
+                    wristGuardBtn.classList.add('active');
+                    this.showToast('🛡️ 手腕防触垫已开启，手掌/手腕可舒适贴屏');
+                } else {
+                    wristGuardBar.style.display = 'none';
+                    wristGuardBtn.classList.remove('active');
+                }
+            });
+        }
+
+        if (closeWristBtn && wristGuardBar && wristGuardBtn) {
+            closeWristBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                wristGuardBar.style.display = 'none';
+                wristGuardBtn.classList.remove('active');
+            });
+        }
+
+        // 11. 撤销按钮 (支持误触清空一键恢复)
+        const undoBtn = document.getElementById('btn-undo');
+        if (undoBtn) {
+            undoBtn.addEventListener('click', () => {
+                const hadBackup = !!this.canvasEngine.lastClearedBackup;
+                const success = this.canvasEngine.undo();
+                if (hadBackup && success && !this.canvasEngine.lastClearedBackup) {
+                    this.showToast('↩️ 已成功找回刚才清空的字迹！');
+                }
+            });
+        }
+
+        // 12. 清空画板按钮 (带误触即时撤销找回提示)
         const clearBtn = document.getElementById('btn-clear');
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
-                this.canvasEngine.clear();
+                const hasDrawing = this.canvasEngine.hasDrawing();
+                this.canvasEngine.clear(true);
+                if (hasDrawing) {
+                    this.showToast('🗑️ 画板已清空（若手腕误碰，点“↩️ 撤销”可立即恢复）');
+                }
             });
         }
 
@@ -1329,6 +1392,52 @@ class KidWritingApp {
         if (settingsFsBtn) {
             settingsFsBtn.textContent = isFullscreen ? '退出全屏' : '进入全屏';
             settingsFsBtn.classList.toggle('active', isFullscreen);
+        }
+    }
+
+    // 轻量消息提示 Toast
+    showToast(message, duration = 2600) {
+        const toast = document.getElementById('app-toast');
+        if (!toast) return;
+        toast.innerHTML = message;
+        toast.classList.add('visible');
+        if (this._toastTimer) clearTimeout(this._toastTimer);
+        this._toastTimer = setTimeout(() => {
+            toast.classList.remove('visible');
+        }, duration);
+    }
+
+    // 更新防误触按钮与状态显示
+    updateStylusModeUI(mode, isStylusDetected, showFeedback = false) {
+        const stylusBtn = document.getElementById('btn-toggle-stylus');
+        const badge = document.getElementById('stylus-guard-badge');
+        if (!stylusBtn || !badge) return;
+
+        stylusBtn.classList.remove('mode-pen_only', 'mode-off');
+        if (mode === 'pen_only') {
+            stylusBtn.classList.add('mode-pen_only');
+            badge.textContent = '笔专用';
+            if (showFeedback) {
+                this.showToast('✏️ 防误触已设为【仅手写笔】：已屏蔽手掌与手指，仅笔尖可书写');
+            }
+        } else if (mode === 'off') {
+            stylusBtn.classList.add('mode-off');
+            badge.textContent = '关闭';
+            if (showFeedback) {
+                this.showToast('🖐️ 防误触已【关闭】：手指与手写笔均可自由书写');
+            }
+        } else {
+            // auto 自动模式
+            if (isStylusDetected) {
+                stylusBtn.classList.add('mode-pen_only');
+                badge.textContent = '已开启';
+                this.showToast('✍️ 已识别到手写笔，已自动开启手掌防误触（手掌可自然贴屏）！');
+            } else {
+                badge.textContent = '自动';
+                if (showFeedback) {
+                    this.showToast('✨ 防误触已设为【自动】：检测到手写笔介入后将自动屏蔽手掌');
+                }
+            }
         }
     }
 

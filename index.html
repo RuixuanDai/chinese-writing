@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#ff6b6b">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261010_v3">
+    <link rel="stylesheet" href="css/style.css?v=20261018_v1">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -68,6 +68,9 @@
             </div>
         </div>
     </header>
+
+    <!-- 全局轻量浮动消息提示 Toast -->
+    <div id="app-toast" class="app-toast-container" role="status" aria-live="polite"></div>
 
     <!-- 移动端手机小屏提示条 -->
     <div id="mobile-hint-banner" class="mobile-hint-banner" style="display: none;">
@@ -228,7 +231,7 @@
                 </div>
             </div>
 
-            <!-- 画板工具栏第 1 层：笔刷选择与大号描红开关 -->
+            <!-- 画板工具栏第 1 层：笔刷选择与大号描红开关、手写笔防误触 -->
             <div class="canvas-toolbar-tier1">
                 <div class="brush-selector">
                     <button class="brush-btn active" data-brush="brush" title="毛笔：带起笔收笔轻重粗细变化">🖌️ 毛笔</button>
@@ -237,14 +240,23 @@
                     <button class="brush-btn" data-brush="eraser" title="橡皮擦：擦除写错的笔迹">🧹 橡皮</button>
                 </div>
 
-                <!-- 开启描红底样大开关 (Toggle Switch，整块可点，触控友好) -->
-                <label class="trace-toggle-switch-wrap" title="跟着浅红底样笔画描画">
-                    <span class="trace-toggle-label-text">描红底样</span>
-                    <div class="toggle-switch">
-                        <input type="checkbox" id="toggle-trace-switch" checked>
-                        <span class="toggle-slider"></span>
-                    </div>
-                </label>
+                <div class="canvas-aux-actions">
+                    <!-- 开启描红底样大开关 (Toggle Switch，整块可点，触控友好) -->
+                    <label class="trace-toggle-switch-wrap" title="跟着浅红底样笔画描画">
+                        <span class="trace-toggle-label-text">描红</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="toggle-trace-switch" checked>
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+
+                    <!-- 手写笔防误触切换按钮 -->
+                    <button id="btn-toggle-stylus" class="btn-stylus-guard" title="手掌防误触：手写笔书写时手掌可自然贴屏">
+                        <span class="guard-icon">✍️</span>
+                        <span class="guard-text">防误触</span>
+                        <span id="stylus-guard-badge" class="guard-badge">自动</span>
+                    </button>
+                </div>
             </div>
 
             <!-- 画板工具栏第 2 层：调色盘、粗细调节与底样浓度 -->
@@ -283,13 +295,23 @@
                     <canvas id="gridCanvas"></canvas>
                     <canvas id="drawCanvas"></canvas>
                 </div>
+
+                <!-- 可展开式手腕防误触保护垫板 (Wrist Guard / Palm Shield) -->
+                <div id="wrist-guard-bar" class="wrist-guard-bar" style="display: none;">
+                    <div class="wrist-guard-content">
+                        <span class="wrist-guard-icon">🛡️</span>
+                        <span class="wrist-guard-text">手腕防触垫已开启（手腕、小鱼际可放心贴放此处）</span>
+                        <button id="btn-close-wrist-guard" class="btn-close-wrist" title="收起防触垫">收起 ✕</button>
+                    </div>
+                </div>
             </div>
 
             <!-- 画板操作栏 -->
             <div class="canvas-action-bar">
                 <div class="action-btn-group">
-                    <button id="btn-undo" class="btn-tool" title="撤销上一笔">↩️ 撤销</button>
+                    <button id="btn-undo" class="btn-tool" title="撤销上一笔（若误触清空，点此可一键恢复）">↩️ 撤销</button>
                     <button id="btn-clear" class="btn-tool" title="清空画板重写">🗑️ 清空</button>
+                    <button id="btn-toggle-wrist-guard" class="btn-tool btn-wrist-guard" title="开启手腕防误触垫板，为手腕提供舒适休息区">🛡️ 手腕垫</button>
                 </div>
                 <button id="btn-finish-drawing" class="btn-submit-stamp" title="智能测评笔画、笔顺、重心结构与字形并给出详细评分">
                     <span>🏆 智能评分 & 盖章</span>
@@ -378,6 +400,30 @@
                 </div>
             </div>
 
+            <!-- ✍️ 手写笔与手腕手掌防误触使用指南 -->
+            <div class="ipad-step-box" style="background: #f0fdf4; border: 2px dashed #86efac; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                <div style="font-size: 15px; font-weight: 800; color: #166534; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <span>✍️</span> 彻底解决手写笔误触（手掌手腕可舒适贴屏）
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: #1e293b; line-height: 1.55;">
+                    <div>
+                        <strong>1. iPad 系统最关键设置（强力推荐）：</strong><br>
+                        打开 iPad<strong>「设置」➔「Apple Pencil」➔ 开启【仅使用 Apple Pencil 涂鸦】</strong>。<br>
+                        <span style="color: #15803d; font-size: 12.5px;">✓ 开启后 iPad 操作系统底层将完全屏蔽手掌与手指触画，只响应笔尖，手掌可 100% 放心贴在屏幕上！</span>
+                    </div>
+                    <div>
+                        <strong>2. 本应用内置软件智能防误触：</strong><br>
+                        • 自动识别 Apple Pencil 与手掌触控，运笔期间自动锁定底部操作栏，防止手腕误触「清空」或「换色」。<br>
+                        • <strong>误触清空一键找回</strong>：如果不小心蹭到清空，立即点击「↩️ 撤销」可 100% 完整恢复字迹！<br>
+                        • <strong>开启【🛡️ 手腕垫】</strong>：画板下方支持呼出手腕保护垫板，为小鱼际和手腕提供无忧休息区。
+                    </div>
+                    <div>
+                        <strong>3. 物理神器推荐（几元钱彻底杜绝误触）：</strong><br>
+                        在电商平台搜索<strong>「儿童双指防误触手套 / 绘画手套」</strong>（约 5~10 元）。仅包裹小指、无名指与手掌下侧，物理绝缘防误触，顺滑阻力小，还能纠正握笔姿势并防手汗！
+                    </div>
+                </div>
+            </div>
+
             <!-- 隐私承诺与免责声明 -->
             <div class="privacy-disclaimer-box" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 13px 15px; margin-bottom: 18px; font-size: 12.5px; color: #475569; line-height: 1.6;">
                 <div style="font-weight: 700; color: #1e293b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
@@ -435,6 +481,18 @@
                         </div>
                     </div>
                     <button id="btn-settings-ipad" class="btn-settings-action">查看指引</button>
+                </div>
+
+                <!-- 手写笔防误触设置指南 -->
+                <div class="settings-item-row" id="setting-row-stylus-guide">
+                    <div class="settings-item-info">
+                        <span class="settings-item-icon">✍️</span>
+                        <div>
+                            <div class="settings-item-title">手写笔防误触设置指南</div>
+                            <div class="settings-item-desc">iPad 系统设置、手掌贴屏技巧及儿童防误触手套推荐</div>
+                        </div>
+                    </div>
+                    <button id="btn-settings-stylus-guide" class="btn-settings-action">查看指南</button>
                 </div>
 
                 <!-- 沉浸式全屏切换 -->
@@ -626,12 +684,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261010_v5"></script>
-    <script src="js/char-data.js?v=20261010_v5"></script>
-    <script src="js/stroke-cache.js?v=20261010_v5"></script>
-    <script src="js/canvas.js?v=20261010_v5"></script>
-    <script src="js/hanzi-guide.js?v=20261010_v5"></script>
-    <script src="js/evaluator.js?v=20261010_v5"></script>
-    <script src="js/app.js?v=20261010_v5"></script>
+    <script src="js/sound.js?v=20261018_v1"></script>
+    <script src="js/char-data.js?v=20261018_v1"></script>
+    <script src="js/stroke-cache.js?v=20261018_v1"></script>
+    <script src="js/canvas.js?v=20261018_v1"></script>
+    <script src="js/hanzi-guide.js?v=20261018_v1"></script>
+    <script src="js/evaluator.js?v=20261018_v1"></script>
+    <script src="js/app.js?v=20261018_v1"></script>
 </body>
 </html>
