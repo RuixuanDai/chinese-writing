@@ -22,11 +22,14 @@ class HandwritingCanvas {
         this.showTrace = true; // 是否显示描红
 
         // 智能手掌防误触与指针控制 (解决孩子使用 Apple Pencil / 触控笔时手腕误触问题)
-        this.palmRejection = 'auto'; // 'auto' (检测到手写笔后自动屏蔽手掌触控), 'pen_only' (强制仅笔触), 'off' (手笔通用)
+        this.palmRejection = 'auto'; // 'auto' (智能识别：检测到主动笔自动屏蔽手掌，5秒无笔自动回退手指), 'pen_only' (强制仅笔触), 'off' (手笔通用)
         this.isStylusDetected = false; // 是否已检测到手写笔介入
+        this.lastPenTime = 0; // 最近一次手写笔 (pen) 书写的时间戳
         this.activePointerId = null; // 当前正在书写的活跃指针 ID (单点锁定防串笔)
+        this.activePointerType = null; // 当前正在书写的活跃指针类型 ('pen', 'touch', 'mouse')
         this.lastClearedBackup = null; // 清空画板时的即时备份 (支持一键撤销找回，防止误触清空)
         this.onPalmRejectionChange = null; // 状态改变回调函数
+        this.onBlockedTouch = null; // 仅笔模式下触屏被阻断提示回调
 
         // 书写状态
         this.isDrawing = false;
@@ -129,13 +132,34 @@ class HandwritingCanvas {
         this.saveHistory();
     }
 
-    // 绑定指针事件 (支持触屏触控笔、手指、鼠标，内置硬件级手掌防误触与指针单点锁定)
+    // 撤销当前尚未完成的触摸笔画 (用于手掌先着地时被笔尖绝对抢占)
+    rollbackActiveTouchStroke() {
+        if (!this.isDrawing) return;
+        if (this.history && this.history.length > 0) {
+            const lastSnapshot = this.history[this.history.length - 1];
+            try {
+                this.drawCtx.putImageData(lastSnapshot, 0, 0);
+            } catch (e) {}
+        } else {
+            this.drawCtx.save();
+            this.drawCtx.setTransform(1, 0, 0, 1, 0, 0);
+            this.drawCtx.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+            this.drawCtx.restore();
+        }
+        this.points = [];
+        this.currentStroke = null;
+        this.isDrawing = false;
+        this.activePointerId = null;
+        this.activePointerType = null;
+    }
+
+    // 绑定指针事件 (支持触屏触控笔、手指、鼠标，内置硬件级手掌防误触、笔尖绝对抢占与指针单点锁定)
     bindEvents() {
         const canvas = this.drawCanvas;
 
         const getPos = (e) => {
             const rect = canvas.getBoundingClientRect();
-            // 支持 Apple Pencil / 触控笔压感检测 (0 ~ 1)
+            // 支持 Apple Pencil / 触控笔硬件压感检测 (0 ~ 1)
             const pressure = (e.pressure !== undefined && e.pressure > 0) ? e.pressure : 0.5;
             return {
                 x: e.clientX - rect.left,
@@ -147,38 +171,77 @@ class HandwritingCanvas {
         };
 
         const startDrawing = (e) => {
-            // 1. 若当前已有活跃指针正在书写，忽略其他触控 (单点锁定，防止手掌下压产生第二触点)
+            const isPen = e.pointerType === 'pen';
+            const isTouch = e.pointerType === 'touch';
+
+            // 1. 安全解除死锁检查：若 isDrawing 处于锁定状态，但距上一次绘制事件已超过 350ms，判定为意外丢包或系统卡死，自动安全释放
+            if (this.isDrawing && (Date.now() - this.lastTime > 350)) {
+                this.isDrawing = false;
+                this.activePointerId = null;
+                this.activePointerType = null;
+                document.body.classList.remove('writing-active');
+            }
+
+            // 2. 笔尖绝对优先抢占权 (Pen Preemption - 解决开启防误触后手写偶发不识别的根本元凶！)：
+            // 当孩子握笔在屏幕上书写时，手掌下缘/小鱼际往往比笔尖早 10~30ms 接触屏幕。
+            // 若此时已有 touch (手掌/手指) 抢先触发了落笔，而真正的手写笔 (pen) 紧随其后落下：
+            // 立即强行中止并撤回手掌误触笔画，将画板控制权无缝移交至手写笔尖！
+            if (isPen) {
+                this.lastPenTime = Date.now();
+                if (!this.isStylusDetected) {
+                    this.isStylusDetected = true;
+                    if (typeof this.onPalmRejectionChange === 'function') {
+                        this.onPalmRejectionChange(this.palmRejection, true);
+                    }
+                }
+                if (this.isDrawing && this.activePointerType === 'touch') {
+                    this.rollbackActiveTouchStroke();
+                }
+            }
+
+            // 3. 多点触控锁定与防串笔：
+            // 如果已有活跃指针正在书写，且当前指针不是该活跃指针，则忽略 (防止第二触点串线)
             if (this.isDrawing && this.activePointerId !== null && this.activePointerId !== e.pointerId) {
                 e.preventDefault();
                 return;
             }
 
-            // 2. 检测指针类型：如果是手写笔 (Apple Pencil 等)，更新标记并开启硬件级防误触
-            const isPen = e.pointerType === 'pen';
-            if (isPen && !this.isStylusDetected) {
-                this.isStylusDetected = true;
-                if (typeof this.onPalmRejectionChange === 'function') {
-                    this.onPalmRejectionChange(this.palmRejection, true);
+            // 4. 防误触模式过滤规则：
+            if (isTouch) {
+                // (a) 在 'pen_only' (仅手写笔) 模式下，屏蔽所有 touch 触控，并友好提示
+                if (this.palmRejection === 'pen_only') {
+                    e.preventDefault();
+                    if (typeof this.onBlockedTouch === 'function') {
+                        this.onBlockedTouch();
+                    }
+                    return;
                 }
-            }
 
-            // 3. 防误触过滤：在'pen_only'模式或'auto'(且已检测到笔)模式下，直接忽略任何手指/手掌 touch 触控
-            const isTouch = e.pointerType === 'touch';
-            const isPenOnlyActive = this.palmRejection === 'pen_only' || (this.palmRejection === 'auto' && this.isStylusDetected);
-            if (isTouch && isPenOnlyActive) {
-                e.preventDefault();
-                return;
-            }
+                // (b) 在 'auto' 模式下：
+                // 如果近 5 秒内有活跃手写笔 (Apple Pencil) 运笔，说明孩子正在用主动笔写字，
+                // 此时所有的 touch 触控均为手掌/手腕贴屏，自动彻底屏蔽！
+                // 如果超过 5 秒未检测到笔尖，则自动回退允许手指或普通电容笔书写。
+                if (this.palmRejection === 'auto' && this.lastPenTime && (Date.now() - this.lastPenTime < 5000)) {
+                    e.preventDefault();
+                    return;
+                }
 
-            // 4. 触控面积过滤：手掌或小鱼际触屏通常接触面积较大 (width 或 height > 26px)，自动丢弃
-            if (isTouch && ((e.width && e.width > 26) || (e.height && e.height > 26))) {
-                e.preventDefault();
-                return;
+                // (c) 触控面积过滤：
+                // 仅过滤明显的大面积手掌肉垫 (contactSize > 75px)，避免误杀普通手指或橡胶电容笔
+                const contactSize = Math.max(e.width || 0, e.height || 0);
+                if (this.palmRejection !== 'off' && contactSize > 75) {
+                    e.preventDefault();
+                    return;
+                }
             }
 
             e.preventDefault();
             this.isDrawing = true;
             this.activePointerId = e.pointerId;
+            this.activePointerType = e.pointerType || 'touch';
+            if (isPen) {
+                this.lastPenTime = Date.now();
+            }
 
             // 运笔期间给 body 添加 writing-active 状态，临时阻断外部按钮误触 (运笔中不可点清空/撤销等)
             document.body.classList.add('writing-active');
@@ -203,7 +266,8 @@ class HandwritingCanvas {
                 startPoint: { x: pos.x, y: pos.y, time: pos.time },
                 endPoint: { x: pos.x, y: pos.y, time: pos.time },
                 brushType: this.brushType,
-                brushColor: this.brushColor
+                brushColor: this.brushColor,
+                pointerType: this.activePointerType
             };
 
             if (window.soundManager) {
@@ -221,6 +285,10 @@ class HandwritingCanvas {
 
             e.preventDefault();
             const pos = getPos(e);
+            this.lastTime = pos.time;
+            if (e.pointerType === 'pen') {
+                this.lastPenTime = pos.time;
+            }
             this.points.push(pos);
 
             if (this.currentStroke) {
@@ -244,6 +312,7 @@ class HandwritingCanvas {
 
             this.isDrawing = false;
             this.activePointerId = null;
+            this.activePointerType = null;
             this.points = [];
 
             try {
@@ -257,7 +326,7 @@ class HandwritingCanvas {
                 if (!this.isDrawing) {
                     document.body.classList.remove('writing-active');
                 }
-            }, 180);
+            }, 120);
 
             if (this.currentStroke && this.brushType !== 'eraser') {
                 this.strokeList.push(this.currentStroke);
@@ -272,6 +341,12 @@ class HandwritingCanvas {
         canvas.addEventListener('pointermove', drawMove);
         canvas.addEventListener('pointerup', stopDrawing);
         canvas.addEventListener('pointercancel', stopDrawing);
+
+        // 全局保护：在 window 监听 pointerup 和 pointercancel，
+        // 彻底杜绝笔尖划出画板边界或系统手势打断时发生的 isDrawing 死锁不释放问题！
+        window.addEventListener('pointerup', stopDrawing, { passive: true });
+        window.addEventListener('pointercancel', stopDrawing, { passive: true });
+        canvas.addEventListener('lostpointercapture', stopDrawing);
     }
 
     // 绘制起始圆点
@@ -583,11 +658,11 @@ class HandwritingCanvas {
 
     // 获取当前防误触状态信息
     getPalmRejectionInfo() {
-        const isPenOnly = this.palmRejection === 'pen_only' || (this.palmRejection === 'auto' && this.isStylusDetected);
+        const isPenActive = this.palmRejection === 'pen_only' || (this.palmRejection === 'auto' && this.isStylusDetected && (Date.now() - this.lastPenTime < 5000));
         return {
             mode: this.palmRejection,
             isStylusDetected: this.isStylusDetected,
-            isPenOnlyActive: isPenOnly
+            isPenOnlyActive: isPenActive
         };
     }
 

@@ -43,8 +43,16 @@ class KidWritingApp {
     init() {
         // 1. 初始化手写画板
         this.canvasEngine = new HandwritingCanvas('gridCanvas', 'drawCanvas', 'canvas-box');
+        let lastBlockedToast = 0;
         this.canvasEngine.onPalmRejectionChange = (mode, isStylusDetected) => {
             this.updateStylusModeUI(mode, isStylusDetected);
+        };
+        this.canvasEngine.onBlockedTouch = () => {
+            const now = Date.now();
+            if (now - lastBlockedToast > 2800) {
+                lastBlockedToast = now;
+                this.showToast('💡 当前为【仅手写笔模式】：若使用手指或普通电容笔，请点击上方防误触切换为【智能识别】或【手笔通用】');
+            }
         };
 
         // 2. 初始化笔顺引擎
@@ -873,6 +881,18 @@ class KidWritingApp {
             });
         }
 
+        // 彻底隔绝手腕防误触垫板上的所有手掌与手指触控，避免穿透或触发画板事件
+        if (wristGuardBar) {
+            ['pointerdown', 'pointermove', 'touchstart', 'touchmove', 'mousedown'].forEach(evtName => {
+                wristGuardBar.addEventListener(evtName, (e) => {
+                    if (e.target && (e.target.id === 'btn-close-wrist-guard' || e.target.closest('#btn-close-wrist-guard'))) {
+                        return;
+                    }
+                    e.stopPropagation();
+                }, { passive: false });
+            });
+        }
+
         // 11. 撤销按钮 (支持误触清空一键恢复)
         const undoBtn = document.getElementById('btn-undo');
         if (undoBtn) {
@@ -1416,27 +1436,21 @@ class KidWritingApp {
         stylusBtn.classList.remove('mode-pen_only', 'mode-off');
         if (mode === 'pen_only') {
             stylusBtn.classList.add('mode-pen_only');
-            badge.textContent = '笔专用';
+            badge.textContent = '仅笔';
             if (showFeedback) {
-                this.showToast('✏️ 防误触已设为【仅手写笔】：已屏蔽手掌与手指，仅笔尖可书写');
+                this.showToast('✏️ 防误触已设为【仅手写笔】：仅响应 Apple Pencil / 主动笔，彻底屏蔽手掌触控');
             }
         } else if (mode === 'off') {
             stylusBtn.classList.add('mode-off');
-            badge.textContent = '关闭';
+            badge.textContent = '通用';
             if (showFeedback) {
-                this.showToast('🖐️ 防误触已【关闭】：手指与手写笔均可自由书写');
+                this.showToast('🖐️ 防误触已设为【手笔通用】：手指、橡胶电容笔与主动笔均可自由书写');
             }
         } else {
-            // auto 自动模式
-            if (isStylusDetected) {
-                stylusBtn.classList.add('mode-pen_only');
-                badge.textContent = '已开启';
-                this.showToast('✍️ 已识别到手写笔，已自动开启手掌防误触（手掌可自然贴屏）！');
-            } else {
-                badge.textContent = '自动';
-                if (showFeedback) {
-                    this.showToast('✨ 防误触已设为【自动】：检测到手写笔介入后将自动屏蔽手掌');
-                }
+            // auto 智能模式
+            badge.textContent = isStylusDetected ? '智能' : '自动';
+            if (showFeedback) {
+                this.showToast('✨ 防误触已设为【智能识别】：笔尖绝对优先，主动笔书写时手掌可自然贴屏！');
             }
         }
     }
