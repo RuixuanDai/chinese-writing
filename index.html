@@ -10,9 +10,12 @@
     <meta name="apple-mobile-web-app-title" content="快乐练字">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#ff6b6b">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261019_v1">
+    <link rel="stylesheet" href="css/style.css?v=20261019_v3">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -515,6 +518,18 @@
                     <button id="btn-settings-fullscreen" class="btn-settings-action">进入全屏</button>
                 </div>
 
+                <!-- 检查并强制更新到最新版 (解决浏览器强缓存问题) -->
+                <div class="settings-item-row" id="setting-row-update">
+                    <div class="settings-item-info">
+                        <span class="settings-item-icon">🚀</span>
+                        <div>
+                            <div class="settings-item-title">检查并更新至最新版</div>
+                            <div class="settings-item-desc">当前版本: v2.5 (支持字框调节与名师朗读) · 强制绕过本地缓存</div>
+                        </div>
+                    </div>
+                    <button id="btn-settings-update" class="btn-settings-action primary">立即更新</button>
+                </div>
+
                 <!-- 危险操作：清除本地数据 (带家长安全锁) -->
                 <div class="settings-item-row danger" id="setting-row-clear">
                     <div class="settings-item-info">
@@ -700,12 +715,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261019_v1"></script>
-    <script src="js/char-data.js?v=20261019_v1"></script>
-    <script src="js/stroke-cache.js?v=20261019_v1"></script>
-    <script src="js/canvas.js?v=20261019_v1"></script>
-    <script src="js/hanzi-guide.js?v=20261019_v1"></script>
-    <script src="js/evaluator.js?v=20261019_v1"></script>
-    <script src="js/app.js?v=20261019_v1"></script>
+    <script src="js/sound.js?v=20261019_v3"></script>
+    <script src="js/char-data.js?v=20261019_v3"></script>
+    <script src="js/stroke-cache.js?v=20261019_v3"></script>
+    <script src="js/canvas.js?v=20261019_v3"></script>
+    <script src="js/hanzi-guide.js?v=20261019_v3"></script>
+    <script src="js/evaluator.js?v=20261019_v3"></script>
+    <script src="js/app.js?v=20261019_v3"></script>
 </body>
 </html>

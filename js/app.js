@@ -540,6 +540,18 @@ class KidWritingApp {
                 this.toggleFullscreen();
             });
         }
+        const settingsUpdateBtn = document.getElementById('btn-settings-update');
+        if (settingsUpdateBtn) {
+            settingsUpdateBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playSuccess();
+                settingsUpdateBtn.textContent = '⏳ 正在加载最新版...';
+                settingsUpdateBtn.disabled = true;
+                setTimeout(() => {
+                    const freshUrl = window.location.origin + window.location.pathname + '?v=' + Date.now();
+                    window.location.replace(freshUrl);
+                }, 300);
+            });
+        }
         if (settingsClearBtn) {
             settingsClearBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
