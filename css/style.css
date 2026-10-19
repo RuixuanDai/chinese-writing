@@ -636,6 +636,7 @@ img, svg, canvas {
     min-height: 0;
     box-sizing: border-box;
     transition: all 0.2s ease;
+    overflow: hidden;
 }
 
 /* 大幅插画卡 (纯净全幅展示) */
@@ -1058,6 +1059,76 @@ img, svg, canvas {
     gap: 2px;
 }
 
+.guide-header-ctrls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.guide-frame-size-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.guide-frame-size-group .control-label-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.frame-size-seg-btn {
+    border: none;
+    background: transparent;
+    border-radius: 14px;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.frame-size-seg-btn:hover {
+    color: var(--primary);
+}
+
+.frame-size-seg-btn.active {
+    background: #ffffff;
+    color: var(--primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* 一键快速放大/还原写字框按钮 */
+.btn-frame-zoom {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ffd0c7;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    z-index: 10;
+    opacity: 0.85;
+}
+
+.btn-frame-zoom:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: #ffffff;
+    border-color: var(--primary);
+}
+
 .speed-seg-btn {
     border: none;
     background: transparent;
@@ -1081,7 +1152,7 @@ img, svg, canvas {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-/* 中间：笔顺演示框 (精简至约 60% 尺寸，为上方字词留出充足空间) */
+/* 中间：笔顺演示框 (支持小 175px、中 230px、大 295px 自由缩放调节) */
 .guide-frame-wrapper {
     flex: 0 0 auto;
     display: flex;
@@ -1105,6 +1176,47 @@ img, svg, canvas {
     justify-content: center;
     overflow: hidden;
     box-sizing: border-box;
+    transition: width 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 紧凑字框 (180px) - 适合字词认知为主 */
+.frame-size-small .hanzi-writer-frame {
+    width: 180px;
+    height: 180px;
+}
+.frame-size-small .cognition-hero-card {
+    flex: 1;
+}
+
+/* 大号字框 (275px) - 宽幅临摹与跟写闯关 */
+.frame-size-large .hanzi-writer-frame {
+    width: 275px;
+    height: 275px;
+}
+.frame-size-large .cognition-hero-card {
+    flex: 0 0 155px;
+    height: 155px;
+    padding: 6px 10px;
+}
+.frame-size-large .cognition-ill-wrap {
+    width: 115px;
+    height: 140px;
+}
+.frame-size-large .cognition-sentence-section {
+    margin-top: 3px;
+    padding: 4px 8px;
+}
+.frame-size-large .cognition-sentence-text {
+    font-size: 12px;
+    line-height: 1.3;
+}
+.frame-size-large .cognition-words-section {
+    display: none !important;
+}
+.frame-size-large .status-pill {
+    padding: 3px 8px;
+    font-size: 11.5px;
+    margin: 2px 0 4px;
 }
 
 /* 米字格网格线装饰在 HanziWriter 背后 (与右侧画板统一虚线与色系) */
@@ -2808,11 +2920,74 @@ body.writing-active .canvas-box {
     flex: 1;
 }
 
+.eval-grade-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
 .eval-grade-tag {
     font-size: 17px;
     font-weight: 800;
     color: #d35400;
-    margin-bottom: 4px;
+    margin-bottom: 0;
+}
+
+/* 听名师语音朗读点评按钮 */
+.btn-eval-speak {
+    background: #ffffff;
+    border: 1.5px solid #fed7aa;
+    border-radius: 18px;
+    padding: 3px 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ea580c;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(234, 88, 12, 0.12);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-eval-speak:hover {
+    background: #fff7ed;
+    border-color: #f97316;
+    transform: translateY(-1px);
+}
+
+.btn-eval-speak:active {
+    transform: scale(0.95);
+}
+
+.btn-eval-speak.speaking {
+    background: #ea580c;
+    border-color: #ea580c;
+    color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.25);
+    animation: speakPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes speakPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.04);
+    }
+}
+
+.eval-speak-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.eval-speak-text {
+    font-size: 12px;
 }
 
 .eval-stars-row {
@@ -2875,22 +3050,27 @@ body.writing-active .canvas-box {
     background: linear-gradient(90deg, #1dd1a1, #10ac84);
 }
 
-/* 诊断建议框 */
+/* 诊断建议框 (简明提炼，文字简介) */
 .eval-diagnosis-box {
     background: #f9fbfd;
     border: 1px solid #e1effa;
     border-radius: var(--radius-md);
     padding: 12px 16px;
-    margin-bottom: 20px;
-    max-height: 140px;
-    overflow-y: auto;
+    margin-bottom: 18px;
+}
+
+.diagnosis-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
 }
 
 .diagnosis-title {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 13.5px;
+    font-weight: 800;
     color: #0984e3;
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .diagnosis-list {
@@ -3683,81 +3863,136 @@ body.writing-active .canvas-box {
     .panel-left-studio {
         flex-direction: row;
         gap: 8px;
-        height: 285px;
-        max-height: 290px;
+        height: 310px;
+        max-height: 315px;
     }
 
     .cognition-hero-card {
         flex: 1.1;
         min-width: 0;
         height: 100%;
-        padding: 8px 10px;
-        gap: 8px;
+        padding: 6px 8px;
+        gap: 6px;
     }
 
     .cognition-hero-card .ill-art-box {
-        width: 130px;
+        width: 100px;
         flex-shrink: 0;
+        padding: 4px;
     }
 
     .cognition-hero-card .ill-large-img {
-        max-width: 115px;
-        max-height: 115px;
+        max-width: 90px;
+        max-height: 95px;
     }
 
     .cognition-hero-card .ill-fallback-card {
-        width: 115px;
-        height: 115px;
+        width: 90px;
+        height: 90px;
     }
 
     .cognition-hero-card .cognition-char {
-        font-size: 46px;
+        font-size: 38px;
+    }
+
+    .cognition-hero-card .cognition-char-header {
+        padding: 2px 6px;
+        gap: 4px;
     }
 
     .cognition-hero-card .btn-speak {
-        padding: 0 10px;
-        font-size: 13px;
-        height: 38px;
-        min-height: 38px;
+        padding: 0 8px;
+        font-size: 12px;
+        height: 32px;
+        min-height: 32px;
+    }
+
+    .cognition-hero-card .cognition-meta-badges {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .cognition-hero-card .meta-pill {
+        font-size: 10.5px;
+        padding: 1px 4px;
+        white-space: nowrap;
     }
 
     .guide-studio-card {
         flex: 1;
         min-width: 0;
         height: 100%;
-        padding: 8px 10px;
-        gap: 6px;
+        padding: 6px 8px;
+        gap: 4px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .guide-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        margin-bottom: 2px;
+    }
+
+    .guide-title-box {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
     }
 
     .guide-title {
-        font-size: 14.5px;
+        font-size: 13.5px;
+        white-space: nowrap;
     }
 
     .guide-icon {
-        font-size: 16px;
+        font-size: 15px;
     }
 
-    .speed-control-group .control-label {
-        font-size: 12px;
+    .guide-header-ctrls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 4px;
     }
 
+    .guide-frame-size-group,
+    .speed-control-group {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .guide-frame-size-group .control-label-text,
+    .speed-control-group .speed-label {
+        font-size: 10.5px;
+    }
+
+    .frame-size-seg-btn,
     .speed-seg-btn {
-        padding: 2px 7px;
-        font-size: 11.5px;
+        padding: 1px 4px;
+        font-size: 10.5px;
     }
 
     .hanzi-writer-frame {
-        width: 130px;
-        height: 130px;
+        width: 125px;
+        height: 125px;
     }
 
-    .guide-action-buttons {
+    .writer-action-buttons {
         gap: 6px;
+        margin-top: auto;
     }
 
-    .btn-guide-action {
-        padding: 6px 10px;
-        font-size: 13px;
+    .writer-action-buttons .btn-ctrl {
+        padding: 6px 8px;
+        font-size: 12px;
+        min-height: 34px;
+        border-radius: 12px;
     }
 
     .panel-right {

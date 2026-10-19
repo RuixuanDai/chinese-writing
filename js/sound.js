@@ -276,11 +276,38 @@ class SoundManager {
         });
     }
 
-    // 9. 智能语音朗读引擎 (单字优先有道真人母语高保真原声，词句与离线状态使用系统内置顶级神经语音)
+    // 停止正在进行的所有语音播放与朗读合成
+    stopSpeaking() {
+        if (this.currentAudio) {
+            try {
+                this.currentAudio.pause();
+                this.currentAudio.currentTime = 0;
+            } catch (e) {}
+            this.currentAudio = null;
+        }
+        if (this.synth) {
+            try {
+                this.synth.cancel();
+            } catch (e) {}
+        }
+        this.activeUtterance = null;
+    }
+
+    // 检查当前是否正在朗读
+    isSpeaking() {
+        return !!(this.currentAudio || (this.synth && (this.synth.speaking || this.synth.pending)));
+    }
+
+    // 9. 智能语音朗读引擎 (单字优先有道真人母语高保真原声，词句与评语使用系统内置顶级神经语音)
     speak(text, onEnd = null) {
         if (!text) return;
-        // 过滤非汉字拼音杂质，保留标准汉字与标点
-        const cleanText = text.replace(/[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜ]/g, '').trim() || text;
+        // 深度清洗：剔除所有 Emoji 表情符、装饰符号与拼音杂质，仅保留自然发音中文、数字与标点
+        const cleanText = text
+            .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83E[\uDD00-\uDDFF]/g, '')
+            .replace(/[🚨📌💡✨✅👌⭐🏆·\(\)（）\n\r]/g, ' ')
+            .replace(/[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜ]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim() || text;
         if (!cleanText) return;
 
         // 停止之前的音频播放

@@ -55,8 +55,10 @@ class KidWritingApp {
             }
         };
 
-        // 2. 初始化笔顺引擎
+        // 2. 初始化笔顺引擎并恢复写字框大小记忆
         this.hanziGuide = new HanziGuide('hanzi-writer-box');
+        const savedFrameSize = localStorage.getItem('kid_app_guide_frame_size') || 'medium';
+        this.setGuideFrameSize(savedFrameSize);
 
         // 3. 页面记忆功能：获取上次完成的汉字或上次练习的汉字
         let targetChar = localStorage.getItem('kid_app_last_completed') || localStorage.getItem('kid_app_last_char');
@@ -714,6 +716,32 @@ class KidWritingApp {
             });
         }
 
+        // 5.0 写字框大小调节 (小 175px / 中 230px / 大 295px)
+        const frameSizeBtns = document.querySelectorAll('.frame-size-seg-btn');
+        frameSizeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                const size = btn.dataset.frameSize;
+                this.setGuideFrameSize(size);
+                const tipMap = {
+                    small: '🔍 已切换为【紧凑字框】(175px)，字词卡空间更宽广',
+                    medium: '🔍 已切换为【标准字框】(230px)，适中舒适',
+                    large: '🔍 已切换为【大号写字框】(295px)，宽幅临摹超痛快！'
+                };
+                this.showToast(tipMap[size] || '已调整字框大小');
+            });
+        });
+
+        const frameZoomBtn = document.getElementById('btn-toggle-frame-zoom');
+        if (frameZoomBtn) {
+            frameZoomBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                const nextSize = this.guideFrameSize === 'large' ? 'medium' : 'large';
+                this.setGuideFrameSize(nextSize);
+                this.showToast(nextSize === 'large' ? '🔍 已放大写字框！' : '🔍 已还原写字框！');
+            });
+        }
+
         // 5.1 演示速度调节 (分段大按钮 + 兼容下拉框)
         const speedSegBtns = document.querySelectorAll('.speed-seg-btn');
         const speedSelect = document.getElementById('select-anim-speed');
@@ -934,13 +962,28 @@ class KidWritingApp {
             });
         }
 
-        // 15. 智能评分报告弹窗操作
+        // 15. 智能评分报告弹窗操作与语音朗读
         const evalModal = document.getElementById('eval-modal');
         const evalRetryBtn = document.getElementById('btn-eval-retry');
         const evalNextBtn = document.getElementById('btn-eval-next');
+        const evalSpeakBtn = document.getElementById('btn-eval-speak');
+
+        const handleCloseEvalModal = () => {
+            if (window.soundManager && window.soundManager.stopSpeaking) {
+                window.soundManager.stopSpeaking();
+            }
+            this.resetEvalSpeakButton();
+        };
+
+        if (evalSpeakBtn) {
+            evalSpeakBtn.addEventListener('click', () => {
+                this.toggleEvalSpeech();
+            });
+        }
 
         if (evalRetryBtn && evalModal) {
             evalRetryBtn.addEventListener('click', () => {
+                handleCloseEvalModal();
                 if (window.soundManager) window.soundManager.playPop();
                 evalModal.classList.remove('visible');
                 this.canvasEngine.clear();
@@ -949,6 +992,7 @@ class KidWritingApp {
 
         if (evalNextBtn && evalModal) {
             evalNextBtn.addEventListener('click', () => {
+                handleCloseEvalModal();
                 if (window.soundManager) window.soundManager.playPop();
                 evalModal.classList.remove('visible');
                 this.selectNextChar();
@@ -958,15 +1002,26 @@ class KidWritingApp {
         const evalGashaponBtn = document.getElementById('btn-eval-gashapon');
         if (evalGashaponBtn && evalModal) {
             evalGashaponBtn.addEventListener('click', () => {
+                handleCloseEvalModal();
                 if (window.soundManager) window.soundManager.playPop();
                 evalModal.classList.remove('visible');
                 this.openGashapon();
             });
         }
 
+        if (evalModal) {
+            evalModal.addEventListener('click', (e) => {
+                if (e.target === evalModal) {
+                    handleCloseEvalModal();
+                    evalModal.classList.remove('visible');
+                }
+            });
+        }
+
         // 键盘快捷键支持：按 Escape 键优雅退出当前所有弹窗
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' || e.key === 'Esc') {
+                handleCloseEvalModal();
                 const openModals = document.querySelectorAll('.modal-overlay.visible');
                 if (openModals.length > 0) {
                     openModals.forEach(m => m.classList.remove('visible'));
@@ -1140,6 +1195,7 @@ class KidWritingApp {
         }
 
         // 弹出报告弹窗
+        this.resetEvalSpeakButton();
         const modal = document.getElementById('eval-modal');
         if (modal) modal.classList.add('visible');
     }
@@ -1880,6 +1936,74 @@ class KidWritingApp {
         } catch (e) {
             prompt('请长按复制本站网址：', text);
         }
+    }
+
+    // 切换左侧笔顺与跟写字框大小 (小 175px / 中 230px / 大 295px)
+    setGuideFrameSize(size) {
+        this.guideFrameSize = size || 'medium';
+        const container = document.querySelector('.main-container');
+        const studioCard = document.querySelector('.panel-left-studio');
+
+        ['frame-size-small', 'frame-size-medium', 'frame-size-large'].forEach(cls => {
+            if (container) container.classList.remove(cls);
+            if (studioCard) studioCard.classList.remove(cls);
+        });
+
+        const activeCls = `frame-size-${this.guideFrameSize}`;
+        if (container) container.classList.add(activeCls);
+        if (studioCard) studioCard.classList.add(activeCls);
+
+        document.querySelectorAll('.frame-size-seg-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.frameSize === this.guideFrameSize);
+        });
+
+        try {
+            localStorage.setItem('kid_app_guide_frame_size', this.guideFrameSize);
+        } catch (e) {}
+
+        setTimeout(() => {
+            if (this.hanziGuide) this.hanziGuide.resize();
+            if (this.canvasEngine) this.canvasEngine.resize();
+        }, 180);
+    }
+
+    // 切换名师点评语音朗读 (支持点击朗读与再次点击停止)
+    toggleEvalSpeech() {
+        const btn = document.getElementById('btn-eval-speak');
+        if (!btn || !this.lastEvaluationResult) return;
+
+        if (window.soundManager && window.soundManager.isSpeaking && window.soundManager.isSpeaking()) {
+            window.soundManager.stopSpeaking();
+            this.resetEvalSpeakButton();
+            return;
+        }
+
+        const res = this.lastEvaluationResult;
+        // 构造亲切、温暖、无Emoji的纯文本语音脚本
+        const gradeClean = (res.grade || '').replace(/[【】·\s]/g, ' ');
+        const commentClean = (res.teacherComment || '').replace(/[^\u4e00-\u9fa50-9，。！]/g, '');
+        const sugClean = (res.suggestions || []).map(s => s.replace(/^[^\u4e00-\u9fa5]+/g, '').replace(/[^\u4e00-\u9fa50-9，。！]/g, '')).join('，');
+
+        const speechText = `太棒啦！评分为${res.totalScore}分，${gradeClean}。${commentClean} ${sugClean}`;
+
+        btn.classList.add('speaking');
+        const label = btn.querySelector('.eval-speak-text');
+        if (label) label.textContent = '正在朗读...';
+
+        if (window.soundManager) {
+            window.soundManager.speak(speechText, () => {
+                this.resetEvalSpeakButton();
+            });
+        }
+    }
+
+    // 重置名师点评按钮状态
+    resetEvalSpeakButton() {
+        const btn = document.getElementById('btn-eval-speak');
+        if (!btn) return;
+        btn.classList.remove('speaking');
+        const label = btn.querySelector('.eval-speak-text');
+        if (label) label.textContent = '听点评';
     }
 }
 

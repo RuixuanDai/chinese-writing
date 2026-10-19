@@ -117,11 +117,8 @@ class ChineseWritingEvaluator {
             }
         }
 
-        // 7. 汇总个性化诊断建议 (笔顺严重警告排在最前面)
-        const suggestions = [];
-        suggestions.push(...strokeEval.feedback);
-        suggestions.push(...structureEval.feedback);
-        suggestions.push(...shapeEval.feedback);
+        // 7. 汇总简明扼要的名师智能点拨 (精简至 1~2 条，文字简明扼要，杜绝冗多堆砌)
+        const suggestions = this.synthesizeConciseSuggestions(totalScore, strokeEval, structureEval, shapeEval);
 
         return {
             valid: true,
@@ -140,6 +137,60 @@ class ChineseWritingEvaluator {
             },
             suggestions
         };
+    }
+
+    /**
+     * 智能精简提炼名师点拨 (控制在 1 ~ 2 条精炼短句，简短好记，利于儿童阅读与语音朗读)
+     */
+    synthesizeConciseSuggestions(totalScore, strokeEval, structureEval, shapeEval) {
+        const conciseList = [];
+
+        // 1. 优先提取笔顺与走向核心问题 (有错必纠，一语中的，不超过 1 条)
+        let strokeIssue = null;
+        if (strokeEval.inversionsCount > 0) {
+            strokeIssue = '🚨 笔顺提醒：按从上到下、先横后竖书写哦！';
+        } else if (strokeEval.reverseCount > 0) {
+            strokeIssue = '🚨 运笔方向：横画从左向右写，注意不要倒插笔！';
+        } else if (strokeEval.diff < 0) {
+            strokeIssue = '📌 笔画提醒：似乎漏了笔画，请对照笔顺补齐。';
+        } else if (strokeEval.diff > 0) {
+            strokeIssue = '📌 笔画提醒：笔画稍有多余，避免重复涂抹。';
+        }
+
+        // 2. 提取间架结构与字形核心提示 (不超过 1 条)
+        let structureIssue = null;
+        if (structureEval.score < 24) {
+            const hasCenterWarning = structureEval.feedback.some(f => f.includes('重心') || f.includes('偏'));
+            if (hasCenterWarning) {
+                structureIssue = '💡 结构建议：下笔尽量落在米字格正中央，会更端正！';
+            } else {
+                structureIssue = '💡 占格建议：放开手脚，把笔画写得更舒展大气！';
+            }
+        } else if (shapeEval.score < 24) {
+            structureIssue = '💡 字形建议：多观察左侧标准字模，注意起笔与收笔！';
+        }
+
+        // 3. 组合精简建议 (有错误指出错误，无错误给出最提气的一句赞许，最多 2 条)
+        if (strokeIssue) {
+            conciseList.push(strokeIssue);
+            if (structureIssue) {
+                conciseList.push(structureIssue);
+            } else if (structureEval.score >= 26) {
+                conciseList.push('✅ 间架结构居中稳固，重心掌握得很好！');
+            }
+        } else if (structureIssue) {
+            conciseList.push('✨ 笔顺规范，按部就班非常工整！');
+            conciseList.push(structureIssue);
+        } else {
+            // 规范或优秀：精简提炼为 1 条高含金量夸奖
+            if (totalScore >= 92) {
+                conciseList.push('✨ 笔顺标准规范，间架开阔，颇有小书法家风范！');
+            } else {
+                conciseList.push('✨ 笔画顺序规范，重心平稳，字迹工整端正！');
+            }
+        }
+
+        return conciseList.slice(0, 2);
     }
 
     /**

@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#ff6b6b">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261018_v2">
+    <link rel="stylesheet" href="css/style.css?v=20261019_v1">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -156,28 +156,36 @@
                         <span class="guide-icon">📖</span>
                         <h2 class="guide-title">笔顺小课堂</h2>
                     </div>
-                    <div class="speed-control-group">
-                        <span class="speed-label">速度：</span>
-                        <div class="speed-segmented-ctrl" id="speed-segmented-ctrl">
-                            <button type="button" class="speed-seg-btn" data-speed="0.6" title="慢速演示">🐢 慢</button>
-                            <button type="button" class="speed-seg-btn active" data-speed="1.0" title="正常速度">正常</button>
-                            <button type="button" class="speed-seg-btn" data-speed="1.5" title="快速演示">🐇 快</button>
+                    <div class="guide-header-ctrls">
+                        <!-- 写字框大小调节 (满足用户写字框可调大小需求) -->
+                        <div class="guide-frame-size-group">
+                            <span class="control-label-text">字框:</span>
+                            <div class="size-segmented-ctrl" id="guide-frame-size-ctrl">
+                                <button type="button" class="frame-size-seg-btn" data-frame-size="small" title="紧凑字框 (175px)">小</button>
+                                <button type="button" class="frame-size-seg-btn active" data-frame-size="medium" title="标准字框 (230px)">中</button>
+                                <button type="button" class="frame-size-seg-btn" data-frame-size="large" title="大字框 (295px)">大</button>
+                            </div>
                         </div>
-                        <select id="select-anim-speed" class="speed-select" style="display: none;">
-                            <option value="0.6">慢速 0.6x</option>
-                            <option value="1.0" selected>正常 1.0x</option>
-                            <option value="1.5">快速 1.5x</option>
-                        </select>
+                        <!-- 演示速度调节 -->
+                        <div class="speed-control-group">
+                            <span class="speed-label">速度:</span>
+                            <div class="speed-segmented-ctrl" id="speed-segmented-ctrl">
+                                <button type="button" class="speed-seg-btn" data-speed="0.6" title="慢速演示">🐢 慢</button>
+                                <button type="button" class="speed-seg-btn active" data-speed="1.0" title="正常速度">正常</button>
+                                <button type="button" class="speed-seg-btn" data-speed="1.5" title="快速演示">🐇 快</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 中间：标准米字格笔顺演示框 (精致适中比例) -->
+                <!-- 中间：标准米字格笔顺演示框 (支持小/中/大三种尺寸自由缩放调节) -->
                 <div class="guide-frame-wrapper">
-                    <div class="hanzi-writer-frame">
+                    <div class="hanzi-writer-frame" id="hanzi-writer-frame">
                         <div class="writer-grid-lines"></div>
                         <div class="writer-diag-line-1"></div>
                         <div class="writer-diag-line-2"></div>
                         <div id="hanzi-writer-box"></div>
+                        <button id="btn-toggle-frame-zoom" class="btn-frame-zoom" title="一键放大/还原写字框">🔍</button>
                     </div>
                 </div>
 
@@ -560,7 +568,13 @@
                     <span class="score-unit">分</span>
                 </div>
                 <div class="eval-hero-info">
-                    <div id="eval-grade-text" class="eval-grade-tag">【甲上 · 妙笔生花】</div>
+                    <div class="eval-grade-row">
+                        <div id="eval-grade-text" class="eval-grade-tag">【甲上 · 妙笔生花】</div>
+                        <button id="btn-eval-speak" class="btn-eval-speak" title="听名师朗读点评">
+                            <span class="eval-speak-icon">🔊</span>
+                            <span class="eval-speak-text">听点评</span>
+                        </button>
+                    </div>
                     <div id="eval-stars-display" class="eval-stars-row">⭐⭐⭐</div>
                     <p id="eval-teacher-comment" class="eval-comment-text">神采飞扬！间架稳固，笔顺清晰，颇有小小书法家的风采！</p>
                 </div>
@@ -599,11 +613,13 @@
                 </div>
             </div>
 
-            <!-- 详细诊断与纠错提示列表 -->
+            <!-- 详细诊断与纠错提示列表 (简明提炼，文字简介) -->
             <div class="eval-diagnosis-box">
-                <div class="diagnosis-title">💡 名师智能点拨与诊断提示：</div>
+                <div class="diagnosis-header-row">
+                    <div class="diagnosis-title">💡 名师智能点拨：</div>
+                </div>
                 <ul id="eval-suggestions-list" class="diagnosis-list">
-                    <!-- 动态生成 -->
+                    <!-- 动态生成 1~2 条简炼点拨 -->
                 </ul>
             </div>
 
@@ -684,12 +700,12 @@
     </div>
 
     <!-- 逻辑脚本 -->
-    <script src="js/sound.js?v=20261018_v2"></script>
-    <script src="js/char-data.js?v=20261018_v2"></script>
-    <script src="js/stroke-cache.js?v=20261018_v2"></script>
-    <script src="js/canvas.js?v=20261018_v2"></script>
-    <script src="js/hanzi-guide.js?v=20261018_v2"></script>
-    <script src="js/evaluator.js?v=20261018_v2"></script>
-    <script src="js/app.js?v=20261018_v2"></script>
+    <script src="js/sound.js?v=20261019_v1"></script>
+    <script src="js/char-data.js?v=20261019_v1"></script>
+    <script src="js/stroke-cache.js?v=20261019_v1"></script>
+    <script src="js/canvas.js?v=20261019_v1"></script>
+    <script src="js/hanzi-guide.js?v=20261019_v1"></script>
+    <script src="js/evaluator.js?v=20261019_v1"></script>
+    <script src="js/app.js?v=20261019_v1"></script>
 </body>
 </html>
