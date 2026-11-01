@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261101_v3">
+    <link rel="stylesheet" href="css/style.css?v=20261101_v4">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -477,101 +477,167 @@
         </div>
     </div>
 
-    <!-- 家长区与系统设置弹窗 Modal -->
+    <!-- 家长区与系统设置弹窗 Modal (分组卡片式布局：学习概览 / 练字偏好 / 应用与显示 / 学习与帮助 / 家长管控) -->
     <div id="settings-modal" class="modal-overlay">
-        <div class="modal-content settings-modal-card">
-            <button id="btn-close-settings" class="btn-modal-close" aria-label="关闭">&times;</button>
-            <div class="modal-header-simple">
-                <div class="gashapon-title-row">
-                    <span class="gashapon-header-icon">⚙️</span>
-                    <h3 class="modal-title">家长区与设置</h3>
+        <div class="modal-content settings-modal-card" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+            <!-- 顶部固定标题栏 -->
+            <div class="settings-header">
+                <div class="settings-header-main">
+                    <span class="settings-header-icon">⚙️</span>
+                    <div class="settings-header-text">
+                        <h3 id="settings-title" class="settings-title">家长区与设置</h3>
+                        <div class="settings-subtitle">练字偏好 · 桌面安装 · 打印字帖 · 数据管理</div>
+                    </div>
                 </div>
-                <div class="modal-subtitle">家长管控 · 打印字帖 · 全屏与设备指南</div>
+                <button id="btn-close-settings" class="settings-close-btn" aria-label="关闭设置">&times;</button>
             </div>
 
-            <div class="settings-options-list">
-                <!-- 安装为桌面独立 App (PWA) -->
-                <div class="settings-item-row" id="setting-row-pwa-install">
-                    <div class="settings-item-info">
-                        <span class="settings-item-icon">📲</span>
-                        <div>
-                            <div class="settings-item-title">安装为桌面独立 App (PWA)</div>
-                            <div class="settings-item-desc" id="pwa-install-desc">一键安装到手机/平板/电脑桌面，全屏无地址栏，支持离线练字</div>
-                        </div>
+            <!-- 可滚动内容区 -->
+            <div class="settings-body">
+                <!-- 学习成就概览 -->
+                <div class="settings-stats-strip">
+                    <button type="button" id="settings-stat-stars-card" class="settings-stat-card stat-stars is-link" title="去扭蛋机抽萌宠贴纸">
+                        <span class="settings-stat-emoji">⭐</span>
+                        <span class="settings-stat-texts">
+                            <span id="settings-stat-stars" class="settings-stat-num">0</span>
+                            <span class="settings-stat-label">金星星</span>
+                        </span>
+                    </button>
+                    <div class="settings-stat-card stat-chars">
+                        <span class="settings-stat-emoji">🏆</span>
+                        <span class="settings-stat-texts">
+                            <span id="settings-stat-chars" class="settings-stat-num">0</span>
+                            <span class="settings-stat-label">已练汉字</span>
+                        </span>
                     </div>
-                    <button id="btn-settings-install-pwa" class="btn-settings-action primary">安装应用</button>
+                    <button type="button" id="settings-stat-stickers-card" class="settings-stat-card stat-stickers is-link" title="查看萌宠贴纸乐园">
+                        <span class="settings-stat-emoji">🎁</span>
+                        <span class="settings-stat-texts">
+                            <span id="settings-stat-stickers" class="settings-stat-num">0/16</span>
+                            <span class="settings-stat-label">萌宠贴纸</span>
+                        </span>
+                    </button>
                 </div>
 
-                <!-- 打印字帖 -->
-                <div class="settings-item-row" id="setting-row-print">
-                    <div class="settings-item-info">
-                        <span class="settings-item-icon">🖨️</span>
-                        <div>
-                            <div class="settings-item-title">打印纸质字帖</div>
-                            <div class="settings-item-desc">生成标准田字格练字单，支持 A4 / Letter 打印机打印</div>
+                <div class="settings-sections">
+                    <!-- 分组 1：练字偏好 -->
+                    <section class="settings-group">
+                        <h4 class="settings-group-title">练字偏好</h4>
+                        <div class="settings-group-card">
+                            <label class="settings-row settings-row-toggle" for="setting-sound-switch">
+                                <span class="settings-row-icon tone-amber">🔊</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">声音与语音朗读</span>
+                                    <span class="settings-row-desc">按键音效、汉字发音与晓晓 AI 真人语音</span>
+                                </span>
+                                <span class="settings-switch">
+                                    <input type="checkbox" id="setting-sound-switch" checked>
+                                    <span class="settings-switch-slider"></span>
+                                </span>
+                            </label>
+                            <label class="settings-row settings-row-toggle" id="setting-row-auto-speech" for="setting-auto-eval-speech-switch">
+                                <span class="settings-row-icon tone-green">🗣️</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">评分后自动朗读点评</span>
+                                    <span class="settings-row-desc">智能评分完成后自动播报得分与改进建议</span>
+                                </span>
+                                <span class="settings-switch">
+                                    <input type="checkbox" id="setting-auto-eval-speech-switch" checked>
+                                    <span class="settings-switch-slider"></span>
+                                </span>
+                            </label>
+                            <div class="settings-row settings-row-wrap">
+                                <span class="settings-row-icon tone-blue">✍️</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">手写防误触</span>
+                                    <span id="setting-palm-desc" class="settings-row-desc">笔尖优先，手掌可放心贴屏</span>
+                                </span>
+                                <div id="setting-palm-seg" class="settings-seg" role="radiogroup" aria-label="手写防误触模式">
+                                    <button type="button" class="settings-seg-btn active" data-palm-mode="auto" role="radio" aria-checked="true">智能</button>
+                                    <button type="button" class="settings-seg-btn" data-palm-mode="pen_only" role="radio" aria-checked="false">仅笔</button>
+                                    <button type="button" class="settings-seg-btn" data-palm-mode="off" role="radio" aria-checked="false">通用</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <button id="btn-settings-print" class="btn-settings-action primary">打印字帖</button>
+                    </section>
+
+                    <!-- 分组 2：应用与显示 -->
+                    <section class="settings-group">
+                        <h4 class="settings-group-title">应用与显示</h4>
+                        <div class="settings-group-card">
+                            <div class="settings-row" id="setting-row-pwa-install">
+                                <span class="settings-row-icon tone-purple">📲</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">安装为桌面 App</span>
+                                    <span id="pwa-install-desc" class="settings-row-desc">全屏无地址栏，断网也能练字</span>
+                                </span>
+                                <button id="btn-settings-install-pwa" class="btn-settings-action primary">安装</button>
+                            </div>
+                            <div class="settings-row" id="setting-row-fullscreen">
+                                <span class="settings-row-icon tone-slate">⛶</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">浏览器全屏</span>
+                                    <span class="settings-row-desc">隐藏地址栏与边框，沉浸式练字</span>
+                                </span>
+                                <button id="btn-settings-fullscreen" class="btn-settings-action">进入全屏</button>
+                            </div>
+                            <div class="settings-row" id="setting-row-update">
+                                <span class="settings-row-icon tone-rose">🚀</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">检查更新</span>
+                                    <span class="settings-row-desc">当前 v3.1 · 清除缓存并加载最新版</span>
+                                </span>
+                                <button id="btn-settings-update" class="btn-settings-action">立即更新</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 分组 3：学习与帮助 -->
+                    <section class="settings-group">
+                        <h4 class="settings-group-title">学习与帮助</h4>
+                        <div class="settings-group-card">
+                            <div class="settings-row" id="setting-row-print">
+                                <span class="settings-row-icon tone-green">🖨️</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">打印纸质字帖</span>
+                                    <span id="setting-print-desc" class="settings-row-desc">A4 田字格字帖（描红 + 临摹）</span>
+                                </span>
+                                <button id="btn-settings-print" class="btn-settings-action">打印</button>
+                            </div>
+                            <div class="settings-row" id="setting-row-ipad">
+                                <span class="settings-row-icon tone-amber">📖</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">使用指南与隐私声明</span>
+                                    <span class="settings-row-desc">全屏安装、防误触技巧、零数据收集承诺</span>
+                                </span>
+                                <button id="btn-settings-ipad" class="btn-settings-action">查看</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 分组 4：家长管控 (危险操作，带家长算术安全锁) -->
+                    <section class="settings-group">
+                        <h4 class="settings-group-title">家长管控</h4>
+                        <div class="settings-group-card danger">
+                            <div class="settings-row" id="setting-row-clear">
+                                <span class="settings-row-icon tone-red">🗑️</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title text-danger">清除学习数据</span>
+                                    <span class="settings-row-desc">清空星星、练字记录与贴纸（需家长验证）</span>
+                                </span>
+                                <button id="btn-settings-cleardata" class="btn-settings-action danger">清除</button>
+                            </div>
+                        </div>
+                    </section>
                 </div>
 
-                <!-- iPad 全屏指引与隐私免责声明 -->
-                <div class="settings-item-row" id="setting-row-ipad">
-                    <div class="settings-item-info">
-                        <span class="settings-item-icon">📱</span>
-                        <div>
-                            <div class="settings-item-title">iPad 全屏指南与隐私免责</div>
-                            <div class="settings-item-desc">添加到主屏幕全屏独立运行说明及零个人数据收集申明</div>
-                        </div>
+                <!-- 底部运行状态与版本信息 -->
+                <div class="settings-footer">
+                    <div class="settings-status-chips">
+                        <span id="settings-chip-mode" class="settings-chip">🌐 浏览器模式</span>
+                        <span id="settings-chip-offline" class="settings-chip">⏳ 离线缓存准备中</span>
                     </div>
-                    <button id="btn-settings-ipad" class="btn-settings-action">查看指引</button>
-                </div>
-
-                <!-- 手写笔防误触设置指南 -->
-                <div class="settings-item-row" id="setting-row-stylus-guide">
-                    <div class="settings-item-info">
-                        <span class="settings-item-icon">✍️</span>
-                        <div>
-                            <div class="settings-item-title">手写笔防误触设置指南</div>
-                            <div class="settings-item-desc">iPad 系统设置、手掌贴屏技巧及儿童防误触手套推荐</div>
-                        </div>
-                    </div>
-                    <button id="btn-settings-stylus-guide" class="btn-settings-action">查看指南</button>
-                </div>
-
-                <!-- 沉浸式全屏切换 -->
-                <div class="settings-item-row" id="setting-row-fullscreen">
-                    <div class="settings-item-info">
-                        <span class="settings-item-icon">⛶</span>
-                        <div>
-                            <div class="settings-item-title">切换浏览器全屏</div>
-                            <div class="settings-item-desc">隐藏浏览器地址栏与边框，沉浸式练字体验</div>
-                        </div>
-                    </div>
-                    <button id="btn-settings-fullscreen" class="btn-settings-action">进入全屏</button>
-                </div>
-
-                <!-- 检查并强制更新到最新版 (解决浏览器强缓存问题) -->
-                <div class="settings-item-row" id="setting-row-update">
-                    <div class="settings-item-info">
-                        <span class="settings-item-icon">🚀</span>
-                        <div>
-                            <div class="settings-item-title">检查并更新至最新版</div>
-                            <div class="settings-item-desc">当前版本: v3.0 (支持 PWA 离线安装与折叠屏/手机端 UI 自适应)</div>
-                        </div>
-                    </div>
-                    <button id="btn-settings-update" class="btn-settings-action primary">立即更新</button>
-                </div>
-
-                <!-- 危险操作：清除本地数据 (带家长安全锁) -->
-                <div class="settings-item-row danger" id="setting-row-clear">
-                    <div class="settings-item-info">
-                        <span class="settings-item-icon">🗑️</span>
-                        <div>
-                            <div class="settings-item-title text-danger">重置与清除本地数据</div>
-                            <div class="settings-item-desc">清空所有星星、已练记录及画板数据（带家长算术安全锁）</div>
-                        </div>
-                    </div>
-                    <button id="btn-settings-cleardata" class="btn-settings-action danger">清除数据</button>
+                    <div class="settings-footer-text">快乐小书法家 v3.1 · 🔒 数据仅保存在本机，不收集任何个人信息</div>
                 </div>
             </div>
         </div>
@@ -589,6 +655,7 @@
                     • 所有已掌握汉字的 <strong>🏆 练习记录</strong>（当前已练：<span id="clear-modal-chars" style="color: #16a085; font-weight: bold;">0</span> 个字）<br>
                     • 当前画板历史书写笔迹与练习记忆
                 </div>
+                <p style="margin: 8px 0 0 0; font-size: 12.5px; color: #16a085; font-weight: 600;">✓ 声音、自动朗读、防误触与写字区大小等偏好设置将保留</p>
             </div>
             <div class="modal-actions" style="display: flex; gap: 12px; justify-content: center;">
                 <button id="btn-cancel-clear-data" class="btn-modal secondary" style="flex: 1;">取消</button>
@@ -747,14 +814,14 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261101_v3"></script>
-    <script src="lib/web-online-tts.js?v=20261101_v3"></script>
-    <script src="js/sound.js?v=20261101_v3"></script>
-    <script src="js/char-data.js?v=20261101_v3"></script>
-    <script src="js/stroke-cache.js?v=20261101_v3"></script>
-    <script src="js/canvas.js?v=20261101_v3"></script>
-    <script src="js/hanzi-guide.js?v=20261101_v3"></script>
-    <script src="js/evaluator.js?v=20261101_v3"></script>
-    <script src="js/app.js?v=20261101_v3"></script>
+    <script src="lib/web-natural-tts.js?v=20261101_v4"></script>
+    <script src="lib/web-online-tts.js?v=20261101_v4"></script>
+    <script src="js/sound.js?v=20261101_v4"></script>
+    <script src="js/char-data.js?v=20261101_v4"></script>
+    <script src="js/stroke-cache.js?v=20261101_v4"></script>
+    <script src="js/canvas.js?v=20261101_v4"></script>
+    <script src="js/hanzi-guide.js?v=20261101_v4"></script>
+    <script src="js/evaluator.js?v=20261101_v4"></script>
+    <script src="js/app.js?v=20261101_v4"></script>
 </body>
 </html>

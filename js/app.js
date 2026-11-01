@@ -38,6 +38,7 @@ class KidWritingApp {
         this.eggCost = 3; // 每 3 颗星扭蛋一次
         this.canvasSizeMode = 'large';
         this._evalSpeechTimer = null;
+        this.autoEvalSpeech = this.safeGetStorage('kid_app_auto_eval_speech', 'true') !== 'false'; // 评分后自动朗读点评 (家长可在设置页关闭)
         this.deferredInstallPrompt = null;
         this._mobileBannerDismissed = false;
 
@@ -91,6 +92,12 @@ class KidWritingApp {
                 this.showToast('💡 当前为【仅手写笔模式】：若使用手指或普通电容笔，请点击上方防误触切换为【智能识别】或【手笔通用】');
             }
         };
+
+        // 恢复家长在设置页选择的手写防误触模式 (智能 / 仅笔 / 通用)
+        const savedPalmMode = this.safeGetStorage('kid_app_palm_mode', 'auto');
+        if (savedPalmMode === 'pen_only' || savedPalmMode === 'off') {
+            this.canvasEngine.setPalmRejection(savedPalmMode);
+        }
 
         // 2. 初始化笔顺引擎并恢复写字框与写字画板大小记忆
         this.hanziGuide = new HanziGuide('hanzi-writer-box');
@@ -512,19 +519,54 @@ class KidWritingApp {
             });
         }
 
-        // 2. 音效总开关 (初始化状态显示)
+        // 2. 音效总开关 (顶栏按钮与设置页开关双向同步)
         const soundToggle = document.getElementById('btn-sound-toggle');
         if (soundToggle && window.soundManager) {
-            const isEnabled = window.soundManager.enabled;
-            soundToggle.textContent = isEnabled ? '🔊 声音开' : '🔇 静音中';
-            soundToggle.classList.toggle('muted', !isEnabled);
-
             soundToggle.addEventListener('click', () => {
                 const enabled = window.soundManager.toggle();
-                soundToggle.textContent = enabled ? '🔊 声音开' : '🔇 静音中';
-                soundToggle.classList.toggle('muted', !enabled);
+                this.updateSoundUI(enabled);
             });
         }
+        const settingsSoundSwitch = document.getElementById('setting-sound-switch');
+        if (settingsSoundSwitch && window.soundManager) {
+            settingsSoundSwitch.addEventListener('change', () => {
+                if (settingsSoundSwitch.checked !== window.soundManager.enabled) {
+                    const enabled = window.soundManager.toggle();
+                    this.updateSoundUI(enabled);
+                }
+            });
+        }
+        this.updateSoundUI(window.soundManager ? window.soundManager.enabled : true);
+
+        // 2.0 设置页：评分后自动朗读点评开关
+        const autoSpeechSwitch = document.getElementById('setting-auto-eval-speech-switch');
+        if (autoSpeechSwitch) {
+            autoSpeechSwitch.checked = !!this.autoEvalSpeech;
+            autoSpeechSwitch.addEventListener('change', () => {
+                this.autoEvalSpeech = autoSpeechSwitch.checked;
+                try {
+                    localStorage.setItem('kid_app_auto_eval_speech', this.autoEvalSpeech ? 'true' : 'false');
+                } catch (e) {}
+                if (window.soundManager) window.soundManager.playPop();
+                this.showToast(this.autoEvalSpeech
+                    ? '🗣️ 已开启：智能评分后自动朗读点评'
+                    : '🔕 已关闭自动朗读，可在评分报告中点击「听点评」');
+            });
+        }
+
+        // 2.0.1 设置页：手写防误触模式分段选择 (与画板工具栏按钮双向同步并记忆)
+        document.querySelectorAll('#setting-palm-seg .settings-seg-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.palmMode;
+                if (!this.canvasEngine || !['auto', 'pen_only', 'off'].includes(mode)) return;
+                if (window.soundManager) window.soundManager.playPop();
+                this.canvasEngine.setPalmRejection(mode);
+                this.updateStylusModeUI(mode, this.canvasEngine.isStylusDetected, true);
+                try {
+                    localStorage.setItem('kid_app_palm_mode', mode);
+                } catch (e) {}
+            });
+        });
 
         // 2.1 家长区与系统设置弹窗控制 (归集全屏、打印、iPad指引与清除数据)
         const openSettingsBtn = document.getElementById('btn-open-settings');
@@ -538,7 +580,7 @@ class KidWritingApp {
         if (openSettingsBtn && settingsModal) {
             openSettingsBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
-                this.updateFullscreenButton();
+                this.refreshSettingsPanel();
                 settingsModal.classList.add('visible');
             });
         }
@@ -570,12 +612,21 @@ class KidWritingApp {
                 this.openIpadGuideModal();
             });
         }
-        const settingsStylusBtn = document.getElementById('btn-settings-stylus-guide');
-        if (settingsStylusBtn) {
-            settingsStylusBtn.addEventListener('click', () => {
+        // 设置页学习概览卡片快捷入口：金星星 -> 扭蛋机，萌宠贴纸 -> 贴纸乐园
+        const statStarsCard = document.getElementById('settings-stat-stars-card');
+        if (statStarsCard) {
+            statStarsCard.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
                 if (settingsModal) settingsModal.classList.remove('visible');
-                this.openIpadGuideModal();
+                this.openGashapon();
+            });
+        }
+        const statStickersCard = document.getElementById('settings-stat-stickers-card');
+        if (statStickersCard) {
+            statStickersCard.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                if (settingsModal) settingsModal.classList.remove('visible');
+                this.openStickerBook();
             });
         }
         const topFsBtn = document.getElementById('btn-toggle-fullscreen');
@@ -1066,6 +1117,9 @@ class KidWritingApp {
 
                 this.canvasEngine.setPalmRejection(newMode);
                 this.updateStylusModeUI(newMode, this.canvasEngine.isStylusDetected, true);
+                try {
+                    localStorage.setItem('kid_app_palm_mode', newMode);
+                } catch (e) {}
             });
         }
 
@@ -1395,7 +1449,7 @@ class KidWritingApp {
             clearTimeout(this._evalSpeechTimer);
             this._evalSpeechTimer = null;
         }
-        if (!window.soundManager || window.soundManager.enabled !== false) {
+        if (this.autoEvalSpeech && (!window.soundManager || window.soundManager.enabled !== false)) {
             const speakBtn = document.getElementById('btn-eval-speak');
             if (speakBtn) {
                 speakBtn.classList.add('speaking');
@@ -1625,31 +1679,37 @@ class KidWritingApp {
     initPWA() {
         const installBtn = document.getElementById('btn-settings-install-pwa');
         const installDesc = document.getElementById('pwa-install-desc');
-        const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
 
-        if (isStandalone && installBtn) {
-            installBtn.textContent = '✅ 已安装';
-            if (installDesc) {
-                installDesc.textContent = '当前正以桌面独立 App 模式全屏运行，支持离线使用';
+        const markInstalled = (descText) => {
+            if (installBtn) {
+                installBtn.textContent = '已安装';
+                installBtn.disabled = true;
+                installBtn.classList.remove('primary');
+                installBtn.classList.add('is-done');
             }
+            if (installDesc && descText) {
+                installDesc.textContent = descText;
+            }
+        };
+
+        if (this.isStandaloneMode()) {
+            markInstalled('正以桌面 App 模式全屏运行，支持离线练字');
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             this.deferredInstallPrompt = e;
             if (installBtn) {
-                installBtn.textContent = '📲 立即安装';
+                installBtn.textContent = '立即安装';
             }
             if (installDesc) {
-                installDesc.textContent = '支持一键安装到桌面，无浏览器地址栏干扰，断网也能练字';
+                installDesc.textContent = '一键添加到桌面，无地址栏干扰，断网也能练字';
             }
         });
 
         window.addEventListener('appinstalled', () => {
             this.deferredInstallPrompt = null;
-            if (installBtn) {
-                installBtn.textContent = '✅ 已安装';
-            }
+            markInstalled('已添加到桌面，可从桌面图标直接打开');
             this.showToast('🎉 已成功安装「快乐小书法家」到桌面！');
         });
 
@@ -1659,13 +1719,24 @@ class KidWritingApp {
                     console.warn('ServiceWorker registration warning:', err);
                 });
             });
+            // 离线缓存接管页面后，若设置页正打开则即时刷新「离线可用」状态
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                const settingsModal = document.getElementById('settings-modal');
+                if (settingsModal && settingsModal.classList.contains('visible')) {
+                    this.refreshSettingsPanel();
+                }
+            });
         }
+    }
+
+    // 是否以桌面独立 App (PWA standalone) 模式运行
+    isStandaloneMode() {
+        return !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true);
     }
 
     // 触发 PWA 桌面安装或展示安装指南
     async triggerPWAInstall() {
-        const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-        if (isStandalone) {
+        if (this.isStandaloneMode()) {
             this.showToast('✅ 当前已经在桌面独立 App 模式下运行啦！');
             return;
         }
@@ -1776,8 +1847,76 @@ class KidWritingApp {
         }, duration);
     }
 
+    // 同步顶栏声音按钮与设置页声音开关状态
+    updateSoundUI(enabled) {
+        const isOn = enabled !== false;
+        const soundToggle = document.getElementById('btn-sound-toggle');
+        if (soundToggle) {
+            soundToggle.textContent = isOn ? '🔊 声音开' : '🔇 静音中';
+            soundToggle.classList.toggle('muted', !isOn);
+        }
+        const settingsSoundSwitch = document.getElementById('setting-sound-switch');
+        if (settingsSoundSwitch) settingsSoundSwitch.checked = isOn;
+        // 静音时自动朗读无法发声，设置页对应行淡化提示
+        const autoSpeechRow = document.getElementById('setting-row-auto-speech');
+        if (autoSpeechRow) autoSpeechRow.classList.toggle('is-disabled', !isOn);
+    }
+
+    // 同步设置页防误触模式分段按钮与说明文字
+    syncSettingsPalmSeg(mode) {
+        const descMap = {
+            auto: '笔尖优先，手掌可放心贴屏',
+            pen_only: '仅识别主动笔，屏蔽手掌手指',
+            off: '手指与电容笔均可书写'
+        };
+        const activeMode = descMap[mode] ? mode : 'auto';
+        document.querySelectorAll('#setting-palm-seg .settings-seg-btn').forEach(btn => {
+            const isActive = btn.dataset.palmMode === activeMode;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+        const desc = document.getElementById('setting-palm-desc');
+        if (desc) desc.textContent = descMap[activeMode];
+    }
+
+    // 打开设置页时刷新学习概览、开关状态与运行环境信息
+    refreshSettingsPanel() {
+        const setText = (id, text) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        };
+        setText('settings-stat-stars', String(this.stars || 0));
+        setText('settings-stat-chars', String((this.completedChars && this.completedChars.length) || 0));
+        setText('settings-stat-stickers', `${(this.unlockedStickers && this.unlockedStickers.length) || 0}/${CALLIGRAPHY_STICKERS.length}`);
+        setText('setting-print-desc', `「${this.currentChar}」字 A4 田字格字帖（描红 + 临摹）`);
+
+        this.updateSoundUI(window.soundManager ? window.soundManager.enabled : true);
+        const autoSpeechSwitch = document.getElementById('setting-auto-eval-speech-switch');
+        if (autoSpeechSwitch) autoSpeechSwitch.checked = !!this.autoEvalSpeech;
+        if (this.canvasEngine) this.syncSettingsPalmSeg(this.canvasEngine.palmRejection);
+        this.updateFullscreenButton();
+
+        // 桌面 App 模式下已无地址栏，隐藏浏览器全屏选项
+        const isStandalone = this.isStandaloneMode();
+        const fsRow = document.getElementById('setting-row-fullscreen');
+        if (fsRow) fsRow.style.display = isStandalone ? 'none' : '';
+
+        const modeChip = document.getElementById('settings-chip-mode');
+        if (modeChip) {
+            modeChip.textContent = isStandalone ? '📲 桌面 App 模式' : '🌐 浏览器模式';
+            modeChip.classList.toggle('ok', isStandalone);
+        }
+        const offlineChip = document.getElementById('settings-chip-offline');
+        if (offlineChip) {
+            const offlineReady = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
+            offlineChip.textContent = offlineReady ? '✅ 已支持离线练字' : '⏳ 离线缓存准备中';
+            offlineChip.classList.toggle('ok', offlineReady);
+        }
+    }
+
     // 更新防误触按钮与状态显示
     updateStylusModeUI(mode, isStylusDetected, showFeedback = false) {
+        this.syncSettingsPalmSeg(mode);
         const stylusBtn = document.getElementById('btn-toggle-stylus');
         const badge = document.getElementById('stylus-guard-badge');
         if (!stylusBtn || !badge) return;
@@ -1837,17 +1976,27 @@ class KidWritingApp {
             localStorage.removeItem('kid_app_last_category');
             localStorage.removeItem('kid_app_stickers');
 
-            // 保持已阅读简介状态，避免清除数据后立刻弹窗打扰
-            const keepIntro = localStorage.getItem('kid_app_intro_seen');
+            // 保留家长偏好设置（声音、自动朗读、防误触模式、字框与写字区大小）及已阅读简介状态，仅清除学习数据
+            const preservedKeys = [
+                'kid_app_intro_seen',
+                'kid_app_sound_enabled',
+                'kid_app_auto_eval_speech',
+                'kid_app_palm_mode',
+                'kid_app_canvas_size',
+                'kid_app_guide_frame_size'
+            ];
+            const preserved = {};
+            preservedKeys.forEach(k => {
+                const v = localStorage.getItem(k);
+                if (v !== null) preserved[k] = v;
+            });
             for (let i = localStorage.length - 1; i >= 0; i--) {
                 const key = localStorage.key(i);
                 if (key && key.startsWith('kid_app_')) {
                     localStorage.removeItem(key);
                 }
             }
-            if (keepIntro) {
-                localStorage.setItem('kid_app_intro_seen', keepIntro);
-            }
+            Object.keys(preserved).forEach(k => localStorage.setItem(k, preserved[k]));
         } catch (e) {
             console.error('清除本地数据失败:', e);
         }
