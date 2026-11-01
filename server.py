@@ -7,6 +7,7 @@ import sys
 import os
 import re
 import time
+import hmac
 import json
 import socket
 import hashlib
@@ -36,6 +37,9 @@ ALLOWED_VOICES = {
 DEFAULT_VOICE = 'zh-CN-XiaoxiaoNeural'
 TTS_CLIENT_SECRET = 'kmg-tts-2026-guard-v1'
 CLOUDFLARE_TTS_FALLBACK = 'https://kid-math-game.pages.dev/api/tts'
+MAX_DISK_CACHE_FILES = 500
+MAX_MISS_PER_MINUTE = 20
+_ip_rate_map: dict[str, tuple[int, int]] = {}
 
 
 def load_azure_speech_credentials():
@@ -90,10 +94,62 @@ def clean_tts_text(raw: str) -> str:
 
 
 def escape_xml(text: str) -> str:
-    return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    return (
+        text.replace('&', '&amp;')
+        .replace('<', '&lt;')
+        .replace('>', '&gt;')
+        .replace('"', '&quot;')
+        .replace("'", '&apos;')
+    )
 
 
-def synthesize_tts_mp3(voice: str, rate: str, cleaned_text: str) -> tuple[bytes, str]:
+def verify_tts_signature(ts: str, sig: str, voice: str, rate: str, cleaned_text: str) -> bool:
+    if not ts or not sig:
+        return False
+    try:
+        ts_num = int(ts)
+    except ValueError:
+        return False
+    if abs(int(time.time()) - ts_num) > 300:
+        return False
+    raw = f"{ts}|{voice}|{rate}|{cleaned_text}|{TTS_CLIENT_SECRET}"
+    expected = hashlib.sha256(raw.encode('utf-8')).hexdigest()[:32]
+    return hmac.compare_digest(sig, expected)
+
+
+def check_ip_quota(client_ip: str) -> bool:
+    min_bucket = int(time.time() // 60)
+    prev_bucket, count = _ip_rate_map.get(client_ip, (min_bucket, 0))
+    if prev_bucket != min_bucket:
+        prev_bucket, count = min_bucket, 0
+    if count >= MAX_MISS_PER_MINUTE:
+        return False
+    if len(_ip_rate_map) > 500:
+        _ip_rate_map.clear()
+    _ip_rate_map[client_ip] = (prev_bucket, count + 1)
+    return True
+
+
+def prune_disk_cache():
+    """限制本地磁盘缓存最多保存 MAX_DISK_CACHE_FILES 个音频文件，防止恶意请求撑爆磁盘"""
+    try:
+        files = [
+            os.path.join(TTS_CACHE_DIR, name)
+            for name in os.listdir(TTS_CACHE_DIR)
+            if name.endswith('.mp3')
+        ]
+        if len(files) > MAX_DISK_CACHE_FILES:
+            files.sort(key=lambda p: os.path.getmtime(p))
+            for old_file in files[: len(files) - MAX_DISK_CACHE_FILES]:
+                try:
+                    os.remove(old_file)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
+
+def synthesize_tts_mp3(voice: str, rate: str, cleaned_text: str, client_ip: str = '127.0.0.1') -> tuple[bytes, str]:
     """合成或从本地磁盘缓存读取 MP3，返回 (mp3_bytes, provider_name)"""
     cache_key = hashlib.sha256(f"v1|{voice}|{rate}|{cleaned_text}".encode('utf-8')).hexdigest()
     cache_path = os.path.join(TTS_CACHE_DIR, f"{cache_key}.mp3")
@@ -106,6 +162,9 @@ def synthesize_tts_mp3(voice: str, rate: str, cleaned_text: str) -> tuple[bytes,
                 return data, 'local-disk-cache'
         except Exception:
             pass
+
+    if not check_ip_quota(client_ip):
+        raise PermissionError('Rate limit exceeded for new speech synthesis')
 
     mp3_data = None
     provider = 'unknown'
@@ -166,6 +225,7 @@ def synthesize_tts_mp3(voice: str, rate: str, cleaned_text: str) -> tuple[bytes,
         with open(tmp_path, 'wb') as f:
             f.write(mp3_data)
         os.replace(tmp_path, cache_path)
+        prune_disk_cache()
     except Exception:
         pass
 
@@ -237,9 +297,23 @@ class NoCacheHTTPRequestHandler(SimpleHTTPRequestHandler):
             voice = req_voice if req_voice in ALLOWED_VOICES else DEFAULT_VOICE
             req_rate = (qs.get('rate') or ['-2%'])[0]
             rate = req_rate if re.match(r'^[+-]?\d{1,2}%$', req_rate) else '-2%'
+            ts = (qs.get('ts') or [''])[0]
+            sig = (qs.get('sig') or [''])[0]
+
+            if not verify_tts_signature(ts, sig, voice, rate, cleaned):
+                body = json.dumps({'error': 'Forbidden: invalid or expired signature'}).encode('utf-8')
+                self.send_response(403)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.send_header('Cache-Control', 'no-store')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+
+            client_ip = self.client_address[0] if self.client_address else '127.0.0.1'
 
             try:
-                mp3_bytes, provider = synthesize_tts_mp3(voice, rate, cleaned)
+                mp3_bytes, provider = synthesize_tts_mp3(voice, rate, cleaned, client_ip)
                 self.send_response(200)
                 self.send_header('Content-Type', 'audio/mpeg')
                 self.send_header('Content-Length', str(len(mp3_bytes)))
@@ -247,8 +321,16 @@ class NoCacheHTTPRequestHandler(SimpleHTTPRequestHandler):
                 self.send_header('X-TTS-Provider', provider)
                 self.end_headers()
                 self.wfile.write(mp3_bytes)
-            except Exception as e:
+            except PermissionError as e:
                 body = json.dumps({'error': str(e)}).encode('utf-8')
+                self.send_response(429)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.send_header('Cache-Control', 'no-store')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            except Exception as e:
+                body = json.dumps({'error': 'TTS synthesis unavailable'}).encode('utf-8')
                 self.send_response(502)
                 self.send_header('Content-Type', 'application/json; charset=utf-8')
                 self.send_header('Cache-Control', 'no-store')

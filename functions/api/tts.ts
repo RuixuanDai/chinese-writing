@@ -14,6 +14,10 @@ const DEFAULT_CLIENT_SECRET = "kmg-tts-2026-guard-v1";
 const MAX_TEXT_LEN = 80;
 const MAX_MISS_PER_MINUTE = 20;
 const MAX_MISS_PER_HOUR = 150;
+const GLOBAL_MAX_MISS_PER_MINUTE = 60;
+const GLOBAL_MAX_MISS_PER_HOUR = 600;
+
+let globalQuota = { minBucket: 0, minCount: 0, hourBucket: 0, hourCount: 0 };
 
 const TRUSTED_CLIENT_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4";
 const EDGE_HTTPS_WS_URL = "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1";
@@ -45,10 +49,13 @@ function isAllowedOriginUrl(rawUrl: string, extraHostsCsv?: string): boolean {
   try {
     const parsed = new URL(rawUrl);
     const host = parsed.hostname.toLowerCase();
+    // 严格限制仅允许本人名下的 GitHub Pages / Cloudflare Pages 项目域名与本地局域网调试访问
     if (
-      host.endsWith(".pages.dev") ||
       host === "ruixuandai.github.io" ||
-      host.endsWith(".github.io") ||
+      host === "kid-math-game.pages.dev" ||
+      host.endsWith(".kid-math-game.pages.dev") ||
+      host === "chinese-writing.pages.dev" ||
+      host.endsWith(".chinese-writing.pages.dev") ||
       host === "localhost" ||
       host === "127.0.0.1" ||
       host.startsWith("192.168.") ||
@@ -108,13 +115,35 @@ async function verifySignature(
   const expected = Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0"))
     .join("")
     .slice(0, 32);
-  return sig === expected;
+  if (sig.length !== expected.length) return false;
+  // 恒定时间比较 (Constant-Time Comparison)，防范计时侧信道攻击
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) {
+    diff |= sig.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return diff === 0;
 }
 
 function checkAndIncrementIpQuota(ip: string): boolean {
   const nowSec = Math.floor(Date.now() / 1000);
   const minBucket = Math.floor(nowSec / 60);
   const hourBucket = Math.floor(nowSec / 3600);
+
+  // 全局熔断限流保护：防范多 IP 代理池分布式刷量
+  if (globalQuota.minBucket !== minBucket) {
+    globalQuota.minBucket = minBucket;
+    globalQuota.minCount = 0;
+  }
+  if (globalQuota.hourBucket !== hourBucket) {
+    globalQuota.hourBucket = hourBucket;
+    globalQuota.hourCount = 0;
+  }
+  if (
+    globalQuota.minCount >= GLOBAL_MAX_MISS_PER_MINUTE ||
+    globalQuota.hourCount >= GLOBAL_MAX_MISS_PER_HOUR
+  ) {
+    return false;
+  }
 
   let record = ipRateMap.get(ip);
   if (!record) {
@@ -141,6 +170,8 @@ function checkAndIncrementIpQuota(ip: string): boolean {
 
   record.minCount += 1;
   record.hourCount += 1;
+  globalQuota.minCount += 1;
+  globalQuota.hourCount += 1;
   return true;
 }
 
@@ -312,7 +343,12 @@ function cleanTtsInput(raw: string): string {
 }
 
 function escapeXml(text: string): string {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
 
 function randomHex(bytes: number): string {
