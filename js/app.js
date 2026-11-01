@@ -30,14 +30,49 @@ class KidWritingApp {
         this.currentCategory = 'starter';
         this.activeMode = 'free'; // 'free' (自由书写/描红), 'quiz' (笔顺跟写)
 
-        // 积分与激励
-        this.stars = parseInt(localStorage.getItem('kid_app_stars') || '0', 10);
-        this.completedChars = JSON.parse(localStorage.getItem('kid_app_completed') || '[]');
-        this.unlockedStickers = JSON.parse(localStorage.getItem('kid_app_stickers') || '["maliang", "zhuangyuan", "panda"]');
+        // 积分与激励 (安全解析本地存储，防范 JSON 损坏导致白屏崩溃)
+        const parsedStars = parseInt(this.safeGetStorage('kid_app_stars', '0'), 10);
+        this.stars = (Number.isFinite(parsedStars) && parsedStars >= 0) ? parsedStars : 0;
+        this.completedChars = this.safeParseJSONArray('kid_app_completed', []);
+        this.unlockedStickers = this.safeParseJSONArray('kid_app_stickers', ['maliang', 'zhuangyuan', 'panda']);
         this.eggCost = 3; // 每 3 颗星扭蛋一次
+        this.canvasSizeMode = 'large';
+        this._evalSpeechTimer = null;
 
         this.canvasEngine = null;
         this.hanziGuide = null;
+    }
+
+    // 安全读取 localStorage 字符串
+    safeGetStorage(key, fallback = '') {
+        try {
+            const val = localStorage.getItem(key);
+            return val !== null ? val : fallback;
+        } catch (e) {
+            return fallback;
+        }
+    }
+
+    // 安全解析 localStorage 数组数据
+    safeParseJSONArray(key, fallback = []) {
+        try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return Array.isArray(fallback) ? [...fallback] : [];
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : (Array.isArray(fallback) ? [...fallback] : []);
+        } catch (e) {
+            return Array.isArray(fallback) ? [...fallback] : [];
+        }
+    }
+
+    // HTML 实体转义（防止自定义字符或异常存储引发 DOM XSS）
+    escapeHtml(str) {
+        return String(str == null ? '' : str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     init() {
@@ -55,14 +90,20 @@ class KidWritingApp {
             }
         };
 
-        // 2. 初始化笔顺引擎并恢复写字框大小记忆
+        // 2. 初始化笔顺引擎并恢复写字框与写字画板大小记忆
         this.hanziGuide = new HanziGuide('hanzi-writer-box');
-        const savedFrameSize = localStorage.getItem('kid_app_guide_frame_size') || 'medium';
-        this.setGuideFrameSize(savedFrameSize);
+        const savedFrameSize = this.safeGetStorage('kid_app_guide_frame_size', 'medium');
+        this.setGuideFrameSize(['small', 'medium', 'large'].includes(savedFrameSize) ? savedFrameSize : 'medium');
+
+        const savedCanvasSize = this.safeGetStorage('kid_app_canvas_size', 'large');
+        this.setCanvasSizeMode(['small', 'medium', 'large', 'xlarge'].includes(savedCanvasSize) ? savedCanvasSize : 'large');
 
         // 3. 页面记忆功能：获取上次完成的汉字或上次练习的汉字
-        let targetChar = localStorage.getItem('kid_app_last_completed') || localStorage.getItem('kid_app_last_char');
-        let targetCat = localStorage.getItem('kid_app_last_category') || 'starter';
+        let targetChar = this.safeGetStorage('kid_app_last_completed', '') || this.safeGetStorage('kid_app_last_char', '');
+        if (targetChar && !/^[\u4e00-\u9fa5]$/.test(targetChar)) {
+            targetChar = '';
+        }
+        let targetCat = this.safeGetStorage('kid_app_last_category', 'starter');
 
         // 如果有上次记住的汉字，自动查找匹配其分类
         if (targetChar) {
@@ -300,13 +341,13 @@ class KidWritingApp {
 
         if (illArtWrap) {
             if (imgUrl) {
-                illArtWrap.innerHTML = `<img src="${imgUrl}" class="ill-large-img" alt="${info.label || info.char}">`;
+                illArtWrap.innerHTML = `<img src="${this.escapeHtml(imgUrl)}" class="ill-large-img" alt="${this.escapeHtml(info.label || info.char)}">`;
             } else {
                 // 不使用不准确或误导性的 emoji，展示典雅国风楷书启蒙识字卡
                 illArtWrap.innerHTML = `
                     <div class="ill-fallback-card">
-                        <div class="fallback-char">${info.char}</div>
-                        <div class="fallback-pinyin">${info.pinyin}</div>
+                        <div class="fallback-char">${this.escapeHtml(info.char)}</div>
+                        <div class="fallback-pinyin">${this.escapeHtml(info.pinyin)}</div>
                     </div>
                 `;
             }
@@ -543,7 +584,7 @@ class KidWritingApp {
         const settingsUpdateBtn = document.getElementById('btn-settings-update');
         if (settingsUpdateBtn) {
             settingsUpdateBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playSuccess();
+                if (window.soundManager) window.soundManager.playVictory();
                 settingsUpdateBtn.textContent = '⏳ 正在加载最新版...';
                 settingsUpdateBtn.disabled = true;
                 setTimeout(() => {
@@ -663,17 +704,22 @@ class KidWritingApp {
             });
         }
 
-        // 3. 自定义输入汉字搜索
+        // 3. 自定义输入汉字搜索 (过滤非法字符，仅提取有效汉字)
         const customInput = document.getElementById('custom-char-input');
         const customBtn = document.getElementById('btn-custom-char');
         const handleCustomSearch = () => {
             const val = (customInput.value || '').trim();
-            if (val) {
-                const firstChar = val.charAt(0);
-                this.selectChar(firstChar);
-                customInput.value = '';
+            if (!val) return;
+            const hanziMatch = val.match(/[\u4e00-\u9fa5]/);
+            if (!hanziMatch) {
+                this.showToast('💡 请输入一个中文汉字进行练习哦！');
                 if (window.soundManager) window.soundManager.playPop();
+                return;
             }
+            const firstChar = hanziMatch[0];
+            this.selectChar(firstChar);
+            customInput.value = '';
+            if (window.soundManager) window.soundManager.playPop();
         };
 
         if (customBtn) customBtn.addEventListener('click', handleCustomSearch);
@@ -728,7 +774,7 @@ class KidWritingApp {
             });
         }
 
-        // 5.0 写字框大小调节 (小 175px / 中 230px / 大 295px)
+        // 5.0 左侧笔顺框大小调节 (小 / 中 / 大)
         const frameSizeBtns = document.querySelectorAll('.frame-size-seg-btn');
         frameSizeBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -736,21 +782,104 @@ class KidWritingApp {
                 const size = btn.dataset.frameSize;
                 this.setGuideFrameSize(size);
                 const tipMap = {
-                    small: '🔍 已切换为【紧凑字框】(175px)，字词卡空间更宽广',
-                    medium: '🔍 已切换为【标准字框】(230px)，适中舒适',
-                    large: '🔍 已切换为【大号写字框】(295px)，宽幅临摹超痛快！'
+                    small: '🔍 演示框已切换为【紧凑尺寸】，识字卡更宽广',
+                    medium: '🔍 演示框已切换为【标准尺寸】，适中舒适',
+                    large: '🔍 演示框已切换为【大号尺寸】，跟写闯关更清晰！'
                 };
-                this.showToast(tipMap[size] || '已调整字框大小');
+                this.showToast(tipMap[size] || '已调整演示字框大小');
             });
         });
 
         const frameZoomBtn = document.getElementById('btn-toggle-frame-zoom');
         if (frameZoomBtn) {
-            frameZoomBtn.addEventListener('click', () => {
+            frameZoomBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (window.soundManager) window.soundManager.playPop();
                 const nextSize = this.guideFrameSize === 'large' ? 'medium' : 'large';
                 this.setGuideFrameSize(nextSize);
-                this.showToast(nextSize === 'large' ? '🔍 已放大写字框！' : '🔍 已还原写字框！');
+                this.showToast(nextSize === 'large' ? '🔍 已放大笔顺演示框！' : '🔍 已还原笔顺演示框！');
+            });
+        }
+
+        // 5.05 右侧孩子写字区大小调节 (小 / 中 / 大 / 全幅 + 一键缩放 + 右下角无级拖拽)
+        const canvasSizeBtns = document.querySelectorAll('.canvas-size-seg-btn');
+        canvasSizeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                const mode = btn.dataset.canvasSize;
+                this.setCanvasSizeMode(mode, true);
+            });
+        });
+
+        const canvasZoomBtn = document.getElementById('btn-toggle-canvas-zoom');
+        if (canvasZoomBtn) {
+            ['pointerdown', 'mousedown', 'touchstart'].forEach(evt => {
+                canvasZoomBtn.addEventListener(evt, (e) => e.stopPropagation(), { passive: true });
+            });
+            canvasZoomBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (window.soundManager) window.soundManager.playPop();
+                const nextMode = this.canvasSizeMode === 'xlarge' ? 'large' : 'xlarge';
+                this.setCanvasSizeMode(nextMode, true);
+            });
+        }
+
+        // 右下角无级拖拽调节写字区大小手柄
+        const resizeHandle = document.getElementById('canvas-resize-handle');
+        const sizeIndicator = document.getElementById('canvas-size-indicator');
+        if (resizeHandle) {
+            let draggingResize = false;
+            let startClientX = 0;
+            let startClientY = 0;
+            let startCanvasSize = 320;
+
+            const showIndicator = (px) => {
+                if (!sizeIndicator) return;
+                sizeIndicator.textContent = `写字格: ${px} × ${px} px`;
+                sizeIndicator.style.display = 'block';
+            };
+
+            const hideIndicator = () => {
+                if (!sizeIndicator) return;
+                sizeIndicator.style.display = 'none';
+            };
+
+            const onResizeMove = (e) => {
+                if (!draggingResize || !this.canvasEngine) return;
+                const pt = e.touches ? e.touches[0] : e;
+                const dx = pt.clientX - startClientX;
+                const dy = pt.clientY - startClientY;
+                // 由于画板在容器内居中 (margin: auto)，右下角向外拉动 delta 时边长变化约为 delta * 1.6
+                const delta = Math.round(Math.max(dx, dy) * 1.6);
+                const maxAvail = this.canvasEngine.maxAvailSize || 500;
+                const nextPx = Math.max(175, Math.min(maxAvail, startCanvasSize + delta));
+                this.canvasEngine.setCustomSize(nextPx);
+                showIndicator(this.canvasEngine.cssSize || nextPx);
+                document.querySelectorAll('.canvas-size-seg-btn').forEach(b => b.classList.remove('active'));
+            };
+
+            const onResizeEnd = () => {
+                if (!draggingResize) return;
+                draggingResize = false;
+                document.removeEventListener('pointermove', onResizeMove);
+                document.removeEventListener('pointerup', onResizeEnd);
+                document.removeEventListener('pointercancel', onResizeEnd);
+                setTimeout(hideIndicator, 900);
+            };
+
+            resizeHandle.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!this.canvasEngine) return;
+                draggingResize = true;
+                startClientX = e.clientX;
+                startClientY = e.clientY;
+                startCanvasSize = this.canvasEngine.cssSize || 320;
+                showIndicator(startCanvasSize);
+                if (window.soundManager) window.soundManager.playPop();
+                document.addEventListener('pointermove', onResizeMove);
+                document.addEventListener('pointerup', onResizeEnd);
+                document.addEventListener('pointercancel', onResizeEnd);
             });
         }
 
@@ -981,6 +1110,10 @@ class KidWritingApp {
         const evalSpeakBtn = document.getElementById('btn-eval-speak');
 
         const handleCloseEvalModal = () => {
+            if (this._evalSpeechTimer) {
+                clearTimeout(this._evalSpeechTimer);
+                this._evalSpeechTimer = null;
+            }
             if (window.soundManager && window.soundManager.stopSpeaking) {
                 window.soundManager.stopSpeaking();
             }
@@ -1206,10 +1339,29 @@ class KidWritingApp {
             evalGashaponBtn.style.display = (this.stars >= this.eggCost) ? 'inline-flex' : 'none';
         }
 
-        // 弹出报告弹窗
+        // 弹出报告弹窗并自动播放语音点评 (温柔姐姐晓晓神经语音)
         this.resetEvalSpeakButton();
         const modal = document.getElementById('eval-modal');
         if (modal) modal.classList.add('visible');
+
+        if (this._evalSpeechTimer) {
+            clearTimeout(this._evalSpeechTimer);
+            this._evalSpeechTimer = null;
+        }
+        if (!window.soundManager || window.soundManager.enabled !== false) {
+            const speakBtn = document.getElementById('btn-eval-speak');
+            if (speakBtn) {
+                speakBtn.classList.add('speaking');
+                const lbl = speakBtn.querySelector('.eval-speak-text');
+                if (lbl) lbl.textContent = '正在朗读...';
+            }
+            this._evalSpeechTimer = setTimeout(() => {
+                this._evalSpeechTimer = null;
+                if (modal && modal.classList.contains('visible')) {
+                    this.startEvalSpeech();
+                }
+            }, 300);
+        }
     }
 
     // 标记汉字已练过
@@ -1299,10 +1451,18 @@ class KidWritingApp {
         }
     }
 
-    // 生成并打印标准田字格纸质练字帖
+    // 生成并打印标准田字格纸质练字帖 (所有动态字段均经过 HTML 转义保护)
     printWorksheet() {
-        const char = this.currentChar;
-        const info = this.charInfo;
+        const char = this.escapeHtml(this.currentChar);
+        const info = this.charInfo || {};
+        const safePy = this.escapeHtml(info.pinyin || '');
+        const safeIcon = this.escapeHtml(info.icon || '✏️');
+        const safeLabel = this.escapeHtml(info.label || '');
+        const safeEn = this.escapeHtml(info.en || '-');
+        const safeRadical = this.escapeHtml(info.radical || '-');
+        const safeStrokes = this.escapeHtml(info.strokes || '-');
+        const safeWords = this.escapeHtml((info.words || []).join('、'));
+        const safeSentence = this.escapeHtml(info.sentence || '');
 
         // 动态构建打印区域
         let printArea = document.getElementById('printable-area');
@@ -1325,17 +1485,17 @@ class KidWritingApp {
 
                 <div class="print-char-intro">
                     <div class="print-big-box">
-                        <span class="py">${info.pinyin}</span>
+                        <span class="py">${safePy}</span>
                         <div class="tianzi">${char}</div>
                     </div>
                     <div class="print-ill-box" style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:58px; height:58px; border:1.5px dashed #f59e0b; border-radius:10px; margin:0 10px; background:#fffbeb;">
-                        <span style="font-size:28px; line-height:1;">${info.icon || '✏️'}</span>
-                        <span style="font-size:10px; font-weight:bold; color:#b45309; margin-top:2px;">${info.label || ''}</span>
+                        <span style="font-size:28px; line-height:1;">${safeIcon}</span>
+                        <span style="font-size:10px; font-weight:bold; color:#b45309; margin-top:2px;">${safeLabel}</span>
                     </div>
                     <div class="print-info-text">
-                        <p><strong>拼音：</strong>${info.pinyin} &nbsp;&nbsp; <strong>英文：</strong>${info.en || '-'} &nbsp;&nbsp; <strong>部首：</strong>${info.radical || '-'} &nbsp;&nbsp; <strong>笔画：</strong>${info.strokes || '-'} 画</p>
-                        <p><strong>常用词语：</strong>${(info.words || []).join('、')}</p>
-                        <p><strong>经典例句：</strong>${info.sentence || ''}</p>
+                        <p><strong>拼音：</strong>${safePy} &nbsp;&nbsp; <strong>英文：</strong>${safeEn} &nbsp;&nbsp; <strong>部首：</strong>${safeRadical} &nbsp;&nbsp; <strong>笔画：</strong>${safeStrokes} 画</p>
+                        <p><strong>常用词语：</strong>${safeWords}</p>
+                        <p><strong>经典例句：</strong>${safeSentence}</p>
                     </div>
                 </div>
 
@@ -1911,9 +2071,17 @@ class KidWritingApp {
             el.style.zIndex = '10';
         };
 
-        el.addEventListener('mousedown', onPointerDown);
-        document.addEventListener('mousemove', onPointerMove);
-        document.addEventListener('mouseup', onPointerEnd);
+        const onMouseDown = (e) => {
+            onPointerDown(e);
+            const cleanup = () => {
+                onPointerEnd();
+                document.removeEventListener('mousemove', onPointerMove);
+                document.removeEventListener('mouseup', cleanup);
+            };
+            document.addEventListener('mousemove', onPointerMove);
+            document.addEventListener('mouseup', cleanup);
+        };
+        el.addEventListener('mousedown', onMouseDown);
 
         el.addEventListener('touchstart', onPointerDown, { passive: true });
         document.addEventListener('touchmove', onPointerMove, { passive: true });
@@ -1979,25 +2147,74 @@ class KidWritingApp {
         }, 180);
     }
 
-    // 切换名师点评语音朗读 (支持点击朗读与再次点击停止)
-    toggleEvalSpeech() {
+    // 切换右侧孩子写字区大小 (small / medium / large / xlarge)
+    setCanvasSizeMode(mode, showFeedback = false) {
+        this.canvasSizeMode = ['small', 'medium', 'large', 'xlarge'].includes(mode) ? mode : 'large';
+        const container = document.querySelector('.main-container');
+        if (container) {
+            container.classList.toggle('canvas-size-xlarge', this.canvasSizeMode === 'xlarge');
+        }
+
+        document.querySelectorAll('.canvas-size-seg-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.canvasSize === this.canvasSizeMode);
+        });
+
+        const zoomBtn = document.getElementById('btn-toggle-canvas-zoom');
+        if (zoomBtn) {
+            const isXL = this.canvasSizeMode === 'xlarge';
+            zoomBtn.textContent = isXL ? '🗗' : '⛶';
+            zoomBtn.classList.toggle('active', isXL);
+            zoomBtn.title = isXL ? '还原标准左右分栏画板' : '一键展开全幅超大写字区';
+        }
+
+        try {
+            localStorage.setItem('kid_app_canvas_size', this.canvasSizeMode);
+        } catch (e) {}
+
+        if (this.canvasEngine) {
+            this.canvasEngine.setSizeMode(this.canvasSizeMode);
+        }
+
+        setTimeout(() => {
+            if (this.canvasEngine) this.canvasEngine.resize(true);
+            if (this.hanziGuide) this.hanziGuide.resize();
+            if (showFeedback && this.canvasEngine) {
+                const px = this.canvasEngine.cssSize || 360;
+                const labelMap = {
+                    small: `✍️ 写字区已调为【小号格】(${px}×${px}px)，适合精细控笔`,
+                    medium: `✍️ 写字区已调为【中号格】(${px}×${px}px)，四周留白舒适`,
+                    large: `✍️ 写字区已调为【标准大格】(${px}×${px}px)，书写宽广`,
+                    xlarge: `✍️ 已开启【全幅超大写字区】(${px}×${px}px)，畅快挥毫！`
+                };
+                this.showToast(labelMap[this.canvasSizeMode] || '已调整写字区大小');
+            }
+        }, 120);
+    }
+
+    // 启动名师点评语音朗读 (由智能评分完成后自动触发，或手动点击触发)
+    startEvalSpeech() {
         const btn = document.getElementById('btn-eval-speak');
         if (!btn || !this.lastEvaluationResult) return;
 
-        if (window.soundManager && window.soundManager.isSpeaking && window.soundManager.isSpeaking()) {
-            window.soundManager.stopSpeaking();
-            this.resetEvalSpeakButton();
-            return;
-        }
-
         const res = this.lastEvaluationResult;
-        // 构造亲切、温暖、无Emoji的精炼语音脚本 (控制在 75 字以内，完美适配 OnlineNeuralTTS 神经语音合成)
-        const gradeClean = (res.grade || '').replace(/[【】·\s]+/g, '，').replace(/^，|，$/g, '');
-        const sugClean = (res.suggestions || [])
-            .map(s => s.replace(/^[^\u4e00-\u9fa5]+/g, '').replace(/^(笔顺提示|结构建议|笔画方向|笔画数量)：/g, ''))
-            .join(' ');
+        // 构造亲切、温暖、无 Emoji 且不超过 76 字的完整语音句子，完美契合晓晓神经语音合成
+        const gradeClean = (res.grade || '')
+            .replace(/[【】·\s]+/g, '，')
+            .replace(/^，|，$/g, '');
+        const cleanComment = (res.teacherComment || '')
+            .replace(/[^\u4e00-\u9fa50-9，。！？、]/g, '');
+        const firstSug = ((res.suggestions && res.suggestions[0]) || '')
+            .replace(/^[^\u4e00-\u9fa5]+/g, '')
+            .replace(/^(笔顺提示|结构建议|笔画方向|笔画数量)：/g, '');
 
-        const speechText = `得分${res.totalScore}分，${gradeClean}！${sugClean || res.teacherComment || ''}`;
+        let speechText = `得分${res.totalScore}分，${gradeClean}！`;
+        if (firstSug && (speechText.length + firstSug.length <= 76)) {
+            speechText += firstSug;
+        } else if (cleanComment && (speechText.length + cleanComment.length <= 76)) {
+            speechText += cleanComment;
+        } else if (firstSug) {
+            speechText += firstSug.slice(0, Math.max(10, 75 - speechText.length));
+        }
 
         btn.classList.add('speaking');
         const label = btn.querySelector('.eval-speak-text');
@@ -2008,6 +2225,27 @@ class KidWritingApp {
                 this.resetEvalSpeakButton();
             });
         }
+    }
+
+    // 切换名师点评语音朗读 (支持点击朗读与再次点击停止)
+    toggleEvalSpeech() {
+        const btn = document.getElementById('btn-eval-speak');
+        if (!btn || !this.lastEvaluationResult) return;
+
+        if (this._evalSpeechTimer) {
+            clearTimeout(this._evalSpeechTimer);
+            this._evalSpeechTimer = null;
+            this.resetEvalSpeakButton();
+            return;
+        }
+
+        if (window.soundManager && window.soundManager.isSpeaking && window.soundManager.isSpeaking()) {
+            window.soundManager.stopSpeaking();
+            this.resetEvalSpeakButton();
+            return;
+        }
+
+        this.startEvalSpeech();
     }
 
     // 重置名师点评按钮状态

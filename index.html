@@ -15,7 +15,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261101_v1">
+    <link rel="stylesheet" href="css/style.css?v=20261101_v2">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -231,14 +231,26 @@
             </div>
 
             <div class="canvas-panel-header">
-                <h2>🎨 小小书法家画板</h2>
+                <div class="canvas-header-left">
+                    <h2>🎨 书法画板</h2>
+                    <!-- 孩子写字区大小调节 (支持 小/中/大/全幅 + 右下角无级拖拽) -->
+                    <div class="canvas-size-group" title="调节孩子写字区域米字格大小">
+                        <span class="control-label-text">写字区:</span>
+                        <div class="size-segmented-ctrl" id="canvas-size-ctrl">
+                            <button type="button" class="canvas-size-seg-btn" data-canvas-size="small" title="小号写字格 (适合精细控笔练习)">小</button>
+                            <button type="button" class="canvas-size-seg-btn" data-canvas-size="medium" title="中号写字格 (留出宽裕手掌休息区)">中</button>
+                            <button type="button" class="canvas-size-seg-btn active" data-canvas-size="large" title="标准大号写字格">大</button>
+                            <button type="button" class="canvas-size-seg-btn" data-canvas-size="xlarge" title="全幅超大专注写字区 (展开右侧画板)">全幅</button>
+                        </div>
+                    </div>
+                </div>
                 <!-- 格线切换 -->
                 <div class="grid-selector">
-                    <button class="grid-type-btn active" data-grid="mizi" title="米字格">米字格</button>
-                    <button class="grid-type-btn" data-grid="tianzi" title="田字格">田字格</button>
-                    <button class="grid-type-btn" data-grid="huigong" title="回宫格">回宫格</button>
-                    <button class="grid-type-btn" data-grid="jiugong" title="九宫格">九宫格</button>
-                    <button class="grid-type-btn" data-grid="blank" title="空白画板">空白格</button>
+                    <button class="grid-type-btn active" data-grid="mizi" title="米字格">米字</button>
+                    <button class="grid-type-btn" data-grid="tianzi" title="田字格">田字</button>
+                    <button class="grid-type-btn" data-grid="huigong" title="回宫格">回宫</button>
+                    <button class="grid-type-btn" data-grid="jiugong" title="九宫格">九宫</button>
+                    <button class="grid-type-btn" data-grid="blank" title="空白画板">空白</button>
                 </div>
             </div>
 
@@ -300,11 +312,14 @@
                 </div>
             </div>
 
-            <!-- 手写画板主体 (双层 Canvas) -->
+            <!-- 手写画板主体 (双层 Canvas + 一键缩放与右下角自由拖拽手柄) -->
             <div class="canvas-wrapper">
                 <div id="canvas-box" class="canvas-box">
                     <canvas id="gridCanvas"></canvas>
                     <canvas id="drawCanvas"></canvas>
+                    <button id="btn-toggle-canvas-zoom" type="button" class="btn-canvas-zoom" title="一键放大/切换全幅写字区">⛶</button>
+                    <div id="canvas-resize-handle" class="canvas-resize-handle" title="按住拖动可自由调节写字区大小">↘</div>
+                    <div id="canvas-size-indicator" class="canvas-size-indicator" style="display: none;"></div>
                 </div>
 
                 <!-- 可展开式手腕防误触保护垫板 (Wrist Guard / Palm Shield) -->
@@ -715,14 +730,14 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261101_v1"></script>
-    <script src="lib/web-online-tts.js?v=20261101_v1"></script>
-    <script src="js/sound.js?v=20261101_v1"></script>
-    <script src="js/char-data.js?v=20261101_v1"></script>
-    <script src="js/stroke-cache.js?v=20261101_v1"></script>
-    <script src="js/canvas.js?v=20261101_v1"></script>
-    <script src="js/hanzi-guide.js?v=20261101_v1"></script>
-    <script src="js/evaluator.js?v=20261101_v1"></script>
-    <script src="js/app.js?v=20261101_v1"></script>
+    <script src="lib/web-natural-tts.js?v=20261101_v2"></script>
+    <script src="lib/web-online-tts.js?v=20261101_v2"></script>
+    <script src="js/sound.js?v=20261101_v2"></script>
+    <script src="js/char-data.js?v=20261101_v2"></script>
+    <script src="js/stroke-cache.js?v=20261101_v2"></script>
+    <script src="js/canvas.js?v=20261101_v2"></script>
+    <script src="js/hanzi-guide.js?v=20261101_v2"></script>
+    <script src="js/evaluator.js?v=20261101_v2"></script>
+    <script src="js/app.js?v=20261101_v2"></script>
 </body>
 </html>

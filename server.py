@@ -194,8 +194,30 @@ class NoCacheHTTPRequestHandler(SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin', '*')
         super().end_headers()
 
+    def _is_forbidden_path(self, raw_path: str) -> bool:
+        """拦截对隐藏文件 (.env, .git, .local-data) 与后端脚本 (server.py, functions) 的直接访问"""
+        clean = urllib.parse.unquote(raw_path or '').replace('\\', '/')
+        parts = [p for p in clean.split('/') if p and p != '.']
+        for part in parts:
+            if part.startswith('.') or part == '..':
+                return True
+        lower_path = '/'.join(parts).lower()
+        if lower_path in ('server.py', 'wrangler.toml') or lower_path.startswith('functions/'):
+            return True
+        return False
+
+    def do_HEAD(self):
+        parsed = urllib.parse.urlparse(self.path)
+        if self._is_forbidden_path(parsed.path):
+            self.send_error(403, 'Forbidden')
+            return
+        return super().do_HEAD()
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
+        if self._is_forbidden_path(parsed.path):
+            self.send_error(403, 'Forbidden')
+            return
 
         # 在线 AI 神经网络语音接口 (/api/tts)
         if parsed.path == '/api/tts':

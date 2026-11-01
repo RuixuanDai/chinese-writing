@@ -45,6 +45,11 @@ class HandwritingCanvas {
         this.strokeList = [];
         this.currentStroke = null;
 
+        // 写字区域尺寸调节支持 ('small' | 'medium' | 'large' | 'xlarge' | 'custom')
+        this.sizeMode = 'large';
+        this.customSizePx = null;
+        this.onSizeChanged = null;
+
         this.init();
     }
 
@@ -74,21 +79,52 @@ class HandwritingCanvas {
         this.renderBackground();
     }
 
-    // 处理高分屏 (Retina / 移动端高清屏)，根据视口自适应尺寸并防模糊
-    resize() {
+    // 设定写字画板大小模式 ('small' | 'medium' | 'large' | 'xlarge')
+    setSizeMode(mode) {
+        this.sizeMode = mode || 'large';
+        this.customSizePx = null;
+        this.resize(true);
+    }
+
+    // 自由拖拽设定写字画板自定义像素边长
+    setCustomSize(px) {
+        const num = Math.round(Number(px) || 0);
+        if (num <= 0) return;
+        this.sizeMode = 'custom';
+        this.customSizePx = num;
+        this.resize(true);
+    }
+
+    // 处理高分屏 (Retina / 移动端高清屏)，根据视口与用户所选大小模式自适应尺寸并防模糊
+    resize(force = false) {
         if (!this.container) return;
         const wrapper = this.container.parentElement || this.container;
         const rect = wrapper.getBoundingClientRect();
-        const padding = 2;
+        const padding = 4;
         const availW = Math.max(0, rect.width - padding * 2);
         const availH = Math.max(0, rect.height - padding * 2);
-        const size = Math.floor(Math.min(availW, availH));
-        if (size <= 0) return;
-        if (this.cssSize === size) return; // 尺寸未变无需重复重绘
+        const maxAvail = Math.floor(Math.min(availW, availH));
+        if (maxAvail <= 0) return;
+
+        let targetSize = maxAvail;
+        if (this.sizeMode === 'custom' && this.customSizePx) {
+            targetSize = Math.round(Math.max(175, Math.min(maxAvail, this.customSizePx)));
+        } else if (this.sizeMode === 'small') {
+            targetSize = Math.round(Math.max(180, maxAvail * 0.68));
+        } else if (this.sizeMode === 'medium') {
+            targetSize = Math.round(Math.max(220, maxAvail * 0.84));
+        } else {
+            // 'large' 或 'xlarge' 均撑满当前可用容器正方形空间
+            targetSize = maxAvail;
+        }
+
+        const size = Math.min(maxAvail, Math.max(165, targetSize));
+        const oldSize = this.cssSize || 0;
+        if (!force && oldSize === size) return; // 尺寸未变无需重复重绘
 
         const dpr = window.devicePixelRatio || 1;
 
-        // 设置外层正方形容器与画布精确尺寸，消灭任何多余留白
+        // 设置外层正方形容器与画布精确尺寸
         this.container.style.width = `${size}px`;
         this.container.style.height = `${size}px`;
         this.gridCanvas.style.width = `${size}px`;
@@ -108,6 +144,28 @@ class HandwritingCanvas {
             } catch (e) {}
         }
 
+        // 等比缩放已记录的真实笔画轨迹坐标 (确保缩放画板后智能评分与笔顺诊断依然 100% 精准)
+        if (oldSize > 0 && oldSize !== size) {
+            const ratio = size / oldSize;
+            const scaleStrokeArray = (arr) => {
+                if (!Array.isArray(arr)) return [];
+                return arr.map(st => ({
+                    ...st,
+                    points: Array.isArray(st.points) ? st.points.map(p => ({ x: p.x * ratio, y: p.y * ratio })) : [],
+                    startPoint: st.startPoint ? { x: st.startPoint.x * ratio, y: st.startPoint.y * ratio } : null,
+                    endPoint: st.endPoint ? { x: st.endPoint.x * ratio, y: st.endPoint.y * ratio } : null
+                }));
+            };
+            if (this.strokeList && this.strokeList.length > 0) {
+                this.strokeList = scaleStrokeArray(this.strokeList);
+            }
+            if (this.lastClearedBackup && this.lastClearedBackup.strokeList) {
+                this.lastClearedBackup = null; // 尺寸改变后旧分辨率 ImageData 备份不再直接 putImageData
+            }
+            // 重置旧分辨率的快照堆栈，随后以新尺寸重新压栈
+            this.history = [];
+        }
+
         // 设置内部像素尺寸
         this.gridCanvas.width = size * dpr;
         this.gridCanvas.height = size * dpr;
@@ -119,6 +177,7 @@ class HandwritingCanvas {
         this.drawCtx.scale(dpr, dpr);
 
         this.cssSize = size;
+        this.maxAvailSize = maxAvail;
         this.dpr = dpr;
 
         this.renderBackground();
@@ -130,6 +189,10 @@ class HandwritingCanvas {
             } catch (e) {}
         }
         this.saveHistory();
+
+        if (typeof this.onSizeChanged === 'function') {
+            this.onSizeChanged(size, maxAvail, this.sizeMode);
+        }
     }
 
     // 撤销当前尚未完成的触摸笔画 (用于手掌先着地时被笔尖绝对抢占)
@@ -474,18 +537,19 @@ class HandwritingCanvas {
         const centerX = size / 2;
         const centerY = size / 2;
 
-        const gridColor = '#e17055'; // 经典朱砂红 (与左侧笔顺框统一)
+        const gridColor = 'rgba(225, 112, 85, 0.55)'; // 经典柔和朱砂红虚线 (与左侧笔顺框完全统一)
 
         if (this.gridType === 'blank') {
             ctx.restore();
             return;
         }
 
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1.25;
         ctx.setLineDash([6, 5]); // 虚线
 
         if (this.gridType === 'mizi' || this.gridType === 'tianzi') {
-            // 十字十字中线
+            // 十字中线
             ctx.beginPath();
             ctx.moveTo(centerX, top);
             ctx.lineTo(centerX, bottom);
@@ -504,7 +568,7 @@ class HandwritingCanvas {
             }
         } else if (this.gridType === 'jiugong') {
             // 九宫格
-            const oneThird = boxSize / 3;
+            const oneThird = size / 3;
             ctx.beginPath();
             ctx.moveTo(left + oneThird, top);
             ctx.lineTo(left + oneThird, bottom);
@@ -517,8 +581,8 @@ class HandwritingCanvas {
             ctx.stroke();
         } else if (this.gridType === 'huigong') {
             // 回宫格 (内方格外框)
-            const innerSize = boxSize * 0.55;
-            const innerOffset = (boxSize - innerSize) / 2;
+            const innerSize = size * 0.55;
+            const innerOffset = (size - innerSize) / 2;
             ctx.strokeRect(left + innerOffset, top + innerOffset, innerSize, innerSize);
 
             // 轻微的中心十字参考线

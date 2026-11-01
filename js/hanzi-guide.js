@@ -75,7 +75,7 @@ class HanziGuide {
         try {
             if (typeof HanziWriter === 'undefined') {
                 console.warn('HanziWriter 尚未加载');
-                this.targetEl.innerHTML = `<div class="hw-fallback">${char}</div>`;
+                this.renderFallbackChar(char);
                 return;
             }
 
@@ -124,12 +124,21 @@ class HanziGuide {
                 onLoadCharDataError: (err) => {
                     this.charData = null;
                     console.log('加载笔顺数据失败/离线模式', err);
-                    this.targetEl.innerHTML = `<div class="hw-fallback">${char}</div>`;
+                    this.renderFallbackChar(char);
                 }
             });
         } catch (e) {
             console.error('HanziWriter init error', e);
         }
+    }
+
+    renderFallbackChar(char) {
+        if (!this.targetEl) return;
+        this.targetEl.innerHTML = '';
+        const div = document.createElement('div');
+        div.className = 'hw-fallback';
+        div.textContent = char;
+        this.targetEl.appendChild(div);
     }
 
     getCharData() {

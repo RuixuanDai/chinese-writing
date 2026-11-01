@@ -1152,19 +1152,21 @@ img, svg, canvas {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-/* 中间：笔顺演示框 (支持小 175px、中 230px、大 295px 自由缩放调节) */
+/* 中间：笔顺演示框 (支持小 175px、中 210px、大 265px 自由缩放调节，弹性居中不挤压底部按钮) */
 .guide-frame-wrapper {
-    flex: 0 0 auto;
+    flex: 1;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin: 4px 0;
+    margin: 2px 0;
 }
 
 .hanzi-writer-frame {
-    width: 230px;
-    height: 230px;
+    width: 215px;
+    height: 215px;
+    max-height: 100%;
     aspect-ratio: 1 / 1;
     position: relative;
     background: #ffffff;
@@ -1179,24 +1181,24 @@ img, svg, canvas {
     transition: width 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* 紧凑字框 (180px) - 适合字词认知为主 */
+/* 紧凑字框 (170px) - 适合字词认知为主 */
 .frame-size-small .hanzi-writer-frame {
-    width: 180px;
-    height: 180px;
+    width: 170px;
+    height: 170px;
 }
 .frame-size-small .cognition-hero-card {
     flex: 1;
 }
 
-/* 大号字框 (275px) - 宽幅临摹与跟写闯关 */
+/* 大号字框 (255px) - 宽幅临摹与跟写闯关 */
 .frame-size-large .hanzi-writer-frame {
-    width: 275px;
-    height: 275px;
+    width: 255px;
+    height: 255px;
 }
 .frame-size-large .cognition-hero-card {
-    flex: 0 0 155px;
-    height: 155px;
-    padding: 6px 10px;
+    flex: 0 0 150px;
+    height: 150px;
+    padding: 5px 10px;
 }
 .frame-size-large .cognition-ill-wrap {
     width: 115px;
@@ -1394,27 +1396,73 @@ img, svg, canvas {
     flex-shrink: 0;
 }
 
+.canvas-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
 .canvas-panel-header h2 {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 800;
     color: var(--dark);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     white-space: nowrap;
+    margin: 0;
+}
+
+.canvas-size-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.canvas-size-group .control-label-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.canvas-size-seg-btn {
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.canvas-size-seg-btn:hover {
+    color: var(--primary);
+}
+
+.canvas-size-seg-btn.active {
+    background: #ffffff;
+    color: var(--primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .grid-selector {
     display: flex;
-    gap: 4px;
+    gap: 3px;
+    flex-shrink: 0;
 }
 
 .grid-type-btn {
     background: #f1f2f6;
     border: 1px solid transparent;
     border-radius: 12px;
-    padding: 3px 9px;
-    font-size: 13px;
+    padding: 3px 7px;
+    font-size: 12.5px;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
@@ -1767,6 +1815,174 @@ img, svg, canvas {
 
 #drawCanvas {
     z-index: 2;
+}
+
+/* 右侧写字格右上角一键放大/全幅按钮 & 右下角无级拖拽缩放手柄 */
+.btn-canvas-zoom {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1.5px solid #ffd0c7;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #e17055;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    z-index: 15;
+    opacity: 0.88;
+}
+
+.btn-canvas-zoom:hover, .btn-canvas-zoom.active {
+    opacity: 1;
+    transform: scale(1.08);
+    background: #fff5f5;
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.canvas-resize-handle {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px 0 12px 0;
+    background: rgba(225, 112, 85, 0.14);
+    border-top: 1.5px dashed rgba(225, 112, 85, 0.55);
+    border-left: 1.5px dashed rgba(225, 112, 85, 0.55);
+    color: #d63031;
+    font-size: 13px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: nwse-resize;
+    z-index: 15;
+    user-select: none;
+    touch-action: none;
+    transition: all 0.15s ease;
+}
+
+.canvas-resize-handle:hover {
+    background: rgba(225, 112, 85, 0.28);
+    transform: scale(1.08);
+}
+
+.canvas-size-indicator {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(34, 47, 62, 0.88);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    z-index: 16;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* 运笔期间隐藏/忽略画板四角辅助按钮，杜绝笔尖误碰 */
+body.writing-active .btn-canvas-zoom,
+body.writing-active .canvas-resize-handle {
+    pointer-events: none !important;
+    opacity: 0.25;
+}
+
+/* 全幅专注写字模式 (canvas-size-xlarge)：展开右侧画板，最大化孩子书写空间 */
+.main-container.canvas-size-xlarge {
+    max-width: 1360px;
+    grid-template-columns: 350px 1fr;
+}
+
+.main-container.canvas-size-xlarge .cognition-hero-card {
+    height: 176px;
+    flex: 0 0 176px;
+    padding: 5px 8px;
+    gap: 6px;
+}
+
+.main-container.canvas-size-xlarge .ill-art-box {
+    width: 86px;
+    padding: 4px;
+}
+
+.main-container.canvas-size-xlarge .ill-large-img {
+    max-width: 76px;
+    max-height: 76px;
+}
+
+.main-container.canvas-size-xlarge .cognition-char-header {
+    padding: 3px 6px;
+    gap: 4px;
+}
+
+.main-container.canvas-size-xlarge .cognition-pinyin {
+    font-size: 20px;
+}
+
+.main-container.canvas-size-xlarge .cognition-char {
+    font-size: 36px;
+}
+
+.main-container.canvas-size-xlarge .hero-en-badge {
+    font-size: 12px;
+    padding: 1px 6px;
+}
+
+.main-container.canvas-size-xlarge .btn-speak {
+    height: 32px;
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 12px;
+}
+
+.main-container.canvas-size-xlarge .cognition-meta-badges {
+    display: none;
+}
+
+.main-container.canvas-size-xlarge .cognition-words-section {
+    display: none;
+}
+
+.main-container.canvas-size-xlarge .guide-header-row {
+    gap: 4px;
+}
+
+.main-container.canvas-size-xlarge .guide-title {
+    font-size: 14.5px;
+    white-space: nowrap;
+}
+
+.main-container.canvas-size-xlarge .guide-frame-size-group {
+    display: none;
+}
+
+.main-container.canvas-size-xlarge .hanzi-writer-frame {
+    width: 175px;
+    height: 175px;
+}
+
+.main-container.canvas-size-xlarge .writer-action-buttons .btn-ctrl {
+    padding: 0 8px;
+    font-size: 13px;
+    height: 38px;
+    min-height: 38px;
+}
+
+.main-container.canvas-size-xlarge .panel-right {
+    padding: 6px 12px;
+    gap: 4px;
 }
 
 .canvas-action-bar {
@@ -2186,18 +2402,34 @@ body.writing-active .canvas-box {
         gap: 10px;
         padding: 4px 8px;
     }
+    .main-container.canvas-size-xlarge {
+        grid-template-columns: 320px 1fr;
+    }
     .cognition-hero-card {
-        height: 228px;
-        flex: 0 0 228px;
-        padding: 6px 10px;
+        height: 214px;
+        flex: 0 0 214px;
+        padding: 4px 8px;
+    }
+    .cognition-details-box {
+        gap: 2px;
+    }
+    .cognition-sentence-section,
+    .cognition-words-section {
+        padding: 3px 8px;
+        gap: 2px;
     }
     .guide-studio-card {
         flex: 1;
-        padding: 6px 10px 8px;
+        padding: 5px 10px 6px;
+        gap: 4px;
     }
     .hanzi-writer-frame {
-        width: 225px;
-        height: 225px;
+        width: 186px;
+        height: 186px;
+    }
+    .frame-size-large .hanzi-writer-frame {
+        width: 240px;
+        height: 240px;
     }
     .ill-art-box {
         width: 135px;
@@ -4000,9 +4232,56 @@ body.writing-active .canvas-box {
         min-height: 0;
     }
 
+    .main-container.canvas-size-xlarge .panel-left-studio {
+        height: 235px;
+        max-height: 240px;
+    }
+
     .canvas-box {
-        max-height: 520px;
-        max-width: 520px;
+        max-height: 540px;
+        max-width: 540px;
+    }
+}
+
+/* 针对 iPad 竖屏及 768px~920px 宽度顶栏自适应，杜绝右侧声音/全屏/设置按钮溢出被裁切 */
+@media (max-width: 920px) and (min-width: 601px) {
+    .header-inner {
+        padding: 4px 8px;
+        gap: 4px;
+    }
+    .logo-icon {
+        font-size: 20px;
+    }
+    .logo-title {
+        font-size: 16.5px;
+    }
+    .search-box {
+        min-width: 122px;
+        width: 132px;
+        padding: 2px 3px 2px 8px;
+    }
+    .search-box input {
+        font-size: 12.5px;
+        min-width: 55px;
+    }
+    .search-box button {
+        padding: 3px 8px;
+        font-size: 12px;
+    }
+    .header-actions {
+        gap: 4px;
+    }
+    .star-badge,
+    .completed-badge,
+    .gashapon-trigger-btn,
+    .sticker-book-trigger-btn,
+    .sound-toggle-btn,
+    .fullscreen-toggle-btn,
+    .settings-trigger-btn {
+        padding: 3px 7px;
+        font-size: 12px;
+        height: 32px;
+        min-height: 32px;
     }
 }
 
