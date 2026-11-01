@@ -36,13 +36,15 @@ class HanziGuide {
     }
 
     getFrameInnerSize() {
-        if (!this.targetEl) return 240;
+        if (!this.targetEl) return 180;
         const frame = this.targetEl.parentElement;
-        if (!frame) return 240;
-        const width = frame.clientWidth || (frame.getBoundingClientRect().width - 6);
-        const height = frame.clientHeight || (frame.getBoundingClientRect().height - 6);
+        if (!frame) return 180;
+        const width = frame.clientWidth || Math.max(0, frame.getBoundingClientRect().width - 6);
+        const height = frame.clientHeight || Math.max(0, frame.getBoundingClientRect().height - 6);
         const size = Math.floor(Math.min(width, height));
-        return size > 40 ? size : 240;
+        if (size > 40) return size;
+        if (width > 40) return Math.floor(width);
+        return window.innerWidth <= 600 ? 150 : 180;
     }
 
     resize() {

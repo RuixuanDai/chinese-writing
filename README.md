@@ -100,20 +100,15 @@
 
 ---
 
-## 🚀 如何快速启动与使用
+## 🚀 在线访问与安装为桌面 App (PWA)
 
-### 方法 1：一键双击运行（推荐）
-在项目目录下双击 **`start.bat`** 即可自动打开浏览器运行。
+### 1. 在线即开即用
+直接访问在线地址：**https://ruixuandai.github.io/chinese-writing/**
 
-### 方法 2：直接打开文件
-直接在文件资源管理器中双击 **`index.html`**，用任意现代浏览器（Chrome、Edge、Safari、Firefox 等）打开即可使用。
-
-### 方法 3：通过本地服务运行
-在终端中进入该目录运行：
-```bash
-python -m http.server 8080
-```
-然后在浏览器中访问：`http://localhost:8080`
+### 2. 安装为桌面独立应用 (PWA 支持离线使用)
+- **iPad / iPhone (Safari)**：点击浏览器顶栏或底栏的 **「分享」图标 (⬆️)** ➔ 选择 **「添加到主屏幕」**，即可像原生 App 一样全屏独立运行。
+- **Android 平板 / 手机 / 折叠屏 (Chrome / Edge)**：点击右上角 **「⚙️ 设置」** ➔ 点击 **「📲 立即安装」**（或浏览器菜单中的「安装应用 / 添加到主屏幕」）。
+- **Windows / Mac 电脑 (Chrome / Edge)**：点击地址栏右侧的 **应用安装图标** 或应用内 **「⚙️ 设置」 -> 「📲 立即安装」**。
 
 ---
 
@@ -122,18 +117,23 @@ python -m http.server 8080
 ```
 chinese_writing/
 ├── index.html              # 主页面与用户界面结构
-├── start.bat               # Windows 一键启动脚本
+├── manifest.json           # PWA 渐进式 Web 应用配置清单
+├── sw.js                   # PWA Service Worker 离线缓存与网络优先更新引擎
 ├── README.md               # 项目使用与技术说明文档
+├── assets/                 # 应用图标与静态资源 (192x192 / 512x512 / Apple Touch Icon)
 ├── css/
-│   └── style.css           # 视觉样式、童趣配色、动画与打印排版样式
+│   └── style.css           # 视觉样式、童趣配色、多端响应式与打印排版样式
 ├── js/
-│   ├── sound.js            # Web Audio 原生音效合成与语音朗读引擎
+│   ├── web-natural-tts.js  # 智能分级自然语音与离线兜底引擎
+│   ├── web-online-tts.js   # 微软 Azure 晓晓神经网络真人语音客户端引擎
+│   ├── sound.js            # Web Audio 原生音效合成与语音朗读调度
 │   ├── char-data.js        # 汉字题库、分类、拼音、部首、组词与造句数据
+│   ├── illustrations.js    # 汉字童趣 SVG 矢量插画生成引擎
 │   ├── stroke-cache.js     # 启蒙核心汉字笔顺本地离线数据缓存
-│   ├── canvas.js           # 手写板引擎（高分屏缩放、毛笔笔触、双层底格、奖状导出）
+│   ├── canvas.js           # 手写板引擎（高分屏缩放、毛笔笔触、可调画板尺寸、智能防误触）
 │   ├── hanzi-guide.js      # HanziWriter 笔顺演示、拆解与闯关检测逻辑
 │   ├── evaluator.js        # 汉字书写智能测评与笔画方向/结构多维评估引擎
-│   └── app.js              # 全局交互联动、积分成就系统与打印字帖生成
+│   └── app.js              # 全局交互联动、积分成就系统、PWA 管理与打印字帖生成
 └── lib/
     ├── hanzi-writer.min.js # 开源汉字笔顺引擎本地备份
     └── confetti.browser.min.js # 炫酷五彩纸屑动效本地备份

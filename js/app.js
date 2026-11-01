@@ -38,6 +38,8 @@ class KidWritingApp {
         this.eggCost = 3; // 每 3 颗星扭蛋一次
         this.canvasSizeMode = 'large';
         this._evalSpeechTimer = null;
+        this.deferredInstallPrompt = null;
+        this._mobileBannerDismissed = false;
 
         this.canvasEngine = null;
         this.hanziGuide = null;
@@ -171,6 +173,9 @@ class KidWritingApp {
         // 10. 初始化奖励系统与扭蛋徽章
         this.updateGashaponBadge();
         this.bindRewardEvents();
+
+        // 11. 初始化 PWA 离线缓存与桌面安装支持
+        this.initPWA();
     }
 
     // 渲染分类标签栏
@@ -426,6 +431,11 @@ class KidWritingApp {
                 mainContainer.classList.add('mobile-tab-studio');
                 if (tabStudio) tabStudio.classList.add('active');
                 if (tabCanvas) tabCanvas.classList.remove('active');
+                setTimeout(() => {
+                    if (this.hanziGuide) {
+                        this.hanziGuide.resize();
+                    }
+                }, 60);
             } else if (target === 'canvas') {
                 mainContainer.classList.remove('mobile-tab-studio');
                 mainContainer.classList.add('mobile-tab-canvas');
@@ -583,14 +593,31 @@ class KidWritingApp {
         }
         const settingsUpdateBtn = document.getElementById('btn-settings-update');
         if (settingsUpdateBtn) {
-            settingsUpdateBtn.addEventListener('click', () => {
+            settingsUpdateBtn.addEventListener('click', async () => {
                 if (window.soundManager) window.soundManager.playVictory();
                 settingsUpdateBtn.textContent = '⏳ 正在加载最新版...';
                 settingsUpdateBtn.disabled = true;
+                try {
+                    if ('caches' in window) {
+                        const keys = await caches.keys();
+                        await Promise.all(keys.map(k => caches.delete(k)));
+                    }
+                    if ('serviceWorker' in navigator) {
+                        const regs = await navigator.serviceWorker.getRegistrations();
+                        await Promise.all(regs.map(r => r.update().catch(() => {})));
+                    }
+                } catch (e) {}
                 setTimeout(() => {
                     const freshUrl = window.location.origin + window.location.pathname + '?v=' + Date.now();
                     window.location.replace(freshUrl);
-                }, 300);
+                }, 250);
+            });
+        }
+        const settingsInstallPwaBtn = document.getElementById('btn-settings-install-pwa');
+        if (settingsInstallPwaBtn) {
+            settingsInstallPwaBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.triggerPWAInstall();
             });
         }
         if (settingsClearBtn) {
@@ -703,6 +730,26 @@ class KidWritingApp {
                 this.openMobileDeviceModal();
             });
         }
+
+        const closeBannerBtn = document.getElementById('btn-close-mobile-banner');
+        const hintBanner = document.getElementById('mobile-hint-banner');
+        if (closeBannerBtn && hintBanner) {
+            closeBannerBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this._mobileBannerDismissed = true;
+                hintBanner.style.display = 'none';
+            });
+        }
+
+        // 监听折叠屏展开/合上或旋转，展开后宽屏 (>=620px) 自动收起窄屏提示条
+        window.addEventListener('resize', () => {
+            if (!hintBanner) return;
+            if (window.innerWidth >= 620) {
+                hintBanner.style.display = 'none';
+            } else if (!this._mobileBannerDismissed && this.isMobilePhone()) {
+                hintBanner.style.display = 'flex';
+            }
+        });
 
         // 3. 自定义输入汉字搜索 (过滤非法字符，仅提取有效汉字)
         const customInput = document.getElementById('custom-char-input');
@@ -1543,8 +1590,13 @@ class KidWritingApp {
         return html;
     }
 
-    // 设备类型检测：是否为小屏手机（精确识别手机，排除 iPad、平板及电脑设备）
+    // 设备类型检测：是否为小屏窄视口手机（精确识别窄屏手机，排除展开态折叠屏、iPad、平板及电脑设备）
     isMobilePhone() {
+        // 展开态折叠屏手机、iPad、平板及桌面浏览器（视口宽度 >= 620px）均拥有充足横向空间，不作为小屏手机提示
+        if (window.innerWidth >= 620) {
+            return false;
+        }
+
         const ua = navigator.userAgent;
         // 明确排除 iPad (包含现代 iPadOS 桌面 UA: MacIntel + touchPoints) 与各类平板
         const isIPad = /iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -1553,7 +1605,7 @@ class KidWritingApp {
             return false;
         }
 
-        // 明确识别手机 UA：iPhone, iPod, Android Mobile 等
+        // 明确识别手机 UA：iPhone, iPod, Android Mobile 等 (且宽度 < 620px)
         const isPhoneUA = /iPhone|iPod/i.test(ua) || (/Android/i.test(ua) && /Mobile/i.test(ua)) || /Windows Phone/i.test(ua);
         if (isPhoneUA) {
             return true;
@@ -1561,12 +1613,81 @@ class KidWritingApp {
 
         // 触屏移动设备且视口极窄（适配部分自定义内核移动浏览器）
         const hasTouch = (navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
-        const isSmallViewport = window.innerWidth <= 640;
+        const isSmallViewport = window.innerWidth < 620;
         if (hasTouch && isSmallViewport) {
             return true;
         }
 
         return false;
+    }
+
+    // 初始化 PWA Service Worker 与桌面安装提示
+    initPWA() {
+        const installBtn = document.getElementById('btn-settings-install-pwa');
+        const installDesc = document.getElementById('pwa-install-desc');
+        const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+
+        if (isStandalone && installBtn) {
+            installBtn.textContent = '✅ 已安装';
+            if (installDesc) {
+                installDesc.textContent = '当前正以桌面独立 App 模式全屏运行，支持离线使用';
+            }
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredInstallPrompt = e;
+            if (installBtn) {
+                installBtn.textContent = '📲 立即安装';
+            }
+            if (installDesc) {
+                installDesc.textContent = '支持一键安装到桌面，无浏览器地址栏干扰，断网也能练字';
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            this.deferredInstallPrompt = null;
+            if (installBtn) {
+                installBtn.textContent = '✅ 已安装';
+            }
+            this.showToast('🎉 已成功安装「快乐小书法家」到桌面！');
+        });
+
+        if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch((err) => {
+                    console.warn('ServiceWorker registration warning:', err);
+                });
+            });
+        }
+    }
+
+    // 触发 PWA 桌面安装或展示安装指南
+    async triggerPWAInstall() {
+        const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+        if (isStandalone) {
+            this.showToast('✅ 当前已经在桌面独立 App 模式下运行啦！');
+            return;
+        }
+
+        if (this.deferredInstallPrompt) {
+            try {
+                this.deferredInstallPrompt.prompt();
+                const { outcome } = await this.deferredInstallPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    this.deferredInstallPrompt = null;
+                }
+            } catch (e) {
+                console.warn('PWA install prompt error:', e);
+            }
+            return;
+        }
+
+        // Safari / 移动端浏览器未触发 beforeinstallprompt 时，打开图文添加到主屏幕指南
+        const settingsModal = document.getElementById('settings-modal');
+        if (settingsModal) settingsModal.classList.remove('visible');
+        this.openIpadGuideModal();
+        this.showToast('💡 请点击浏览器菜单中的【分享 ➔ 添加到主屏幕】或【安装应用】即可生成桌面图标！', 4000);
     }
 
     // 打开手机设备提示弹窗

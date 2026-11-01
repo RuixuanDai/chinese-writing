@@ -13,9 +13,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/style.css?v=20261101_v2">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
+    <link rel="stylesheet" href="css/style.css?v=20261101_v3">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -78,7 +80,10 @@
     <!-- 移动端手机小屏提示条 -->
     <div id="mobile-hint-banner" class="mobile-hint-banner" style="display: none;">
         <span>📱 手机屏幕较小，建议使用 <strong>iPad 或大屏设备</strong> 配合手写笔练字</span>
-        <button id="btn-banner-guide">查看建议</button>
+        <div class="banner-actions">
+            <button id="btn-banner-guide">查看建议</button>
+            <button id="btn-close-mobile-banner" class="btn-close-banner" title="关闭提示" aria-label="关闭提示">✕</button>
+        </div>
     </div>
 
     <!-- 汉字分类与选单条 -->
@@ -485,6 +490,18 @@
             </div>
 
             <div class="settings-options-list">
+                <!-- 安装为桌面独立 App (PWA) -->
+                <div class="settings-item-row" id="setting-row-pwa-install">
+                    <div class="settings-item-info">
+                        <span class="settings-item-icon">📲</span>
+                        <div>
+                            <div class="settings-item-title">安装为桌面独立 App (PWA)</div>
+                            <div class="settings-item-desc" id="pwa-install-desc">一键安装到手机/平板/电脑桌面，全屏无地址栏，支持离线练字</div>
+                        </div>
+                    </div>
+                    <button id="btn-settings-install-pwa" class="btn-settings-action primary">安装应用</button>
+                </div>
+
                 <!-- 打印字帖 -->
                 <div class="settings-item-row" id="setting-row-print">
                     <div class="settings-item-info">
@@ -539,7 +556,7 @@
                         <span class="settings-item-icon">🚀</span>
                         <div>
                             <div class="settings-item-title">检查并更新至最新版</div>
-                            <div class="settings-item-desc">当前版本: v2.6 (支持晓晓AI真人语音与字框调节) · 强制绕过本地缓存</div>
+                            <div class="settings-item-desc">当前版本: v3.0 (支持 PWA 离线安装与折叠屏/手机端 UI 自适应)</div>
                         </div>
                     </div>
                     <button id="btn-settings-update" class="btn-settings-action primary">立即更新</button>
@@ -730,14 +747,14 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261101_v2"></script>
-    <script src="lib/web-online-tts.js?v=20261101_v2"></script>
-    <script src="js/sound.js?v=20261101_v2"></script>
-    <script src="js/char-data.js?v=20261101_v2"></script>
-    <script src="js/stroke-cache.js?v=20261101_v2"></script>
-    <script src="js/canvas.js?v=20261101_v2"></script>
-    <script src="js/hanzi-guide.js?v=20261101_v2"></script>
-    <script src="js/evaluator.js?v=20261101_v2"></script>
-    <script src="js/app.js?v=20261101_v2"></script>
+    <script src="lib/web-natural-tts.js?v=20261101_v3"></script>
+    <script src="lib/web-online-tts.js?v=20261101_v3"></script>
+    <script src="js/sound.js?v=20261101_v3"></script>
+    <script src="js/char-data.js?v=20261101_v3"></script>
+    <script src="js/stroke-cache.js?v=20261101_v3"></script>
+    <script src="js/canvas.js?v=20261101_v3"></script>
+    <script src="js/hanzi-guide.js?v=20261101_v3"></script>
+    <script src="js/evaluator.js?v=20261101_v3"></script>
+    <script src="js/app.js?v=20261101_v3"></script>
 </body>
 </html>

@@ -416,18 +416,26 @@ img, svg, canvas {
     background: linear-gradient(90deg, #fff3cd, #ffeaa7);
     border-bottom: 1px solid #feca57;
     color: #8c5300;
-    font-size: 12.5px;
-    padding: 6px 14px;
+    font-size: 12px;
+    padding: 4px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
     position: relative;
     z-index: 90;
+    flex-shrink: 0;
 }
 
 .mobile-hint-banner strong {
     color: #d35400;
+}
+
+.banner-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
 }
 
 .mobile-hint-banner button {
@@ -435,8 +443,8 @@ img, svg, canvas {
     color: #fff;
     border: none;
     border-radius: 12px;
-    padding: 3px 10px;
-    font-size: 11.5px;
+    padding: 3px 9px;
+    font-size: 11px;
     font-weight: bold;
     cursor: pointer;
     white-space: nowrap;
@@ -445,6 +453,19 @@ img, svg, canvas {
 
 .mobile-hint-banner button:hover {
     background: #d35400;
+}
+
+.mobile-hint-banner .btn-close-banner {
+    background: rgba(211, 84, 0, 0.14);
+    color: #8c5300;
+    padding: 2px 7px;
+    font-size: 12px;
+    border-radius: 50%;
+    line-height: 1.2;
+}
+
+.mobile-hint-banner .btn-close-banner:hover {
+    background: rgba(211, 84, 0, 0.25);
 }
 
 /* 分类与汉字选单条 - 汉字选择行除外（允许横向滑动选字） */
@@ -1037,6 +1058,7 @@ img, svg, canvas {
     font-weight: 800;
     color: var(--dark);
     margin: 0;
+    white-space: nowrap;
 }
 
 .speed-control-group {
@@ -1166,7 +1188,7 @@ img, svg, canvas {
 .hanzi-writer-frame {
     width: 215px;
     height: 215px;
-    max-height: 100%;
+    flex-shrink: 0;
     aspect-ratio: 1 / 1;
     position: relative;
     background: #ffffff;
@@ -2378,75 +2400,143 @@ body.writing-active .canvas-box {
     }
 }
 
-/* 针对 iPad / 中屏自适应 (宽 < 1100px) */
+/* 针对 iPad / 折叠屏 / 中屏自适应 (宽 < 1100px) */
 @media (max-width: 1100px) {
     .logo-subtitle {
         display: none; /* 平板/中屏隐藏副标，顶栏轻松单行展示 */
     }
     .search-box {
-        min-width: 145px;
-        width: 160px;
+        min-width: 135px;
+        width: 150px;
     }
     .search-box input {
-        width: 80px;
+        width: 72px;
     }
     .header-actions {
-        gap: 5px;
+        gap: 4px;
     }
     .gashapon-trigger-btn, .sticker-book-trigger-btn, .fullscreen-toggle-btn, .settings-trigger-btn {
-        padding: 4px 10px;
-        font-size: 13px;
+        padding: 4px 9px;
+        font-size: 12.5px;
     }
     .main-container {
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 8px;
         padding: 4px 8px;
     }
     .main-container.canvas-size-xlarge {
-        grid-template-columns: 320px 1fr;
+        grid-template-columns: 310px 1fr;
     }
     .cognition-hero-card {
-        height: 214px;
-        flex: 0 0 214px;
-        padding: 4px 8px;
+        height: auto;
+        flex: 0 0 auto;
+        padding: 6px 8px;
+        gap: 8px;
     }
     .cognition-details-box {
-        gap: 2px;
+        gap: 3px;
+    }
+    .cognition-char-header {
+        padding: 3px 8px;
+    }
+    .cognition-pinyin {
+        font-size: 19px;
+    }
+    .cognition-char {
+        font-size: 40px;
+    }
+    .btn-speak {
+        height: 32px;
+        min-height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+    }
+    .btn-speak-text {
+        font-size: 12px;
+    }
+    .meta-pill {
+        font-size: 11px;
+        padding: 1px 5px;
     }
     .cognition-sentence-section,
     .cognition-words-section {
-        padding: 3px 8px;
+        padding: 3px 7px;
         gap: 2px;
+    }
+    .cognition-sentence-section .cognition-section-title,
+    .cognition-words-section .cognition-section-title {
+        font-size: 11.5px;
+    }
+    .cognition-sentence-text {
+        font-size: 13.5px;
+        line-height: 1.35;
+    }
+    .word-tag {
+        font-size: 13px;
+        padding: 2px 8px;
     }
     .guide-studio-card {
         flex: 1;
         padding: 5px 10px 6px;
         gap: 4px;
     }
+    .guide-title {
+        font-size: 14.5px;
+        white-space: nowrap;
+    }
+    .guide-frame-size-group .control-label-text,
+    .speed-control-group .speed-label,
+    .canvas-size-group .control-label-text {
+        display: none; /* 中屏与折叠屏隐藏冗余前缀文字，消除换行与重叠 */
+    }
+    .guide-header-ctrls {
+        gap: 5px;
+    }
+    .frame-size-seg-btn,
+    .speed-seg-btn {
+        padding: 2px 6px;
+        font-size: 11.5px;
+    }
+    .canvas-panel-header {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .canvas-panel-header h2 {
+        font-size: 14.5px;
+    }
+    .canvas-size-seg-btn,
+    .grid-type-btn {
+        padding: 2px 6px;
+        font-size: 11.5px;
+    }
     .hanzi-writer-frame {
-        width: 186px;
-        height: 186px;
+        width: 175px;
+        height: 175px;
+    }
+    .frame-size-small .hanzi-writer-frame {
+        width: 145px;
+        height: 145px;
     }
     .frame-size-large .hanzi-writer-frame {
-        width: 240px;
-        height: 240px;
+        width: 215px;
+        height: 215px;
     }
     .ill-art-box {
-        width: 135px;
+        width: 112px;
     }
     .ill-large-img {
-        max-width: 125px;
-        max-height: 125px;
+        max-width: 102px;
+        max-height: 102px;
     }
     .ill-fallback-card {
-        width: 125px;
-        height: 125px;
+        width: 102px;
+        height: 102px;
     }
     .ill-fallback-card .fallback-char {
-        font-size: 68px;
+        font-size: 54px;
     }
     .ill-large-art {
-        font-size: 60px;
+        font-size: 52px;
     }
 }
 
@@ -2504,14 +2594,20 @@ body.writing-active .canvas-box {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
-    /* 主容器：在手机端根据当前激活标签智能显隐面板，杜绝超长滚动与视线丢失 */
+    /* 主容器：在手机端根据当前激活标签智能显隐面板，杜绝挤压变扁与超长滚动 */
     .main-container {
-        grid-template-columns: 1fr;
-        padding: 4px 8px 12px;
-        gap: 8px;
-        overflow-y: auto;
-        height: auto;
+        display: block;
+        flex: 1;
         min-height: 0;
+        padding: 4px 8px 8px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .main-container::-webkit-scrollbar {
+        display: none;
     }
 
     .main-container.mobile-tab-studio .panel-right {
@@ -2526,8 +2622,9 @@ body.writing-active .canvas-box {
     .main-container.mobile-tab-canvas .panel-right {
         display: flex !important;
         width: 100%;
-        height: auto;
+        height: auto !important;
         min-height: 0;
+        overflow: visible !important;
     }
 
     /* 2. 顶栏导航自适应 (两行排版，永不截断) */
@@ -2602,11 +2699,14 @@ body.writing-active .canvas-box {
     .sticker-book-trigger-btn,
     .sound-toggle-btn,
     .fullscreen-toggle-btn,
+    .settings-trigger-btn,
     .clear-data-btn,
     .print-sheet-btn,
     .ipad-connect-btn {
         padding: 3px 8px;
         font-size: 11.5px;
+        height: 28px;
+        min-height: 28px;
         border-radius: 14px;
         white-space: nowrap;
     }
@@ -2654,9 +2754,9 @@ body.writing-active .canvas-box {
     }
 
     .ill-art-box {
-        width: 105px !important;
-        min-width: 105px !important;
-        max-width: 105px !important;
+        width: 92px !important;
+        min-width: 92px !important;
+        max-width: 92px !important;
         height: auto;
         padding: 4px;
         border-radius: 12px;
@@ -2676,16 +2776,16 @@ body.writing-active .canvas-box {
     }
 
     .ill-large-img {
-        max-width: 95px !important;
-        max-height: 105px !important;
+        max-width: 84px !important;
+        max-height: 92px !important;
         width: 100%;
         height: auto;
         object-fit: contain;
     }
 
     .ill-fallback-card {
-        width: 95px !important;
-        height: 95px !important;
+        width: 84px !important;
+        height: 84px !important;
         border-radius: 12px;
     }
 
@@ -2730,13 +2830,24 @@ body.writing-active .canvas-box {
     }
 
     .char-header-right {
-        gap: 2px;
+        gap: 5px;
     }
 
     .btn-speak {
-        width: 26px;
-        height: 26px;
-        font-size: 13px;
+        width: 30px;
+        height: 30px;
+        min-height: 30px;
+        padding: 0;
+        border-radius: 50%;
+        justify-content: center;
+    }
+
+    .btn-speak-icon {
+        font-size: 14px;
+    }
+
+    .btn-speak-text {
+        display: none;
     }
 
     .cognition-meta-badges {
@@ -2783,15 +2894,30 @@ body.writing-active .canvas-box {
     .guide-studio-card {
         padding: 8px 10px;
         gap: 6px;
-        height: auto;
+        height: auto !important;
+        overflow: visible !important;
+        flex: none;
     }
 
     .guide-header-row {
         margin-bottom: 2px;
+        gap: 4px;
     }
 
     .guide-title {
-        font-size: 15px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .guide-frame-size-group .control-label-text,
+    .speed-control-group .speed-label {
+        display: none;
+    }
+
+    .frame-size-seg-btn,
+    .speed-seg-btn {
+        padding: 2px 6px;
+        font-size: 11px;
     }
 
     .speed-control-group {
@@ -2804,8 +2930,19 @@ body.writing-active .canvas-box {
     }
 
     .hanzi-writer-frame {
-        width: 155px;
-        height: 155px;
+        width: 146px;
+        height: 146px;
+        flex-shrink: 0;
+    }
+
+    .frame-size-small .hanzi-writer-frame {
+        width: 124px;
+        height: 124px;
+    }
+
+    .frame-size-large .hanzi-writer-frame {
+        width: 180px;
+        height: 180px;
     }
 
     .status-pill {
@@ -2929,14 +3066,21 @@ body.writing-active .canvas-box {
     }
 
     .canvas-panel-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 5px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
         padding-bottom: 4px;
     }
 
     .canvas-panel-header h2 {
-        font-size: 14.5px;
+        font-size: 14px;
+    }
+
+    .canvas-size-group .control-label-text,
+    .canvas-size-seg-btn[data-canvas-size="xlarge"] {
+        display: none;
     }
 
     .grid-selector {
@@ -2948,7 +3092,6 @@ body.writing-active .canvas-box {
         -ms-overflow-style: none;
         gap: 4px;
         padding-bottom: 2px;
-        width: 100%;
     }
 
     .grid-selector::-webkit-scrollbar {
@@ -2957,32 +3100,47 @@ body.writing-active .canvas-box {
 
     .grid-type-btn {
         flex-shrink: 0;
-        padding: 3px 8px;
+        padding: 2px 7px;
         font-size: 11.5px;
     }
 
-    .canvas-toolbar {
-        display: flex;
+    .canvas-toolbar-tier1 {
         flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 6px;
-        padding: 5px 8px;
+        gap: 5px;
     }
 
     .brush-selector {
-        flex: 1 0 100%;
+        flex: 1 1 auto;
         display: flex;
         justify-content: space-between;
-        gap: 4px;
+        gap: 3px;
     }
 
     .brush-btn {
         flex: 1;
-        padding: 3px 2px;
+        height: 32px;
+        min-height: 32px;
+        padding: 0 4px;
         font-size: 11.5px;
         justify-content: center;
         border-radius: 10px;
+    }
+
+    .trace-toggle-switch-wrap,
+    .btn-stylus-guard {
+        height: 32px;
+        min-height: 32px;
+        padding: 0 6px;
+        font-size: 11.5px;
+    }
+
+    .guard-text {
+        font-size: 11.5px;
+    }
+
+    .canvas-toolbar-tier2 {
+        flex-wrap: wrap;
+        gap: 6px;
     }
 
     .color-palette {
@@ -2992,8 +3150,12 @@ body.writing-active .canvas-box {
     }
 
     .color-pill {
-        width: 21px;
-        height: 21px;
+        width: 22px;
+        height: 22px;
+    }
+
+    #trace-opacity-slider {
+        width: 50px;
     }
 
     .slider-group {
@@ -3017,7 +3179,7 @@ body.writing-active .canvas-box {
     }
 
     .canvas-wrapper {
-        padding: 4px;
+        padding: 2px;
         margin: 2px 0;
         width: 100%;
         display: flex;
@@ -3025,26 +3187,35 @@ body.writing-active .canvas-box {
     }
 
     .canvas-box {
-        max-width: 320px;
-        max-height: 320px;
+        max-width: 280px;
+        max-height: 280px;
         aspect-ratio: 1 / 1;
         width: 100%;
         margin: 0 auto;
     }
 
     .canvas-action-bar {
-        gap: 6px;
+        gap: 4px;
         padding-top: 2px;
+        flex-wrap: wrap;
+    }
+
+    .action-btn-group {
+        gap: 4px;
     }
 
     .btn-tool {
-        padding: 6px 10px;
-        font-size: 12px;
+        padding: 5px 8px;
+        font-size: 11.5px;
+        height: 34px;
+        min-height: 34px;
     }
 
     .btn-submit-stamp {
-        padding: 6px 12px;
+        padding: 5px 10px;
         font-size: 12px;
+        height: 34px;
+        min-height: 34px;
     }
 
     /* 手机端奖励弹窗与乐园自适应 */
@@ -4243,33 +4414,42 @@ body.writing-active .canvas-box {
     }
 }
 
-/* 针对 iPad 竖屏及 768px~920px 宽度顶栏自适应，杜绝右侧声音/全屏/设置按钮溢出被裁切 */
-@media (max-width: 920px) and (min-width: 601px) {
+/* 针对折叠屏展开态 (700px~980px) 与 iPad 竖屏深度优化：顶栏高星星数不裁切、工具栏不溢出、紧凑高度适配 */
+@media (max-width: 980px) and (min-width: 601px) {
     .header-inner {
         padding: 4px 8px;
         gap: 4px;
     }
     .logo-icon {
-        font-size: 20px;
+        font-size: 18px;
     }
     .logo-title {
-        font-size: 16.5px;
+        font-size: 15.5px;
     }
     .search-box {
-        min-width: 122px;
-        width: 132px;
-        padding: 2px 3px 2px 8px;
+        min-width: 108px;
+        width: 118px;
+        padding: 2px 3px 2px 7px;
     }
     .search-box input {
-        font-size: 12.5px;
-        min-width: 55px;
+        font-size: 12px;
+        min-width: 44px;
+        width: 54px;
     }
     .search-box button {
-        padding: 3px 8px;
-        font-size: 12px;
+        padding: 2px 7px;
+        font-size: 11.5px;
     }
     .header-actions {
         gap: 4px;
+        flex: 0 1 auto;
+        min-width: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .header-actions::-webkit-scrollbar {
+        display: none;
     }
     .star-badge,
     .completed-badge,
@@ -4278,10 +4458,130 @@ body.writing-active .canvas-box {
     .sound-toggle-btn,
     .fullscreen-toggle-btn,
     .settings-trigger-btn {
-        padding: 3px 7px;
-        font-size: 12px;
+        padding: 2px 6px;
+        font-size: 11.5px;
+        height: 29px;
+        min-height: 29px;
+        flex-shrink: 0;
+    }
+    .canvas-toolbar-tier1 {
+        gap: 4px;
+    }
+    .brush-btn {
         height: 32px;
         min-height: 32px;
+        padding: 0 5px;
+        font-size: 11.5px;
+    }
+    .trace-toggle-switch-wrap {
+        height: 32px;
+        min-height: 32px;
+        padding: 0 5px;
+    }
+    .trace-toggle-label-text {
+        font-size: 11.5px;
+    }
+    .btn-stylus-guard {
+        height: 32px;
+        min-height: 32px;
+        padding: 0 5px;
+        font-size: 11.5px;
+    }
+    .guard-text {
+        font-size: 11.5px;
+    }
+    .canvas-toolbar-tier2 {
+        gap: 5px;
+    }
+    .color-palette {
+        gap: 4px;
+    }
+    .color-pill {
+        width: 22px;
+        height: 22px;
+    }
+    .control-label {
+        font-size: 11px;
+    }
+    .size-seg-btn {
+        padding: 2px 5px;
+        font-size: 11px;
+    }
+    #trace-opacity-slider {
+        width: 48px;
+    }
+    .btn-tool {
+        padding: 5px 8px;
+        font-size: 12px;
+        height: 34px;
+        min-height: 34px;
+    }
+    .btn-submit-stamp {
+        padding: 5px 10px;
+        font-size: 12.5px;
+        height: 34px;
+        min-height: 34px;
+    }
+}
+
+/* 针对折叠屏横屏或高度紧凑视口 (height <= 750px 且 width >= 601px) 保证笔顺方框 1:1 正方形与底部按钮零挤压 */
+@media (max-height: 750px) and (min-width: 601px) {
+    .char-selector-section {
+        padding: 2px 12px 4px;
+    }
+    .char-card-btn {
+        width: 46px;
+        min-width: 46px;
+        height: 50px;
+    }
+    .char-card-btn .char-hz {
+        font-size: 22px;
+    }
+    .cognition-hero-card {
+        padding: 4px 8px;
+        gap: 6px;
+    }
+    .cognition-char {
+        font-size: 34px;
+    }
+    .cognition-pinyin {
+        font-size: 16px;
+    }
+    .cognition-sentence-text {
+        font-size: 12.5px;
+        line-height: 1.3;
+    }
+    .word-tag {
+        font-size: 12px;
+        padding: 1px 7px;
+    }
+    .ill-art-box {
+        width: 98px;
+    }
+    .ill-large-img {
+        max-width: 90px;
+        max-height: 90px;
+    }
+    .hanzi-writer-frame {
+        width: 152px;
+        height: 152px;
+    }
+    .frame-size-small .hanzi-writer-frame {
+        width: 128px;
+        height: 128px;
+    }
+    .frame-size-large .hanzi-writer-frame {
+        width: 182px;
+        height: 182px;
+    }
+    .status-pill {
+        padding: 3px 8px;
+        font-size: 12px;
+    }
+    .writer-action-buttons .btn-ctrl {
+        height: 36px;
+        min-height: 36px;
+        font-size: 13.5px;
     }
 }
 

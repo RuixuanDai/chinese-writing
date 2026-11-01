@@ -1,0 +1,27 @@
+{
+  "name": "快乐小书法家 · 儿童趣味练字乐园",
+  "short_name": "快乐小书法家",
+  "description": "专为少儿设计的互动汉字笔顺演示、闯关跟写、毛笔硬笔临摹与智能测评练习应用",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fbf9f5",
+  "theme_color": "#ff6b6b",
+  "lang": "zh-CN",
+  "categories": ["education", "kids"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

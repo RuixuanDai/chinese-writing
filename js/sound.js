@@ -31,8 +31,7 @@ class SoundManager {
     initTTS() {
         if (typeof window !== 'undefined' && typeof window.OnlineNeuralTTS === 'function') {
             this.onlineTts = new window.OnlineNeuralTTS({
-                endpoint: '/api/tts',
-                fallbackEndpoint: 'https://kid-math-game.pages.dev/api/tts',
+                endpoint: 'https://kid-math-game.pages.dev/api/tts',
                 rate: '-2%',
                 muted: !this.enabled,
                 autoUnlock: true
