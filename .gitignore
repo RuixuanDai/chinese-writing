@@ -14,3 +14,9 @@ desktop.ini
 # IDE / Editors
 .vscode/
 .idea/
+
+# Local TTS Cache & Wrangler
+.local-data/
+.wrangler/
+.env.local
+.env.db.local

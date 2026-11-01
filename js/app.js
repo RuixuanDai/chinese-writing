@@ -1991,12 +1991,13 @@ class KidWritingApp {
         }
 
         const res = this.lastEvaluationResult;
-        // 构造亲切、温暖、无Emoji的纯文本语音脚本
-        const gradeClean = (res.grade || '').replace(/[【】·\s]/g, ' ');
-        const commentClean = (res.teacherComment || '').replace(/[^\u4e00-\u9fa50-9，。！]/g, '');
-        const sugClean = (res.suggestions || []).map(s => s.replace(/^[^\u4e00-\u9fa5]+/g, '').replace(/[^\u4e00-\u9fa50-9，。！]/g, '')).join('，');
+        // 构造亲切、温暖、无Emoji的精炼语音脚本 (控制在 75 字以内，完美适配 OnlineNeuralTTS 神经语音合成)
+        const gradeClean = (res.grade || '').replace(/[【】·\s]+/g, '，').replace(/^，|，$/g, '');
+        const sugClean = (res.suggestions || [])
+            .map(s => s.replace(/^[^\u4e00-\u9fa5]+/g, '').replace(/^(笔顺提示|结构建议|笔画方向|笔画数量)：/g, ''))
+            .join(' ');
 
-        const speechText = `太棒啦！评分为${res.totalScore}分，${gradeClean}。${commentClean} ${sugClean}`;
+        const speechText = `得分${res.totalScore}分，${gradeClean}！${sugClean || res.teacherComment || ''}`;
 
         btn.classList.add('speaking');
         const label = btn.querySelector('.eval-speak-text');

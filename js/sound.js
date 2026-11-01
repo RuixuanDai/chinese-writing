@@ -1,18 +1,24 @@
 /**
- * sound.js - 儿童练字App 趣味音效与语音合成引擎
- * 采用 Web Audio API 原生合成音效，零音频文件依赖，离线可用，响应极快！
+ * sound.js - 儿童练字App 趣味音效与自然语音合成引擎
+ * 集成 WebOnlineTTS (微软 Azure AI Speech zh-CN-XiaoxiaoNeural 晓晓真人神经语音 + 边缘缓存)
+ * 与 WebNaturalTTS (智能分级自然人声 + 离线自动兜底) + Web Audio API 零延迟音效
  */
 
 class SoundManager {
     constructor() {
         this.ctx = null;
         this.enabled = typeof localStorage !== 'undefined' ? localStorage.getItem('kid_app_sound_enabled') !== 'false' : true;
+        this.onlineTts = null;
+        this.tts = null;
         this.synth = typeof window !== 'undefined' ? window.speechSynthesis : null;
         this.voices = [];
         this.chineseVoice = null;
         this.activeUtterance = null;
         this.currentAudio = null;
+        this.prewarmed = false;
+        this._speakSeq = 0;
 
+        this.initTTS();
         this.initVoices();
         if (typeof window !== 'undefined' && this.synth) {
             this.synth.onvoiceschanged = () => this.initVoices();
@@ -21,12 +27,43 @@ class SoundManager {
         this.setupAudioUnlock();
     }
 
+    // 初始化 WebOnlineTTS (晓晓真人神经音色) 与 WebNaturalTTS (高品质自然离线兜底)
+    initTTS() {
+        if (typeof window !== 'undefined' && typeof window.OnlineNeuralTTS === 'function') {
+            this.onlineTts = new window.OnlineNeuralTTS({
+                endpoint: '/api/tts',
+                fallbackEndpoint: 'https://kid-math-game.pages.dev/api/tts',
+                rate: '-2%',
+                muted: !this.enabled,
+                autoUnlock: true
+            });
+            this.tts = this.onlineTts.offlineTts || null;
+        }
+
+        if (!this.tts && typeof window !== 'undefined' && typeof window.NaturalTTS === 'function') {
+            this.tts = new window.NaturalTTS({
+                lang: 'zh-CN',
+                rate: 0.92,
+                pitch: 1.0,
+                volume: 1.0,
+                filterEmojis: true,
+                normalizeMath: true,
+                cancelPrevious: true,
+                autoUnlock: true
+            });
+        }
+    }
+
     // 针对移动端 (iPad / iOS Safari / Android) 用户手势音频与语音预激活
     setupAudioUnlock() {
         if (typeof document === 'undefined') return;
         const unlock = () => {
             this.ensureAudioContext();
-            if (this.synth) {
+            if (this.onlineTts && typeof this.onlineTts.unlockAudio === 'function') {
+                this.onlineTts.unlockAudio();
+            } else if (this.tts && typeof this.tts.unlock === 'function') {
+                this.tts.unlock();
+            } else if (this.synth) {
                 try {
                     const dummy = new SpeechSynthesisUtterance('');
                     dummy.volume = 0;
@@ -41,13 +78,16 @@ class SoundManager {
 
     // 智能筛选最优质的标准普通话语音包 (微软晓晓/云希、苹果Siri/婷婷、谷歌普通话)
     initVoices() {
+        if (this.tts && typeof this.tts.getBestVoice === 'function') {
+            this.chineseVoice = this.tts.getBestVoice('zh-CN');
+        }
         if (!this.synth) return;
         try {
             this.voices = this.synth.getVoices() || [];
-            if (this.voices.length > 0) {
-                this.chineseVoice = 
+            if (this.voices.length > 0 && !this.chineseVoice) {
+                this.chineseVoice =
                     this.voices.find(v => (v.lang === 'zh-CN' || v.lang === 'zh_CN') && (v.name.includes('Natural') || v.name.includes('Xiaoxiao') || v.name.includes('Yunxi') || v.name.includes('晓晓') || v.name.includes('云希')))
-                    || this.voices.find(v => (v.lang === 'zh-CN' || v.lang === 'zh_CN') && (v.name.includes('Tingting') || v.name.includes('婷婷') || v.name.includes('Siri') || v.name.includes('Premium')))
+                    || this.voices.find(v => (v.lang === 'zh-CN' || v.lang === 'zh_CN') && (v.name.includes('Tingting') || v.name.includes('婷婷') || v.name.includes('Siri') || v.name.includes('Premium') || v.name.includes('Enhanced')))
                     || this.voices.find(v => v.lang === 'zh-CN' || v.lang === 'zh_CN')
                     || this.voices.find(v => v.lang && (v.lang.startsWith('zh') || v.lang.includes('cmn')));
             }
@@ -63,7 +103,20 @@ class SoundManager {
             }
         }
         if (this.ctx && this.ctx.state === 'suspended') {
-            this.ctx.resume();
+            this.ctx.resume().catch(() => {});
+        }
+        if (this.onlineTts && typeof this.onlineTts.unlockAudio === 'function') {
+            this.onlineTts.unlockAudio();
+            if (!this.prewarmed) {
+                this.prewarmed = true;
+                this.onlineTts.prewarm([
+                    '一，一个',
+                    '我是一个活泼可爱的小朋友。',
+                    '太棒啦！书写完成！'
+                ]);
+            }
+        } else if (this.tts && typeof this.tts.unlock === 'function') {
+            this.tts.unlock();
         }
     }
 
@@ -71,8 +124,13 @@ class SoundManager {
     toggle() {
         this.enabled = !this.enabled;
         localStorage.setItem('kid_app_sound_enabled', this.enabled ? 'true' : 'false');
+        if (this.onlineTts && typeof this.onlineTts.setMuted === 'function') {
+            this.onlineTts.setMuted(!this.enabled);
+        }
         if (this.enabled) {
             this.playPop();
+        } else {
+            this.stopSpeaking();
         }
         return this.enabled;
     }
@@ -186,7 +244,7 @@ class SoundManager {
         const now = this.ctx.currentTime;
         // C5, E5, G5, C6 欢快大三和弦冲顶
         const chord = [523.25, 659.25, 783.99, 1046.50];
-        
+
         chord.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
@@ -263,21 +321,22 @@ class SoundManager {
         osc.stop(now + 0.15);
     }
 
-    // 8. 汉字专属高保真发音 (先播单字，再自然连贯播词)
+    // 8. 汉字专属高保真自然发音 (使用晓晓神经语音一气呵成连读“字，词”，停顿自然流畅)
     speakChar(char, sampleWord = null) {
-        if (!char) return;
-        this.speak(char, () => {
-            if (sampleWord) {
-                // 字与词之间保持 350ms 自然呼吸停顿
-                setTimeout(() => {
-                    this.speak(sampleWord);
-                }, 350);
-            }
-        });
+        if (!char || !this.enabled) return;
+        const phrase = sampleWord ? `${char}，${sampleWord}` : char;
+        this.speak(phrase);
     }
 
     // 停止正在进行的所有语音播放与朗读合成
     stopSpeaking() {
+        this._speakSeq += 1;
+        if (this.onlineTts && typeof this.onlineTts.stop === 'function') {
+            this.onlineTts.stop();
+        }
+        if (this.tts && typeof this.tts.stop === 'function') {
+            this.tts.stop();
+        }
         if (this.currentAudio) {
             try {
                 this.currentAudio.pause();
@@ -295,22 +354,45 @@ class SoundManager {
 
     // 检查当前是否正在朗读
     isSpeaking() {
+        if (this.onlineTts) {
+            const audioPlaying = !!(this.onlineTts.sharedAudio && !this.onlineTts.sharedAudio.paused);
+            const fetching = !!this.onlineTts.activeAbort;
+            const offlineSpeaking = !!(this.onlineTts.offlineTts && typeof this.onlineTts.offlineTts.isSpeaking === 'function' && this.onlineTts.offlineTts.isSpeaking());
+            if (audioPlaying || fetching || offlineSpeaking) return true;
+        }
+        if (this.tts && typeof this.tts.isSpeaking === 'function' && this.tts.isSpeaking()) {
+            return true;
+        }
         return !!(this.currentAudio || (this.synth && (this.synth.speaking || this.synth.pending)));
     }
 
-    // 9. 智能语音朗读引擎 (单字优先有道真人母语高保真原声，词句与评语使用系统内置顶级神经语音)
+    // 9. 智能语音朗读引擎 (优先调用 WebOnlineTTS 微软晓晓 zh-CN-XiaoxiaoNeural 真人神经语音，断网自动无缝降级 WebNaturalTTS)
     speak(text, onEnd = null) {
-        if (!text) return;
+        if (!text || !this.enabled) {
+            if (typeof onEnd === 'function') onEnd();
+            return;
+        }
+
         // 深度清洗：剔除所有 Emoji 表情符、装饰符号与拼音杂质，仅保留自然发音中文、数字与标点
-        const cleanText = text
+        let cleanText = String(text)
             .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83E[\uDD00-\uDDFF]/g, '')
             .replace(/[🚨📌💡✨✅👌⭐🏆·\(\)（）\n\r]/g, ' ')
             .replace(/[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜ]/g, '')
             .replace(/\s+/g, ' ')
-            .trim() || text;
-        if (!cleanText) return;
+            .trim();
 
-        // 停止之前的音频播放
+        if (this.onlineTts && typeof this.onlineTts.cleanText === 'function') {
+            cleanText = this.onlineTts.cleanText(cleanText);
+        } else if (this.tts && typeof this.tts.cleanText === 'function') {
+            cleanText = this.tts.cleanText(cleanText);
+        }
+
+        if (!cleanText) {
+            if (typeof onEnd === 'function') onEnd();
+            return;
+        }
+
+        // 停止之前的独立音频播放
         if (this.currentAudio) {
             try {
                 this.currentAudio.pause();
@@ -319,60 +401,54 @@ class SoundManager {
             this.currentAudio = null;
         }
 
-        // 单个汉字且网络连通时：100% 优先使用有道词典官方高保真真人发音 (纯正普通话女播音员录制)
-        if (cleanText.length === 1 && typeof navigator !== 'undefined' && navigator.onLine !== false) {
-            try {
-                const audioUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(cleanText)}&le=zh`;
-                const audio = new Audio(audioUrl);
-                this.currentAudio = audio;
-
-                let hasFallback = false;
-                const doFallback = () => {
-                    if (hasFallback) return;
-                    hasFallback = true;
-                    this.currentAudio = null;
-                    this.speakWithSynth(cleanText, onEnd);
-                };
-
-                audio.onended = () => {
-                    this.currentAudio = null;
-                    if (onEnd) onEnd();
-                };
-
-                audio.onerror = doFallback;
-
-                const p = audio.play();
-                if (p !== undefined) {
-                    p.catch(doFallback);
-                }
-                return;
-            } catch (err) {
-                // 如果创建 Audio 异常立即回退
+        this._speakSeq += 1;
+        const seq = this._speakSeq;
+        const finishCallback = () => {
+            if (seq === this._speakSeq && typeof onEnd === 'function') {
+                onEnd();
             }
+        };
+
+        // 1. 优先调用 WebOnlineTTS (zh-CN-XiaoxiaoNeural 晓晓 · 温柔姐姐 AI 神经真人语音)
+        if (this.onlineTts && typeof this.onlineTts.speak === 'function') {
+            this.onlineTts.muted = !this.enabled;
+            this.onlineTts.speak(cleanText)
+                .then(finishCallback)
+                .catch(finishCallback);
+            return;
         }
 
-        // 针对词语、短句、或单字离线回退：直接使用本地优质中文语音合成 (零延迟、零网络依赖、发音流畅自然)
-        this.speakWithSynth(cleanText, onEnd);
+        // 2. 次选调用 WebNaturalTTS (本地自然人声优选，pitch=1.0 原声)
+        if (this.tts && typeof this.tts.speak === 'function') {
+            this.tts.speak(cleanText, {
+                lang: 'zh-CN',
+                rate: 0.92,
+                pitch: 1.0,
+                onEnd: finishCallback,
+                onError: finishCallback
+            });
+            return;
+        }
+
+        // 3. 终极原生兜底
+        this.speakWithSynth(cleanText, finishCallback);
     }
 
-    // 本地优质中文语音合成 (彻底修复 WebKit 垃圾回收与 Safari 暂停问题)
+    // 本地优质中文语音合成兜底 (彻底修复 WebKit 垃圾回收与 Safari 暂停问题)
     speakWithSynth(text, onEnd = null) {
         if (!this.synth) {
             if (onEnd) onEnd();
             return;
         }
 
-        // 确保语音列表就绪
         if (!this.chineseVoice || this.voices.length === 0) {
             this.initVoices();
         }
 
-        // 修复 Safari 暂停状态卡死问题
         if (this.synth.paused) {
             this.synth.resume();
         }
 
-        // 避免 iOS Safari 多次触发 cancel 的竞争冲突
         if (this.synth.speaking) {
             this.synth.cancel();
         }
@@ -380,14 +456,13 @@ class SoundManager {
         try {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-CN';
-            utterance.rate = 0.88; // 适合少儿听觉的自然慢速
-            utterance.pitch = 1.05; // 稍微提升音调，亲切温和
+            utterance.rate = 0.92; // 从容亲切的自然语速
+            utterance.pitch = 1.0; // 保持 1.0 原声自然音调，杜绝电子机械变调
 
             if (this.chineseVoice) {
                 utterance.voice = this.chineseVoice;
             }
 
-            // 保持实例强引用，彻底修复 WebKit 著名的垃圾回收提前中断 Bug (WebKit Bug 174066)
             this.activeUtterance = utterance;
 
             utterance.onend = () => {
@@ -408,19 +483,11 @@ class SoundManager {
         }
     }
 
-    // 10. 英文发音引擎 (点击汉字旁边的英文或插画英文时朗读，网络优先纯正美音，离线使用系统英语发音)
+    // 10. 英文发音引擎 (点击汉字旁边的英文徽标时朗读，网络优先纯正美音，离线使用 NaturalTTS 高品质英语发音)
     speakEn(word, onEnd = null) {
         if (!word || !this.enabled) return;
         this.ensureAudioContext();
-
-        // 停止之前的音频播放
-        if (this.currentAudio) {
-            try {
-                this.currentAudio.pause();
-                this.currentAudio.currentTime = 0;
-            } catch (e) {}
-            this.currentAudio = null;
-        }
+        this.stopSpeaking();
 
         // 提取主要英文字词 (如 "too / great" 朗读 "too")
         const primaryWord = word.split('/')[0].replace(/[^a-zA-Z\s-]/g, '').trim();
@@ -459,8 +526,23 @@ class SoundManager {
         this.speakEnWithSynth(primaryWord, onEnd);
     }
 
-    // 本地英文语音合成回退
+    // 本地英文自然语音合成回退 (优先使用 WebNaturalTTS 优选英文自然人声)
     speakEnWithSynth(word, onEnd = null) {
+        if (this.tts && typeof this.tts.speak === 'function') {
+            this.tts.speak(word, {
+                lang: 'en-US',
+                rate: 0.88,
+                pitch: 1.0,
+                onEnd: () => {
+                    if (onEnd) onEnd();
+                },
+                onError: () => {
+                    if (onEnd) onEnd();
+                }
+            });
+            return;
+        }
+
         if (!this.synth) {
             if (onEnd) onEnd();
             return;
@@ -472,7 +554,8 @@ class SoundManager {
         try {
             const utterance = new SpeechSynthesisUtterance(word);
             utterance.lang = 'en-US';
-            utterance.rate = 0.85;
+            utterance.rate = 0.88;
+            utterance.pitch = 1.0;
 
             const enVoice = (this.voices || []).find(v => (v.lang === 'en-US' || v.lang === 'en_US' || v.lang.startsWith('en')) && (v.name.includes('Natural') || v.name.includes('Siri') || v.name.includes('Samantha') || v.name.includes('Jenny') || v.name.includes('Guy')))
                 || (this.voices || []).find(v => v.lang === 'en-US' || v.lang === 'en_US' || v.lang.startsWith('en'));
