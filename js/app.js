@@ -448,7 +448,15 @@ class KidWritingApp {
                 mainContainer.classList.add('mobile-tab-canvas');
                 if (tabCanvas) tabCanvas.classList.add('active');
                 if (tabStudio) tabStudio.classList.remove('active');
-                // 切换到画板时，触发一次画布重测绘，确保在移动端尺寸精准无误
+                // 切换到画板时，同步+下一帧触发画布重测绘，确保在移动端首帧即精准撑开
+                if (this.canvasEngine) {
+                    this.canvasEngine.resize();
+                }
+                requestAnimationFrame(() => {
+                    if (this.canvasEngine) {
+                        this.canvasEngine.resize();
+                    }
+                });
                 setTimeout(() => {
                     if (this.canvasEngine) {
                         this.canvasEngine.resize();
@@ -457,6 +465,8 @@ class KidWritingApp {
             }
             if (window.soundManager) window.soundManager.playPop();
         };
+
+        this.switchMobileTab = switchTab;
 
         if (tabStudio) {
             tabStudio.addEventListener('click', () => switchTab('studio'));
@@ -917,8 +927,13 @@ class KidWritingApp {
             canvasZoomBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (window.soundManager) window.soundManager.playPop();
-                const nextMode = this.canvasSizeMode === 'xlarge' ? 'large' : 'xlarge';
-                this.setCanvasSizeMode(nextMode, true);
+                if (window.innerWidth <= 600) {
+                    const nextMode = (this.canvasSizeMode === 'large' || this.canvasSizeMode === 'xlarge') ? 'medium' : 'large';
+                    this.setCanvasSizeMode(nextMode, true);
+                } else {
+                    const nextMode = this.canvasSizeMode === 'xlarge' ? 'large' : 'xlarge';
+                    this.setCanvasSizeMode(nextMode, true);
+                }
             });
         }
 
@@ -1345,6 +1360,9 @@ class KidWritingApp {
     // 视觉引导：高亮并聚焦右侧书写画板
     highlightCanvasForPractice() {
         this.setQuizStatus(`🎯 请在右侧画板亲手写出“${this.currentChar}”字，写完点击【🏆 智能评分 & 盖章】！`);
+        if (window.innerWidth <= 600 && typeof this.switchMobileTab === 'function') {
+            this.switchMobileTab('canvas');
+        }
         const rightPanel = document.querySelector('.panel-right');
         if (rightPanel) {
             rightPanel.classList.add('pulse-target');
@@ -2420,21 +2438,24 @@ class KidWritingApp {
     // 切换右侧孩子写字区大小 (small / medium / large / xlarge)
     setCanvasSizeMode(mode, showFeedback = false) {
         this.canvasSizeMode = ['small', 'medium', 'large', 'xlarge'].includes(mode) ? mode : 'large';
+        const isMobileNarrow = window.innerWidth <= 600;
+        const effectiveMode = (isMobileNarrow && this.canvasSizeMode === 'xlarge') ? 'large' : this.canvasSizeMode;
+
         const container = document.querySelector('.main-container');
         if (container) {
-            container.classList.toggle('canvas-size-xlarge', this.canvasSizeMode === 'xlarge');
+            container.classList.toggle('canvas-size-xlarge', !isMobileNarrow && this.canvasSizeMode === 'xlarge');
         }
 
         document.querySelectorAll('.canvas-size-seg-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.canvasSize === this.canvasSizeMode);
+            btn.classList.toggle('active', btn.dataset.canvasSize === effectiveMode);
         });
 
         const zoomBtn = document.getElementById('btn-toggle-canvas-zoom');
         if (zoomBtn) {
-            const isXL = this.canvasSizeMode === 'xlarge';
+            const isXL = isMobileNarrow ? (effectiveMode === 'large') : (this.canvasSizeMode === 'xlarge');
             zoomBtn.textContent = isXL ? '🗗' : '⛶';
             zoomBtn.classList.toggle('active', isXL);
-            zoomBtn.title = isXL ? '还原标准左右分栏画板' : '一键展开全幅超大写字区';
+            zoomBtn.title = isXL ? '还原适中写字区' : '一键放大写字区';
         }
 
         try {
@@ -2442,21 +2463,21 @@ class KidWritingApp {
         } catch (e) {}
 
         if (this.canvasEngine) {
-            this.canvasEngine.setSizeMode(this.canvasSizeMode);
+            this.canvasEngine.setSizeMode(effectiveMode);
         }
 
         setTimeout(() => {
             if (this.canvasEngine) this.canvasEngine.resize(true);
             if (this.hanziGuide) this.hanziGuide.resize();
             if (showFeedback && this.canvasEngine) {
-                const px = this.canvasEngine.cssSize || 360;
+                const px = this.canvasEngine.cssSize || 340;
                 const labelMap = {
                     small: `✍️ 写字区已调为【小号格】(${px}×${px}px)，适合精细控笔`,
                     medium: `✍️ 写字区已调为【中号格】(${px}×${px}px)，四周留白舒适`,
                     large: `✍️ 写字区已调为【标准大格】(${px}×${px}px)，书写宽广`,
                     xlarge: `✍️ 已开启【全幅超大写字区】(${px}×${px}px)，畅快挥毫！`
                 };
-                this.showToast(labelMap[this.canvasSizeMode] || '已调整写字区大小');
+                this.showToast(labelMap[effectiveMode] || '已调整写字区大小');
             }
         }, 120);
     }

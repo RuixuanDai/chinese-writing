@@ -101,24 +101,62 @@ class HandwritingCanvas {
         const wrapper = this.container.parentElement || this.container;
         const rect = wrapper.getBoundingClientRect();
         const padding = 4;
-        const availW = Math.max(0, rect.width - padding * 2);
-        const availH = Math.max(0, rect.height - padding * 2);
-        const maxAvail = Math.floor(Math.min(availW, availH));
+
+        let availW = Math.max(0, rect.width - padding * 2);
+        let availH = Math.max(0, rect.height - padding * 2);
+
+        // 若画板当前处于隐藏标签页 (如手机端“认字与笔顺”页，display: none 导致宽高为 0)：
+        // 若已初始化过合法尺寸，直接跳过避免将画板缩为 0 或清空笔迹；
+        // 若首次加载尚未初始化尺寸，则按视口宽度预初始化，确保切换到画板瞬间立即可用。
+        if (availW < 40) {
+            if (this.cssSize && this.cssSize >= 165) {
+                return;
+            }
+            availW = Math.max(200, Math.min(340, (window.innerWidth || 375) - 44));
+            availH = availW;
+        }
+
+        // 检测是否为高度随内容自适应的移动端/流式布局 (.panel-right height: auto)：
+        // 在此类布局下，wrapper.height 由 canvas-box 自身高度撑起，绝不能用 rect.height 参与 Math.min，
+        // 否则每次设置 canvas-box 高度都会触发 ResizeObserver 递减 4px，最终缩放到 0！
+        const mainEl = document.getElementById('main-container');
+        const isContentHeightLayout = (window.innerWidth <= 600) ||
+            (mainEl && window.getComputedStyle(mainEl).display === 'block') ||
+            (availH < 165 && availW >= 165);
+
+        let maxAvail;
+        if (isContentHeightLayout) {
+            // 移动端单栏标签页：同时兼顾卡片宽度与视口剩余高度（使用与 canvas 尺寸无关的 rect.top + scrollTop，杜绝 ResizeObserver 反馈回路）
+            const scrollTop = mainEl ? (mainEl.scrollTop || 0) : (window.scrollY || 0);
+            const unscrolledTop = (rect.top > 0) ? (rect.top + scrollTop) : 340;
+            const viewportRemainH = (window.innerHeight || 800) - unscrolledTop - 58;
+            const mobileMaxH = Math.max(240, Math.min(345, viewportRemainH));
+            maxAvail = Math.max(200, Math.floor(Math.min(availW, mobileMaxH)));
+        } else {
+            maxAvail = Math.floor(Math.min(availW, availH));
+            // 竖屏平板 (iPad Portrait) 限制最大边长 540px，保持内部坐标系与 DOM 尺寸 1:1 对齐
+            if (window.innerWidth >= 601 && window.innerHeight > window.innerWidth) {
+                maxAvail = Math.min(maxAvail, 540);
+            }
+        }
+
         if (maxAvail <= 0) return;
+        maxAvail = Math.max(165, maxAvail);
 
         let targetSize = maxAvail;
         if (this.sizeMode === 'custom' && this.customSizePx) {
-            targetSize = Math.round(Math.max(175, Math.min(maxAvail, this.customSizePx)));
+            targetSize = Math.round(Math.max(165, Math.min(maxAvail, this.customSizePx)));
         } else if (this.sizeMode === 'small') {
-            targetSize = Math.round(Math.max(180, maxAvail * 0.68));
+            targetSize = Math.round(Math.max(175, maxAvail * 0.68));
         } else if (this.sizeMode === 'medium') {
-            targetSize = Math.round(Math.max(220, maxAvail * 0.84));
+            targetSize = Math.round(Math.max(210, maxAvail * 0.84));
         } else {
             // 'large' 或 'xlarge' 均撑满当前可用容器正方形空间
             targetSize = maxAvail;
         }
 
-        const size = Math.min(maxAvail, Math.max(165, targetSize));
+        // 强制硬下限 165px，彻底杜绝任何极端情况下写字框缩放到 0
+        const size = Math.max(165, Math.min(maxAvail, targetSize));
         const oldSize = this.cssSize || 0;
         if (!force && oldSize === size) return; // 尺寸未变无需重复重绘
 
@@ -222,11 +260,13 @@ class HandwritingCanvas {
 
         const getPos = (e) => {
             const rect = canvas.getBoundingClientRect();
+            const scaleX = (rect.width > 0 && this.cssSize) ? (this.cssSize / rect.width) : 1;
+            const scaleY = (rect.height > 0 && this.cssSize) ? (this.cssSize / rect.height) : 1;
             // 支持 Apple Pencil / 触控笔硬件压感检测 (0 ~ 1)
             const pressure = (e.pressure !== undefined && e.pressure > 0) ? e.pressure : 0.5;
             return {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top,
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY,
                 pressure: pressure,
                 pointerType: e.pointerType || 'touch',
                 time: Date.now()

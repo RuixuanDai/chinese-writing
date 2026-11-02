@@ -1808,6 +1808,9 @@ img, svg, canvas {
 .canvas-box {
     position: relative;
     aspect-ratio: 1 / 1;
+    min-width: 165px;
+    min-height: 165px;
+    flex-shrink: 0;
     background: #ffffff;
     border-radius: 16px;
     border: 3px solid var(--grid-red);
@@ -1921,90 +1924,92 @@ body.writing-active .canvas-resize-handle {
     opacity: 0.25;
 }
 
-/* 全幅专注写字模式 (canvas-size-xlarge)：展开右侧画板，最大化孩子书写空间 */
-.main-container.canvas-size-xlarge {
-    max-width: 1360px;
-    grid-template-columns: 350px 1fr;
-}
+/* 全幅专注写字模式 (canvas-size-xlarge)：仅在宽屏/平板分栏下展开右侧画板，不影响手机单栏标签页 */
+@media (min-width: 601px) {
+    .main-container.canvas-size-xlarge {
+        max-width: 1360px;
+        grid-template-columns: 350px 1fr;
+    }
 
-.main-container.canvas-size-xlarge .cognition-hero-card {
-    height: 176px;
-    flex: 0 0 176px;
-    padding: 5px 8px;
-    gap: 6px;
-}
+    .main-container.canvas-size-xlarge .cognition-hero-card {
+        height: 176px;
+        flex: 0 0 176px;
+        padding: 5px 8px;
+        gap: 6px;
+    }
 
-.main-container.canvas-size-xlarge .ill-art-box {
-    width: 86px;
-    padding: 4px;
-}
+    .main-container.canvas-size-xlarge .ill-art-box {
+        width: 86px;
+        padding: 4px;
+    }
 
-.main-container.canvas-size-xlarge .ill-large-img {
-    max-width: 76px;
-    max-height: 76px;
-}
+    .main-container.canvas-size-xlarge .ill-large-img {
+        max-width: 76px;
+        max-height: 76px;
+    }
 
-.main-container.canvas-size-xlarge .cognition-char-header {
-    padding: 3px 6px;
-    gap: 4px;
-}
+    .main-container.canvas-size-xlarge .cognition-char-header {
+        padding: 3px 6px;
+        gap: 4px;
+    }
 
-.main-container.canvas-size-xlarge .cognition-pinyin {
-    font-size: 20px;
-}
+    .main-container.canvas-size-xlarge .cognition-pinyin {
+        font-size: 20px;
+    }
 
-.main-container.canvas-size-xlarge .cognition-char {
-    font-size: 36px;
-}
+    .main-container.canvas-size-xlarge .cognition-char {
+        font-size: 36px;
+    }
 
-.main-container.canvas-size-xlarge .hero-en-badge {
-    font-size: 12px;
-    padding: 1px 6px;
-}
+    .main-container.canvas-size-xlarge .hero-en-badge {
+        font-size: 12px;
+        padding: 1px 6px;
+    }
 
-.main-container.canvas-size-xlarge .btn-speak {
-    height: 32px;
-    min-height: 32px;
-    padding: 0 8px;
-    font-size: 12px;
-}
+    .main-container.canvas-size-xlarge .btn-speak {
+        height: 32px;
+        min-height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+    }
 
-.main-container.canvas-size-xlarge .cognition-meta-badges {
-    display: none;
-}
+    .main-container.canvas-size-xlarge .cognition-meta-badges {
+        display: none;
+    }
 
-.main-container.canvas-size-xlarge .cognition-words-section {
-    display: none;
-}
+    .main-container.canvas-size-xlarge .cognition-words-section {
+        display: none;
+    }
 
-.main-container.canvas-size-xlarge .guide-header-row {
-    gap: 4px;
-}
+    .main-container.canvas-size-xlarge .guide-header-row {
+        gap: 4px;
+    }
 
-.main-container.canvas-size-xlarge .guide-title {
-    font-size: 14.5px;
-    white-space: nowrap;
-}
+    .main-container.canvas-size-xlarge .guide-title {
+        font-size: 14.5px;
+        white-space: nowrap;
+    }
 
-.main-container.canvas-size-xlarge .guide-frame-size-group {
-    display: none;
-}
+    .main-container.canvas-size-xlarge .guide-frame-size-group {
+        display: none;
+    }
 
-.main-container.canvas-size-xlarge .hanzi-writer-frame {
-    width: 175px;
-    height: 175px;
-}
+    .main-container.canvas-size-xlarge .hanzi-writer-frame {
+        width: 175px;
+        height: 175px;
+    }
 
-.main-container.canvas-size-xlarge .writer-action-buttons .btn-ctrl {
-    padding: 0 8px;
-    font-size: 13px;
-    height: 38px;
-    min-height: 38px;
-}
+    .main-container.canvas-size-xlarge .writer-action-buttons .btn-ctrl {
+        padding: 0 8px;
+        font-size: 13px;
+        height: 38px;
+        min-height: 38px;
+    }
 
-.main-container.canvas-size-xlarge .panel-right {
-    padding: 6px 12px;
-    gap: 4px;
+    .main-container.canvas-size-xlarge .panel-right {
+        padding: 6px 12px;
+        gap: 4px;
+    }
 }
 
 .canvas-action-bar {
@@ -3070,12 +3075,18 @@ body.writing-active .canvas-box {
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 4px;
-        padding-bottom: 4px;
+        gap: 3px;
+        padding-bottom: 2px;
     }
 
     .canvas-panel-header h2 {
-        font-size: 14px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .canvas-size-seg-btn {
+        padding: 2px 5px;
+        font-size: 11px;
     }
 
     .canvas-size-group .control-label-text,
@@ -3090,8 +3101,8 @@ body.writing-active .canvas-box {
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        gap: 4px;
-        padding-bottom: 2px;
+        gap: 3px;
+        padding-bottom: 1px;
     }
 
     .grid-selector::-webkit-scrollbar {
@@ -3100,62 +3111,110 @@ body.writing-active .canvas-box {
 
     .grid-type-btn {
         flex-shrink: 0;
-        padding: 2px 7px;
-        font-size: 11.5px;
+        padding: 2px 5px;
+        font-size: 11px;
     }
 
     .canvas-toolbar-tier1 {
-        flex-wrap: wrap;
-        gap: 5px;
+        flex-wrap: nowrap;
+        gap: 3px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .canvas-toolbar-tier1::-webkit-scrollbar {
+        display: none;
     }
 
     .brush-selector {
         flex: 1 1 auto;
         display: flex;
         justify-content: space-between;
-        gap: 3px;
+        gap: 2px;
     }
 
     .brush-btn {
-        flex: 1;
-        height: 32px;
-        min-height: 32px;
-        padding: 0 4px;
-        font-size: 11.5px;
+        flex: 1 0 auto;
+        height: 30px;
+        min-height: 30px;
+        padding: 0 3px;
+        font-size: 11px;
         justify-content: center;
         border-radius: 10px;
     }
 
     .trace-toggle-switch-wrap,
     .btn-stylus-guard {
-        height: 32px;
-        min-height: 32px;
-        padding: 0 6px;
-        font-size: 11.5px;
+        height: 30px;
+        min-height: 30px;
+        padding: 0 5px;
+        font-size: 11px;
+        gap: 3px;
+    }
+
+    .trace-toggle-label-text {
+        font-size: 11px;
+    }
+
+    .toggle-switch {
+        width: 30px;
+        height: 18px;
+    }
+
+    .toggle-slider {
+        width: 14px;
+        height: 14px;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+        transform: translateX(12px);
+    }
+
+    .guard-icon {
+        display: none;
     }
 
     .guard-text {
-        font-size: 11.5px;
+        font-size: 11px;
+    }
+
+    .guard-badge {
+        font-size: 10px;
+        padding: 1px 4px;
     }
 
     .canvas-toolbar-tier2 {
-        flex-wrap: wrap;
-        gap: 6px;
+        flex-wrap: nowrap;
+        gap: 4px;
     }
 
     .color-palette {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
     }
 
     .color-pill {
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .brush-size-control-group,
+    .trace-opacity-group {
+        gap: 3px;
+    }
+
+    .control-label {
+        font-size: 11px;
+    }
+
+    .size-seg-btn {
+        padding: 2px 5px;
+        font-size: 11px;
     }
 
     #trace-opacity-slider {
-        width: 50px;
+        width: 42px;
     }
 
     .slider-group {
@@ -3179,19 +3238,22 @@ body.writing-active .canvas-box {
     }
 
     .canvas-wrapper {
-        padding: 2px;
+        padding: 4px 2px;
         margin: 2px 0;
         width: 100%;
+        min-height: 200px;
         display: flex;
         justify-content: center;
+        align-items: center;
     }
 
     .canvas-box {
-        max-width: 280px;
-        max-height: 280px;
+        max-width: 100%;
+        min-width: 165px;
+        min-height: 165px;
         aspect-ratio: 1 / 1;
-        width: 100%;
         margin: 0 auto;
+        flex-shrink: 0;
     }
 
     .canvas-action-bar {
@@ -4899,11 +4961,6 @@ button.settings-stat-card:active {
     .main-container.canvas-size-xlarge .panel-left-studio {
         height: 235px;
         max-height: 240px;
-    }
-
-    .canvas-box {
-        max-height: 540px;
-        max-width: 540px;
     }
 }
 
