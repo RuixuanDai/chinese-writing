@@ -1,297 +1,423 @@
 /**
- * quiz-test.js - K班汉字闯关测试中心 (互动测评 + 错题特训 + A4试卷打印)
- * 1:1 还原课堂真题三大题型：
- *   一、看图写汉字 (Look at each picture and write the Chinese character)
- *   二、数笔画，填空 (Count the strokes and fill in the blanks)
- *   三、反义词连线 (Draw a line to match each word with its opposite)
+ * quiz-test.js - 🎮 汉字闯关乐园 (Game Park · 默认首页)
+ *
+ * 8 个寓教于乐的汉字小游戏（不显示题号与题量，题库随机无限出题）：
+ *   ✍️ 看图写字   🎈 气球选字   👂 听音找字   🧩 组词填空
+ *   🔢 数笔画     🔗 反义词连线  🃏 翻牌配对   🔨 汉字打地鼠
+ *
+ * 答对即时奖励金星（与扭蛋机 / 贴纸乐园联动），连对触发连击庆祝，熊猫老师全程语音陪伴。
+ * 类名保持 ExamCenter 以兼容 app.js 中的 switchAppTab / activeAppTab 调用。
  */
 
-// 标准基础笔画选项库（符号 + 名称，贴合课堂填空习惯）
-const STROKE_SHAPE_OPTIONS = [
-    { id: 'heng', symbol: '一', name: '横', label: '一 (横)' },
-    { id: 'shu', symbol: '丨', name: '竖', label: '丨 (竖)' },
-    { id: 'pie', symbol: '丿', name: '撇', label: '丿 (撇)' },
-    { id: 'dian_na', symbol: '丶', name: '点/捺', label: '丶 (点/捺)' },
-    { id: 'piezhe', symbol: '𠃋', name: '撇折', label: '𠃋 (撇折)' },
-    { id: 'hengzhe', symbol: '𠃍', name: '横折', label: '𠃍 (横折)' },
-    { id: 'shuzhe', symbol: '∟', name: '竖折', label: '∟ (竖折)' },
-    { id: 'shugou', symbol: '亅', name: '竖钩', label: '亅 (竖钩)' }
-];
-
-// 汉字闯关测试题库
-const CHUNYU_K_EXAM_DATA = {
-    title: '汉字闯关测试',
-    // 第一大题：看图写汉字 22 题
-    picWriteFull: [
-        { char: '上', hintWord: '向上、上面', isFocus: true, note: '注意箭头指向上面是“上”，不要写成“下”哦！' },
-        { char: '中', hintWord: '中间、中心', isFocus: false },
-        { char: '右', hintWord: '右边、右手', isFocus: false },
-        { char: '立', hintWord: '立正、站立', isFocus: false },
-        { char: '来', hintWord: '过来、来到', isFocus: true, note: '共7画，先写横、点、撇、长横、竖、撇、捺' },
-        { char: '山', hintWord: '高山、大山', isFocus: false },
-        { char: '去', hintWord: '回去、出去', isFocus: true, note: '上面是“土”，下面第四画是撇折（𠃋）加一点' },
-        { char: '禾', hintWord: '禾苗、禾谷', isFocus: true, note: '第一画是平撇（丿），下面是“木”，合起来是禾苗的“禾”！' },
-        { char: '水', hintWord: '河水、喝水', isFocus: false },
-        { char: '田', hintWord: '水田、田地', isFocus: false },
-        { char: '石', hintWord: '石头、岩石', isFocus: false },
-        { char: '左', hintWord: '左边、左手', isFocus: false },
-        { char: '月', hintWord: '月亮、月儿', isFocus: false },
-        { char: '坐', hintWord: '坐下、请坐', isFocus: true, note: '两个小人坐在土上，共7画，第六画是中间的竖（丨）' },
-        { char: '日', hintWord: '红日、太阳', isFocus: false },
-        { char: '人', altChars: ['入'], hintWord: '大人、人们（或入口）', isFocus: true, note: '撇高捺低是“人”，撇低捺高是“入”' },
-        { char: '土', hintWord: '泥土、土地', isFocus: false },
-        { char: '下', hintWord: '向下、下面', isFocus: true, note: '横在最上面、箭头往下指是“下”' },
-        { char: '出', hintWord: '出去、出来', isFocus: true, note: '共5画：竖折、竖、长竖、竖折、竖' },
-        { char: '火', hintWord: '火苗、大火', isFocus: false },
-        { char: '走', hintWord: '走路、行走', isFocus: false },
-        { char: '木', hintWord: '树木、木头', isFocus: false }
-    ],
-    // 第二大题：数笔画，填空（前 3 题为试卷原题，后 3 题为配套巩固）
-    strokeQuestions: [
-        {
-            char: '来',
-            pinyin: 'lái',
-            totalStrokes: 7,
-            askIndex: 4, // 1-based: 第四画
-            askIndexCn: '四',
-            answerId: 'heng',
-            answerSymbol: '一',
-            answerName: '横',
-            strokeBreakdown: ['一 (横)', '丶 (点)', '丿 (撇)', '一 (横)', '丨 (竖)', '丿 (撇)', '丶 (捺)'],
-            tip: '“来”字一共有 7 画：1横、2点、3撇、4长横、5竖、6撇、7捺，所以第四画是“一 (横)”！',
-            isPaperOriginal: true
-        },
-        {
-            char: '坐',
-            pinyin: 'zuò',
-            totalStrokes: 7,
-            askIndex: 6, // 1-based: 第六画
-            askIndexCn: '六',
-            answerId: 'shu',
-            answerSymbol: '丨',
-            answerName: '竖',
-            strokeBreakdown: ['丿 (撇)', '丶 (点)', '丿 (撇)', '丶 (点)', '一 (横)', '丨 (竖)', '一 (横)'],
-            tip: '“坐”字先写左边小人（1撇2点），再写右边小人（3撇4点），接着写下面“土”的5短横、6竖、7长横，第六画是“丨 (竖)”！',
-            isPaperOriginal: true
-        },
-        {
-            char: '去',
-            pinyin: 'qù',
-            totalStrokes: 5,
-            askIndex: 4, // 1-based: 第四画
-            askIndexCn: '四',
-            answerId: 'piezhe',
-            answerSymbol: '𠃋',
-            answerName: '撇折',
-            strokeBreakdown: ['一 (横)', '丨 (竖)', '一 (横)', '𠃋 (撇折)', '丶 (点)'],
-            tip: '“去”字上面是“土”（1横、2竖、3长横），第四画是一笔写成的“𠃋 (撇折)”，第五画是“丶 (点)”，一共 5 画！',
-            isPaperOriginal: true
-        },
-        {
-            char: '禾',
-            pinyin: 'hé',
-            totalStrokes: 5,
-            askIndex: 1,
-            askIndexCn: '一',
-            answerId: 'pie',
-            answerSymbol: '丿',
-            answerName: '撇',
-            strokeBreakdown: ['丿 (平撇)', '一 (横)', '丨 (竖)', '丿 (撇)', '丶 (捺)'],
-            tip: '“禾”字比“木”字头上多了一笔平撇！1撇、2横、3竖、4撇、5捺，一共 5 画，第一画是“丿 (撇)”！',
-            isPaperOriginal: false
-        },
-        {
-            char: '上',
-            pinyin: 'shàng',
-            totalStrokes: 3,
-            askIndex: 1,
-            askIndexCn: '一',
-            answerId: 'shu',
-            answerSymbol: '丨',
-            answerName: '竖',
-            strokeBreakdown: ['丨 (竖)', '一 (短横)', '一 (长横)'],
-            tip: '“上”字一共有 3 画：1竖、2短横、3底部长横，第一画是“丨 (竖)”！',
-            isPaperOriginal: false
-        },
-        {
-            char: '出',
-            pinyin: 'chū',
-            totalStrokes: 5,
-            askIndex: 1,
-            askIndexCn: '一',
-            answerId: 'shuzhe',
-            answerSymbol: '∟',
-            answerName: '竖折',
-            strokeBreakdown: ['∟ (竖折)', '丨 (竖)', '丨 (长竖)', '∟ (竖折)', '丨 (竖)'],
-            tip: '“出”字一共有 5 画：1竖折、2短竖、3中间长竖、4竖折、5短竖，第一画是“∟ (竖折)”！',
-            isPaperOriginal: false
-        }
-    ],
-    // 第三大题：反义词连线（与试卷左右两列完全一致）
-    antonymPairs: [
-        { left: '多', right: '少', desc: '“多”的反义词是“少”（多少）' },
-        { left: '出', right: '入', desc: '“出”的反义词是“入”（出入）' },
-        { left: '右', right: '左', desc: '“右”的反义词是“左”（左右）' },
-        { left: '小', right: '大', desc: '“小”的反义词是“大”（大小）' },
-        { left: '去', right: '来', desc: '“去”的反义词是“来”（来去）' },
-        { left: '下', right: '上', desc: '“下”的反义词是“上”（上下）' }
-    ],
-    rightColumnOrder: ['来', '大', '上', '入', '少', '左']
+// ==================== 1. 基础笔画类型（SVG 矢量图标，跨设备显示一致） ====================
+const GP_STROKE_TYPES = {
+    heng: { name: '横', d: 'M14 54 L86 46' },
+    shu: { name: '竖', d: 'M50 12 L50 88' },
+    pie: { name: '撇', d: 'M66 12 Q62 56 20 86' },
+    dian: { name: '点', d: 'M38 30 Q56 44 62 66' },
+    na: { name: '捺', d: 'M20 16 Q44 62 90 80' },
+    ti: { name: '提', d: 'M20 80 L84 32' },
+    hengzhe: { name: '横折', d: 'M16 24 L78 24 L78 86' },
+    shuzhe: { name: '竖折', d: 'M24 14 L24 76 L86 76' },
+    piezhe: { name: '撇折', d: 'M56 12 L22 62 L84 52' },
+    shugou: { name: '竖钩', d: 'M56 10 L56 82 L36 68' },
+    hengpie: { name: '横撇', d: 'M16 22 L76 22 L28 86' },
+    hengzhegou: { name: '横折钩', d: 'M14 22 L80 22 L80 84 L62 72' },
+    shuwangou: { name: '竖弯钩', d: 'M22 12 L22 68 Q22 82 38 82 L84 82 L84 62' },
+    hengou: { name: '横钩', d: 'M14 36 L80 36 L62 54' }
 };
 
-// 扩展随机题库（供“🎲 随机闯关卷”抽题）
-const EXTRA_STROKE_QUESTION_POOL = [
-    ...CHUNYU_K_EXAM_DATA.strokeQuestions,
-    {
-        char: '下',
-        pinyin: 'xià',
-        totalStrokes: 3,
-        askIndex: 3,
-        askIndexCn: '三',
-        answerId: 'dian_na',
-        answerSymbol: '丶',
-        answerName: '点/捺',
-        strokeBreakdown: ['一 (横)', '丨 (竖)', '丶 (点)'],
-        tip: '“下”字一共有 3 画：1长横、2竖、3点，第三画是“丶 (点)”！'
-    },
-    {
-        char: '山',
-        pinyin: 'shān',
-        totalStrokes: 3,
-        askIndex: 2,
-        askIndexCn: '二',
-        answerId: 'shuzhe',
-        answerSymbol: '∟',
-        answerName: '竖折',
-        strokeBreakdown: ['丨 (竖)', '∟ (竖折)', '丨 (竖)'],
-        tip: '“山”字先写中间的 1竖，再写左边的 2竖折（∟），最后写右边的 3竖，共 3 画！'
-    },
-    {
-        char: '水',
-        pinyin: 'shuǐ',
-        totalStrokes: 4,
-        askIndex: 1,
-        askIndexCn: '一',
-        answerId: 'shugou',
-        answerSymbol: '亅',
-        answerName: '竖钩',
-        strokeBreakdown: ['亅 (竖钩)', '𠃍 (横撇)', '丿 (撇)', '丶 (捺)'],
-        tip: '“水”字共 4 画：先写中间的 1竖钩（亅），再写左边的 2横撇，接着是右边的 3撇、4捺！'
-    },
-    {
-        char: '火',
-        pinyin: 'huǒ',
-        totalStrokes: 4,
-        askIndex: 3,
-        askIndexCn: '三',
-        answerId: 'pie',
-        answerSymbol: '丿',
-        answerName: '撇',
-        strokeBreakdown: ['丶 (点)', '丿 (小撇)', '丿 (长撇)', '丶 (捺)'],
-        tip: '“火”字共 4 画：1左点、2右上小撇、3中间长撇、4捺，第三画是“丿 (撇)”！'
-    },
-    {
-        char: '木',
-        pinyin: 'mù',
-        totalStrokes: 4,
-        askIndex: 2,
-        askIndexCn: '二',
-        answerId: 'shu',
-        answerSymbol: '丨',
-        answerName: '竖',
-        strokeBreakdown: ['一 (横)', '丨 (竖)', '丿 (撇)', '丶 (捺)'],
-        tip: '“木”字共 4 画：1横、2竖、3撇、4捺，第二画是“丨 (竖)”！'
-    },
-    {
-        char: '田',
-        pinyin: 'tián',
-        totalStrokes: 5,
-        askIndex: 2,
-        askIndexCn: '二',
-        answerId: 'hengzhe',
-        answerSymbol: '𠃍',
-        answerName: '横折',
-        strokeBreakdown: ['丨 (竖)', '𠃍 (横折)', '一 (横)', '丨 (竖)', '一 (横)'],
-        tip: '“田”字共 5 画：1左竖、2横折（𠃍）、3中间横、4中间竖、5封口横！'
-    },
-    {
-        char: '土',
-        pinyin: 'tǔ',
-        totalStrokes: 3,
-        askIndex: 2,
-        askIndexCn: '二',
-        answerId: 'shu',
-        answerSymbol: '丨',
-        answerName: '竖',
-        strokeBreakdown: ['一 (短横)', '丨 (竖)', '一 (长横)'],
-        tip: '“土”字共 3 画：1短横、2竖、3长横，第二画是“丨 (竖)”！'
-    },
-    {
-        char: '石',
-        pinyin: 'shí',
-        totalStrokes: 5,
-        askIndex: 2,
-        askIndexCn: '二',
-        answerId: 'pie',
-        answerSymbol: '丿',
-        answerName: '撇',
-        strokeBreakdown: ['一 (横)', '丿 (撇)', '丨 (竖)', '𠃍 (横折)', '一 (横)'],
-        tip: '“石”字共 5 画：1横、2撇、3竖、4横折、5横，第二画是“丿 (撇)”！'
-    }
+// 易混笔画（出题时优先作为干扰项，帮助孩子辨析）
+const GP_STROKE_FAMILIES = {
+    heng: ['shu', 'ti', 'pie'],
+    shu: ['heng', 'pie', 'shugou'],
+    pie: ['na', 'shu', 'ti'],
+    dian: ['pie', 'heng', 'ti'],
+    na: ['pie', 'heng', 'shu'],
+    ti: ['heng', 'pie', 'dian'],
+    hengzhe: ['shuzhe', 'hengpie', 'hengzhegou'],
+    shuzhe: ['hengzhe', 'shuwangou', 'piezhe'],
+    piezhe: ['shuzhe', 'pie', 'hengpie'],
+    shugou: ['shu', 'hengzhegou', 'shuwangou'],
+    hengpie: ['hengzhe', 'pie', 'hengou'],
+    hengzhegou: ['hengzhe', 'shugou', 'hengpie'],
+    shuwangou: ['shuzhe', 'shugou', 'hengzhegou'],
+    hengou: ['heng', 'hengpie', 'hengzhe']
+};
+
+// ==================== 2. 标准笔顺笔画名称（依据现代汉语通用字笔顺规范，'?' 表示不出题的笔画） ====================
+const GP_STROKE_TYPE_DATA = {
+    '一': 'heng', '二': 'heng heng', '三': 'heng heng heng', '十': 'heng shu',
+    '人': 'pie na', '入': 'pie na', '大': 'heng pie na', '天': 'heng heng pie na', '太': 'heng pie na dian',
+    '口': 'shu hengzhe heng', '日': 'shu hengzhe heng heng', '目': 'shu hengzhe heng heng heng',
+    '田': 'shu hengzhe heng shu heng', '中': 'shu hengzhe heng shu', '上': 'shu heng heng', '下': 'heng shu dian',
+    '土': 'heng shu heng', '木': 'heng shu pie ?', '本': 'heng shu pie na heng', '禾': 'pie heng shu pie ?',
+    '米': 'dian pie heng shu pie ?', '来': 'heng dian pie heng shu pie na', '水': 'shugou hengpie pie na',
+    '火': 'dian pie pie ?', '山': 'shu shuzhe shu', '出': 'shuzhe shu shu shuzhe shu',
+    '石': 'heng pie shu hengzhe heng', '左': 'heng pie heng shu heng', '右': 'pie heng shu hengzhe heng',
+    '月': 'pie hengzhegou heng heng', '立': 'dian heng dian pie heng', '去': 'heng shu heng piezhe dian',
+    '坐': 'pie dian pie dian heng shu heng', '走': 'heng shu heng shu heng pie na', '小': 'shugou ? dian',
+    '少': 'shu ? ? pie', '多': 'pie hengpie dian pie hengpie dian', '四': 'shu hengzhe pie ? heng',
+    '五': 'heng shu hengzhe heng', '六': 'dian heng pie dian', '七': 'heng shuwangou', '八': 'pie ?', '九': 'pie ?',
+    '开': 'heng heng pie shu', '关': 'dian pie heng heng pie na',
+    '高': 'dian heng shu hengzhe heng shu hengzhegou shu hengzhe heng',
+    '前': 'dian pie heng shu hengzhegou heng heng shu shugou', '后': 'pie pie heng shu hengzhe heng',
+    '里': 'shu hengzhe heng heng shu heng heng', '外': 'pie hengpie dian shu dian',
+    '羊': 'dian pie heng heng heng shu', '牛': 'pie heng heng shu',
+    '春': 'heng heng heng pie na shu hengzhe heng heng', '夏': 'heng pie shu hengzhe heng heng heng pie hengpie na',
+    '秋': 'pie heng shu pie dian dian pie pie ?', '冬': 'pie hengpie na dian dian',
+    '鱼': 'pie hengpie shu hengzhe heng shu heng heng', '马': 'hengzhe ? ?', '鸟': 'pie hengzhegou dian ? heng',
+    '手': 'pie heng heng shugou', '足': 'shu hengzhe heng shu heng pie na', '心': 'dian ? dian dian',
+    '书': 'hengzhe hengzhegou shu dian', '学': 'dian dian pie dian hengou hengpie shugou heng',
+    '子': 'hengpie shugou heng', '文': 'dian heng pie na', '白': 'pie shu hengzhe heng heng',
+    '门': 'dian shu hengzhegou', '云': 'heng heng piezhe dian', '风': 'pie ? pie dian',
+    '雨': 'heng shu hengzhegou shu dian dian dian dian', '几': 'pie ?', '生': 'pie heng heng shu heng',
+    '见': 'shu hengzhe pie shuwangou', '只': 'shu hengzhe heng pie dian', '个': 'pie ? shu',
+    '虫': 'shu hengzhe heng shu ti dian', '龙': 'heng pie shuwangou pie dian',
+    '花': 'heng shu shu pie shu pie shuwangou', '叶': 'shu hengzhe heng heng shu',
+    '竹': 'pie heng shu pie heng shugou', '光': 'shu dian pie heng pie shuwangou',
+    '阳': '? shu shu hengzhe heng heng', '地': 'heng shu ti hengzhegou shu shuwangou',
+    '电': 'shu hengzhe heng heng shuwangou', '耳': 'heng shu shu heng heng ti', '牙': 'heng ? shugou pie',
+    '头': 'dian dian heng pie dian', '儿': 'pie shuwangou', '老': 'heng shu heng pie pie shuwangou',
+    '友': 'heng pie hengpie na', '习': 'hengzhegou dian ti', '写': 'dian hengou ? ? ?',
+    '正': 'heng shu heng shu heng', '早': 'shu hengzhe heng heng heng shu',
+    '永': 'dian hengzhegou hengpie pie na', '百': 'heng pie shu hengzhe heng heng', '千': 'pie heng shu',
+    '万': 'heng hengzhegou pie', '东': 'heng piezhe shugou pie dian', '西': 'heng shu hengzhe pie ? heng',
+    '北': 'shu heng ti pie shuwangou', '半': 'dian pie heng heng shu',
+    '果': 'shu hengzhe heng heng heng shu pie ?', '瓜': 'pie pie ? dian na',
+    '豆': 'heng shu hengzhe heng dian pie heng', '红': 'piezhe piezhe ti heng shu heng',
+    '车': 'heng piezhe heng shu', '舟': 'pie ? hengzhegou dian heng dian', '年': 'pie heng heng shu heng shu',
+    '会': 'pie na heng heng piezhe dian', '妈': '? pie heng hengzhe ? ?', '江': 'dian dian ti heng shu heng',
+    '冰': 'dian ti shugou hengpie pie na', '边': 'hengzhegou pie dian ? ?'
+};
+
+// ==================== 3. 反义词好朋友（35 组，可配小图标帮助理解） ====================
+const GP_ANTONYM_PAIRS = [
+    { a: '大', b: '小', ea: '🐘', eb: '🐭' }, { a: '多', b: '少' }, { a: '上', b: '下', ea: '⬆️', eb: '⬇️' },
+    { a: '左', b: '右', ea: '⬅️', eb: '➡️' }, { a: '出', b: '入' }, { a: '来', b: '去' },
+    { a: '开', b: '关', ea: '🔓', eb: '🔒' }, { a: '高', b: '低' }, { a: '前', b: '后' },
+    { a: '里', b: '外' }, { a: '远', b: '近' }, { a: '长', b: '短' },
+    { a: '黑', b: '白', ea: '⚫', eb: '⚪' }, { a: '冷', b: '热', ea: '🥶', eb: '🥵' },
+    { a: '快', b: '慢', ea: '🐇', eb: '🐢' }, { a: '早', b: '晚', ea: '🌅', eb: '🌙' },
+    { a: '天', b: '地', ea: '☁️', eb: '🌏' }, { a: '东', b: '西' }, { a: '南', b: '北' },
+    { a: '男', b: '女', ea: '👦', eb: '👧' }, { a: '有', b: '无' }, { a: '胖', b: '瘦' },
+    { a: '好', b: '坏', ea: '👍', eb: '👎' }, { a: '新', b: '旧' }, { a: '对', b: '错', ea: '✅', eb: '❌' },
+    { a: '哭', b: '笑', ea: '😭', eb: '😄' }, { a: '买', b: '卖' }, { a: '真', b: '假' },
+    { a: '正', b: '反' }, { a: '轻', b: '重' }, { a: '深', b: '浅' }, { a: '粗', b: '细' },
+    { a: '甜', b: '苦', ea: '🍬', eb: '🍵' }, { a: '方', b: '圆', ea: '🟦', eb: '🔵' }, { a: '进', b: '退' }
 ];
 
-const EXTRA_ANTONYM_POOL = [
-    ...CHUNYU_K_EXAM_DATA.antonymPairs,
-    { left: '开', right: '关', desc: '“开”的反义词是“关”（开关）' },
-    { left: '高', right: '低', desc: '“高”的反义词是“低”（高低）' },
-    { left: '前', right: '后', desc: '“前”的反义词是“后”（前后）' },
-    { left: '里', right: '外', desc: '“里”的反义词是“外”（里外）' },
-    { left: '远', right: '近', desc: '“远”的反义词是“近”（远近）' },
-    { left: '水', right: '火', desc: '“水”和“火”是一对反义词（水火）' }
+// 抽象字（不适合看图出题，仍用于听音 / 组词游戏）
+const GP_ABSTRACT_CHARS = '子文白几太生会见只个学习写读正永课问说答乐思知识记算题百千万亿东西南北左右前后边间里外半零初末高低远近多少爱善美诚礼信仁德和敬勤俭宽勇恒想动快节年喜庆贺谜团圆戏福愿甜香亲幼';
+// 看图默写不出的字（图片难以唯一对应）
+const GP_WRITE_EXCLUDE = '只个会几习写永半正生见太友老本早东西北百千万';
+// 插画里直接画有汉字的字（会泄露答案，不用于看图类游戏）
+const GP_TEXT_IN_PICTURE = '只个师粮站喜贺谜饼联福万东西南北左右习早永课识';
+
+// 意思/图片相近的字组：互不作为干扰项，翻牌时不同时出现，避免答案有歧义
+const GP_SIMILAR_GROUPS = [
+    '日阳光晴夏热', '水江河湖海泉', '木树林', '土地泥', '雨云阴雷电', '雪冰冬霜', '雾露霜',
+    '口牙', '目眉', '脸头', '手握抱招抬', '足走跑跳迈登追', '人大立', '爸爷老师', '妈奶',
+    '哥弟儿子幼', '姐妹', '家亲', '房屋院楼城市街', '车路道街站轨', '舟船港', '果桃李梨橙桔杏',
+    '米饭粮麦面', '饼团圆', '鸟雁燕鹤', '鸭鹅', '鱼鲸', '狗狼狐狸', '虎豹狮', '春花草', '秋叶',
+    '唱歌乐', '书本册读学', '笔写画', '看望见', '听耳', '灯光', '福喜庆贺年节', '虫蝶蜂', '星月', '红紫'
 ];
+
+// 字形相近的字（作为干扰项，练习细致辨认）
+const GP_VISUAL_CONFUSERS = {
+    '日': '目白田电', '目': '日白自', '白': '日百自', '田': '日电', '电': '田', '木': '禾本米', '禾': '木米',
+    '本': '木', '米': '来木', '来': '米', '大': '天太人', '天': '大', '太': '大', '人': '入八大', '入': '人八',
+    '八': '人入', '土': '上工王', '上': '土下', '下': '上', '千': '十', '十': '千', '口': '日中田', '中': '口',
+    '山': '出', '出': '山', '牛': '年', '年': '牛', '鸟': '马', '马': '鸟', '儿': '几九', '几': '儿九', '九': '儿几',
+    '万': '方', '方': '万', '石': '右', '右': '石左', '左': '右', '少': '小', '小': '少', '去': '云', '云': '去',
+    '水': '永冰', '冰': '水', '永': '水', '东': '车', '车': '东', '早': '草', '草': '早', '江': '红', '红': '江',
+    '虫': '中', '竹': '个', '门': '问', '问': '门', '鱼': '鸟', '叶': '十', '立': '六', '六': '立'
+};
+
+// ==================== 4. 游戏列表 ====================
+const GP_GAMES = [
+    { id: 'picwrite', icon: '✍️', title: '看图写字', desc: '看图片，凭记忆写出汉字', theme: 'orange', intro: '图上画的是什么？在米字格里写出来吧！' },
+    { id: 'balloon', icon: '🎈', title: '气球选字', desc: '看图片，戳破正确的气球', theme: 'pink', intro: '图上是什么字？戳破写着这个字的气球！' },
+    { id: 'listen', icon: '👂', title: '听音找字', desc: '听声音，找出读到的字', theme: 'blue', intro: '仔细听，找出我读的是哪个字！' },
+    { id: 'word', icon: '🧩', title: '组词填空', desc: '选一个字，拼成词语', theme: 'purple', intro: '听一听，选一个字把词语补完整！' },
+    { id: 'stroke', icon: '🔢', title: '数笔画', desc: '数一数，汉字有几画', theme: 'amber', intro: '数一数，这个字一共有几画？' },
+    { id: 'antonym', icon: '🔗', title: '反义词连线', desc: '找朋友，连连意思相反的字', theme: 'teal', intro: '先点左边的字，再点右边意思相反的字！' },
+    { id: 'memory', icon: '🃏', title: '翻牌配对', desc: '翻翻看，图片配汉字', theme: 'indigo', intro: '翻开两张牌，把图片和汉字配成好朋友！' },
+    { id: 'mole', icon: '🔨', title: '汉字打地鼠', desc: '看图听音，敲出正确的字', theme: 'green', intro: '地鼠举着汉字冒出来啦！敲出和图片一样的字！' }
+];
+
+const GP_CN_NUM = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
+const GP_PRAISES = ['太棒啦！', '答对啦！', '真厉害！', '好眼力！', '你真聪明！', '完全正确！', '了不起！'];
+
+function gpShuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function gpPick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function gpToneless(py) {
+    return (py || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ü/g, 'v').toLowerCase().trim();
+}
+
+function gpStrokeIcon(typeId) {
+    const t = GP_STROKE_TYPES[typeId];
+    if (!t) return '';
+    return `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="${t.d}" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
 
 class ExamCenter {
     constructor(app) {
         this.app = app;
-        this.activeAppTab = 'practice'; // 'practice' (趣味练字) | 'exam' (闯关测试)
-        this.activeSection = 'sec1';    // 'sec1' | 'sec2' | 'sec3'
-
-        this.picQuestions = [];
-        this.currentPicIdx = 0;
-
-        this.strokeQuestions = [];
-        this.currentStrokeIdx = 0;
-        this.strokeAnimTimer = null;
-        this.highlightedStrokeIdx = -1; // 0-based
-
-        this.antonymPairs = [];
-        this.rightColChars = [];
-        this.selectedLeftChar = null;
-        this.selectedRightChar = null;
-        this.matchedPairs = {}; // leftChar -> rightChar
-
+        this.activeAppTab = 'exam'; // 默认首页：闯关乐园
+        this.activeGame = null;     // null = 游戏大厅
         this.examCanvas = null;
         this._isInitialized = false;
+
+        this.timers = new Set();
+        this.moleTimers = new Set();
+        this.queues = {};
+        this.lastPicked = {};
+        this.combo = 0;
+        this.sessionStars = 0;
+        this.introSpoken = {};
+        this.svgUid = 0;
+        this.strokeAnimTimer = null;
+
+        this.storedStars = this.loadJSON('kid_app_game_stars_v1', {});
+        this.todayStats = this.loadToday();
     }
 
+    // ==================== 初始化与数据池 ====================
     initIfNeeded() {
         if (this._isInitialized) return;
         this._isInitialized = true;
 
-        // 初始化看图写字专属米字格画板
-        this.examCanvas = new HandwritingCanvas('examGridCanvas', 'examDrawCanvas', 'exam-canvas-box');
-        this.examCanvas.setTraceSettings(false); // 默写模式默认隐藏红底字
+        this.buildPools();
 
-        // 同步主画板防误触设置
-        if (this.app && this.app.canvasEngine) {
-            this.examCanvas.setPalmRejection(this.app.canvasEngine.palmRejection);
+        if (typeof HandwritingCanvas === 'function' && document.getElementById('examDrawCanvas')) {
+            this.examCanvas = new HandwritingCanvas('examGridCanvas', 'examDrawCanvas', 'exam-canvas-box');
+            this.examCanvas.setTraceSettings(false);
+            if (this.app && this.app.canvasEngine) {
+                this.examCanvas.setPalmRejection(this.app.canvasEngine.palmRejection);
+            }
         }
 
         this.bindEvents();
-        this.loadPaper(false);
+        this.showHub();
     }
 
-    // 切换主界面 Tab：'practice' (✍️ 趣味练字) vs 'exam' (📝 闯关测试)
+    buildPools() {
+        const cats = (typeof CHARACTER_CATEGORIES !== 'undefined') ? CHARACTER_CATEGORIES : (window.CHARACTER_CATEGORIES || []);
+        const illMap = window.CHARACTER_ILLUSTRATION_MAP || {};
+        const cache = window.STROKE_DATA_CACHE || {};
+
+        this.charInfoMap = {};
+        cats.forEach(cat => {
+            (cat.chars || []).forEach(item => {
+                if (!item || !item.char || this.charInfoMap[item.char]) return;
+                const info = (typeof getCharInfo === 'function' ? getCharInfo(item.char) : null) || item;
+                this.charInfoMap[item.char] = {
+                    char: item.char,
+                    pinyin: info.pinyin || item.pinyin || '',
+                    words: Array.isArray(info.words) ? info.words.filter(w => typeof w === 'string') : [],
+                    image: info.image || item.image || illMap[item.char] || '',
+                    catId: cat.id
+                };
+            });
+        });
+
+        const abstract = new Set(GP_ABSTRACT_CHARS);
+        const writeEx = new Set(GP_WRITE_EXCLUDE);
+        const textInPic = new Set(GP_TEXT_IN_PICTURE);
+        this.allChars = Object.keys(this.charInfoMap);
+        this.picturePool = this.allChars.filter(ch => this.charInfoMap[ch].image && !abstract.has(ch) && !textInPic.has(ch));
+        this.listenPool = this.allChars.filter(ch => this.charInfoMap[ch].pinyin);
+        this.writingPool = this.allChars.filter(ch => cache[ch] && cache[ch].medians && cache[ch].medians.length <= 8
+            && this.charInfoMap[ch].image && !writeEx.has(ch) && !textInPic.has(ch));
+        this.strokePool = Object.keys(cache).filter(ch => cache[ch].medians && cache[ch].medians.length <= 10);
+
+        // 组词填空题库：所有双字词（排除叠词）
+        this.allWords = new Set();
+        this.wordPool = [];
+        this.allChars.forEach(ch => this.charInfoMap[ch].words.forEach(w => this.allWords.add(w)));
+        this.allChars.forEach(ch => {
+            const seen = new Set();
+            this.charInfoMap[ch].words.forEach(w => {
+                if (w.length !== 2 || w[0] === w[1] || seen.has(w)) return;
+                const idx = w.indexOf(ch);
+                if (idx < 0) return;
+                seen.add(w);
+                this.wordPool.push({ target: ch, word: w, idx });
+            });
+        });
+
+        if (!this.writingPool.length) this.writingPool = Object.keys(cache);
+        if (!this.picturePool.length) this.picturePool = this.allChars.slice();
+        if (!this.listenPool.length) this.listenPool = this.allChars.slice();
+    }
+
+    info(ch) {
+        return this.charInfoMap ? this.charInfoMap[ch] : null;
+    }
+
+    py(ch) {
+        const info = this.info(ch);
+        return info ? info.pinyin : '';
+    }
+
+    // 从题库随机无限出题（洗牌队列，避免连续重复）
+    pickNext(key, pool) {
+        if (!pool || !pool.length) return null;
+        let q = this.queues[key];
+        if (!q || !q.length) {
+            q = gpShuffle(pool.slice());
+            const last = this.lastPicked[key];
+            if (q.length > 1 && q[q.length - 1] === last) {
+                [q[0], q[q.length - 1]] = [q[q.length - 1], q[0]];
+            }
+            this.queues[key] = q;
+        }
+        const item = q.pop();
+        this.lastPicked[key] = item;
+        return item;
+    }
+
+    sameGroup(a, b) {
+        return GP_SIMILAR_GROUPS.some(g => g.includes(a) && g.includes(b));
+    }
+
+    // 生成选项：1 个字形相近字 + 同类字 + 其他字，排除意思相近 / 同音 / 可组成别的词的字
+    buildOptions(target, total = 4, opts = {}) {
+        const { pool, avoidHomophone = false, validator = null, sameCatCount = 1 } = opts;
+        const picked = [];
+        const tInfo = this.info(target) || {};
+        const tTone = gpToneless(tInfo.pinyin);
+        const ok = (c) => {
+            if (!c || c === target || picked.includes(c)) return false;
+            const info = this.info(c);
+            if (!info) return false;
+            if (this.sameGroup(target, c)) return false;
+            if (avoidHomophone && tTone && gpToneless(info.pinyin) === tTone) return false;
+            if (validator && !validator(c)) return false;
+            return true;
+        };
+        const need = Math.max(0, total - 1);
+
+        const visual = gpShuffle((GP_VISUAL_CONFUSERS[target] || '').split(''));
+        for (const c of visual) {
+            if (picked.length >= 1) break;
+            if (ok(c)) picked.push(c);
+        }
+
+        const src = gpShuffle((pool && pool.length ? pool : this.allChars).slice());
+        let sameCat = 0;
+        for (const c of src) {
+            if (picked.length >= need || sameCat >= sameCatCount) break;
+            const info = this.info(c);
+            if (info && info.catId === tInfo.catId && ok(c)) {
+                picked.push(c);
+                sameCat++;
+            }
+        }
+        for (const c of src) {
+            if (picked.length >= need) break;
+            if (ok(c)) picked.push(c);
+        }
+        return gpShuffle([target, ...picked.slice(0, need)]);
+    }
+
+    // ==================== 声音、计时器与本地存储 ====================
+    soundOn() {
+        return !!(window.soundManager && window.soundManager.enabled !== false);
+    }
+
+    speak(text, onEnd) {
+        if (!text || this.activeAppTab !== 'exam' || !this.soundOn()) {
+            return;
+        }
+        try {
+            window.soundManager.speak(text, onEnd);
+        } catch (e) {}
+    }
+
+    charPrompt(ch) {
+        const info = this.info(ch);
+        const w = info ? info.words.find(x => x.length === 2 && x.includes(ch) && x[0] !== x[1]) : null;
+        return w ? `${ch}，${w}的${ch}` : ch;
+    }
+
+    sayChar(ch, onEnd) {
+        this.speak(this.charPrompt(ch), onEnd);
+    }
+
+    sfx(name) {
+        const sm = window.soundManager;
+        if (sm && typeof sm[name] === 'function') {
+            try { sm[name](); } catch (e) {}
+        }
+    }
+
+    later(fn, ms) {
+        const id = setTimeout(() => {
+            this.timers.delete(id);
+            fn();
+        }, ms);
+        this.timers.add(id);
+        return id;
+    }
+
+    clearTimers() {
+        this.timers.forEach(id => clearTimeout(id));
+        this.timers.clear();
+    }
+
+    moleLater(fn, ms) {
+        const id = setTimeout(() => {
+            this.moleTimers.delete(id);
+            fn();
+        }, ms);
+        this.moleTimers.add(id);
+        return id;
+    }
+
+    clearMoleTimers() {
+        this.moleTimers.forEach(id => clearTimeout(id));
+        this.moleTimers.clear();
+    }
+
+    loadJSON(key, fallback) {
+        try {
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+        } catch (e) {
+            return fallback;
+        }
+    }
+
+    saveJSON(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {}
+    }
+
+    todayKey() {
+        const d = new Date();
+        return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    }
+
+    loadToday() {
+        const saved = this.loadJSON('kid_app_game_today_v1', null);
+        if (saved && saved.date === this.todayKey()) return saved;
+        return { date: this.todayKey(), stars: 0 };
+    }
+
+    // ==================== 主 Tab 切换（🎮 闯关乐园 / ✍️ 趣味练字） ====================
     switchAppTab(tabName = 'practice') {
         this.initIfNeeded();
         this.activeAppTab = tabName;
@@ -299,23 +425,23 @@ class ExamCenter {
         const practiceTabBtn = document.getElementById('primary-tab-practice');
         const examTabBtn = document.getElementById('primary-tab-exam');
         const examContainer = document.getElementById('exam-view-container');
-
-        if (practiceTabBtn) practiceTabBtn.classList.toggle('active', tabName === 'practice');
-        if (examTabBtn) examTabBtn.classList.toggle('active', tabName === 'exam');
+        [[practiceTabBtn, 'practice'], [examTabBtn, 'exam']].forEach(([btn, name]) => {
+            if (!btn) return;
+            btn.classList.toggle('active', tabName === name);
+            btn.setAttribute('aria-selected', tabName === name ? 'true' : 'false');
+        });
+        if (examContainer) examContainer.style.display = '';
 
         if (tabName === 'exam') {
             document.body.classList.add('app-mode-exam');
-            if (examContainer) examContainer.style.display = 'flex';
-            setTimeout(() => {
-                if (this.examCanvas) {
-                    this.examCanvas.resize(true);
-                }
-                this.renderAntonymLines();
-            }, 60);
+            this.later(() => this.onStageVisible(), 60);
         } else {
-            this.stopStrokeStepAnimation();
+            this.pauseMole();
+            this.stopStrokeAnimation();
+            if (window.soundManager && typeof window.soundManager.stopSpeaking === 'function') {
+                window.soundManager.stopSpeaking();
+            }
             document.body.classList.remove('app-mode-exam');
-            if (examContainer) examContainer.style.display = 'none';
             setTimeout(() => {
                 if (this.app && this.app.canvasEngine) {
                     this.app.canvasEngine.resize(true);
@@ -323,6 +449,12 @@ class ExamCenter {
                 if (this.app && this.app.hanziGuide && typeof this.app.hanziGuide.resize === 'function') {
                     this.app.hanziGuide.resize();
                 }
+                try {
+                    const activeCat = document.querySelector('.cat-tab-btn.active');
+                    if (activeCat) activeCat.scrollIntoView({ block: 'nearest', inline: 'center' });
+                    const activeChar = document.querySelector('.char-card-btn.active');
+                    if (activeChar) activeChar.scrollIntoView({ block: 'nearest', inline: 'center' });
+                } catch (e) {}
             }, 60);
         }
     }
@@ -335,1093 +467,1541 @@ class ExamCenter {
         this.switchAppTab('practice');
     }
 
-    // 加载或刷新测试题库
-    loadPaper(shuffle = false) {
-        this.stopStrokeStepAnimation();
-
-        if (!shuffle) {
-            // 默认首套精选测试题（包含看图写字8题、数笔画5题、反义词连线6组）
-            const rawList = CHUNYU_K_EXAM_DATA.picWriteFull.filter(q => q.isFocus);
-            this.picQuestions = rawList.map(item => this.buildPicQuestion(item));
-            this.strokeQuestions = CHUNYU_K_EXAM_DATA.strokeQuestions.slice(0, 5).map(q => ({
-                ...q,
-                userTotal: null,
-                userStrokeId: null,
-                checked: false,
-                isCorrect: false
-            }));
-            this.antonymPairs = CHUNYU_K_EXAM_DATA.antonymPairs.map(p => ({ ...p }));
-            this.rightColChars = [...CHUNYU_K_EXAM_DATA.rightColumnOrder];
-        } else {
-            // 换一套题：从全题库随机抽取 8 道看图写字、5 道数笔画、6 组反义词
-            const pool = this.shuffleArray([...CHUNYU_K_EXAM_DATA.picWriteFull]).slice(0, 8);
-            this.picQuestions = pool.map(item => this.buildPicQuestion(item));
-
-            const stkPool = this.shuffleArray([...EXTRA_STROKE_QUESTION_POOL]).slice(0, 5);
-            this.strokeQuestions = stkPool.map(q => ({
-                ...q,
-                userTotal: null,
-                userStrokeId: null,
-                checked: false,
-                isCorrect: false
-            }));
-
-            const antPool = this.shuffleArray([...EXTRA_ANTONYM_POOL]).slice(0, 6);
-            this.antonymPairs = antPool.map(p => ({ ...p }));
-            this.rightColChars = this.shuffleArray(this.antonymPairs.map(p => p.right));
+    onStageVisible() {
+        if (this.activeGame === 'picwrite' && this.examCanvas) {
+            this.examCanvas.resize(true);
+        } else if (this.activeGame === 'antonym') {
+            this.renderAntonymLines();
         }
-
-        this.currentPicIdx = 0;
-        this.currentStrokeIdx = 0;
-        this.selectedLeftChar = null;
-        this.selectedRightChar = null;
-        this.matchedPairs = {};
-
-        this.renderCurrentPicQuestion();
-        this.renderCurrentStrokeQuestion();
-        this.renderAntonymSection();
-        this.updateOverallProgress();
     }
 
-    buildPicQuestion(item) {
-        const info = (typeof getCharInfo === 'function') ? getCharInfo(item.char) : null;
-        const illUrl = (info && info.image) || (window.CHARACTER_ILLUSTRATION_MAP && window.CHARACTER_ILLUSTRATION_MAP[item.char]) || '';
-        return {
-            char: item.char,
-            altChars: item.altChars || [],
-            pinyin: (info && info.pinyin) || '',
-            en: (info && info.en) || '',
-            strokes: (info && info.strokes) || (window.STROKE_DATA_CACHE && window.STROKE_DATA_CACHE[item.char] ? window.STROKE_DATA_CACHE[item.char].strokes.length : 1),
-            hintWord: item.hintWord || ((info && info.words && info.words.slice(0, 2).join('、')) || item.char),
-            note: item.note || '',
-            isFocus: !!item.isFocus,
-            image: illUrl,
-            status: 'pending', // 'pending' | 'correct' | 'wrong'
-            score: 0,
-            traceHintUsed: false
+    // ==================== 游戏大厅 ====================
+    showHub() {
+        this.clearTimers();
+        this.pauseMole();
+        this.stopStrokeAnimation();
+        this.activeGame = null;
+
+        const hub = document.getElementById('game-hub');
+        const stage = document.getElementById('game-stage');
+        if (hub) hub.hidden = false;
+        if (stage) stage.hidden = true;
+        this.renderHub();
+    }
+
+    renderHub() {
+        const grid = document.getElementById('game-card-grid');
+        if (grid) {
+            grid.innerHTML = GP_GAMES.map((g, i) => `
+                <button type="button" class="game-card theme-${g.theme}" data-game="${g.id}" style="--n:${i}" aria-label="${g.title}：${g.desc}">
+                    <span class="game-card-art"><span class="game-card-emoji">${g.icon}</span></span>
+                    <span class="game-card-body">
+                        <span class="game-card-title">${g.title}</span>
+                        <span class="game-card-desc">${g.desc}</span>
+                    </span>
+                    <span class="game-card-foot">
+                        <span class="game-card-stars">⭐ ${this.storedStars[g.id] || 0}</span>
+                        <span class="game-card-play">开始 ▶</span>
+                    </span>
+                </button>
+            `).join('');
+        }
+        const today = document.getElementById('game-hub-today');
+        if (today) today.textContent = `⭐ 今日 ${this.todayStats.stars}`;
+    }
+
+    enterGame(gameId) {
+        const g = GP_GAMES.find(x => x.id === gameId);
+        if (!g) return;
+        this.clearTimers();
+        this.pauseMole();
+        this.stopStrokeAnimation();
+
+        this.activeGame = gameId;
+        this.combo = 0;
+        this.sessionStars = 0;
+
+        const hub = document.getElementById('game-hub');
+        const stage = document.getElementById('game-stage');
+        if (hub) hub.hidden = true;
+        if (stage) {
+            stage.hidden = false;
+            stage.className = `game-stage theme-${g.theme}`;
+        }
+        const icon = document.getElementById('game-title-icon');
+        const title = document.getElementById('game-title-text');
+        if (icon) icon.textContent = g.icon;
+        if (title) title.textContent = g.title;
+        document.querySelectorAll('.game-panel').forEach(p => {
+            p.classList.toggle('active', p.dataset.game === gameId);
+        });
+        this.updateStats();
+        this.setMascot(g.intro, 'idle');
+
+        // 自带语音题干的游戏不再额外朗读介绍，避免语音互相打断
+        const selfVoiced = ['listen', 'word', 'stroke', 'mole'];
+        if (!selfVoiced.includes(gameId) && !this.introSpoken[gameId]) {
+            this.introSpoken[gameId] = true;
+            this.speak(g.intro);
+        }
+
+        const starters = {
+            picwrite: () => this.startPicwrite(),
+            balloon: () => this.nextBalloon(),
+            listen: () => this.startListen(),
+            word: () => this.nextWord(),
+            stroke: () => this.nextStroke(),
+            antonym: () => this.newAntonymRound(),
+            memory: () => this.newMemoryRound(),
+            mole: () => this.startMole()
         };
+        if (starters[gameId]) starters[gameId]();
     }
 
-    shuffleArray(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    // ==================== 公共反馈：熊猫老师、金星、连对 ====================
+    setMascot(html, mood = 'idle') {
+        const faces = { idle: '🐼', happy: '🥳', oops: '🤔', wow: '🤩', think: '🧐' };
+        const face = document.getElementById('game-mascot-face');
+        const bubble = document.getElementById('game-mascot-bubble');
+        if (face) {
+            face.textContent = faces[mood] || '🐼';
+            face.classList.remove('bounce');
+            void face.offsetWidth;
+            face.classList.add('bounce');
         }
-        return arr;
-    }
-
-    switchSection(secId) {
-        this.activeSection = secId;
-        this.stopStrokeStepAnimation();
-
-        document.querySelectorAll('.exam-sec-tab').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.sec === secId);
-        });
-        document.querySelectorAll('.exam-sec-panel').forEach(panel => {
-            panel.classList.toggle('active', panel.id === `exam-panel-${secId}`);
-        });
-
-        if (secId === 'sec1' && this.examCanvas) {
-            setTimeout(() => this.examCanvas.resize(true), 60);
-        } else if (secId === 'sec3') {
-            setTimeout(() => this.renderAntonymLines(), 60);
+        if (bubble) {
+            bubble.innerHTML = html;
+            bubble.classList.remove('pop');
+            void bubble.offsetWidth;
+            bubble.classList.add('pop');
         }
     }
 
-    // ==================== 第一关：看图写汉字 ====================
-    renderPicNavStrip() {
-        const strip = document.getElementById('exam-pic-nav-strip');
-        if (!strip) return;
-        strip.innerHTML = '';
+    praise() {
+        if (this.combo >= 3) {
+            return gpPick([`连对 ${this.combo} 次，太厉害啦！`, `${this.combo} 连对！你是汉字小达人！`, `连对 ${this.combo} 次，继续加油！`]);
+        }
+        return gpPick(GP_PRAISES);
+    }
 
-        this.picQuestions.forEach((q, idx) => {
-            const pill = document.createElement('button');
-            pill.type = 'button';
-            let statusCls = '';
-            let badgeText = `${idx + 1}`;
-            if (q.status === 'correct') {
-                statusCls = 'is-correct';
-                badgeText = `${idx + 1} ✓`;
-            } else if (q.status === 'wrong') {
-                statusCls = 'is-wrong';
-                badgeText = `${idx + 1} ✗`;
-            }
-            pill.className = `exam-q-pill ${idx === this.currentPicIdx ? 'active' : ''} ${statusCls} ${q.isFocus ? 'is-focus' : ''}`;
-            pill.textContent = badgeText;
-            pill.title = q.status === 'correct' ? `第 ${idx + 1} 题（已答对：${q.char}）` : `第 ${idx + 1} 题`;
-            pill.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.currentPicIdx = idx;
-                this.renderCurrentPicQuestion();
+    registerCorrect() {
+        this.combo += 1;
+        this.updateStats();
+        if (this.combo >= 5 && this.combo % 5 === 0) {
+            if (this.app && typeof this.app.fireConfetti === 'function') this.app.fireConfetti();
+            this.sfx('playFanfare');
+        }
+    }
+
+    registerWrong() {
+        this.combo = 0;
+        this.updateStats();
+    }
+
+    updateStats() {
+        const starsEl = document.getElementById('game-stars');
+        if (starsEl) starsEl.textContent = `⭐ ${this.sessionStars}`;
+        const comboEl = document.getElementById('game-combo');
+        if (comboEl) {
+            comboEl.hidden = this.combo < 2;
+            comboEl.textContent = `🔥 连对 ×${this.combo}`;
+        }
+    }
+
+    awardStars(n, anchorEl = null) {
+        if (!n || n <= 0) return;
+        this.sessionStars += n;
+        const g = this.activeGame;
+        if (g) {
+            this.storedStars[g] = (this.storedStars[g] || 0) + n;
+            this.saveJSON('kid_app_game_stars_v1', this.storedStars);
+        }
+        if (this.todayStats.date !== this.todayKey()) this.todayStats = { date: this.todayKey(), stars: 0 };
+        this.todayStats.stars += n;
+        this.saveJSON('kid_app_game_today_v1', this.todayStats);
+        if (this.app && typeof this.app.addStars === 'function') this.app.addStars(n, '汉字闯关乐园');
+
+        this.updateStats();
+        const starsEl = document.getElementById('game-stars');
+        if (starsEl) {
+            starsEl.classList.remove('bump');
+            void starsEl.offsetWidth;
+            starsEl.classList.add('bump');
+        }
+        if (anchorEl) this.floatReward(anchorEl, `+${n} ⭐`);
+    }
+
+    floatReward(anchorEl, text) {
+        try {
+            const r = anchorEl.getBoundingClientRect();
+            if (!r.width && !r.height) return;
+            const el = document.createElement('div');
+            el.className = 'gp-float-reward';
+            el.textContent = text;
+            el.style.left = `${r.left + r.width / 2}px`;
+            el.style.top = `${r.top + Math.min(r.height * 0.35, 60)}px`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1200);
+        } catch (e) {}
+    }
+
+    burstAt(el, colors) {
+        if (typeof confetti !== 'function' || !el) return;
+        try {
+            const r = el.getBoundingClientRect();
+            confetti({
+                particleCount: 26,
+                spread: 70,
+                startVelocity: 22,
+                scalar: 0.75,
+                ticks: 80,
+                origin: {
+                    x: (r.left + r.width / 2) / window.innerWidth,
+                    y: (r.top + r.height / 2) / window.innerHeight
+                },
+                colors: colors || ['#f472b6', '#facc15', '#60a5fa', '#34d399', '#a78bfa']
             });
-            strip.appendChild(pill);
-        });
+        } catch (e) {}
     }
 
-    renderCurrentPicQuestion() {
-        this.renderPicNavStrip();
-        const q = this.picQuestions[this.currentPicIdx];
-        if (!q) return;
+    flash(el, cls, ms = 500) {
+        if (!el) return;
+        el.classList.remove(cls);
+        void el.offsetWidth;
+        el.classList.add(cls);
+        setTimeout(() => el.classList.remove(cls), ms);
+    }
 
-        const indexLabel = document.getElementById('exam-pic-index-label');
-        if (indexLabel) {
-            indexLabel.innerHTML = `第 <strong>${this.currentPicIdx + 1}</strong> / ${this.picQuestions.length} 题`;
+    // ==================== 游戏 1：✍️ 看图写字（自由默写 + 智能识别） ====================
+    startPicwrite() {
+        this.nextPicwrite();
+        this.later(() => {
+            if (this.examCanvas) this.examCanvas.resize(true);
+        }, 60);
+    }
+
+    nextPicwrite() {
+        const ch = this.pickNext('picwrite', this.writingPool);
+        if (!ch) return;
+        const info = this.info(ch) || { pinyin: '', image: '' };
+        this.pw = { char: ch, usedHint: false, usedTrace: false, status: 'pending', failCount: 0 };
+
+        const img = document.getElementById('pw-img');
+        if (img) {
+            img.src = info.image;
+            img.alt = '看图写字：图上画的是什么？';
+            this.flash(img, 'gp-pop-in', 500);
         }
-
-        const imgEl = document.getElementById('exam-pic-img');
-        if (imgEl) {
-            imgEl.src = q.image;
-            imgEl.alt = '看图写汉字题目插画';
+        const stamp = document.getElementById('pw-stamp');
+        if (stamp) {
+            stamp.className = 'pw-stamp';
+            stamp.textContent = '';
         }
-
-        const stampEl = document.getElementById('exam-pic-grade-stamp');
-        if (stampEl) {
-            if (q.status === 'correct') {
-                stampEl.className = 'exam-grade-stamp correct visible';
-                stampEl.textContent = '✓';
-            } else if (q.status === 'wrong') {
-                stampEl.className = 'exam-grade-stamp wrong visible';
-                stampEl.textContent = '✗';
-            } else {
-                stampEl.className = 'exam-grade-stamp';
-                stampEl.textContent = '';
-            }
+        const pyTag = document.getElementById('pw-pinyin');
+        if (pyTag) {
+            pyTag.hidden = true;
+            pyTag.textContent = info.pinyin;
         }
+        this.setTraceButton(false);
+        this.setPwFeedback('idle');
+        this.setPwSubmitLabel(false);
 
-        // 重置答案揭晓区与描红状态
-        const feedbackBox = document.getElementById('exam-pic-feedback');
-        if (feedbackBox) {
-            if (q.status === 'correct') {
-                feedbackBox.className = 'exam-pic-feedback is-correct';
-                feedbackBox.innerHTML = `
-                    <div class="exam-fb-header">
-                        <span class="exam-fb-char">${q.char}</span>
-                        <div class="exam-fb-meta">
-                            <strong>🎉 默写正确！(${q.pinyin} · ${q.strokes}画)</strong>
-                            <span>组词：${q.hintWord} ${q.note ? '｜' + q.note : ''}</span>
-                        </div>
-                    </div>
-                `;
-            } else {
-                feedbackBox.className = 'exam-pic-feedback';
-                feedbackBox.innerHTML = `
-                    <div class="exam-fb-placeholder">
-                        👀 仔细看上面的图画，在右侧米字格里<strong>凭记忆写出对应的汉字</strong>，写完点【✅ 提交批改】！
-                        ${q.note ? `<div class="exam-fb-note">💡 温馨提示：${q.note}</div>` : ''}
-                    </div>
-                `;
-            }
-        }
-
-        // 设置画板目标字模（默认关闭描红，真正考察默写）
         if (this.examCanvas) {
-            const cachedData = window.STROKE_DATA_CACHE ? window.STROKE_DATA_CACHE[q.char] : null;
-            this.examCanvas.setCharacter(q.char, cachedData);
+            const cache = window.STROKE_DATA_CACHE || {};
+            this.examCanvas.setCharacter(ch, cache[ch] || null);
             this.examCanvas.setTraceSettings(false);
             this.examCanvas.clear(false);
         }
-        const traceBtn = document.getElementById('btn-exam-toggle-trace');
-        if (traceBtn) {
-            traceBtn.classList.remove('active');
-            traceBtn.innerHTML = '💡 描红提示';
-        }
+        this.setMascot('图上画的是什么？在米字格里写出来吧！', 'idle');
     }
 
-    speakCurrentPicHint() {
-        const q = this.picQuestions[this.currentPicIdx];
-        if (!q || !window.soundManager) return;
-        window.soundManager.playPop();
-        window.soundManager.speak(`请写出：${q.char}，${q.hintWord.split('、')[0]}的${q.char}`);
+    setTraceButton(on) {
+        const btn = document.getElementById('btn-pw-trace');
+        if (!btn) return;
+        btn.classList.toggle('active', on);
+        btn.textContent = on ? '🙈 收起描红' : '✏️ 描红';
     }
 
-    toggleExamTraceHint() {
-        const q = this.picQuestions[this.currentPicIdx];
-        if (!q || !this.examCanvas) return;
-        if (window.soundManager) window.soundManager.playPop();
-
-        const nextState = !this.examCanvas.showTrace;
-        this.examCanvas.setTraceSettings(nextState);
-        if (nextState) {
-            q.traceHintUsed = true;
-        }
-        const traceBtn = document.getElementById('btn-exam-toggle-trace');
-        if (traceBtn) {
-            traceBtn.classList.toggle('active', nextState);
-            traceBtn.innerHTML = nextState ? '🙈 隐藏描红' : '💡 描红提示';
-        }
+    setPwSubmitLabel(isNext) {
+        const btn = document.getElementById('btn-exam-submit-pic');
+        if (btn) btn.textContent = isNext ? '下一题 ➔' : '✅ 写好了';
     }
 
-    submitCurrentPicWriting() {
-        const q = this.picQuestions[this.currentPicIdx];
-        if (!q || !this.examCanvas) return;
+    setPwFeedback(state, html = '') {
+        const box = document.getElementById('pw-feedback');
+        if (!box) return;
+        box.className = `pw-feedback ${state === 'correct' ? 'is-correct' : (state === 'wrong' ? 'is-wrong' : '')}`;
+        box.innerHTML = state === 'idle'
+            ? '<div class="pw-fb-idle">👀 看图想一想，在米字格里写出这个字，写好后点 <strong>✅ 写好了</strong>！</div>'
+            : html;
+    }
 
-        if (!this.examCanvas.hasDrawing()) {
-            if (window.soundManager) window.soundManager.playPop();
-            if (this.app) this.app.showToast('✏️ 请先在右侧米字格里写出汉字，再点击提交批改哦！');
+    pwSubmit() {
+        if (!this.pw || !this.examCanvas) return;
+        if (this.pw.status === 'correct') {
+            this.sfx('playPop');
+            this.nextPicwrite();
             return;
         }
+        if (!this.examCanvas.hasDrawing()) {
+            this.sfx('playPop');
+            if (this.app) this.app.showToast('✏️ 先在米字格里写出汉字，再点“写好了”哦！');
+            return;
+        }
+        const evaluator = window.chineseWritingEvaluator;
+        if (!evaluator || typeof evaluator.recognizeAndEvaluateFreehand !== 'function') return;
 
-        // 支持一图多解（如试卷第16题“人/入”均可得分）+ 归一化骨架自由默写识别
-        const candidateChars = [q.char, ...(q.altChars || [])];
-        const recResult = window.chineseWritingEvaluator.recognizeAndEvaluateFreehand(
+        const ch = this.pw.char;
+        const res = evaluator.recognizeAndEvaluateFreehand(
             this.examCanvas.drawCanvas,
-            candidateChars,
+            [ch],
             this.examCanvas.strokeList,
             this.examCanvas.cssSize
         );
-
-        if (!recResult || !recResult.valid) {
-            if (this.app) this.app.showToast(recResult ? recResult.message : '请多写几笔再提交批改哦！');
+        if (!res || !res.valid) {
+            if (this.app) this.app.showToast(res ? res.message : '请多写几笔再提交哦！');
             return;
         }
 
-        const isPass = recResult.isPass;
-        const matchedChar = recResult.matchedChar;
-        const expectedStrokes = recResult.expectedStrokes;
-        const userStrokes = recResult.userStrokes;
+        const info = this.info(ch) || { pinyin: '' };
+        const stamp = document.getElementById('pw-stamp');
+        const word = (info.words || []).find(w => w.length === 2 && w.includes(ch)) || '';
 
-        const stampEl = document.getElementById('exam-pic-grade-stamp');
-        const feedbackBox = document.getElementById('exam-pic-feedback');
-
-        if (isPass) {
-            const wasAlreadyCorrect = (q.status === 'correct');
-            q.status = 'correct';
-            q.score = recResult.totalScore;
-
-            if (stampEl) {
-                stampEl.className = 'exam-grade-stamp correct visible pop-in';
-                stampEl.textContent = '✓';
+        if (res.isPass) {
+            this.pw.status = 'correct';
+            const stars = (this.pw.failCount > 0 || this.pw.usedTrace) ? 1 : (this.pw.usedHint ? 2 : 3);
+            if (stamp) {
+                stamp.className = 'pw-stamp correct show';
+                stamp.textContent = '✓';
             }
+            this.registerCorrect();
+            this.awardStars(stars, stamp);
+            if (this.app && typeof this.app.markCharCompleted === 'function') this.app.markCharCompleted(ch);
 
-            const strokeTip = recResult.strokeDiff !== 0
-                ? `（注意标准为 ${expectedStrokes} 画，折笔一笔写成更规范哦）`
-                : `· 共 ${expectedStrokes} 画`;
-
-            if (feedbackBox) {
-                feedbackBox.className = 'exam-pic-feedback is-correct';
-                feedbackBox.innerHTML = `
-                    <div class="exam-fb-header">
-                        <span class="exam-fb-char">${matchedChar}</span>
-                        <div class="exam-fb-meta">
-                            <strong>🎉 太棒啦！默写正确 (${recResult.totalScore}分 · +3 ⭐)</strong>
-                            <span>【${matchedChar}】(${q.pinyin}) ${strokeTip} · 组词：${q.hintWord}</span>
-                        </div>
-                        <button type="button" class="btn-exam-inline-next" id="btn-exam-fb-next">下一题 ➔</button>
+            const strokeTip = res.strokeDiff !== 0 ? `（标准写法是 ${res.expectedStrokes} 画哦）` : '';
+            this.setPwFeedback('correct', `
+                <div class="pw-fb-row">
+                    <span class="pw-fb-char">${ch}</span>
+                    <div class="pw-fb-text">
+                        <strong>🎉 写对啦！+${stars} ⭐</strong>
+                        <span>${info.pinyin}${word ? ' · ' + word : ''}${strokeTip}</span>
                     </div>
-                `;
-                const nextBtn = document.getElementById('btn-exam-fb-next');
-                if (nextBtn) {
-                    nextBtn.addEventListener('click', () => this.nextPicQuestion());
-                }
-            }
-
-            if (!wasAlreadyCorrect && this.app) {
-                this.app.addStars(3, '看图默写闯关');
-                this.app.markCharCompleted(matchedChar);
-            }
-            if (window.soundManager) {
-                window.soundManager.playVictory();
-                window.soundManager.speak(`答对啦！这是“${matchedChar}”字，写得真棒！`);
-            }
+                    <button type="button" class="btn-game-primary" data-pw-act="next">下一题 ➔</button>
+                </div>
+            `);
+            this.setPwSubmitLabel(true);
+            this.sfx('playVictory');
+            this.setMascot(`${this.praise()} 就是“${ch}”字！`, 'happy');
+            this.speak(`写对啦！${this.charPrompt(ch)}`);
         } else {
-            q.status = 'wrong';
-            q.score = recResult.totalScore;
-
-            if (stampEl) {
-                stampEl.className = 'exam-grade-stamp wrong visible pop-in';
-                stampEl.textContent = '✗';
+            this.pw.status = 'wrong';
+            this.pw.failCount += 1;
+            if (stamp) {
+                stamp.className = 'pw-stamp wrong show';
+                stamp.textContent = '✗';
             }
+            this.registerWrong();
 
-            let reasonHint = `正确答案是【${q.char}】（共 ${expectedStrokes} 画，你写了 ${userStrokes} 画）。`;
-            if (recResult.confusedWithChar) {
-                reasonHint = `系统识别你写的更像【${recResult.confusedWithChar}】字哦！本题图片是【${q.char}】（共 ${expectedStrokes} 画）。`;
-            } else if (!recResult.strokeCountAcceptable) {
-                reasonHint = `笔画数不对哦：【${q.char}】一共有 ${expectedStrokes} 画，你写了 ${userStrokes} 画。`;
-            } else {
-                reasonHint = `字形结构与【${q.char}】还有差距（共 ${expectedStrokes} 画，可点下方“描红订正”跟着写一遍）！`;
+            let reason = `这个字是“${ch}”，一共 ${res.expectedStrokes} 画。`;
+            if (res.confusedWithChar) {
+                reason = `你写的更像“${res.confusedWithChar}”字哦！图上是“${ch}”。`;
+            } else if (!res.strokeCountAcceptable) {
+                reason = `“${ch}”一共 ${res.expectedStrokes} 画，你写了 ${res.userStrokes} 画。`;
             }
-
-            if (feedbackBox) {
-                feedbackBox.className = 'exam-pic-feedback is-wrong';
-                feedbackBox.innerHTML = `
-                    <div class="exam-fb-header">
-                        <span class="exam-fb-char wrong">${q.char}</span>
-                        <div class="exam-fb-meta">
-                            <strong>🤔 没关系，我们来看看正确答案：【${q.char}】(${q.pinyin} · ${expectedStrokes}画)</strong>
-                            <span>${reasonHint} ${q.note ? '｜' + q.note : ''}</span>
-                        </div>
-                        <button type="button" class="btn-exam-inline-trace" id="btn-exam-fb-trace">✍️ 描红订正一遍</button>
+            this.setPwFeedback('wrong', `
+                <div class="pw-fb-row">
+                    <span class="pw-fb-char wrong">${ch}</span>
+                    <div class="pw-fb-text">
+                        <strong>🤔 差一点点！正确答案：${ch}（${info.pinyin}）</strong>
+                        <span>${reason}</span>
                     </div>
-                `;
-                const traceCorrectBtn = document.getElementById('btn-exam-fb-trace');
-                if (traceCorrectBtn) {
-                    traceCorrectBtn.addEventListener('click', () => {
-                        if (this.examCanvas) {
-                            this.examCanvas.clear(false);
-                            this.examCanvas.setTraceSettings(true);
-                        }
-                        const traceBtn = document.getElementById('btn-exam-toggle-trace');
-                        if (traceBtn) {
-                            traceBtn.classList.add('active');
-                            traceBtn.innerHTML = '🙈 隐藏描红';
-                        }
-                        if (window.soundManager) {
-                            window.soundManager.playPop();
-                            window.soundManager.speak(`来，跟着红色底样把“${q.char}”字端正地描一遍吧！`);
-                        }
-                    });
-                }
-            }
-
-            if (window.soundManager) {
-                window.soundManager.playPop();
-                window.soundManager.speak(`这个图是“${q.char}”字，一共${expectedStrokes}画，点描红订正写一遍吧！`);
-            }
-        }
-
-        this.renderPicNavStrip();
-        this.updateOverallProgress();
-    }
-
-    prevPicQuestion() {
-        if (window.soundManager) window.soundManager.playPop();
-        if (this.currentPicIdx > 0) {
-            this.currentPicIdx--;
-            this.renderCurrentPicQuestion();
+                    <div class="pw-fb-actions">
+                        <button type="button" class="btn-hint tone-red" data-pw-act="trace">✏️ 描红订正</button>
+                        <button type="button" class="btn-hint tone-blue" data-pw-act="next">下一题 ➔</button>
+                    </div>
+                </div>
+            `);
+            this.sfx('playMistake');
+            this.setMascot(`差一点点！这个字是“${ch}”，描红写一遍吧！`, 'oops');
+            this.speak(`这个字是${this.charPrompt(ch)}，我们描红写一遍吧！`);
         }
     }
 
-    nextPicQuestion() {
-        if (window.soundManager) window.soundManager.playPop();
-        if (this.currentPicIdx < this.picQuestions.length - 1) {
-            this.currentPicIdx++;
-            this.renderCurrentPicQuestion();
-        } else {
-            // 第一大题最后一题完成后引导进入第二大题
-            if (this.app) {
-                this.app.showToast('🎉 第一关【看图写汉字】已到最后一题，快去挑战第二关【数笔画，填空】吧！');
+    pwFeedbackAction(act) {
+        if (act === 'next') {
+            this.sfx('playPop');
+            this.nextPicwrite();
+        } else if (act === 'trace') {
+            this.sfx('playPop');
+            if (this.examCanvas) {
+                this.examCanvas.clear(false);
+                this.examCanvas.setTraceSettings(true);
             }
-            this.switchSection('sec2');
+            this.pw.usedTrace = true;
+            this.setTraceButton(true);
+            this.setMascot(`跟着红色底字，把“${this.pw.char}”描一遍，再点“写好了”！`, 'think');
         }
     }
 
-    // ==================== 第二关：数笔画，填空 ====================
-    renderStrokeNavStrip() {
-        const strip = document.getElementById('exam-stroke-nav-strip');
-        if (!strip) return;
-        strip.innerHTML = '';
+    // ==================== 游戏 2：🎈 气球选字 ====================
+    nextBalloon() {
+        const ch = this.pickNext('balloon', this.picturePool);
+        if (!ch) return;
+        const info = this.info(ch);
+        const options = this.buildOptions(ch, 4, { pool: this.picturePool, sameCatCount: 1 });
+        this.bl = { char: ch, tries: 0, hinted: false, locked: false };
 
-        this.strokeQuestions.forEach((q, idx) => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            let cls = '';
-            let txt = `(${idx + 1}) “${q.char}”`;
-            if (q.checked && q.isCorrect) {
-                cls = 'is-correct';
-                txt += ' ✓';
-            } else if (q.checked && !q.isCorrect) {
-                cls = 'is-wrong';
-                txt += ' ✗';
-            }
-            btn.className = `exam-q-pill ${idx === this.currentStrokeIdx ? 'active' : ''} ${cls}`;
-            btn.textContent = txt;
-            btn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.currentStrokeIdx = idx;
-                this.renderCurrentStrokeQuestion();
-            });
-            strip.appendChild(btn);
-        });
-    }
-
-    renderCurrentStrokeQuestion() {
-        this.stopStrokeStepAnimation();
-        this.renderStrokeNavStrip();
-
-        const q = this.strokeQuestions[this.currentStrokeIdx];
-        if (!q) return;
-
-        // 默认不提前剧透高亮目标笔画；若已提交则直接高亮第 k 画
-        this.highlightedStrokeIdx = q.checked ? (q.askIndex - 1) : -1;
-        this.renderStrokeCharSVG(q.char, this.highlightedStrokeIdx, q.checked ? q.totalStrokes : 0);
-
-        // 渲染填空句子：“来” 一共有 [ ? ] 画，第 四 画是 [ ? ]。
-        const sentenceEl = document.getElementById('exam-stroke-sentence');
-        if (sentenceEl) {
-            const selectedStrokeObj = STROKE_SHAPE_OPTIONS.find(o => o.id === q.userStrokeId);
-            const blank1Text = q.userTotal !== null ? `${q.userTotal}` : '？';
-            const blank2Text = selectedStrokeObj ? `${selectedStrokeObj.symbol} (${selectedStrokeObj.name})` : '请选择笔画';
-
-            let b1Class = q.userTotal !== null ? 'filled' : '';
-            let b2Class = selectedStrokeObj ? 'filled' : '';
-            if (q.checked) {
-                b1Class = (q.userTotal === q.totalStrokes) ? 'correct' : 'wrong';
-                b2Class = (q.userStrokeId === q.answerId) ? 'correct' : 'wrong';
-            }
-
-            sentenceEl.innerHTML = `
-                <span class="stk-q-num">（${this.currentStrokeIdx + 1}）</span>
-                <span class="stk-q-char">“${q.char}”</span>
-                <span>一共有</span>
-                <span class="stk-blank-pill ${b1Class}" id="stk-blank-total">${blank1Text}</span>
-                <span>画，第<strong>${q.askIndexCn}</strong>画是</span>
-                <span class="stk-blank-pill wide ${b2Class}" id="stk-blank-shape">${blank2Text}</span>
-                <span>。</span>
+        const img = document.getElementById('bl-img');
+        if (img) {
+            img.src = info.image;
+            img.alt = '气球选字：图上是什么字？';
+            this.flash(img, 'gp-pop-in', 500);
+        }
+        const colors = gpShuffle(['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'teal']);
+        const sky = document.getElementById('bl-sky');
+        if (sky) {
+            sky.innerHTML = `
+                <span class="bl-cloud c1" aria-hidden="true">☁️</span>
+                <span class="bl-cloud c2" aria-hidden="true">☁️</span>
+                <span class="bl-cloud c3" aria-hidden="true">☁️</span>
+                ${options.map((c, i) => `
+                    <button type="button" class="balloon bc-${colors[i % colors.length]}" data-char="${c}" style="--i:${i}" aria-label="气球：${c}">
+                        <span class="balloon-body"><span class="balloon-char">${c}</span></span>
+                        <span class="balloon-tie"></span>
+                        <span class="balloon-string"></span>
+                    </button>
+                `).join('')}
             `;
         }
-
-        // 渲染第一空：数字键盘 (1 ~ 10)
-        const numPad = document.getElementById('exam-stroke-numpad');
-        if (numPad) {
-            numPad.innerHTML = '';
-            for (let n = 1; n <= 10; n++) {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = `stk-num-btn ${q.userTotal === n ? 'active' : ''}`;
-                btn.textContent = `${n}画`;
-                btn.addEventListener('click', () => {
-                    if (window.soundManager) window.soundManager.playPop();
-                    q.userTotal = n;
-                    q.checked = false;
-                    this.renderCurrentStrokeQuestion();
-                    if (q.userStrokeId !== null) {
-                        this.checkCurrentStrokeAnswer();
-                    }
-                });
-                numPad.appendChild(btn);
-            }
-        }
-
-        // 渲染第二空：笔画形状按钮
-        const shapePad = document.getElementById('exam-stroke-shapepad');
-        if (shapePad) {
-            shapePad.innerHTML = '';
-            STROKE_SHAPE_OPTIONS.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = `stk-shape-btn ${q.userStrokeId === opt.id ? 'active' : ''}`;
-                btn.innerHTML = `
-                    <span class="stk-shape-sym">${opt.symbol}</span>
-                    <span class="stk-shape-name">${opt.name}</span>
-                `;
-                btn.addEventListener('click', () => {
-                    if (window.soundManager) window.soundManager.playPop();
-                    q.userStrokeId = opt.id;
-                    q.checked = false;
-                    this.renderCurrentStrokeQuestion();
-                    if (q.userTotal !== null) {
-                        this.checkCurrentStrokeAnswer();
-                    }
-                });
-                shapePad.appendChild(btn);
-            });
-        }
-
-        // 渲染笔顺拆解小卡片与答题反馈
-        this.renderStrokeBreakdownBar(q);
+        this.setMascot('图上是什么字？戳破写着这个字的气球！', 'idle');
     }
 
-    renderStrokeCharSVG(char, highlightIdx = -1, showNumbersUpTo = 0) {
-        const box = document.getElementById('exam-stroke-svg-box');
-        if (!box) return;
-        const data = window.STROKE_DATA_CACHE ? window.STROKE_DATA_CACHE[char] : null;
-        if (!data || !data.strokes) {
-            box.innerHTML = `<div class="stk-svg-fallback">${char}</div>`;
-            return;
+    onBalloonTap(btn) {
+        if (!this.bl || this.bl.locked || !btn || btn.disabled) return;
+        const c = btn.dataset.char;
+        if (c === this.bl.char) {
+            this.bl.locked = true;
+            btn.classList.add('popped');
+            this.burstAt(btn);
+            this.sfx('playCorrect');
+            this.registerCorrect();
+            this.awardStars((this.bl.tries === 0 && !this.bl.hinted) ? 2 : 1, btn);
+            this.setMascot(`${this.praise()} 是“${c}”（${this.py(c)}）！`, 'happy');
+            this.sayChar(c);
+            document.querySelectorAll('#bl-sky .balloon').forEach(b => {
+                if (b !== btn) b.classList.add('fly-away');
+            });
+            this.later(() => this.nextBalloon(), 1800);
+        } else {
+            this.bl.tries += 1;
+            btn.disabled = true;
+            btn.classList.add('wrong');
+            this.sfx('playMistake');
+            if (this.bl.tries === 1) this.registerWrong();
+            const py = this.py(c);
+            this.setMascot(`这是“${c}”${py ? '（' + py + '）' : ''}，再找找看！`, 'oops');
         }
+    }
 
-        let pathsHtml = '';
-        data.strokes.forEach((d, idx) => {
-            const isTarget = (idx === highlightIdx);
-            const fill = isTarget ? '#ef4444' : '#334155';
-            pathsHtml += `<path d="${d}" fill="${fill}" class="${isTarget ? 'stk-path-highlight' : ''}"></path>`;
-        });
+    balloonHint() {
+        if (!this.bl) return;
+        this.bl.hinted = true;
+        this.sfx('playPop');
+        this.sayChar(this.bl.char);
+        this.setMascot('听一听，再找出这个字的气球！', 'think');
+    }
 
-        // 在笔画起点标注序号 1, 2, 3...
-        let labelsHtml = '';
-        if (showNumbersUpTo > 0 && data.medians) {
-            const limit = Math.min(showNumbersUpTo, data.medians.length);
-            for (let i = 0; i < limit; i++) {
-                const med = data.medians[i];
-                if (med && med.length > 0) {
-                    const [mx, my] = med[0];
-                    // 转换 HanziWriter 坐标 (x, 900 - y) 到 SVG 视口
-                    const sx = mx;
-                    const sy = 900 - my;
-                    const isTarget = (i === highlightIdx);
-                    labelsHtml += `
-                        <g transform="translate(${sx}, ${sy})">
-                            <circle r="${isTarget ? 54 : 42}" fill="${isTarget ? '#ef4444' : '#0984e3'}" stroke="#ffffff" stroke-width="10"/>
-                            <text text-anchor="middle" dominant-baseline="central" fill="#ffffff" font-size="${isTarget ? 58 : 46}" font-weight="900">${i + 1}</text>
-                        </g>
-                    `;
-                }
+    // ==================== 游戏 3：👂 听音找字 ====================
+    startListen() {
+        this.updateListenSoundTip();
+        this.nextListen();
+    }
+
+    nextListen() {
+        const ch = this.pickNext('listen', this.listenPool);
+        if (!ch) return;
+        const options = this.buildOptions(ch, 4, { pool: this.listenPool, avoidHomophone: true, sameCatCount: 1 });
+        this.ls = { char: ch, tries: 0, locked: false };
+
+        const grid = document.getElementById('ls-options');
+        if (grid) {
+            grid.innerHTML = options.map(c => `
+                <button type="button" class="ls-card" data-char="${c}" aria-label="选项：${c}">
+                    <span class="ls-card-char">${c}</span>
+                    <span class="ls-card-py">${this.py(c)}</span>
+                </button>
+            `).join('');
+        }
+        this.setMascot('🔊 仔细听，我读的是哪个字？', 'idle');
+        this.later(() => this.playListenPrompt(), 400);
+    }
+
+    playListenPrompt() {
+        if (!this.ls) return;
+        const btn = document.getElementById('btn-ls-play');
+        if (btn) {
+            btn.classList.add('playing');
+            this.later(() => btn.classList.remove('playing'), 1800);
+        }
+        this.updateListenSoundTip();
+        this.sayChar(this.ls.char);
+    }
+
+    updateListenSoundTip() {
+        const tip = document.getElementById('btn-ls-sound-on');
+        if (tip) tip.hidden = this.soundOn();
+    }
+
+    enableSoundForGame() {
+        if (window.soundManager && !this.soundOn()) {
+            const enabled = window.soundManager.toggle();
+            if (this.app && typeof this.app.updateSoundUI === 'function') this.app.updateSoundUI(enabled);
+        }
+        this.updateListenSoundTip();
+        this.later(() => this.playListenPrompt(), 200);
+    }
+
+    onListenTap(card) {
+        if (!this.ls || this.ls.locked || !card || card.disabled) return;
+        const c = card.dataset.char;
+        if (c === this.ls.char) {
+            this.ls.locked = true;
+            card.classList.add('correct', 'revealed');
+            this.sfx('playCorrect');
+            this.registerCorrect();
+            this.awardStars(this.ls.tries === 0 ? 2 : 1, card);
+            this.setMascot(`${this.praise()} 就是“${c}”！`, 'happy');
+            this.later(() => this.nextListen(), 1600);
+        } else {
+            this.ls.tries += 1;
+            card.disabled = true;
+            card.classList.add('wrong', 'revealed');
+            this.sfx('playMistake');
+            if (this.ls.tries === 1) this.registerWrong();
+            this.setMascot(`这是“${c}”（${this.py(c)}），再听一遍哦！`, 'oops');
+            this.speak(`这是${c}，再听一遍。`, () => this.later(() => this.playListenPrompt(), 200));
+        }
+    }
+
+    // ==================== 游戏 4：🧩 组词填空 ====================
+    nextWord() {
+        const entry = this.pickNext('word', this.wordPool);
+        if (!entry) return;
+        const { target, word, idx } = entry;
+        const validator = (c) => {
+            const cand = idx === 0 ? c + word[1] : word[0] + c;
+            return !this.allWords.has(cand);
+        };
+        const options = this.buildOptions(target, 4, { pool: this.listenPool, avoidHomophone: true, validator, sameCatCount: 1 });
+        this.wd = { target, word, idx, tries: 0, locked: false };
+
+        const info = this.info(target);
+        const img = document.getElementById('wd-img');
+        if (img) {
+            img.src = info ? info.image : '';
+            img.alt = '组词填空提示图';
+            this.flash(img, 'gp-pop-in', 500);
+        }
+        const wordEl = document.getElementById('wd-word');
+        if (wordEl) {
+            wordEl.innerHTML = word.split('').map((c, i) => (i === idx
+                ? '<span class="wd-blank" id="wd-blank">？</span>'
+                : `<span class="wd-char">${c}</span>`)).join('');
+        }
+        const opts = document.getElementById('wd-options');
+        if (opts) {
+            opts.innerHTML = options.map(c => `
+                <button type="button" class="wd-piece" data-char="${c}" aria-label="选项：${c}">
+                    <span class="wd-piece-char">${c}</span>
+                </button>
+            `).join('');
+        }
+        this.setMascot('听一听，选一个字把词语补完整！', 'idle');
+        this.later(() => this.speak(word), 400);
+    }
+
+    onWordTap(btn) {
+        if (!this.wd || this.wd.locked || !btn || btn.disabled) return;
+        const c = btn.dataset.char;
+        if (c === this.wd.target) {
+            this.wd.locked = true;
+            btn.classList.add('correct');
+            const blank = document.getElementById('wd-blank');
+            if (blank) {
+                blank.textContent = c;
+                blank.classList.add('filled');
+            }
+            this.sfx('playCorrect');
+            this.registerCorrect();
+            this.awardStars(this.wd.tries === 0 ? 2 : 1, btn);
+            this.setMascot(`${this.praise()} “${this.wd.word}”！`, 'happy');
+            this.speak(this.wd.word);
+            this.later(() => this.nextWord(), 1800);
+        } else {
+            this.wd.tries += 1;
+            btn.disabled = true;
+            btn.classList.add('wrong');
+            this.sfx('playMistake');
+            if (this.wd.tries === 1) this.registerWrong();
+            this.setMascot(`不是“${c}”哦，再听一听这个词语！`, 'oops');
+            this.speak(this.wd.word);
+        }
+    }
+
+    // ==================== 游戏 5：🔢 数笔画 ====================
+    nextStroke() {
+        this.stopStrokeAnimation();
+        const ch = this.pickNext('stroke', this.strokePool);
+        if (!ch) return;
+        const data = (window.STROKE_DATA_CACHE || {})[ch];
+        const total = data.medians.length;
+        const types = (GP_STROKE_TYPE_DATA[ch] || '').split(' ').filter(Boolean);
+        const askable = types.length === total
+            ? types.map((t, i) => (GP_STROKE_TYPES[t] ? i : -1)).filter(i => i >= 0)
+            : [];
+        const askIdx = askable.length ? gpPick(askable) : -1;
+        this.sk = { char: ch, total, types, askIdx, step: 1, tries: 0, locked: false, done: false };
+
+        this.renderStrokeStatic(-1, 0);
+        const q = document.getElementById('sk-question');
+        if (q) q.innerHTML = `<span class="sk-q-char">“${ch}”</span>一共有 <span class="sk-q-blank" id="sk-q-blank">?</span> 画？`;
+
+        const nums = this.buildNumberOptions(total);
+        const opts = document.getElementById('sk-options');
+        if (opts) {
+            opts.className = 'sk-options nums';
+            opts.innerHTML = nums.map(n => `
+                <button type="button" class="sk-num" data-num="${n}" aria-label="${n}画"><b>${n}</b><small>画</small></button>
+            `).join('');
+        }
+        const fb = document.getElementById('sk-feedback');
+        if (fb) fb.innerHTML = '';
+        const nextBtn = document.getElementById('btn-sk-next');
+        if (nextBtn) nextBtn.hidden = true;
+
+        this.setMascot(`数一数，“${ch}”字一共有几画？`, 'idle');
+        this.speak(`数一数，${ch}字一共有几画？`);
+    }
+
+    buildNumberOptions(total) {
+        const set = new Set([total]);
+        const cands = gpShuffle([total - 2, total - 1, total + 1, total + 2, total + 3].filter(n => n >= 1 && n <= 16));
+        for (const n of cands) {
+            if (set.size >= 4) break;
+            set.add(n);
+        }
+        while (set.size < 4) set.add(Math.max(...set) + 1);
+        return [...set].sort((a, b) => a - b);
+    }
+
+    buildStrokeTypeOptions(answer) {
+        const picked = [answer];
+        const banned = new Set([answer]);
+        if (answer === 'dian') banned.add('na');
+        if (answer === 'na') banned.add('dian');
+        const family = gpShuffle((GP_STROKE_FAMILIES[answer] || []).slice());
+        for (const t of family) {
+            if (picked.length >= 3) break;
+            if (!banned.has(t) && !picked.includes(t)) picked.push(t);
+        }
+        const rest = gpShuffle(Object.keys(GP_STROKE_TYPES));
+        for (const t of rest) {
+            if (picked.length >= 4) break;
+            if (!banned.has(t) && !picked.includes(t)) picked.push(t);
+        }
+        return gpShuffle(picked);
+    }
+
+    onStrokeNum(btn) {
+        const sk = this.sk;
+        if (!sk || sk.step !== 1 || sk.locked || !btn || btn.disabled) return;
+        const n = parseInt(btn.dataset.num, 10);
+        if (n === sk.total) {
+            sk.locked = true;
+            btn.classList.add('correct');
+            this.fillStrokeBlank(n);
+            this.sfx('playCorrect');
+            this.registerCorrect();
+            if (sk.tries === 0) this.awardStars(1, btn);
+            this.renderStrokeStatic(-1, sk.total);
+            this.setMascot(`${this.praise()} “${sk.char}”一共 ${sk.total} 画！`, 'happy');
+            this.later(() => this.goStrokeStep2(), 1300);
+        } else {
+            sk.tries += 1;
+            btn.disabled = true;
+            btn.classList.add('wrong');
+            this.sfx('playMistake');
+            if (sk.tries === 1) this.registerWrong();
+            if (sk.tries >= 2) {
+                sk.locked = true;
+                this.setMascot('我们一起一笔一笔数一数！', 'think');
+                this.playStrokeCount(() => {
+                    const right = document.querySelector(`#sk-options .sk-num[data-num="${sk.total}"]`);
+                    if (right) right.classList.add('correct');
+                    this.fillStrokeBlank(sk.total);
+                    this.later(() => this.goStrokeStep2(), 1000);
+                });
+            } else {
+                this.setMascot('再仔细数一数哦！也可以点“一笔一笔数给我看”。', 'oops');
             }
         }
+    }
 
+    fillStrokeBlank(n) {
+        const blank = document.getElementById('sk-q-blank');
+        if (blank) {
+            blank.textContent = n;
+            blank.classList.add('filled');
+        }
+    }
+
+    goStrokeStep2() {
+        const sk = this.sk;
+        if (!sk) return;
+        if (sk.askIdx < 0) {
+            this.finishStroke();
+            return;
+        }
+        sk.step = 2;
+        sk.tries = 0;
+        sk.locked = false;
+        const q = document.getElementById('sk-question');
+        if (q) q.innerHTML = `<span class="sk-q-char">“${sk.char}”</span>的第 <span class="sk-q-em">${GP_CN_NUM[sk.askIdx]}</span> 画是什么笔画？`;
+        const opts = document.getElementById('sk-options');
+        if (opts) {
+            opts.className = 'sk-options types';
+            opts.innerHTML = this.buildStrokeTypeOptions(sk.types[sk.askIdx]).map(t => `
+                <button type="button" class="sk-type" data-type="${t}" aria-label="${GP_STROKE_TYPES[t].name}">
+                    ${gpStrokeIcon(t)}
+                    <span class="sk-type-name">${GP_STROKE_TYPES[t].name}</span>
+                </button>
+            `).join('');
+        }
+        this.setMascot(`看看数字 ${sk.askIdx + 1}，第${GP_CN_NUM[sk.askIdx]}画是什么笔画？`, 'idle');
+        this.speak(`第${GP_CN_NUM[sk.askIdx]}画是什么笔画？`);
+    }
+
+    onStrokeType(btn) {
+        const sk = this.sk;
+        if (!sk || sk.step !== 2 || sk.locked || !btn || btn.disabled) return;
+        const answer = sk.types[sk.askIdx];
+        const name = GP_STROKE_TYPES[answer].name;
+        if (btn.dataset.type === answer) {
+            sk.locked = true;
+            btn.classList.add('correct');
+            this.renderStrokeStatic(sk.askIdx, sk.total);
+            this.sfx('playCorrect');
+            this.registerCorrect();
+            if (sk.tries === 0) this.awardStars(1, btn);
+            this.setMascot(`${this.praise()} 第${GP_CN_NUM[sk.askIdx]}画是“${name}”！`, 'happy');
+            this.speak(`对啦，第${GP_CN_NUM[sk.askIdx]}画是${name}。`);
+            this.finishStroke();
+        } else {
+            sk.tries += 1;
+            btn.disabled = true;
+            btn.classList.add('wrong');
+            this.sfx('playMistake');
+            if (sk.tries === 1) this.registerWrong();
+            if (sk.tries >= 2) {
+                sk.locked = true;
+                const right = document.querySelector(`#sk-options .sk-type[data-type="${answer}"]`);
+                if (right) right.classList.add('correct');
+                this.renderStrokeStatic(sk.askIdx, sk.total);
+                this.setMascot(`看红色的那一笔，第${GP_CN_NUM[sk.askIdx]}画是“${name}”。`, 'think');
+                this.speak(`第${GP_CN_NUM[sk.askIdx]}画是${name}。`);
+                this.finishStroke();
+            } else {
+                this.setMascot('再看看这一笔的样子，想一想！', 'oops');
+            }
+        }
+    }
+
+    finishStroke() {
+        const sk = this.sk;
+        if (!sk) return;
+        sk.done = true;
+        const fb = document.getElementById('sk-feedback');
+        if (fb) {
+            const allKnown = sk.types.length === sk.total && sk.types.every(t => GP_STROKE_TYPES[t]);
+            const chips = allKnown
+                ? sk.types.map((t, i) => `<span class="sk-chip ${i === sk.askIdx ? 'hl' : ''}"><b>${i + 1}</b>${GP_STROKE_TYPES[t].name}</span>`).join('')
+                : '';
+            fb.innerHTML = `
+                <div class="sk-summary">📖 “${sk.char}”一共 <b>${sk.total}</b> 画${allKnown ? '：' : '。'}</div>
+                ${chips ? `<div class="sk-chips">${chips}</div>` : ''}
+            `;
+        }
+        const nextBtn = document.getElementById('btn-sk-next');
+        if (nextBtn) nextBtn.hidden = false;
+    }
+
+    // 静态渲染汉字：highlightIdx 为红色高亮笔画，numbersUpTo 为显示序号的笔画数
+    renderStrokeStatic(highlightIdx = -1, numbersUpTo = 0) {
+        const box = document.getElementById('sk-svg-box');
+        const sk = this.sk;
+        if (!box || !sk) return;
+        const data = (window.STROKE_DATA_CACHE || {})[sk.char];
+        if (!data) {
+            box.innerHTML = `<div class="sk-fallback">${sk.char}</div>`;
+            return;
+        }
+        const paths = data.strokes.map((d, i) => `<path d="${d}" fill="${i === highlightIdx ? '#ef4444' : '#1e293b'}"></path>`).join('');
         box.innerHTML = `
-            <svg viewBox="0 0 1024 1024" class="exam-stroke-svg">
-                <!-- 米字格辅助线 -->
-                <line x1="0" y1="512" x2="1024" y2="512" stroke="#fca5a5" stroke-width="6" stroke-dasharray="18,14"/>
-                <line x1="512" y1="0" x2="512" y2="1024" stroke="#fca5a5" stroke-width="6" stroke-dasharray="18,14"/>
-                <line x1="0" y1="0" x2="1024" y2="1024" stroke="#fed7aa" stroke-width="4" stroke-dasharray="18,18"/>
-                <line x1="1024" y1="0" x2="0" y2="1024" stroke="#fed7aa" stroke-width="4" stroke-dasharray="18,18"/>
-                <g transform="scale(1, -1) translate(0, -900)">
-                    ${pathsHtml}
-                </g>
-                ${labelsHtml}
+            <svg viewBox="0 0 1024 1024" class="sk-svg" aria-label="${sk.char}">
+                ${this.strokeGridSvg()}
+                <g transform="scale(1, -1) translate(0, -900)">${paths}</g>
+                <g class="sk-labels">${this.strokeLabelsSvg(data, numbersUpTo, highlightIdx)}</g>
             </svg>
         `;
     }
 
-    renderStrokeBreakdownBar(q, activeStepCount = 0) {
-        const bar = document.getElementById('exam-stroke-breakdown');
-        if (!bar || !q) return;
-
-        // 当用户已作答或正在播放“一笔一笔数”时展示拆解卡片
-        const showCards = q.checked || activeStepCount > 0;
-        if (!showCards) {
-            bar.innerHTML = `
-                <div class="stk-breakdown-hint">
-                    👆 请先在下方选择 <strong>一共有几画</strong> 和 <strong>第${q.askIndexCn}画是什么笔画</strong>（不确定可以点左侧【🔢 一笔一笔数】哦！）
-                </div>
-            `;
-            return;
-        }
-
-        const visibleCount = activeStepCount > 0 ? activeStepCount : q.strokeBreakdown.length;
-        const chips = q.strokeBreakdown.slice(0, visibleCount).map((name, idx) => {
-            const isAsk = (idx + 1 === q.askIndex);
-            return `
-                <span class="stk-step-chip ${isAsk ? 'is-target' : ''}">
-                    <strong>第${idx + 1}画</strong> ${name}
-                </span>
-            `;
-        }).join('');
-
-        let resultBanner = '';
-        if (q.checked) {
-            if (q.isCorrect) {
-                resultBanner = `<div class="stk-result-msg ok">🎉 答对啦 (+4 ⭐)！${q.tip}</div>`;
-            } else {
-                resultBanner = `<div class="stk-result-msg err">💡 正确答案：一共有 <strong>${q.totalStrokes}</strong> 画，第${q.askIndexCn}画是 <strong>${q.answerSymbol} (${q.answerName})</strong>。${q.tip}</div>`;
-            }
-        }
-
-        bar.innerHTML = `
-            <div class="stk-chips-row">${chips}</div>
-            ${resultBanner}
+    strokeGridSvg() {
+        return `
+            <line x1="0" y1="512" x2="1024" y2="512" stroke="#fca5a5" stroke-width="5" stroke-dasharray="18,14"/>
+            <line x1="512" y1="0" x2="512" y2="1024" stroke="#fca5a5" stroke-width="5" stroke-dasharray="18,14"/>
+            <line x1="0" y1="0" x2="1024" y2="1024" stroke="#fed7aa" stroke-width="4" stroke-dasharray="18,18"/>
+            <line x1="1024" y1="0" x2="0" y2="1024" stroke="#fed7aa" stroke-width="4" stroke-dasharray="18,18"/>
         `;
     }
 
-    // 互动动画：一笔一笔数给孩子看（高亮第 1, 2, ... N 画并最终停在题目问的第 k 画）
-    playStrokeStepCounter() {
-        const q = this.strokeQuestions[this.currentStrokeIdx];
-        if (!q) return;
-        this.stopStrokeStepAnimation();
-        if (window.soundManager) window.soundManager.playPop();
-
-        let step = 0;
-        const total = q.totalStrokes;
-
-        const runStep = () => {
-            if (step < total) {
-                const strokeIdx = step;
-                step++;
-                this.renderStrokeCharSVG(q.char, strokeIdx, step);
-                this.renderStrokeBreakdownBar(q, step);
-                if (window.soundManager) {
-                    window.soundManager.playPop();
-                }
-                this.strokeAnimTimer = setTimeout(runStep, 680);
-            } else {
-                // 动画结束，聚焦高亮题目所问的第 askIndex 画
-                this.renderStrokeCharSVG(q.char, q.askIndex - 1, total);
-                this.renderStrokeBreakdownBar(q, total);
-                if (window.soundManager) {
-                    window.soundManager.speak(`“${q.char}”字一共有${q.totalStrokes}画，第${q.askIndexCn}画是${q.answerName}！`);
-                }
-            }
-        };
-
-        runStep();
+    strokeLabelSvg(data, i, isHighlight) {
+        const med = data.medians[i];
+        if (!med || !med.length) return '';
+        const [mx, my] = med[0];
+        return `
+            <g transform="translate(${mx}, ${900 - my})" class="sk-label">
+                <circle r="${isHighlight ? 52 : 42}" fill="${isHighlight ? '#ef4444' : '#2563eb'}" stroke="#ffffff" stroke-width="9"/>
+                <text text-anchor="middle" dominant-baseline="central" fill="#ffffff" font-size="${isHighlight ? 56 : 46}" font-weight="900">${i + 1}</text>
+            </g>
+        `;
     }
 
-    stopStrokeStepAnimation() {
+    strokeLabelsSvg(data, upTo, highlightIdx) {
+        let html = '';
+        const limit = Math.min(upTo, data.medians.length);
+        for (let i = 0; i < limit; i++) html += this.strokeLabelSvg(data, i, i === highlightIdx);
+        return html;
+    }
+
+    // 一笔一笔书写动画（按标准笔顺逐笔描出并标上序号）
+    playStrokeCount(onDone) {
+        const sk = this.sk;
+        const box = document.getElementById('sk-svg-box');
+        if (!sk || !box) return;
+        const data = (window.STROKE_DATA_CACHE || {})[sk.char];
+        if (!data) return;
+        this.stopStrokeAnimation();
+        this.sfx('playPop');
+
+        const uid = `sk${++this.svgUid}`;
+        const lens = data.medians.map(m => {
+            let len = 0;
+            for (let i = 1; i < m.length; i++) len += Math.hypot(m[i][0] - m[i - 1][0], m[i][1] - m[i - 1][1]);
+            return Math.max(len, 20);
+        });
+        const clips = data.strokes.map((d, i) => `<clipPath id="${uid}-c${i}"><path d="${d}"/></clipPath>`).join('');
+        const outlines = data.strokes.map(d => `<path d="${d}" fill="#e2e8f0"></path>`).join('');
+        const animated = data.medians.map((m, i) => {
+            const L = lens[i] + 10;
+            const pts = m.map(p => `${p[0]},${p[1]}`).join(' ');
+            return `<g clip-path="url(#${uid}-c${i})"><polyline class="sk-anim" data-idx="${i}" points="${pts}"
+                stroke-dasharray="${L} ${L + 420}" stroke-dashoffset="${L + 110}"/></g>`;
+        }).join('');
+
+        box.innerHTML = `
+            <svg viewBox="0 0 1024 1024" class="sk-svg" aria-label="${sk.char} 笔顺演示">
+                <defs>${clips}</defs>
+                ${this.strokeGridSvg()}
+                <g transform="scale(1, -1) translate(0, -900)">${outlines}${animated}</g>
+                <g class="sk-labels"></g>
+            </svg>
+        `;
+
+        const labels = box.querySelector('.sk-labels');
+        const polylines = box.querySelectorAll('.sk-anim');
+        let i = 0;
+        const step = () => {
+            if (i >= polylines.length) {
+                this.strokeAnimTimer = null;
+                if (onDone) onDone();
+                else this.speak(`${sk.char}字一共${sk.total}画。`);
+                return;
+            }
+            const pl = polylines[i];
+            const dur = Math.min(0.75, 0.25 + lens[i] / 1600);
+            pl.style.transition = `stroke-dashoffset ${dur}s linear`;
+            void pl.getBoundingClientRect();
+            pl.style.strokeDashoffset = '0';
+            if (labels) labels.insertAdjacentHTML('beforeend', this.strokeLabelSvg(data, i, false));
+            this.sfx('playPop');
+            i += 1;
+            this.strokeAnimTimer = setTimeout(step, dur * 1000 + 260);
+        };
+        this.strokeAnimTimer = setTimeout(step, 200);
+    }
+
+    stopStrokeAnimation() {
         if (this.strokeAnimTimer) {
             clearTimeout(this.strokeAnimTimer);
             this.strokeAnimTimer = null;
         }
     }
 
-    checkCurrentStrokeAnswer() {
-        const q = this.strokeQuestions[this.currentStrokeIdx];
-        if (!q) return;
-
-        if (q.userTotal === null || q.userStrokeId === null) {
-            if (this.app) this.app.showToast('💡 请把两个空都选好后再核对答案哦！');
-            return;
+    // ==================== 游戏 6：🔗 反义词连线 ====================
+    newAntonymRound() {
+        const pairs = gpShuffle(GP_ANTONYM_PAIRS.slice()).slice(0, 6);
+        this.ant = {
+            pairs,
+            right: gpShuffle(pairs.map(p => p.b)),
+            selL: null,
+            selR: null,
+            matched: {},
+            mistakes: 0,
+            done: false
+        };
+        const btn = document.getElementById('btn-ant-new');
+        if (btn) {
+            btn.textContent = '🔄 换一组';
+            btn.classList.remove('pulse');
         }
-
-        const wasCorrect = q.isCorrect;
-        q.checked = true;
-        q.isCorrect = (q.userTotal === q.totalStrokes && q.userStrokeId === q.answerId);
-
-        this.renderCurrentStrokeQuestion();
-        this.updateOverallProgress();
-
-        if (q.isCorrect) {
-            if (!wasCorrect && this.app) {
-                this.app.addStars(4, '数笔画填空闯关');
-            }
-            if (window.soundManager) {
-                window.soundManager.playVictory();
-                window.soundManager.speak(`太棒啦！“${q.char}”字一共有${q.totalStrokes}画，第${q.askIndexCn}画是${q.answerName}！`);
-            }
-        } else {
-            if (window.soundManager) {
-                window.soundManager.playPop();
-                window.soundManager.speak(`差一点点哦，“${q.char}”字一共有${q.totalStrokes}画，第${q.askIndexCn}画是${q.answerName}，看看红色高亮的那一笔吧！`);
-            }
-        }
+        this.setAntStatus('💡 点一点字，可以听到它的读音哦！');
+        this.renderAntonym();
     }
 
-    // ==================== 第三关：反义词连线 ====================
-    renderAntonymSection() {
+    setAntStatus(text, done = false) {
+        const el = document.getElementById('ant-status');
+        if (!el) return;
+        el.className = `ant-status ${done ? 'all-done' : ''}`;
+        el.innerHTML = text;
+    }
+
+    renderAntonym() {
+        const ant = this.ant;
         const leftCol = document.getElementById('exam-ant-left-col');
         const rightCol = document.getElementById('exam-ant-right-col');
-        const statusEl = document.getElementById('exam-ant-status');
-        if (!leftCol || !rightCol) return;
+        if (!ant || !leftCol || !rightCol) return;
+        const matchedRights = Object.values(ant.matched);
+        const emojiOf = {};
+        ant.pairs.forEach(p => {
+            if (p.ea) emojiOf[p.a] = p.ea;
+            if (p.eb) emojiOf[p.b] = p.eb;
+        });
 
-        leftCol.innerHTML = '';
-        rightCol.innerHTML = '';
-
-        const matchedLefts = Object.keys(this.matchedPairs);
-        const matchedRights = Object.values(this.matchedPairs);
-
-        this.antonymPairs.forEach((pair) => {
-            const isMatched = matchedLefts.includes(pair.left);
-            const isSelected = (this.selectedLeftChar === pair.left);
-            const item = document.createElement('button');
-            item.type = 'button';
-            item.className = `ant-word-card left-card ${isMatched ? 'matched' : ''} ${isSelected ? 'selected' : ''}`;
-            item.dataset.char = pair.left;
-            item.innerHTML = `
-                <span class="ant-char-text">${pair.left}</span>
+        leftCol.innerHTML = ant.pairs.map(p => `
+            <button type="button" class="ant-word-card left-card ${ant.matched[p.a] ? 'matched' : ''} ${ant.selL === p.a ? 'selected' : ''}" data-side="left" data-char="${p.a}">
+                <span class="ant-emoji">${emojiOf[p.a] || ''}</span>
+                <span class="ant-char-text">${p.a}</span>
                 <span class="ant-dot left-dot"></span>
-            `;
-            item.addEventListener('click', () => this.onSelectLeftAntonym(pair.left));
-            leftCol.appendChild(item);
-        });
-
-        this.rightColChars.forEach((rChar) => {
-            const isMatched = matchedRights.includes(rChar);
-            const isSelected = (this.selectedRightChar === rChar);
-            const item = document.createElement('button');
-            item.type = 'button';
-            item.className = `ant-word-card right-card ${isMatched ? 'matched' : ''} ${isSelected ? 'selected' : ''}`;
-            item.dataset.char = rChar;
-            item.innerHTML = `
+            </button>
+        `).join('');
+        rightCol.innerHTML = ant.right.map(c => `
+            <button type="button" class="ant-word-card right-card ${matchedRights.includes(c) ? 'matched' : ''} ${ant.selR === c ? 'selected' : ''}" data-side="right" data-char="${c}">
                 <span class="ant-dot right-dot"></span>
-                <span class="ant-char-text">${rChar}</span>
-            `;
-            item.addEventListener('click', () => this.onSelectRightAntonym(rChar));
-            rightCol.appendChild(item);
-        });
-
-        if (statusEl) {
-            const doneCount = matchedLefts.length;
-            const totalCount = this.antonymPairs.length;
-            if (doneCount === totalCount) {
-                statusEl.className = 'exam-ant-status all-done';
-                statusEl.innerHTML = `🎉 太厉害啦！${totalCount} 组反义词全部连线正确（全对 ✓）！`;
-            } else {
-                statusEl.className = 'exam-ant-status';
-                statusEl.innerHTML = `👆 点击左边一个字，再点击右边相反意思的字连线！（已连对 <strong>${doneCount} / ${totalCount}</strong> 组）`;
-            }
-        }
-
+                <span class="ant-char-text">${c}</span>
+                <span class="ant-emoji">${emojiOf[c] || ''}</span>
+            </button>
+        `).join('');
         requestAnimationFrame(() => this.renderAntonymLines());
     }
 
-    onSelectLeftAntonym(leftChar) {
-        if (this.matchedPairs[leftChar]) {
-            if (window.soundManager) {
-                window.soundManager.playPop();
-                window.soundManager.speak(`${leftChar}的反义词是${this.matchedPairs[leftChar]}`);
-            }
-            return;
-        }
-        if (window.soundManager) window.soundManager.playPop();
-        this.selectedLeftChar = leftChar;
-        if (this.selectedRightChar) {
-            this.tryConnectAntonym(this.selectedLeftChar, this.selectedRightChar);
+    onAntonymTap(card) {
+        const ant = this.ant;
+        if (!ant || ant.done || !card) return;
+        const side = card.dataset.side;
+        const c = card.dataset.char;
+        if (side === 'left') {
+            if (ant.matched[c]) return;
+            ant.selL = (ant.selL === c) ? null : c;
         } else {
-            this.renderAntonymSection();
+            if (Object.values(ant.matched).includes(c)) return;
+            ant.selR = (ant.selR === c) ? null : c;
+        }
+        this.sfx('playPop');
+        this.speak(c);
+        if (ant.selL && ant.selR) {
+            this.tryConnectAntonym(ant.selL, ant.selR);
+        } else {
+            this.renderAntonym();
         }
     }
 
-    onSelectRightAntonym(rightChar) {
-        if (Object.values(this.matchedPairs).includes(rightChar)) {
-            return;
-        }
-        if (window.soundManager) window.soundManager.playPop();
-        this.selectedRightChar = rightChar;
-        if (this.selectedLeftChar) {
-            this.tryConnectAntonym(this.selectedLeftChar, this.selectedRightChar);
+    tryConnectAntonym(l, r) {
+        const ant = this.ant;
+        const pair = ant.pairs.find(p => p.a === l);
+        ant.selL = null;
+        ant.selR = null;
+        if (pair && pair.b === r) {
+            ant.matched[l] = r;
+            this.renderAntonym();
+            this.sfx('playStar');
+            this.registerCorrect();
+            const rCard = document.querySelector(`#exam-ant-right-col .ant-word-card[data-char="${r}"]`);
+            this.awardStars(1, rCard);
+            this.setMascot(`${this.praise()} “${l}”和“${r}”意思相反！`, 'happy');
+            this.speak(`${l}和${r}，意思相反！`);
+            if (Object.keys(ant.matched).length === ant.pairs.length) {
+                ant.done = true;
+                const bonus = ant.mistakes === 0 ? 2 : 1;
+                this.later(() => {
+                    this.awardStars(bonus, document.getElementById('exam-ant-board'));
+                    if (this.app && typeof this.app.fireConfetti === 'function') this.app.fireConfetti();
+                    this.sfx('playVictory');
+                    this.setAntStatus(`🎉 全部连对啦！奖励 ${bonus} 颗星星！`, true);
+                    this.setMascot('全部连对啦！点“下一组”继续挑战吧！', 'wow');
+                    const btn = document.getElementById('btn-ant-new');
+                    if (btn) {
+                        btn.textContent = '下一组 ➔';
+                        btn.classList.add('pulse');
+                    }
+                }, 650);
+            }
         } else {
-            this.renderAntonymSection();
+            ant.mistakes += 1;
+            this.renderAntonym();
+            this.registerWrong();
+            this.sfx('playMistake');
+            this.flashWrongAntonymLine(l, r);
+            ['left', 'right'].forEach(side => {
+                const ch = side === 'left' ? l : r;
+                const el = document.querySelector(`#exam-ant-${side}-col .ant-word-card[data-char="${ch}"]`);
+                this.flash(el, 'wrong', 500);
+            });
+            this.setMascot(`“${l}”和“${r}”不是一对哦，再想一想！`, 'oops');
         }
     }
 
-    tryConnectAntonym(leftChar, rightChar) {
-        const pair = this.antonymPairs.find(p => p.left === leftChar);
-        this.selectedLeftChar = null;
-        this.selectedRightChar = null;
-
-        if (pair && pair.right === rightChar) {
-            this.matchedPairs[leftChar] = rightChar;
-            this.renderAntonymSection();
-            this.updateOverallProgress();
-
-            if (this.app) {
-                this.app.addStars(2, '反义词连线');
-            }
-            if (window.soundManager) {
-                window.soundManager.playStar();
-                window.soundManager.speak(`连对啦！“${leftChar}”的反义词是“${rightChar}”！`);
-            }
-
-            if (Object.keys(this.matchedPairs).length === this.antonymPairs.length) {
-                if (this.app) this.app.fireConfetti();
-                if (window.soundManager) window.soundManager.playVictory();
-            }
-        } else {
-            // 连错提示动画
-            this.renderAntonymSection();
-            this.flashWrongAntonymLine(leftChar, rightChar);
-            if (window.soundManager) {
-                window.soundManager.playPop();
-                window.soundManager.speak(`再想一想哦，“${leftChar}”和“${rightChar}”不是反义词呢！`);
-            }
-        }
+    getAntDotCenter(side, ch) {
+        const board = document.getElementById('exam-ant-board');
+        if (!board) return null;
+        const dot = board.querySelector(`#exam-ant-${side}-col .ant-word-card[data-char="${ch}"] .ant-dot`);
+        if (!dot) return null;
+        const b = board.getBoundingClientRect();
+        const r = dot.getBoundingClientRect();
+        return { x: r.left - b.left + r.width / 2, y: r.top - b.top + r.height / 2 };
     }
 
-    renderAntonymLines(tempWrongPair = null) {
+    renderAntonymLines(tempWrong = null) {
         const svg = document.getElementById('exam-ant-svg');
         const board = document.getElementById('exam-ant-board');
-        if (!svg || !board) return;
+        if (!svg || !board || !this.ant) return;
+        const b = board.getBoundingClientRect();
+        if (b.width <= 0 || b.height <= 0) return;
+        svg.setAttribute('viewBox', `0 0 ${b.width} ${b.height}`);
 
-        const boardRect = board.getBoundingClientRect();
-        if (boardRect.width <= 0 || boardRect.height <= 0) return;
-
-        svg.setAttribute('viewBox', `0 0 ${boardRect.width} ${boardRect.height}`);
         let html = '';
-
-        const getDotCenter = (side, char) => {
-            const selector = side === 'left'
-                ? `#exam-ant-left-col .ant-word-card[data-char="${char}"] .left-dot`
-                : `#exam-ant-right-col .ant-word-card[data-char="${char}"] .right-dot`;
-            const dot = board.querySelector(selector);
-            if (!dot) return null;
-            const r = dot.getBoundingClientRect();
-            return {
-                x: r.left - boardRect.left + r.width / 2,
-                y: r.top - boardRect.top + r.height / 2
-            };
-        };
-
-        Object.entries(this.matchedPairs).forEach(([lChar, rChar]) => {
-            const p1 = getDotCenter('left', lChar);
-            const p2 = getDotCenter('right', rChar);
-            if (p1 && p2) {
-                const mx = p1.x + (p2.x - p1.x) * 0.78;
-                const my = p1.y + (p2.y - p1.y) * 0.78;
-                html += `
-                    <line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#10b981" stroke-width="4.5" stroke-linecap="round"/>
-                    <circle cx="${mx}" cy="${my}" r="13" fill="#ffffff" stroke="#10b981" stroke-width="2.5"/>
-                    <text x="${mx}" y="${my + 1}" text-anchor="middle" dominant-baseline="central" fill="#ef4444" font-size="16" font-weight="900">✓</text>
-                `;
-            }
+        Object.entries(this.ant.matched).forEach(([l, r]) => {
+            const p1 = this.getAntDotCenter('left', l);
+            const p2 = this.getAntDotCenter('right', r);
+            if (!p1 || !p2) return;
+            const mx = p1.x + (p2.x - p1.x) * 0.78;
+            const my = p1.y + (p2.y - p1.y) * 0.78;
+            html += `
+                <line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#14b8a6" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="${mx}" cy="${my}" r="13" fill="#ffffff" stroke="#14b8a6" stroke-width="3"/>
+                <text x="${mx}" y="${my + 1}" text-anchor="middle" dominant-baseline="central" font-size="15" font-weight="900" fill="#0f766e">✓</text>
+            `;
         });
-
-        if (tempWrongPair) {
-            const p1 = getDotCenter('left', tempWrongPair.left);
-            const p2 = getDotCenter('right', tempWrongPair.right);
+        if (tempWrong) {
+            const p1 = this.getAntDotCenter('left', tempWrong.l);
+            const p2 = this.getAntDotCenter('right', tempWrong.r);
             if (p1 && p2) {
-                html += `
-                    <line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#ef4444" stroke-width="4" stroke-dasharray="8,6" stroke-linecap="round"/>
-                `;
+                html += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#ef4444" stroke-width="5" stroke-dasharray="10,8" stroke-linecap="round"/>`;
             }
         }
-
         svg.innerHTML = html;
     }
 
-    flashWrongAntonymLine(leftChar, rightChar) {
-        this.renderAntonymLines({ left: leftChar, right: rightChar });
-        setTimeout(() => {
-            this.renderAntonymLines();
-        }, 650);
+    flashWrongAntonymLine(l, r) {
+        this.renderAntonymLines({ l, r });
+        this.later(() => this.renderAntonymLines(), 700);
     }
 
-    // ==================== 综合进度与成绩单 ====================
-    updateOverallProgress() {
-        const picDone = this.picQuestions.filter(q => q.status === 'correct').length;
-        const stkDone = this.strokeQuestions.filter(q => q.checked && q.isCorrect).length;
-        const antDone = Object.keys(this.matchedPairs).length;
+    // ==================== 游戏 7：🃏 翻牌配对 ====================
+    newMemoryRound() {
+        const chosen = [];
+        const usedCats = {};
+        for (const c of gpShuffle(this.picturePool.slice())) {
+            if (chosen.length >= 6) break;
+            if (chosen.some(x => this.sameGroup(x, c))) continue;
+            const cat = this.info(c).catId;
+            if ((usedCats[cat] || 0) >= 2) continue;
+            chosen.push(c);
+            usedCats[cat] = (usedCats[cat] || 0) + 1;
+        }
+        const cards = gpShuffle(chosen.flatMap(c => [{ key: c, kind: 'pic' }, { key: c, kind: 'char' }]))
+            .map((card, i) => ({ ...card, id: i, matched: false }));
+        this.mm = { cards, open: [], lock: false, flips: 0, matchedPairs: 0, total: chosen.length };
 
-        const b1 = document.getElementById('exam-tab-badge-1');
-        const b2 = document.getElementById('exam-tab-badge-2');
-        const b3 = document.getElementById('exam-tab-badge-3');
-        if (b1) b1.textContent = `${picDone}/${this.picQuestions.length}`;
-        if (b2) b2.textContent = `${stkDone}/${this.strokeQuestions.length}`;
-        if (b3) b3.textContent = `${antDone}/${this.antonymPairs.length}`;
+        const grid = document.getElementById('mm-grid');
+        if (grid) {
+            grid.innerHTML = cards.map(card => `
+                <button type="button" class="mm-card" data-id="${card.id}" aria-label="翻牌">
+                    <span class="mm-inner">
+                        <span class="mm-face mm-back"><span class="mm-back-emoji">🐼</span></span>
+                        <span class="mm-face mm-front ${card.kind}">
+                            ${card.kind === 'pic'
+                                ? `<img src="${this.info(card.key).image}" alt="" draggable="false">`
+                                : `<span class="mm-char">${card.key}</span>`}
+                        </span>
+                    </span>
+                </button>
+            `).join('');
+        }
+        const btn = document.getElementById('btn-mm-restart');
+        if (btn) btn.classList.remove('pulse');
+        const status = document.getElementById('mm-status');
+        if (status) {
+            status.className = 'mm-status';
+            status.textContent = '💡 记住翻开过的牌在哪里，配对更快哦！';
+        }
+        this.setMascot('翻开两张牌，把图片和汉字配成好朋友！', 'idle');
+    }
 
-        // 百分制实时总分（第一关 50 分，第二关 25 分，第三关 25 分）
-        const s1 = this.picQuestions.length > 0 ? (picDone / this.picQuestions.length) * 50 : 0;
-        const s2 = this.strokeQuestions.length > 0 ? (stkDone / this.strokeQuestions.length) * 25 : 0;
-        const s3 = this.antonymPairs.length > 0 ? (antDone / this.antonymPairs.length) * 25 : 0;
-        const totalScore = Math.round(s1 + s2 + s3);
+    onMemoryTap(btn) {
+        const mm = this.mm;
+        if (!mm || mm.lock || !btn) return;
+        const card = mm.cards[parseInt(btn.dataset.id, 10)];
+        if (!card || card.matched || mm.open.includes(card.id)) return;
 
-        const scorePill = document.getElementById('exam-live-score');
-        if (scorePill) {
-            scorePill.textContent = `${totalScore} 分`;
+        btn.classList.add('flipped');
+        this.sfx('playPop');
+        mm.open.push(card.id);
+        if (mm.open.length < 2) return;
+
+        mm.flips += 1;
+        const [a, b] = mm.open.map(id => mm.cards[id]);
+        const grid = document.getElementById('mm-grid');
+        const btnA = grid ? grid.querySelector(`.mm-card[data-id="${a.id}"]`) : null;
+        const btnB = grid ? grid.querySelector(`.mm-card[data-id="${b.id}"]`) : null;
+
+        if (a.key === b.key && a.kind !== b.kind) {
+            a.matched = true;
+            b.matched = true;
+            mm.open = [];
+            mm.matchedPairs += 1;
+            [btnA, btnB].forEach(el => el && el.classList.add('matched'));
+            this.sfx('playCorrect');
+            this.registerCorrect();
+            this.awardStars(1, btn);
+            this.sayChar(a.key);
+            this.setMascot(`${this.praise()} “${a.key}”配对成功！`, 'happy');
+            if (mm.matchedPairs === mm.total) this.later(() => this.finishMemory(), 800);
+        } else {
+            mm.lock = true;
+            this.registerWrong();
+            this.setMascot('不是一对哦，记住它们的位置！', 'oops');
+            this.later(() => {
+                [btnA, btnB].forEach(el => el && el.classList.remove('flipped'));
+                mm.open = [];
+                mm.lock = false;
+            }, 1000);
         }
     }
 
-    // 打印同款 A4 纸质测试卷（还原课堂试卷版式：一、看图写汉字 二、数笔画填空 三、反义词连线）
-    printExamPaper() {
-        if (window.soundManager) window.soundManager.playPop();
+    finishMemory() {
+        const mm = this.mm;
+        const bonus = mm.flips <= mm.total + 3 ? 3 : (mm.flips <= mm.total + 7 ? 2 : 1);
+        this.awardStars(bonus, document.getElementById('mm-grid'));
+        if (this.app && typeof this.app.fireConfetti === 'function') this.app.fireConfetti();
+        this.sfx('playVictory');
+        this.setMascot(`全部配对成功！奖励 ${bonus} 颗星星！`, 'wow');
+        this.speak('太棒啦，全部配对成功！');
+        const status = document.getElementById('mm-status');
+        if (status) {
+            status.className = 'mm-status all-done';
+            status.textContent = `🎉 全部配对成功！奖励 ${bonus} 颗星星，再玩一局吧！`;
+        }
+        const btn = document.getElementById('btn-mm-restart');
+        if (btn) btn.classList.add('pulse');
+    }
 
+    // ==================== 游戏 8：🔨 汉字打地鼠 ====================
+    startMole() {
+        const field = document.getElementById('ml-field');
+        if (field && !field.children.length) {
+            field.innerHTML = Array.from({ length: 6 }, (_, i) => `
+                <div class="ml-hole" data-idx="${i}">
+                    <div class="ml-pit"></div>
+                    <div class="ml-clip">
+                        <div class="ml-mole" aria-hidden="true">
+                            <span class="ml-ear l"></span><span class="ml-ear r"></span>
+                            <span class="ml-body"></span>
+                            <span class="ml-eye l"></span><span class="ml-eye r"></span>
+                            <span class="ml-nose"></span>
+                            <span class="ml-sign"></span>
+                        </div>
+                    </div>
+                    <div class="ml-lip"></div>
+                </div>
+            `).join('');
+        }
+        this.ml = { running: false, target: null, hits: 0, sinceTarget: 0, token: 0, distractors: [] };
+        this.resetMoleHoles();
+        this.pickMoleTarget(false);
+        this.setMoleButton();
+        this.setMascot('点“开始”，地鼠就要冒出来啦！敲出和图片一样的字！', 'idle');
+    }
+
+    pickMoleTarget(announce = true) {
+        if (!this.ml) return;
+        const ch = this.pickNext('mole', this.picturePool);
+        if (!ch) return;
+        this.ml.target = ch;
+        this.ml.hits = 0;
+        this.ml.sinceTarget = 0;
+        this.ml.distractors = this.buildOptions(ch, 6, { pool: this.picturePool, sameCatCount: 2 }).filter(c => c !== ch);
+        const img = document.getElementById('ml-target-img');
+        if (img) {
+            img.src = this.info(ch).image;
+            this.flash(img, 'gp-pop-in', 500);
+        }
+        if (announce) {
+            this.setMascot('换新目标啦！看图片，敲出这个字！', 'wow');
+            this.sayChar(ch);
+        }
+    }
+
+    setMoleButton() {
+        const btn = document.getElementById('btn-ml-toggle');
+        if (!btn || !this.ml) return;
+        btn.textContent = this.ml.running ? '⏸️ 暂停' : (this.ml.started ? '▶️ 继续' : '▶️ 开始');
+        btn.classList.toggle('pulse', !this.ml.running);
+    }
+
+    toggleMole() {
+        if (!this.ml) return;
+        if (this.ml.running) {
+            this.pauseMole();
+            this.setMascot('休息一下，点“继续”接着敲地鼠！', 'idle');
+        } else {
+            this.resumeMole();
+        }
+    }
+
+    resumeMole() {
+        if (!this.ml) return;
+        this.ml.running = true;
+        this.ml.started = true;
+        this.setMoleButton();
+        this.setMascot('看图片，敲出这个字！', 'idle');
+        this.sayChar(this.ml.target);
+        this.moleLater(() => this.spawnMole(), 900);
+    }
+
+    pauseMole() {
+        this.clearMoleTimers();
+        if (!this.ml) return;
+        this.ml.running = false;
+        this.resetMoleHoles();
+        this.setMoleButton();
+    }
+
+    resetMoleHoles() {
+        document.querySelectorAll('#ml-field .ml-hole').forEach(h => h.classList.remove('up', 'hit', 'miss'));
+    }
+
+    spawnMole() {
+        const ml = this.ml;
+        if (!ml || !ml.running) return;
+        const holes = Array.from(document.querySelectorAll('#ml-field .ml-hole'));
+        const free = holes.filter(h => !h.classList.contains('up'));
+        const upCount = holes.length - free.length;
+        if (free.length && upCount < 2) {
+            const hole = gpPick(free);
+            const targetUp = holes.some(h => h.classList.contains('up') && h.dataset.char === ml.target);
+            let ch;
+            if (!targetUp && (ml.sinceTarget >= 2 || Math.random() < 0.45)) {
+                ch = ml.target;
+                ml.sinceTarget = 0;
+            } else {
+                ch = gpPick(ml.distractors.length ? ml.distractors : this.picturePool.filter(c => c !== ml.target));
+                ml.sinceTarget += 1;
+            }
+            const token = ++ml.token;
+            hole.dataset.char = ch;
+            hole.dataset.token = String(token);
+            const sign = hole.querySelector('.ml-sign');
+            if (sign) sign.textContent = ch;
+            hole.classList.remove('hit', 'miss');
+            hole.classList.add('up');
+            this.moleLater(() => {
+                if (hole.dataset.token === String(token)) hole.classList.remove('up', 'hit', 'miss');
+            }, 2700);
+        }
+        this.moleLater(() => this.spawnMole(), 900 + Math.random() * 550);
+    }
+
+    onMoleTap(hole) {
+        const ml = this.ml;
+        if (!ml || !ml.running || !hole || !hole.classList.contains('up') || hole.classList.contains('hit') || hole.classList.contains('miss')) return;
+        const ch = hole.dataset.char;
+        const token = hole.dataset.token;
+        if (ch === ml.target) {
+            hole.classList.add('hit');
+            this.burstAt(hole, ['#facc15', '#f97316', '#22c55e']);
+            this.sfx('playCorrect');
+            this.registerCorrect();
+            this.awardStars(1, hole);
+            ml.hits += 1;
+            this.moleLater(() => {
+                if (hole.dataset.token === token) hole.classList.remove('up', 'hit');
+            }, 520);
+            if (ml.hits >= 3) {
+                this.moleLater(() => this.pickMoleTarget(true), 650);
+            } else {
+                this.setMascot(`${this.praise()} 敲中“${ch}”啦！`, 'happy');
+            }
+        } else {
+            hole.classList.add('miss');
+            this.sfx('playMistake');
+            this.registerWrong();
+            this.setMascot(`哎呀，这是“${ch}”，再看看图片！`, 'oops');
+            this.moleLater(() => {
+                if (hole.dataset.token === token) hole.classList.remove('up', 'miss');
+            }, 560);
+        }
+    }
+
+    // ==================== A4 纸质试卷打印（随机出题） ====================
+    printExamPaper() {
+        this.sfx('playPop');
         let printArea = document.getElementById('printable-area');
         if (!printArea) {
             printArea = document.createElement('div');
             printArea.id = 'printable-area';
             document.body.appendChild(printArea);
         }
+        const cache = window.STROKE_DATA_CACHE || {};
 
-        const picItems = this.picQuestions.slice(0, 20); // 16~20 题适配单张 A4
+        const picItems = gpShuffle(this.writingPool.slice()).slice(0, 10).map(ch => this.info(ch)).filter(Boolean);
         const picGridHtml = picItems.map(q => `
             <div class="exam-print-pic-cell">
-                <div class="exam-print-img-box">
-                    <img src="${q.image}" alt="看图写字">
-                </div>
-                <div class="exam-print-mizi">
-                    <span class="grid-cross-h"></span>
-                    <span class="grid-cross-v"></span>
-                </div>
+                <div class="exam-print-img-box"><img src="${q.image}" alt="看图写字"></div>
+                <div class="exam-print-mizi"><span class="grid-cross-h"></span><span class="grid-cross-v"></span></div>
             </div>
         `).join('');
 
-        const stkItems = this.strokeQuestions.slice(0, 4);
+        const stkItems = gpShuffle(Object.keys(GP_STROKE_TYPE_DATA).filter(ch => {
+            const types = GP_STROKE_TYPE_DATA[ch].split(' ');
+            return cache[ch] && cache[ch].medians.length === types.length && types.length <= 8 && types.some(t => GP_STROKE_TYPES[t]);
+        })).slice(0, 4).map(ch => {
+            const types = GP_STROKE_TYPE_DATA[ch].split(' ');
+            const askable = types.map((t, i) => (GP_STROKE_TYPES[t] ? i : -1)).filter(i => i >= 0);
+            return { char: ch, ask: gpPick(askable) };
+        });
         const stkHtml = stkItems.map((q, idx) => `
             <div class="exam-print-stk-row">
-                （${idx + 1}）“<strong>${q.char}</strong>” 一共有 <span class="exam-print-line"></span> 画，第${q.askIndexCn}画是 <span class="exam-print-line"></span>。
+                （${idx + 1}）“<strong>${q.char}</strong>” 一共有 <span class="exam-print-line"></span> 画，第${GP_CN_NUM[q.ask]}画是 <span class="exam-print-line"></span>。
             </div>
         `).join('');
 
-        const antRowsHtml = this.antonymPairs.map((pair, idx) => {
-            const rChar = this.rightColChars[idx] || pair.right;
-            return `
-                <div class="exam-print-ant-row">
-                    <span class="ant-p-char">${pair.left}</span>
-                    <span class="ant-p-dot">•</span>
-                    <span class="ant-p-gap"></span>
-                    <span class="ant-p-dot">•</span>
-                    <span class="ant-p-char">${rChar}</span>
-                </div>
-            `;
-        }).join('');
-
-        const paperTitle = '快乐小书法家 · 汉字闯关测试卷';
+        const antPairs = gpShuffle(GP_ANTONYM_PAIRS.slice()).slice(0, 6);
+        const rightOrder = gpShuffle(antPairs.map(p => p.b));
+        const antRowsHtml = antPairs.map((pair, idx) => `
+            <div class="exam-print-ant-row">
+                <span class="ant-p-char">${pair.a}</span>
+                <span class="ant-p-dot">•</span>
+                <span class="ant-p-gap"></span>
+                <span class="ant-p-dot">•</span>
+                <span class="ant-p-char">${rightOrder[idx]}</span>
+            </div>
+        `).join('');
 
         printArea.innerHTML = `
             <div class="print-sheet exam-print-sheet">
                 <div class="print-header">
-                    <h2>${paperTitle}</h2>
+                    <h2>快乐小书法家 · 汉字闯关测试卷</h2>
                     <div class="print-meta">
                         <span>姓名 (Name)：______________</span>
                         <span>日期：____年__月__日</span>
                         <span>得分：【 ______ / 100 】</span>
                     </div>
                 </div>
-
                 <div class="exam-print-section">
                     <h3>一、看图写汉字 (Look at each picture and write the Chinese character)</h3>
-                    <div class="exam-print-pic-grid">
-                        ${picGridHtml}
-                    </div>
+                    <div class="exam-print-pic-grid">${picGridHtml}</div>
                 </div>
-
                 <div class="exam-print-bottom-cols">
                     <div class="exam-print-section exam-print-col-stk">
                         <h3>二、数笔画，填空 (Count the strokes and fill in the blanks)</h3>
-                        <div class="exam-print-stk-list">
-                            ${stkHtml}
-                        </div>
+                        <div class="exam-print-stk-list">${stkHtml}</div>
                     </div>
-
                     <div class="exam-print-section exam-print-col-ant">
                         <h3>三、反义词连线 (Match each word with its opposite)</h3>
-                        <div class="exam-print-ant-list">
-                            ${antRowsHtml}
-                        </div>
+                        <div class="exam-print-ant-list">${antRowsHtml}</div>
                     </div>
                 </div>
             </div>
         `;
-
         window.print();
     }
 
+    // ==================== 事件绑定 ====================
     bindEvents() {
-        // 顶栏主 Tab 切换（✍️ 趣味练字 vs 📝 闯关测试）
-        const practiceTabBtn = document.getElementById('primary-tab-practice');
-        if (practiceTabBtn) {
-            practiceTabBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.switchAppTab('practice');
+        const on = (id, evt, fn) => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener(evt, fn);
+        };
+        const delegate = (id, selector, fn, evt = 'click') => {
+            const root = document.getElementById(id);
+            if (!root) return;
+            root.addEventListener(evt, (e) => {
+                const target = e.target.closest(selector);
+                if (target && root.contains(target)) fn(target, e);
             });
-        }
+        };
 
-        const examTabBtn = document.getElementById('primary-tab-exam');
-        if (examTabBtn) {
-            examTabBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.switchAppTab('exam');
-            });
-        }
-
-        const settingsExamBtn = document.getElementById('btn-settings-exam');
-        if (settingsExamBtn) {
-            settingsExamBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                const settingsModal = document.getElementById('settings-modal');
-                if (settingsModal) settingsModal.classList.remove('visible');
-                this.switchAppTab('exam');
-            });
-        }
-
-        // 换一套题按钮
-        const refreshBtn = document.getElementById('btn-exam-refresh');
-        if (refreshBtn) {
-            refreshBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.loadPaper(true);
-                if (this.app) {
-                    this.app.showToast('🎲 已为您换上一套新题目，快来挑战吧！');
-                }
-            });
-        }
-
-        // 三大题型 Tab 切换
-        document.querySelectorAll('.exam-sec-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.switchSection(tab.dataset.sec);
-            });
+        // 顶栏主 Tab
+        on('primary-tab-practice', 'click', () => {
+            this.sfx('playPop');
+            this.switchAppTab('practice');
+        });
+        on('primary-tab-exam', 'click', () => {
+            this.sfx('playPop');
+            this.switchAppTab('exam');
+        });
+        on('btn-settings-exam', 'click', () => {
+            this.sfx('playPop');
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) settingsModal.classList.remove('visible');
+            this.switchAppTab('exam');
+            this.showHub();
         });
 
-        // 打印同款试卷按钮
-        const printBtn = document.getElementById('btn-exam-print-paper');
-        if (printBtn) {
-            printBtn.addEventListener('click', () => this.printExamPaper());
-        }
+        // 大厅与舞台
+        delegate('game-card-grid', '.game-card', (card) => {
+            this.sfx('playPop');
+            this.enterGame(card.dataset.game);
+        });
+        on('btn-game-back', 'click', () => {
+            this.sfx('playPop');
+            if (window.soundManager && typeof window.soundManager.stopSpeaking === 'function') window.soundManager.stopSpeaking();
+            this.showHub();
+        });
+        on('btn-game-random', 'click', () => {
+            this.sfx('playPop');
+            this.enterGame(gpPick(GP_GAMES).id);
+        });
+        on('btn-exam-print-paper', 'click', () => this.printExamPaper());
 
-        // 第一关：看图写字交互按钮
-        const speakHintBtn = document.getElementById('btn-exam-speak-hint');
-        if (speakHintBtn) {
-            speakHintBtn.addEventListener('click', () => this.speakCurrentPicHint());
-        }
+        // 看图写字
+        on('btn-pw-speak', 'click', () => {
+            if (!this.pw) return;
+            this.pw.usedHint = true;
+            this.sfx('playPop');
+            this.sayChar(this.pw.char);
+        });
+        on('btn-pw-pinyin', 'click', () => {
+            if (!this.pw) return;
+            this.pw.usedHint = true;
+            this.sfx('playPop');
+            const tag = document.getElementById('pw-pinyin');
+            if (tag) {
+                tag.hidden = false;
+                this.flash(tag, 'gp-pop-in', 500);
+            }
+        });
+        on('btn-pw-trace', 'click', () => {
+            if (!this.pw || !this.examCanvas) return;
+            this.sfx('playPop');
+            const next = !this.examCanvas.showTrace;
+            this.examCanvas.setTraceSettings(next);
+            if (next) this.pw.usedTrace = true;
+            this.setTraceButton(next);
+        });
+        on('btn-exam-undo', 'click', () => {
+            if (this.examCanvas) this.examCanvas.undo();
+            this.sfx('playPop');
+        });
+        on('btn-exam-clear', 'click', () => {
+            if (this.examCanvas) this.examCanvas.clear();
+            this.sfx('playEraser');
+        });
+        on('btn-pw-skip', 'click', () => {
+            this.sfx('playPop');
+            this.nextPicwrite();
+        });
+        on('btn-exam-submit-pic', 'click', () => this.pwSubmit());
+        delegate('pw-feedback', '[data-pw-act]', (btn) => this.pwFeedbackAction(btn.dataset.pwAct));
 
-        const traceHintBtn = document.getElementById('btn-exam-toggle-trace');
-        if (traceHintBtn) {
-            traceHintBtn.addEventListener('click', () => this.toggleExamTraceHint());
-        }
+        // 气球选字
+        delegate('bl-sky', '.balloon', (btn) => this.onBalloonTap(btn));
+        on('btn-bl-speak', 'click', () => this.balloonHint());
 
-        const undoBtn = document.getElementById('btn-exam-undo');
-        if (undoBtn) {
-            undoBtn.addEventListener('click', () => {
-                if (this.examCanvas) this.examCanvas.undo();
-                if (window.soundManager) window.soundManager.playPop();
+        // 听音找字
+        delegate('ls-options', '.ls-card', (card) => this.onListenTap(card));
+        on('btn-ls-play', 'click', () => {
+            this.sfx('playPop');
+            this.playListenPrompt();
+        });
+        on('btn-ls-sound-on', 'click', () => this.enableSoundForGame());
+
+        // 组词填空
+        delegate('wd-options', '.wd-piece', (btn) => this.onWordTap(btn));
+        on('btn-wd-speak', 'click', () => {
+            if (!this.wd) return;
+            this.sfx('playPop');
+            this.speak(this.wd.word);
+        });
+
+        // 数笔画
+        delegate('sk-options', '.sk-num', (btn) => this.onStrokeNum(btn));
+        delegate('sk-options', '.sk-type', (btn) => this.onStrokeType(btn));
+        on('btn-sk-count', 'click', () => {
+            if (!this.sk) return;
+            this.playStrokeCount(() => {
+                const sk = this.sk;
+                if (!sk) return;
+                if (sk.step === 2 && sk.done) this.renderStrokeStatic(sk.askIdx, sk.total);
+                else this.renderStrokeStatic(-1, sk.total);
+                this.speak(`${sk.char}字一共${sk.total}画。`);
             });
-        }
+        });
+        on('btn-sk-next', 'click', () => {
+            this.sfx('playPop');
+            this.nextStroke();
+        });
+        on('btn-sk-skip', 'click', () => {
+            this.sfx('playPop');
+            this.nextStroke();
+        });
 
-        const clearBtn = document.getElementById('btn-exam-clear');
-        if (clearBtn) {
-            clearBtn.addEventListener('click', () => {
-                if (this.examCanvas) this.examCanvas.clear();
-                if (window.soundManager) window.soundManager.playEraser();
-            });
-        }
+        // 反义词连线
+        delegate('exam-ant-board', '.ant-word-card', (card) => this.onAntonymTap(card));
+        on('btn-ant-new', 'click', () => {
+            this.sfx('playPop');
+            this.newAntonymRound();
+        });
 
-        const submitPicBtn = document.getElementById('btn-exam-submit-pic');
-        if (submitPicBtn) {
-            submitPicBtn.addEventListener('click', () => this.submitCurrentPicWriting());
-        }
+        // 翻牌配对
+        delegate('mm-grid', '.mm-card', (btn) => this.onMemoryTap(btn));
+        on('btn-mm-restart', 'click', () => {
+            this.sfx('playPop');
+            this.newMemoryRound();
+        });
 
-        const prevPicBtn = document.getElementById('btn-exam-prev-pic');
-        if (prevPicBtn) {
-            prevPicBtn.addEventListener('click', () => this.prevPicQuestion());
-        }
-
-        const nextPicBtn = document.getElementById('btn-exam-next-pic');
-        if (nextPicBtn) {
-            nextPicBtn.addEventListener('click', () => this.nextPicQuestion());
-        }
-
-        // 第二关：数笔画交互按钮
-        const countAnimBtn = document.getElementById('btn-exam-count-anim');
-        if (countAnimBtn) {
-            countAnimBtn.addEventListener('click', () => this.playStrokeStepCounter());
-        }
-
-        const prevStkBtn = document.getElementById('btn-exam-prev-stk');
-        if (prevStkBtn) {
-            prevStkBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                if (this.currentStrokeIdx > 0) {
-                    this.currentStrokeIdx--;
-                    this.renderCurrentStrokeQuestion();
-                }
-            });
-        }
-
-        const nextStkBtn = document.getElementById('btn-exam-next-stk');
-        if (nextStkBtn) {
-            nextStkBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                if (this.currentStrokeIdx < this.strokeQuestions.length - 1) {
-                    this.currentStrokeIdx++;
-                    this.renderCurrentStrokeQuestion();
-                } else {
-                    if (this.app) {
-                        this.app.showToast('🎉 第二关【数笔画，填空】已完成，快去第三关【反义词连线】吧！');
-                    }
-                    this.switchSection('sec3');
-                }
-            });
-        }
-
-        // 第三关：反义词重置连线按钮
-        const resetAntBtn = document.getElementById('btn-exam-reset-ant');
-        if (resetAntBtn) {
-            resetAntBtn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.matchedPairs = {};
-                this.selectedLeftChar = null;
-                this.selectedRightChar = null;
-                this.rightColChars = this.shuffleArray([...this.rightColChars]);
-                this.renderAntonymSection();
-                this.updateOverallProgress();
-            });
-        }
+        // 打地鼠（pointerdown 响应更灵敏）
+        delegate('ml-field', '.ml-hole', (hole, e) => {
+            if (e && e.cancelable) e.preventDefault();
+            this.onMoleTap(hole);
+        }, 'pointerdown');
+        on('btn-ml-toggle', 'click', () => {
+            this.sfx('playPop');
+            this.toggleMole();
+        });
+        on('btn-ml-speak', 'click', () => {
+            if (!this.ml || !this.ml.target) return;
+            this.sfx('playPop');
+            this.sayChar(this.ml.target);
+        });
 
         window.addEventListener('resize', () => {
-            if (this.activeAppTab === 'exam' && this.activeSection === 'sec3') {
+            if (this.activeAppTab === 'exam' && this.activeGame === 'antonym') {
                 this.renderAntonymLines();
             }
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && this.ml && this.ml.running) this.pauseMole();
         });
     }
 }

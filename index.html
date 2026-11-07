@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261101_v8">
+    <link rel="stylesheet" href="css/style.css?v=20261101_v9">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -28,7 +28,7 @@
         }
     </script>
 </head>
-<body>
+<body class="app-mode-exam">
 
     <!-- 顶部导航栏 -->
     <header class="app-header">
@@ -41,13 +41,13 @@
                 </div>
             </div>
 
-            <!-- 顶部核心模式切换 Tab：趣味练字 vs 闯关测试 (非弹窗，独立一级视图切换) -->
+            <!-- 顶部核心模式切换 Tab：闯关乐园（默认首页） vs 趣味练字 (非弹窗，独立一级视图切换) -->
             <div id="app-primary-tabs" class="app-primary-tabs" role="tablist" aria-label="功能模式切换">
-                <button type="button" id="primary-tab-practice" class="primary-tab-btn active" data-app-tab="practice" role="tab" aria-selected="true">
-                    <span>✍️ 趣味练字</span>
+                <button type="button" id="primary-tab-exam" class="primary-tab-btn active" data-app-tab="exam" role="tab" aria-selected="true">
+                    <span>🎮 闯关乐园</span>
                 </button>
-                <button type="button" id="primary-tab-exam" class="primary-tab-btn" data-app-tab="exam" role="tab" aria-selected="false">
-                    <span>📝 闯关测试</span>
+                <button type="button" id="primary-tab-practice" class="primary-tab-btn" data-app-tab="practice" role="tab" aria-selected="false">
+                    <span>✍️ 趣味练字</span>
                 </button>
             </div>
 
@@ -362,129 +362,181 @@
 
     </main>
 
-    <!-- 独立一级 Tab 页面：汉字闯关测试游戏 (非弹窗，与「趣味练字」平级切换) -->
-    <section id="exam-view-container" class="exam-view-container" style="display: none;" aria-label="汉字闯关测试游戏">
-        <!-- 顶部三大关卡导航与换题/打印工具栏 -->
-        <div class="exam-topbar-card">
-            <div class="exam-sec-tabs" role="tablist" aria-label="闯关题型切换">
-                <button type="button" class="exam-sec-tab active" data-sec="sec1" role="tab" aria-selected="true">
-                    <span>一、看图写汉字</span>
-                    <span id="exam-tab-badge-1" class="exam-tab-badge">0/8</span>
-                </button>
-                <button type="button" class="exam-sec-tab" data-sec="sec2" role="tab" aria-selected="false">
-                    <span>二、数笔画，填空</span>
-                    <span id="exam-tab-badge-2" class="exam-tab-badge">0/5</span>
-                </button>
-                <button type="button" class="exam-sec-tab" data-sec="sec3" role="tab" aria-selected="false">
-                    <span>三、反义词连线</span>
-                    <span id="exam-tab-badge-3" class="exam-tab-badge">0/6</span>
-                </button>
+    <!-- 独立一级 Tab 页面：🎮 汉字闯关乐园（默认首页，非弹窗，与「趣味练字」平级切换） -->
+    <section id="exam-view-container" class="exam-view-container" aria-label="汉字闯关乐园">
+        <!-- ① 游戏大厅 -->
+        <div id="game-hub" class="game-hub">
+            <div class="game-hub-hero">
+                <div class="game-hub-hero-left">
+                    <span class="game-hub-mascot" aria-hidden="true">🐼</span>
+                    <div class="game-hub-hero-text">
+                        <h2 class="game-hub-title">汉字闯关乐园</h2>
+                        <p class="game-hub-subtitle">选一个小游戏，和熊猫老师一起闯关赢星星吧！</p>
+                    </div>
+                </div>
+                <div class="game-hub-hero-right">
+                    <span id="game-hub-today" class="game-hub-today" title="今天在闯关乐园赢得的星星">⭐ 今日 0</span>
+                    <button type="button" id="btn-game-random" class="btn-hub-action random">🎲 随机玩</button>
+                    <button type="button" id="btn-exam-print-paper" class="btn-hub-action" title="随机生成一张 A4 纸质测试卷">🖨️ 打印试卷</button>
+                </div>
             </div>
-
-            <div class="exam-topbar-actions">
-                <div id="exam-live-score" class="exam-score-pill" title="当前闯关总得分">🏆 0 分</div>
-                <button type="button" id="btn-exam-refresh" class="btn-exam-action refresh" title="从题库随机抽取一套新题目">🎲 换一套题</button>
-                <button type="button" id="btn-exam-print-paper" class="btn-exam-action print" title="打印当前 A4 纸质测试卷">🖨️ 打印试卷</button>
-            </div>
+            <div id="game-card-grid" class="game-card-grid" role="list" aria-label="闯关小游戏"></div>
         </div>
 
-        <!-- 闯关测试主体区域 -->
-        <div class="exam-stage-body">
-            <!-- ==================== 第一关：看图写汉字 ==================== -->
-            <div id="exam-panel-sec1" class="exam-sec-panel active">
-                <div class="exam-q-bar">
-                    <div id="exam-pic-index-label" class="exam-pic-index-label">第 <strong>1</strong> / 8 题</div>
-                    <div id="exam-pic-nav-strip" class="exam-q-nav-strip"></div>
+        <!-- ② 游戏舞台 -->
+        <div id="game-stage" class="game-stage" hidden>
+            <div class="game-topbar">
+                <button type="button" id="btn-game-back" class="btn-game-back" aria-label="返回闯关乐园">🏠<span class="btn-game-back-text">乐园</span></button>
+                <div class="game-title-wrap">
+                    <span id="game-title-icon" class="game-title-icon" aria-hidden="true">🎈</span>
+                    <span id="game-title-text" class="game-title-text">闯关游戏</span>
                 </div>
-
-                <!-- 左图右写双栏布局 -->
-                <div class="exam-sec1-grid">
-                    <!-- 左侧：题目插画卡与语音/提示 -->
-                    <div class="panel-card exam-pic-card">
-                        <div class="exam-pic-img-wrap">
-                            <img id="exam-pic-img" src="assets/illustrations/shang.svg" alt="看图写汉字插画">
-                            <div id="exam-pic-grade-stamp" class="exam-grade-stamp"></div>
-                        </div>
-                        <div class="exam-pic-helper-btns">
-                            <button type="button" id="btn-exam-speak-hint" class="btn-exam-helper speak">🔊 听读音提示</button>
-                            <button type="button" id="btn-exam-toggle-trace" class="btn-exam-helper trace">💡 描红提示</button>
-                        </div>
-                        <div id="exam-pic-feedback" class="exam-pic-feedback"></div>
-                    </div>
-
-                    <!-- 右侧：默写米字格手写画板 -->
-                    <div class="panel-card exam-write-card">
-                        <div class="exam-canvas-wrapper">
-                            <div id="exam-canvas-box" class="canvas-box exam-canvas-box">
-                                <canvas id="examGridCanvas"></canvas>
-                                <canvas id="examDrawCanvas"></canvas>
-                            </div>
-                        </div>
-                        <div class="exam-write-actions">
-                            <div class="exam-write-tools">
-                                <button type="button" id="btn-exam-undo" class="btn-tool">↩️ 撤销</button>
-                                <button type="button" id="btn-exam-clear" class="btn-tool">🗑️ 清空</button>
-                                <button type="button" id="btn-exam-prev-pic" class="btn-tool">⬅️ 上一题</button>
-                                <button type="button" id="btn-exam-next-pic" class="btn-tool">下一题 ➡️</button>
-                            </div>
-                            <button type="button" id="btn-exam-submit-pic" class="btn-exam-submit">✅ 提交批改</button>
-                        </div>
-                    </div>
+                <div class="game-mascot" aria-live="polite">
+                    <span id="game-mascot-face" class="game-mascot-face" aria-hidden="true">🐼</span>
+                    <div id="game-mascot-bubble" class="game-mascot-bubble"></div>
+                </div>
+                <div class="game-topbar-stats">
+                    <span id="game-combo" class="game-combo-pill" hidden>🔥 连对 ×2</span>
+                    <span id="game-stars" class="game-stars-pill" title="本轮赢得的星星">⭐ 0</span>
                 </div>
             </div>
 
-            <!-- ==================== 第二关：数笔画，填空 ==================== -->
-            <div id="exam-panel-sec2" class="exam-sec-panel">
-                <div class="exam-q-bar">
-                    <div id="exam-stroke-nav-strip" class="exam-q-nav-strip"></div>
+            <div class="game-panels">
+                <!-- 游戏 1：看图写字 -->
+                <div id="game-panel-picwrite" class="game-panel" data-game="picwrite">
+                    <div class="pw-layout">
+                        <div class="gp-card pw-prompt-card">
+                            <div class="pw-img-frame">
+                                <img id="pw-img" src="" alt="看图写字题目插画" draggable="false">
+                                <div id="pw-stamp" class="pw-stamp" aria-hidden="true"></div>
+                                <div id="pw-pinyin" class="pw-pinyin-tag" hidden></div>
+                            </div>
+                            <div class="pw-hint-row">
+                                <button type="button" id="btn-pw-speak" class="btn-hint tone-amber">🔊 听一听</button>
+                                <button type="button" id="btn-pw-pinyin" class="btn-hint tone-blue">🔤 看拼音</button>
+                                <button type="button" id="btn-pw-trace" class="btn-hint tone-red">✏️ 描红</button>
+                            </div>
+                            <div id="pw-feedback" class="pw-feedback"></div>
+                        </div>
+                        <div class="gp-card pw-write-card">
+                            <div class="exam-canvas-wrapper">
+                                <div id="exam-canvas-box" class="canvas-box exam-canvas-box">
+                                    <canvas id="examGridCanvas"></canvas>
+                                    <canvas id="examDrawCanvas"></canvas>
+                                </div>
+                            </div>
+                            <div class="pw-actions">
+                                <div class="pw-tools">
+                                    <button type="button" id="btn-exam-undo" class="btn-tool">↩️ 撤销</button>
+                                    <button type="button" id="btn-exam-clear" class="btn-tool">🗑️ 清空</button>
+                                    <button type="button" id="btn-pw-skip" class="btn-tool">⏭️ 换一题</button>
+                                </div>
+                                <button type="button" id="btn-exam-submit-pic" class="btn-game-primary">✅ 写好了</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="exam-sec2-grid">
-                    <!-- 左侧：带序号的互动笔画数一数演示 -->
-                    <div class="panel-card exam-stroke-visual-card">
-                        <div id="exam-stroke-svg-box" class="exam-stroke-svg-box"></div>
-                        <button type="button" id="btn-exam-count-anim" class="btn-exam-count-anim">
-                            🔢 一笔一笔数给我看
-                        </button>
+                <!-- 游戏 2：气球选字 -->
+                <div id="game-panel-balloon" class="game-panel" data-game="balloon">
+                    <div class="bl-layout">
+                        <div class="gp-card bl-prompt-card">
+                            <div class="gp-img-frame bl-img-frame">
+                                <img id="bl-img" src="" alt="气球选字题目插画" draggable="false">
+                            </div>
+                            <button type="button" id="btn-bl-speak" class="btn-hint tone-amber">🔊 听提示</button>
+                        </div>
+                        <div id="bl-sky" class="gp-card bl-sky" aria-label="气球选项"></div>
                     </div>
+                </div>
 
-                    <!-- 右侧：填空题干与点选答题板 -->
-                    <div class="panel-card exam-stroke-quiz-card">
-                        <div id="exam-stroke-sentence" class="exam-stroke-sentence"></div>
-                        <div id="exam-stroke-breakdown" class="exam-stroke-breakdown"></div>
-
-                        <div class="exam-pad-block">
-                            <div class="exam-pad-title">① 点击选择【一共有几画】：</div>
-                            <div id="exam-stroke-numpad" class="exam-stroke-numpad"></div>
+                <!-- 游戏 3：听音找字 -->
+                <div id="game-panel-listen" class="game-panel" data-game="listen">
+                    <div class="ls-layout">
+                        <div class="gp-card ls-speaker-card">
+                            <button type="button" id="btn-ls-play" class="ls-speaker-btn" aria-label="再听一遍">
+                                <span class="ls-ring r1"></span>
+                                <span class="ls-ring r2"></span>
+                                <span class="ls-speaker-icon">🔊</span>
+                            </button>
+                            <div class="ls-speaker-tip">点喇叭，再听一遍</div>
+                            <button type="button" id="btn-ls-sound-on" class="btn-hint tone-red" hidden>🔇 声音关着，点我打开</button>
                         </div>
+                        <div id="ls-options" class="ls-options"></div>
+                    </div>
+                </div>
 
-                        <div class="exam-pad-block">
-                            <div class="exam-pad-title">② 点击选择【第几画是什么笔画】：</div>
-                            <div id="exam-stroke-shapepad" class="exam-stroke-shapepad"></div>
+                <!-- 游戏 4：组词填空 -->
+                <div id="game-panel-word" class="game-panel" data-game="word">
+                    <div class="wd-layout">
+                        <div class="gp-card wd-prompt-card">
+                            <div class="gp-img-frame wd-img-frame">
+                                <img id="wd-img" src="" alt="组词填空提示插画" draggable="false">
+                            </div>
+                            <div id="wd-word" class="wd-word"></div>
+                            <button type="button" id="btn-wd-speak" class="btn-hint tone-amber">🔊 读词语</button>
                         </div>
+                        <div id="wd-options" class="wd-options"></div>
+                    </div>
+                </div>
 
-                        <div class="exam-sec2-footer">
-                            <button type="button" id="btn-exam-prev-stk" class="btn-tool">⬅️ 上一题</button>
-                            <button type="button" id="btn-exam-next-stk" class="btn-exam-submit">下一题 ➡️</button>
+                <!-- 游戏 5：数笔画 -->
+                <div id="game-panel-stroke" class="game-panel" data-game="stroke">
+                    <div class="sk-layout">
+                        <div class="gp-card sk-visual-card">
+                            <div id="sk-svg-box" class="sk-svg-box"></div>
+                            <button type="button" id="btn-sk-count" class="btn-sk-count">🔢 一笔一笔数给我看</button>
+                        </div>
+                        <div class="gp-card sk-quiz-card">
+                            <div id="sk-question" class="sk-question"></div>
+                            <div id="sk-options" class="sk-options"></div>
+                            <div id="sk-feedback" class="sk-feedback"></div>
+                            <div class="sk-actions">
+                                <button type="button" id="btn-sk-skip" class="btn-tool">⏭️ 换一题</button>
+                                <button type="button" id="btn-sk-next" class="btn-game-primary" hidden>下一题 ➔</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- ==================== 第三关：反义词连线 ==================== -->
-            <div id="exam-panel-sec3" class="exam-sec-panel">
-                <div class="panel-card exam-sec3-card">
-                    <div class="exam-sec3-topbar">
-                        <div id="exam-ant-status" class="exam-ant-status">
-                            👆 点击左边一个字，再点击右边相反意思的字连线！
+                <!-- 游戏 6：反义词连线 -->
+                <div id="game-panel-antonym" class="game-panel" data-game="antonym">
+                    <div class="gp-card ant-card">
+                        <div class="ant-toolbar">
+                            <div id="ant-status" class="ant-status">👆 先点左边的字，再点右边意思相反的字！</div>
+                            <button type="button" id="btn-ant-new" class="btn-tool">🔄 换一组</button>
                         </div>
-                        <button type="button" id="btn-exam-reset-ant" class="btn-tool">🔄 重新连线</button>
+                        <div id="exam-ant-board" class="exam-ant-board">
+                            <div id="exam-ant-left-col" class="exam-ant-col"></div>
+                            <svg id="exam-ant-svg" class="exam-ant-svg" aria-hidden="true"></svg>
+                            <div id="exam-ant-right-col" class="exam-ant-col"></div>
+                        </div>
                     </div>
+                </div>
 
-                    <div id="exam-ant-board" class="exam-ant-board">
-                        <div id="exam-ant-left-col" class="exam-ant-col"></div>
-                        <svg id="exam-ant-svg" class="exam-ant-svg"></svg>
-                        <div id="exam-ant-right-col" class="exam-ant-col"></div>
+                <!-- 游戏 7：翻牌配对 -->
+                <div id="game-panel-memory" class="game-panel" data-game="memory">
+                    <div class="gp-card mm-wrap">
+                        <div class="mm-toolbar">
+                            <div id="mm-status" class="mm-status">翻开两张牌，找到图片和汉字好朋友！</div>
+                            <button type="button" id="btn-mm-restart" class="btn-tool">🔄 再玩一局</button>
+                        </div>
+                        <div id="mm-grid" class="mm-grid"></div>
+                    </div>
+                </div>
+
+                <!-- 游戏 8：汉字打地鼠 -->
+                <div id="game-panel-mole" class="game-panel" data-game="mole">
+                    <div class="gp-card ml-wrap">
+                        <div class="ml-toolbar">
+                            <div class="ml-target-card">
+                                <span class="ml-target-label">要敲的字 👉</span>
+                                <img id="ml-target-img" class="ml-target-img" src="" alt="目标汉字提示插画" draggable="false">
+                                <button type="button" id="btn-ml-speak" class="btn-hint tone-amber" aria-label="听目标字读音">🔊</button>
+                            </div>
+                            <button type="button" id="btn-ml-toggle" class="btn-game-primary">▶️ 开始</button>
+                        </div>
+                        <div id="ml-field" class="ml-field"></div>
                     </div>
                 </div>
             </div>
@@ -738,10 +790,10 @@
                             <div class="settings-row" id="setting-row-exam">
                                 <span class="settings-row-icon tone-blue">📝</span>
                                 <span class="settings-row-text">
-                                    <span class="settings-row-title">K班汉字闯关测试</span>
-                                    <span class="settings-row-desc">看图写汉字 · 数笔画填空 · 反义词连线（支持打印试卷）</span>
+                                    <span class="settings-row-title">汉字闯关乐园</span>
+                                    <span class="settings-row-desc">看图写字 · 气球选字 · 听音找字 · 翻牌配对等 8 个小游戏（支持打印试卷）</span>
                                 </span>
-                                <button id="btn-settings-exam" class="btn-settings-action primary">开始测试</button>
+                                <button id="btn-settings-exam" class="btn-settings-action primary">去闯关</button>
                             </div>
                             <div class="settings-row" id="setting-row-print">
                                 <span class="settings-row-icon tone-green">🖨️</span>
@@ -961,15 +1013,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261101_v8"></script>
-    <script src="lib/web-online-tts.js?v=20261101_v8"></script>
-    <script src="js/sound.js?v=20261101_v8"></script>
-    <script src="js/char-data.js?v=20261101_v8"></script>
-    <script src="js/stroke-cache.js?v=20261101_v8"></script>
-    <script src="js/canvas.js?v=20261101_v8"></script>
-    <script src="js/hanzi-guide.js?v=20261101_v8"></script>
-    <script src="js/evaluator.js?v=20261101_v8"></script>
-    <script src="js/quiz-test.js?v=20261101_v8"></script>
-    <script src="js/app.js?v=20261101_v8"></script>
+    <script src="lib/web-natural-tts.js?v=20261101_v9"></script>
+    <script src="lib/web-online-tts.js?v=20261101_v9"></script>
+    <script src="js/sound.js?v=20261101_v9"></script>
+    <script src="js/char-data.js?v=20261101_v9"></script>
+    <script src="js/stroke-cache.js?v=20261101_v9"></script>
+    <script src="js/canvas.js?v=20261101_v9"></script>
+    <script src="js/hanzi-guide.js?v=20261101_v9"></script>
+    <script src="js/evaluator.js?v=20261101_v9"></script>
+    <script src="js/quiz-test.js?v=20261101_v9"></script>
+    <script src="js/app.js?v=20261101_v9"></script>
 </body>
 </html>

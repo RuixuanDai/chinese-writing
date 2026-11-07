@@ -181,11 +181,12 @@ class KidWritingApp {
         this.updateGashaponBadge();
         this.bindRewardEvents();
 
-        // 11. 初始化 K 班闯关测试中心
+        // 11. 初始化 🎮 汉字闯关乐园，并设为默认首页
         if (typeof ExamCenter === 'function') {
             this.examCenter = new ExamCenter(this);
             this.examCenter.initIfNeeded();
             window.examCenter = this.examCenter;
+            this.examCenter.switchAppTab('exam');
         }
 
         // 12. 初始化 PWA 离线缓存与桌面安装支持
