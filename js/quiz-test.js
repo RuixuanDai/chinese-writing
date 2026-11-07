@@ -561,46 +561,24 @@ class ExamCenter {
             return;
         }
 
-        // 支持一图多解（如试卷第16题“人/入”均可得分）
+        // 支持一图多解（如试卷第16题“人/入”均可得分）+ 归一化骨架自由默写识别
         const candidateChars = [q.char, ...(q.altChars || [])];
-        let bestEval = null;
-        let matchedChar = q.char;
+        const recResult = window.chineseWritingEvaluator.recognizeAndEvaluateFreehand(
+            this.examCanvas.drawCanvas,
+            candidateChars,
+            this.examCanvas.strokeList,
+            this.examCanvas.cssSize
+        );
 
-        for (const cand of candidateChars) {
-            const charInfo = (typeof getCharInfo === 'function' && getCharInfo(cand)) || {
-                char: cand,
-                pinyin: q.pinyin,
-                strokes: q.strokes
-            };
-            const hanziData = window.STROKE_DATA_CACHE ? window.STROKE_DATA_CACHE[cand] : null;
-            const res = window.chineseWritingEvaluator.evaluate(
-                this.examCanvas.drawCanvas,
-                charInfo,
-                this.examCanvas.strokeList,
-                hanziData,
-                this.examCanvas.cssSize
-            );
-            if (!bestEval || (res.valid && res.totalScore > bestEval.totalScore)) {
-                bestEval = res;
-                matchedChar = cand;
-            }
-        }
-
-        if (!bestEval || !bestEval.valid) {
-            if (this.app) this.app.showToast(bestEval ? bestEval.message : '请多写几笔再提交批改哦！');
+        if (!recResult || !recResult.valid) {
+            if (this.app) this.app.showToast(recResult ? recResult.message : '请多写几笔再提交批改哦！');
             return;
         }
 
-        // 判断默写是否正确：覆盖率、有效率、笔画数与综合得分
-        const userStrokes = this.examCanvas.strokeList.length;
-        const expectedStrokes = (window.STROKE_DATA_CACHE && window.STROKE_DATA_CACHE[matchedChar])
-            ? window.STROKE_DATA_CACHE[matchedChar].strokes.length
-            : q.strokes;
-        const strokeDiffAbs = Math.abs(userStrokes - expectedStrokes);
-        const coverage = typeof bestEval.coverageRate === 'number' ? bestEval.coverageRate : 0.6;
-        const validRate = typeof bestEval.validRate === 'number' ? bestEval.validRate : 0.6;
-
-        const isPass = bestEval.totalScore >= 70 && coverage >= 0.36 && validRate >= 0.52 && strokeDiffAbs <= 1;
+        const isPass = recResult.isPass;
+        const matchedChar = recResult.matchedChar;
+        const expectedStrokes = recResult.expectedStrokes;
+        const userStrokes = recResult.userStrokes;
 
         const stampEl = document.getElementById('exam-pic-grade-stamp');
         const feedbackBox = document.getElementById('exam-pic-feedback');
@@ -608,12 +586,16 @@ class ExamCenter {
         if (isPass) {
             const wasAlreadyCorrect = (q.status === 'correct');
             q.status = 'correct';
-            q.score = bestEval.totalScore;
+            q.score = recResult.totalScore;
 
             if (stampEl) {
                 stampEl.className = 'exam-grade-stamp correct visible pop-in';
                 stampEl.textContent = '✓';
             }
+
+            const strokeTip = recResult.strokeDiff !== 0
+                ? `（注意标准为 ${expectedStrokes} 画，折笔一笔写成更规范哦）`
+                : `· 共 ${expectedStrokes} 画`;
 
             if (feedbackBox) {
                 feedbackBox.className = 'exam-pic-feedback is-correct';
@@ -621,8 +603,8 @@ class ExamCenter {
                     <div class="exam-fb-header">
                         <span class="exam-fb-char">${matchedChar}</span>
                         <div class="exam-fb-meta">
-                            <strong>🎉 太棒啦！默写完全正确 (${bestEval.totalScore}分 · +3 ⭐)</strong>
-                            <span>【${matchedChar}】(${q.pinyin}) · 共 ${expectedStrokes} 画 · 组词：${q.hintWord}</span>
+                            <strong>🎉 太棒啦！默写正确 (${recResult.totalScore}分 · +3 ⭐)</strong>
+                            <span>【${matchedChar}】(${q.pinyin}) ${strokeTip} · 组词：${q.hintWord}</span>
                         </div>
                         <button type="button" class="btn-exam-inline-next" id="btn-exam-fb-next">下一题 ➔</button>
                     </div>
@@ -643,7 +625,7 @@ class ExamCenter {
             }
         } else {
             q.status = 'wrong';
-            q.score = bestEval.totalScore;
+            q.score = recResult.totalScore;
 
             if (stampEl) {
                 stampEl.className = 'exam-grade-stamp wrong visible pop-in';
@@ -651,12 +633,12 @@ class ExamCenter {
             }
 
             let reasonHint = `正确答案是【${q.char}】（共 ${expectedStrokes} 画，你写了 ${userStrokes} 画）。`;
-            if (strokeDiffAbs > 1) {
+            if (recResult.confusedWithChar) {
+                reasonHint = `系统识别你写的更像【${recResult.confusedWithChar}】字哦！本题图片是【${q.char}】（共 ${expectedStrokes} 画）。`;
+            } else if (!recResult.strokeCountAcceptable) {
                 reasonHint = `笔画数不对哦：【${q.char}】一共有 ${expectedStrokes} 画，你写了 ${userStrokes} 画。`;
-            } else if (coverage < 0.36 || validRate < 0.52) {
-                reasonHint = `字形与【${q.char}】不符哦（注意不要写成相近的字）！`;
-            } else if (bestEval.suggestions && bestEval.suggestions.length > 0) {
-                reasonHint = bestEval.suggestions[0];
+            } else {
+                reasonHint = `字形结构与【${q.char}】还有差距（共 ${expectedStrokes} 画，可点下方“描红订正”跟着写一遍）！`;
             }
 
             if (feedbackBox) {
