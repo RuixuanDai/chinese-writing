@@ -2255,6 +2255,10 @@ body.writing-active .canvas-box {
     border-radius: var(--radius-lg);
     width: 90%;
     max-width: 440px;
+    max-height: 90vh;
+    max-height: 90dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 32px 24px;
     text-align: center;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
@@ -4939,8 +4943,18 @@ button.settings-stat-card:active {
     }
 
     .hanzi-writer-frame {
-        width: 125px;
-        height: 125px;
+        width: 152px;
+        height: 152px;
+    }
+
+    .frame-size-small .hanzi-writer-frame {
+        width: 128px;
+        height: 128px;
+    }
+
+    .frame-size-large .hanzi-writer-frame {
+        width: 170px;
+        height: 170px;
     }
 
     .writer-action-buttons {
@@ -5161,23 +5175,36 @@ button.settings-stat-card:active {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    transition: all 0.18s ease;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
     white-space: nowrap;
 }
 
-.primary-tab-btn:hover {
+.primary-tab-btn:not(.active),
+.primary-tab-btn:not(.active) > span {
+    color: #475569;
+}
+
+.primary-tab-btn:not(.active):hover,
+.primary-tab-btn:not(.active):hover > span {
     color: #0f172a;
 }
 
-.primary-tab-btn.active {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%);
+.primary-tab-btn.active,
+.primary-tab-btn.active:hover,
+.primary-tab-btn.active > span {
+    background: transparent;
     color: #ffffff;
+}
+
+.primary-tab-btn.active,
+.primary-tab-btn.active:hover {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%);
     box-shadow: 0 3px 10px rgba(238, 82, 83, 0.3);
 }
 
-#primary-tab-exam.active {
+.primary-tab-btn[data-app-tab="exam"].active,
+.primary-tab-btn[data-app-tab="exam"].active:hover {
     background: linear-gradient(135deg, #f97316 0%, #ec4899 55%, #8b5cf6 100%);
-    color: #ffffff;
     box-shadow: 0 3px 12px rgba(236, 72, 153, 0.32);
 }
 
@@ -5234,6 +5261,120 @@ body.app-mode-exam #header-search-box {
     .settings-trigger-btn {
         padding: 4px 9px;
         font-size: 12.5px;
+    }
+}
+
+/* iPad 横竖屏顶栏自适应 (721px ~ 1180px)：确保所有核心入口一排完整显示、绝不溢出裁切 */
+@media (max-width: 1180px) and (min-width: 721px) {
+    .header-inner {
+        padding: 4px 10px;
+        gap: 5px;
+    }
+    .logo-icon {
+        font-size: 18px;
+    }
+    .logo-title {
+        font-size: 16px;
+    }
+    .app-primary-tabs {
+        padding: 2px;
+        gap: 2px;
+    }
+    .primary-tab-btn {
+        padding: 4px 9px;
+        font-size: 12px;
+        gap: 3px;
+    }
+    .search-box {
+        min-width: 102px;
+        width: 112px;
+        padding: 2px 3px 2px 8px;
+    }
+    .search-box input {
+        font-size: 12px;
+        min-width: 44px;
+        width: 52px;
+    }
+    .search-box button {
+        padding: 2px 7px;
+        font-size: 11.5px;
+    }
+    .header-actions {
+        gap: 4px;
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+    .star-badge,
+    .completed-badge,
+    .gashapon-trigger-btn,
+    .sticker-book-trigger-btn,
+    .sound-toggle-btn,
+    .fullscreen-toggle-btn,
+    .settings-trigger-btn {
+        padding: 3px 7px;
+        font-size: 11.5px;
+        height: 30px;
+        min-height: 30px;
+        flex-shrink: 0;
+    }
+}
+
+/* iPad 竖屏紧凑顶栏 (721px ~ 960px，含 iPad Mini 768px / Air 820px / Pro 11" 834px)：全屏开关归入设置，确保设置与声音按钮 100% 可见 */
+@media (max-width: 960px) and (min-width: 721px) {
+    .header-inner {
+        padding: 4px 6px;
+        gap: 3px;
+    }
+    .logo-icon {
+        display: none;
+    }
+    .logo-title {
+        font-size: 14px;
+    }
+    .app-primary-tabs {
+        padding: 2px;
+        gap: 2px;
+    }
+    .primary-tab-btn {
+        padding: 4px 6px;
+        font-size: 11px;
+        gap: 2px;
+    }
+    .search-box {
+        min-width: 80px;
+        width: 86px;
+        padding: 2px 2px 2px 6px;
+    }
+    .search-box input {
+        font-size: 11px;
+        min-width: 34px;
+        width: 38px;
+    }
+    .search-box button {
+        padding: 2px 5px;
+        font-size: 10.5px;
+    }
+    .header-actions {
+        gap: 3px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .header-actions::-webkit-scrollbar {
+        display: none;
+    }
+    .fullscreen-toggle-btn {
+        display: none;
+    }
+    .star-badge,
+    .completed-badge,
+    .gashapon-trigger-btn,
+    .sticker-book-trigger-btn,
+    .sound-toggle-btn,
+    .settings-trigger-btn {
+        padding: 2px 5px;
+        font-size: 10.5px;
+        height: 28px;
+        min-height: 28px;
     }
 }
 
@@ -5447,6 +5588,7 @@ body.app-mode-exam #header-search-box {
 .game-card-emoji {
     position: relative;
     z-index: 1;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
     font-size: 58px;
     line-height: 1;
     filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.18));
@@ -7127,8 +7269,8 @@ body.app-mode-exam #header-search-box {
     }
 }
 
-/* ---------- 大屏：大厅卡片撑满屏幕、选项更大更醒目 ---------- */
-@media (min-width: 601px) and (min-height: 700px) {
+/* ---------- 大屏 / 平板：大厅卡片撑满屏幕、选项更大更醒目（含 iPad 横屏 Safari 地址栏下 ~660px 高度） ---------- */
+@media (min-width: 601px) and (min-height: 600px) {
     .game-card-grid {
         flex: 1;
         grid-auto-rows: minmax(0, 1fr);
@@ -7136,25 +7278,25 @@ body.app-mode-exam #header-search-box {
     .game-card-art {
         flex: 1;
         height: auto;
-        min-height: 80px;
+        min-height: 68px;
     }
 }
 
-@media (min-width: 821px) and (min-height: 700px) {
+@media (min-width: 821px) and (orientation: landscape) and (min-height: 640px) {
     .game-card-emoji {
-        font-size: 66px;
+        font-size: 62px;
     }
     .ls-options,
     .wd-options {
-        grid-auto-rows: minmax(150px, 200px);
+        grid-auto-rows: minmax(140px, 200px);
     }
     .ls-card-char,
     .wd-piece-char {
-        font-size: 76px;
+        font-size: 74px;
     }
 }
 
-@media (min-width: 1101px) {
+@media (min-width: 1101px) and (orientation: landscape) {
     .balloon-body {
         width: 120px;
         height: 148px;
@@ -7168,9 +7310,6 @@ body.app-mode-exam #header-search-box {
 @media (max-width: 1100px) {
     .game-card-grid {
         gap: 10px;
-    }
-    .game-card-art {
-        height: 92px;
     }
     .game-card-emoji {
         font-size: 48px;
@@ -7187,8 +7326,147 @@ body.app-mode-exam #header-search-box {
     }
 }
 
-/* ---------- iPad 竖屏 / 折叠屏 / 手机：单栏堆叠布局 ---------- */
-@media (max-width: 820px) {
+/* ---------- iPad 竖屏专属自适应（768px ~ 1024px，覆盖 Mini / Air / Pro 11" / Pro 12.9"）：上下分栏撑满全屏，零底部留白 ---------- */
+@media (min-width: 601px) and (orientation: portrait) and (max-width: 1050px) {
+    .game-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+    .game-card-emoji {
+        font-size: 52px;
+    }
+    .game-panel.active {
+        height: 100%;
+        min-height: 0;
+    }
+    .pw-layout,
+    .bl-layout,
+    .ls-layout,
+    .wd-layout,
+    .sk-layout {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        height: 100%;
+        min-height: 0;
+    }
+    /* 游戏 1 看图写字：上方图片与提示左右并排，下方米字格自适应撑满 */
+    .pw-prompt-card {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 10px 18px;
+        padding: 12px 18px;
+    }
+    .pw-img-frame {
+        flex: none;
+        width: clamp(148px, 20vw, 190px);
+        height: clamp(148px, 20vw, 190px);
+        min-height: 0;
+    }
+    .pw-hint-row {
+        justify-content: flex-start;
+    }
+    .pw-feedback {
+        grid-column: 2;
+        min-height: 0;
+        padding: 8px 12px;
+    }
+    .pw-feedback:not(.is-correct):not(.is-wrong) {
+        display: flex;
+    }
+    .pw-write-card .exam-canvas-wrapper {
+        flex: 1 1 auto;
+        height: auto;
+        min-height: 240px;
+    }
+    /* 游戏 2 气球选字：上方居中清晰大图，下方蓝天撑满剩余空间 */
+    .bl-img-frame {
+        flex: none;
+        width: min(100%, 300px);
+        height: clamp(160px, 21vh, 240px);
+        min-height: 0;
+    }
+    .bl-sky {
+        height: 100%;
+        min-height: 0;
+    }
+    .balloon-body {
+        width: 106px;
+        height: 132px;
+    }
+    .balloon-char {
+        font-size: 52px;
+    }
+    /* 游戏 3 听音找字 & 游戏 4 组词填空：下方四选一字卡撑满剩余高度 */
+    .ls-speaker-card {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 14px 20px;
+        padding: 16px 22px;
+    }
+    .ls-speaker-btn {
+        width: 112px;
+        height: 112px;
+    }
+    .ls-speaker-icon {
+        font-size: 50px;
+    }
+    .wd-img-frame {
+        flex: none;
+        width: min(100%, 260px);
+        height: clamp(136px, 18vh, 210px);
+        min-height: 0;
+    }
+    .ls-options,
+    .wd-options {
+        height: 100%;
+        min-height: 0;
+        grid-auto-rows: minmax(110px, 1fr);
+        align-content: stretch;
+    }
+    .ls-card-char,
+    .wd-piece-char {
+        font-size: 68px;
+    }
+    /* 游戏 5 数笔画：上方汉字格与演示按钮左右紧凑并排，下方答题区宽敞清晰 */
+    .sk-visual-card {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px 24px;
+        padding: 14px 20px;
+    }
+    .sk-svg-box {
+        width: clamp(176px, 22vh, 230px);
+    }
+    .btn-sk-count {
+        width: auto;
+        min-width: 190px;
+        padding: 0 22px;
+    }
+    .sk-quiz-card {
+        justify-content: center;
+    }
+    /* 游戏 6/7/8 反义词 / 翻牌 / 打地鼠：棋盘撑满全卡 */
+    .exam-ant-board,
+    .mm-grid,
+    .ml-field {
+        flex: 1;
+        min-height: 0;
+    }
+    .mm-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-auto-rows: minmax(0, 1fr);
+    }
+    .mm-card {
+        aspect-ratio: auto;
+        min-height: 0;
+    }
+}
+
+/* ---------- 折叠屏窄态 / 手机（<= 720px）：单栏流式堆叠布局 ---------- */
+@media (max-width: 720px) {
     .game-card-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }

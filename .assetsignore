@@ -1,0 +1,6 @@
+.agents
+.git
+.wrangler
+.playwright-cli
+add_chars.py
+README.md

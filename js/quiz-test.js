@@ -174,7 +174,7 @@ const GP_GAMES = [
     { id: 'word', icon: '🧩', title: '组词填空', desc: '选一个字，拼成词语', theme: 'purple', intro: '听一听，选一个字把词语补完整！' },
     { id: 'stroke', icon: '🔢', title: '数笔画', desc: '数一数，汉字有几画', theme: 'amber', intro: '数一数，这个字一共有几画？' },
     { id: 'antonym', icon: '🔗', title: '反义词连线', desc: '找朋友，连连意思相反的字', theme: 'teal', intro: '先点左边的字，再点右边意思相反的字！' },
-    { id: 'memory', icon: '🃏', title: '翻牌配对', desc: '翻翻看，图片配汉字', theme: 'indigo', intro: '翻开两张牌，把图片和汉字配成好朋友！' },
+    { id: 'memory', icon: '🎴', title: '翻牌配对', desc: '翻翻看，图片配汉字', theme: 'indigo', intro: '翻开两张牌，把图片和汉字配成好朋友！' },
     { id: 'mole', icon: '🔨', title: '汉字打地鼠', desc: '看图听音，敲出正确的字', theme: 'green', intro: '地鼠举着汉字冒出来啦！敲出和图片一样的字！' }
 ];
 

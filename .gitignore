@@ -18,5 +18,6 @@ desktop.ini
 # Local TTS Cache & Wrangler
 .local-data/
 .wrangler/
+.playwright-cli/
 .env.local
 .env.db.local
