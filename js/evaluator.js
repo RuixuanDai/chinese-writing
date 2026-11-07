@@ -127,6 +127,9 @@ class ChineseWritingEvaluator {
             stars,
             sealText,
             teacherComment,
+            coverageRate: shapeEval.coverageRate,
+            validRate: shapeEval.validRate,
+            strokeDiff: strokeEval.diff,
             metrics: {
                 strokeScore: strokeEval.score,
                 strokeMax: 40,
@@ -691,6 +694,8 @@ class ChineseWritingEvaluator {
 
         return {
             score: Math.max(8, score),
+            coverageRate,
+            validRate,
             feedback
         };
     }

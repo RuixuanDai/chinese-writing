@@ -2913,6 +2913,38 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "公园离我家很近，步行几分钟就能到达。",
                 "icon": "🔍",
                 "label": "亲近"
+            },
+            {
+                "char": "多",
+                "pinyin": "duō",
+                "en": "many",
+                "strokes": 6,
+                "radical": "夕",
+                "words": [
+                    "许多",
+                    "多少",
+                    "多彩"
+                ],
+                "sentence": "果园里的红苹果真多呀，装满了大竹篮。",
+                "icon": "🍎",
+                "label": "许多",
+                "image": "assets/illustrations/duo_many.svg"
+            },
+            {
+                "char": "少",
+                "pinyin": "shǎo",
+                "en": "few",
+                "strokes": 4,
+                "radical": "小",
+                "words": [
+                    "多少",
+                    "很少",
+                    "年少"
+                ],
+                "sentence": "盘子里的果子变少了，只剩下一个红苹果。",
+                "icon": "🍒",
+                "label": "多少",
+                "image": "assets/illustrations/shao_few.svg"
             }
         ]
     },
@@ -5251,7 +5283,9 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "望": "assets/illustrations/wang_gaze.svg",
     "追": "assets/illustrations/zhui_chase.svg",
     "登": "assets/illustrations/deng_climb.svg",
-    "快": "assets/illustrations/kuai_fast.svg"
+    "快": "assets/illustrations/kuai_fast.svg",
+    "多": "assets/illustrations/duo_many.svg",
+    "少": "assets/illustrations/shao_few.svg"
 };
 
 

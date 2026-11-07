@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261101_v5">
+    <link rel="stylesheet" href="css/style.css?v=20261101_v6">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -58,6 +58,9 @@
                     <span id="completed-char-count">0</span>
                     <span>字</span>
                 </div>
+                <button id="btn-open-exam" class="exam-trigger-btn" title="K班汉字闯关测试：看图写汉字、数笔画填空、反义词连线">
+                    <span>📝 闯关测试</span>
+                </button>
                 <button id="btn-gashapon" class="gashapon-trigger-btn" title="消耗3颗⭐去扭蛋抽萌宠贴纸与书法印章">
                     <span>🎰 扭蛋机</span>
                     <span id="gashapon-badge-count" class="gashapon-bubble-badge" style="display:none;">0</span>
@@ -596,6 +599,14 @@
                     <section class="settings-group">
                         <h4 class="settings-group-title">学习与帮助</h4>
                         <div class="settings-group-card">
+                            <div class="settings-row" id="setting-row-exam">
+                                <span class="settings-row-icon tone-blue">📝</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">K班汉字闯关测试</span>
+                                    <span class="settings-row-desc">看图写汉字 · 数笔画填空 · 反义词连线（支持打印试卷）</span>
+                                </span>
+                                <button id="btn-settings-exam" class="btn-settings-action primary">开始测试</button>
+                            </div>
                             <div class="settings-row" id="setting-row-print">
                                 <span class="settings-row-icon tone-green">🖨️</span>
                                 <span class="settings-row-text">
@@ -813,15 +824,163 @@
         </div>
     </div>
 
+    <!-- 弹窗：K班汉字闯关测试中心 Modal (1:1 还原课堂测试：一、看图写汉字 二、数笔画填空 三、反义词连线) -->
+    <div id="exam-modal" class="modal-overlay">
+        <div class="modal-content exam-modal-card" role="dialog" aria-modal="true" aria-labelledby="exam-modal-title">
+            <!-- 顶部标题栏与试卷切换 -->
+            <div class="exam-modal-header">
+                <div class="exam-header-left">
+                    <span class="exam-header-icon">📝</span>
+                    <div>
+                        <h3 id="exam-modal-title" class="exam-modal-title">K班汉字闯关测试中心</h3>
+                        <div class="exam-modal-subtitle">看图写汉字 · 数笔画填空 · 反义词连线</div>
+                    </div>
+                </div>
+
+                <div class="exam-header-controls">
+                    <div class="exam-mode-seg" role="tablist" aria-label="选择测试试卷">
+                        <button type="button" class="exam-mode-btn active" data-mode="chunyu_k">📋 春雨K班真题卷</button>
+                        <button type="button" class="exam-mode-btn" data-mode="random">🎲 随机闯关卷</button>
+                    </div>
+                    <div id="exam-live-score" class="exam-score-pill" title="当前试卷总得分">0 分</div>
+                    <button type="button" id="btn-exam-print-paper" class="btn-exam-print" title="打印同款 A4 纸质测试卷">🖨️ 打印试卷</button>
+                    <button type="button" id="btn-close-exam" class="settings-close-btn" aria-label="关闭测试">&times;</button>
+                </div>
+            </div>
+
+            <!-- 三大题型闯关标签栏 -->
+            <div class="exam-sec-tabs" role="tablist">
+                <button type="button" class="exam-sec-tab active" data-sec="sec1">
+                    <span>一、看图写汉字</span>
+                    <span id="exam-tab-badge-1" class="exam-tab-badge">0/8</span>
+                </button>
+                <button type="button" class="exam-sec-tab" data-sec="sec2">
+                    <span>二、数笔画，填空</span>
+                    <span id="exam-tab-badge-2" class="exam-tab-badge">0/6</span>
+                </button>
+                <button type="button" class="exam-sec-tab" data-sec="sec3">
+                    <span>三、反义词连线</span>
+                    <span id="exam-tab-badge-3" class="exam-tab-badge">0/6</span>
+                </button>
+            </div>
+
+            <!-- 闯关测试主体区域 -->
+            <div class="exam-modal-body">
+                <!-- ==================== 第一大题：看图写汉字 ==================== -->
+                <div id="exam-panel-sec1" class="exam-sec-panel active">
+                    <div class="exam-sec1-topbar">
+                        <div id="exam-pic-index-label" class="exam-pic-index-label">第 <strong>1</strong> / 8 题</div>
+                        <div id="exam-pic-scope-bar" class="exam-scope-seg">
+                            <button type="button" class="exam-scope-btn active" data-scope="focus" title="优先练习真题易错与核心字（上/禾/来/坐/去/下/出/人）">🎯 错题与重点 (8题)</button>
+                            <button type="button" class="exam-scope-btn" data-scope="all22" title="按春雨K班真题卷顺序完整默写全部 22 个字">📋 真题全卷 (22题)</button>
+                        </div>
+                    </div>
+
+                    <!-- 题号导航条 -->
+                    <div id="exam-pic-nav-strip" class="exam-q-nav-strip"></div>
+
+                    <!-- 左图右写双栏布局 -->
+                    <div class="exam-sec1-grid">
+                        <!-- 左侧：题目插画卡与语音/提示 -->
+                        <div class="exam-pic-card">
+                            <div class="exam-pic-img-wrap">
+                                <img id="exam-pic-img" src="assets/illustrations/shang.svg" alt="看图写汉字插画">
+                                <div id="exam-pic-grade-stamp" class="exam-grade-stamp"></div>
+                            </div>
+                            <div class="exam-pic-helper-btns">
+                                <button type="button" id="btn-exam-speak-hint" class="btn-exam-helper speak">🔊 听读音提示</button>
+                                <button type="button" id="btn-exam-toggle-trace" class="btn-exam-helper trace">💡 描红提示</button>
+                            </div>
+                            <div id="exam-pic-feedback" class="exam-pic-feedback"></div>
+                        </div>
+
+                        <!-- 右侧：默写米字格手写画板 -->
+                        <div class="exam-write-card">
+                            <div class="exam-canvas-wrapper">
+                                <div id="exam-canvas-box" class="canvas-box exam-canvas-box">
+                                    <canvas id="examGridCanvas"></canvas>
+                                    <canvas id="examDrawCanvas"></canvas>
+                                </div>
+                            </div>
+                            <div class="exam-write-actions">
+                                <div class="exam-write-tools">
+                                    <button type="button" id="btn-exam-undo" class="btn-tool">↩️ 撤销</button>
+                                    <button type="button" id="btn-exam-clear" class="btn-tool">🗑️ 清空</button>
+                                    <button type="button" id="btn-exam-prev-pic" class="btn-tool">⬅️ 上一题</button>
+                                    <button type="button" id="btn-exam-next-pic" class="btn-tool">下一题 ➡️</button>
+                                </div>
+                                <button type="button" id="btn-exam-submit-pic" class="btn-exam-submit">✅ 提交批改</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== 第二大题：数笔画，填空 ==================== -->
+                <div id="exam-panel-sec2" class="exam-sec-panel">
+                    <div id="exam-stroke-nav-strip" class="exam-q-nav-strip"></div>
+
+                    <div class="exam-sec2-grid">
+                        <!-- 左侧：带序号的互动笔画数一数演示 -->
+                        <div class="exam-stroke-visual-card">
+                            <div id="exam-stroke-paper-tag" class="exam-stroke-paper-tag"></div>
+                            <div id="exam-stroke-svg-box" class="exam-stroke-svg-box"></div>
+                            <button type="button" id="btn-exam-count-anim" class="btn-exam-count-anim">
+                                🔢 一笔一笔数给我看
+                            </button>
+                        </div>
+
+                        <!-- 右侧：填空题干与点选答题板 -->
+                        <div class="exam-stroke-quiz-card">
+                            <div id="exam-stroke-sentence" class="exam-stroke-sentence"></div>
+                            <div id="exam-stroke-breakdown" class="exam-stroke-breakdown"></div>
+
+                            <div class="exam-pad-block">
+                                <div class="exam-pad-title">① 点击选择【一共有几画】：</div>
+                                <div id="exam-stroke-numpad" class="exam-stroke-numpad"></div>
+                            </div>
+
+                            <div class="exam-pad-block">
+                                <div class="exam-pad-title">② 点击选择【第几画是什么笔画】：</div>
+                                <div id="exam-stroke-shapepad" class="exam-stroke-shapepad"></div>
+                            </div>
+
+                            <div class="exam-sec2-footer">
+                                <button type="button" id="btn-exam-prev-stk" class="btn-tool">⬅️ 上一题</button>
+                                <button type="button" id="btn-exam-next-stk" class="btn-exam-submit">下一题 ➡️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== 第三大题：反义词连线 ==================== -->
+                <div id="exam-panel-sec3" class="exam-sec-panel">
+                    <div class="exam-sec3-topbar">
+                        <div id="exam-ant-status" class="exam-ant-status">
+                            👆 点击左边一个字，再点击右边相反意思的字连线！
+                        </div>
+                        <button type="button" id="btn-exam-reset-ant" class="btn-tool">🔄 重新连线</button>
+                    </div>
+
+                    <div id="exam-ant-board" class="exam-ant-board">
+                        <div id="exam-ant-left-col" class="exam-ant-col"></div>
+                        <svg id="exam-ant-svg" class="exam-ant-svg"></svg>
+                        <div id="exam-ant-right-col" class="exam-ant-col"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261101_v5"></script>
-    <script src="lib/web-online-tts.js?v=20261101_v5"></script>
-    <script src="js/sound.js?v=20261101_v5"></script>
-    <script src="js/char-data.js?v=20261101_v5"></script>
-    <script src="js/stroke-cache.js?v=20261101_v5"></script>
-    <script src="js/canvas.js?v=20261101_v5"></script>
-    <script src="js/hanzi-guide.js?v=20261101_v5"></script>
-    <script src="js/evaluator.js?v=20261101_v5"></script>
-    <script src="js/app.js?v=20261101_v5"></script>
+    <script src="lib/web-natural-tts.js?v=20261101_v6"></script>
+    <script src="lib/web-online-tts.js?v=20261101_v6"></script>
+    <script src="js/sound.js?v=20261101_v6"></script>
+    <script src="js/char-data.js?v=20261101_v6"></script>
+    <script src="js/stroke-cache.js?v=20261101_v6"></script>
+    <script src="js/canvas.js?v=20261101_v6"></script>
+    <script src="js/hanzi-guide.js?v=20261101_v6"></script>
+    <script src="js/evaluator.js?v=20261101_v6"></script>
+    <script src="js/quiz-test.js?v=20261101_v6"></script>
+    <script src="js/app.js?v=20261101_v6"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
  * 2. 断网/弱网状态下无缝回退到本地 Cache Storage，支持 100% 离线练字、笔顺演示与离线语音。
  */
 
-const CACHE_NAME = 'chinese-writing-pwa-v3.2';
+const CACHE_NAME = 'chinese-writing-pwa-v3.3';
 
 const CORE_ASSETS = [
     './',
@@ -22,6 +22,7 @@ const CORE_ASSETS = [
     './js/canvas.js',
     './js/hanzi-guide.js',
     './js/evaluator.js',
+    './js/quiz-test.js',
     './js/app.js',
     './assets/apple-touch-icon.png',
     './assets/icon-192.png',

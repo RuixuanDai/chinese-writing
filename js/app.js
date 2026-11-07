@@ -181,7 +181,14 @@ class KidWritingApp {
         this.updateGashaponBadge();
         this.bindRewardEvents();
 
-        // 11. 初始化 PWA 离线缓存与桌面安装支持
+        // 11. 初始化 K 班闯关测试中心
+        if (typeof ExamCenter === 'function') {
+            this.examCenter = new ExamCenter(this);
+            this.examCenter.initIfNeeded();
+            window.examCenter = this.examCenter;
+        }
+
+        // 12. 初始化 PWA 离线缓存与桌面安装支持
         this.initPWA();
     }
 
