@@ -5,7 +5,7 @@
  * 2. 断网/弱网状态下无缝回退到本地 Cache Storage，支持 100% 离线练字、笔顺演示与离线语音。
  */
 
-const CACHE_NAME = 'chinese-writing-pwa-v3.3';
+const CACHE_NAME = 'chinese-writing-pwa-v3.4';
 
 const CORE_ASSETS = [
     './',

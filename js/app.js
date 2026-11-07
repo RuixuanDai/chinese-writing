@@ -832,6 +832,9 @@ class KidWritingApp {
                 return;
             }
             const firstChar = hanziMatch[0];
+            if (this.examCenter && this.examCenter.activeAppTab === 'exam') {
+                this.examCenter.switchAppTab('practice');
+            }
             this.selectChar(firstChar);
             customInput.value = '';
             if (window.soundManager) window.soundManager.playPop();

@@ -18,29 +18,29 @@ const STROKE_SHAPE_OPTIONS = [
     { id: 'shugou', symbol: '亅', name: '竖钩', label: '亅 (竖钩)' }
 ];
 
-// 春雨K班第二次测试 Version B 真题题库
+// 汉字闯关测试题库
 const CHUNYU_K_EXAM_DATA = {
-    title: '春雨K班第二次测试 (真题特训)',
-    // 第一大题：看图写汉字 22 题（按真题试卷顺序排列；标记 isFocus 为真题错题/易混字）
+    title: '汉字闯关测试',
+    // 第一大题：看图写汉字 22 题
     picWriteFull: [
-        { char: '上', hintWord: '向上、上面', isFocus: true, note: '真题易混：注意箭头指向上面是“上”，不要写成“下”哦！' },
+        { char: '上', hintWord: '向上、上面', isFocus: true, note: '注意箭头指向上面是“上”，不要写成“下”哦！' },
         { char: '中', hintWord: '中间、中心', isFocus: false },
         { char: '右', hintWord: '右边、右手', isFocus: false },
         { char: '立', hintWord: '立正、站立', isFocus: false },
-        { char: '来', hintWord: '过来、来到', isFocus: true, note: '真题重点：共7画，先写横、点、撇、长横、竖、撇、捺' },
+        { char: '来', hintWord: '过来、来到', isFocus: true, note: '共7画，先写横、点、撇、长横、竖、撇、捺' },
         { char: '山', hintWord: '高山、大山', isFocus: false },
-        { char: '去', hintWord: '回去、出去', isFocus: true, note: '真题重点：上面是“土”，下面第四画是撇折（𠃋）加一点' },
-        { char: '禾', hintWord: '禾苗、禾谷', isFocus: true, note: '真题错题特训：第一画是平撇（丿），下面是“木”，合起来是禾苗的“禾”！' },
+        { char: '去', hintWord: '回去、出去', isFocus: true, note: '上面是“土”，下面第四画是撇折（𠃋）加一点' },
+        { char: '禾', hintWord: '禾苗、禾谷', isFocus: true, note: '第一画是平撇（丿），下面是“木”，合起来是禾苗的“禾”！' },
         { char: '水', hintWord: '河水、喝水', isFocus: false },
         { char: '田', hintWord: '水田、田地', isFocus: false },
         { char: '石', hintWord: '石头、岩石', isFocus: false },
         { char: '左', hintWord: '左边、左手', isFocus: false },
         { char: '月', hintWord: '月亮、月儿', isFocus: false },
-        { char: '坐', hintWord: '坐下、请坐', isFocus: true, note: '真题重点：两个小人坐在土上，共7画，第六画是中间的竖（丨）' },
+        { char: '坐', hintWord: '坐下、请坐', isFocus: true, note: '两个小人坐在土上，共7画，第六画是中间的竖（丨）' },
         { char: '日', hintWord: '红日、太阳', isFocus: false },
         { char: '人', altChars: ['入'], hintWord: '大人、人们（或入口）', isFocus: true, note: '撇高捺低是“人”，撇低捺高是“入”' },
         { char: '土', hintWord: '泥土、土地', isFocus: false },
-        { char: '下', hintWord: '向下、下面', isFocus: true, note: '真题对比：横在最上面、箭头往下指是“下”' },
+        { char: '下', hintWord: '向下、下面', isFocus: true, note: '横在最上面、箭头往下指是“下”' },
         { char: '出', hintWord: '出去、出来', isFocus: true, note: '共5画：竖折、竖、长竖、竖折、竖' },
         { char: '火', hintWord: '火苗、大火', isFocus: false },
         { char: '走', hintWord: '走路、行走', isFocus: false },
@@ -253,9 +253,8 @@ const EXTRA_ANTONYM_POOL = [
 class ExamCenter {
     constructor(app) {
         this.app = app;
-        this.paperMode = 'chunyu_k'; // 'chunyu_k' (春雨K班真题卷) | 'random' (随机闯关卷)
-        this.picScope = 'focus';     // 'focus' (错题与重点8题) | 'all22' (整卷22题)
-        this.activeSection = 'sec1'; // 'sec1' | 'sec2' | 'sec3'
+        this.activeAppTab = 'practice'; // 'practice' (趣味练字) | 'exam' (闯关测试)
+        this.activeSection = 'sec1';    // 'sec1' | 'sec2' | 'sec3'
 
         this.picQuestions = [];
         this.currentPicIdx = 0;
@@ -289,60 +288,62 @@ class ExamCenter {
         }
 
         this.bindEvents();
-        this.loadPaper('chunyu_k', 'focus');
+        this.loadPaper(false);
     }
 
-    open(mode = 'chunyu_k', picScope = null) {
+    // 切换主界面 Tab：'practice' (✍️ 趣味练字) vs 'exam' (📝 闯关测试)
+    switchAppTab(tabName = 'practice') {
         this.initIfNeeded();
-        if (mode !== this.paperMode || (picScope && picScope !== this.picScope)) {
-            this.loadPaper(mode, picScope || (mode === 'chunyu_k' ? 'focus' : 'all22'));
+        this.activeAppTab = tabName;
+
+        const practiceTabBtn = document.getElementById('primary-tab-practice');
+        const examTabBtn = document.getElementById('primary-tab-exam');
+        const examContainer = document.getElementById('exam-view-container');
+
+        if (practiceTabBtn) practiceTabBtn.classList.toggle('active', tabName === 'practice');
+        if (examTabBtn) examTabBtn.classList.toggle('active', tabName === 'exam');
+
+        if (tabName === 'exam') {
+            document.body.classList.add('app-mode-exam');
+            if (examContainer) examContainer.style.display = 'flex';
+            setTimeout(() => {
+                if (this.examCanvas) {
+                    this.examCanvas.resize(true);
+                }
+                this.renderAntonymLines();
+            }, 60);
+        } else {
+            this.stopStrokeStepAnimation();
+            document.body.classList.remove('app-mode-exam');
+            if (examContainer) examContainer.style.display = 'none';
+            setTimeout(() => {
+                if (this.app && this.app.canvasEngine) {
+                    this.app.canvasEngine.resize(true);
+                }
+                if (this.app && this.app.hanziGuide && typeof this.app.hanziGuide.resize === 'function') {
+                    this.app.hanziGuide.resize();
+                }
+            }, 60);
         }
-        const modal = document.getElementById('exam-modal');
-        if (modal) {
-            modal.classList.add('visible');
-        }
-        setTimeout(() => {
-            if (this.examCanvas) {
-                this.examCanvas.resize(true);
-            }
-            this.renderAntonymLines();
-        }, 120);
+    }
+
+    open() {
+        this.switchAppTab('exam');
     }
 
     close() {
-        this.stopStrokeStepAnimation();
-        const modal = document.getElementById('exam-modal');
-        if (modal) {
-            modal.classList.remove('visible');
-        }
+        this.switchAppTab('practice');
     }
 
-    // 加载指定试卷
-    loadPaper(mode = 'chunyu_k', picScope = 'focus') {
-        this.paperMode = mode;
-        this.picScope = picScope;
+    // 加载或刷新测试题库
+    loadPaper(shuffle = false) {
         this.stopStrokeStepAnimation();
 
-        // 同步顶部模式切换按钮高亮
-        document.querySelectorAll('.exam-mode-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.mode === mode);
-        });
-        document.querySelectorAll('.exam-scope-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.scope === picScope);
-        });
-
-        const scopeWrap = document.getElementById('exam-pic-scope-bar');
-        if (scopeWrap) {
-            scopeWrap.style.display = mode === 'chunyu_k' ? 'flex' : 'none';
-        }
-
-        if (mode === 'chunyu_k') {
-            const rawList = picScope === 'focus'
-                ? CHUNYU_K_EXAM_DATA.picWriteFull.filter(q => q.isFocus)
-                : CHUNYU_K_EXAM_DATA.picWriteFull;
-
+        if (!shuffle) {
+            // 默认首套精选测试题（包含看图写字8题、数笔画5题、反义词连线6组）
+            const rawList = CHUNYU_K_EXAM_DATA.picWriteFull.filter(q => q.isFocus);
             this.picQuestions = rawList.map(item => this.buildPicQuestion(item));
-            this.strokeQuestions = CHUNYU_K_EXAM_DATA.strokeQuestions.map(q => ({
+            this.strokeQuestions = CHUNYU_K_EXAM_DATA.strokeQuestions.slice(0, 5).map(q => ({
                 ...q,
                 userTotal: null,
                 userStrokeId: null,
@@ -352,7 +353,7 @@ class ExamCenter {
             this.antonymPairs = CHUNYU_K_EXAM_DATA.antonymPairs.map(p => ({ ...p }));
             this.rightColChars = [...CHUNYU_K_EXAM_DATA.rightColumnOrder];
         } else {
-            // 随机综合卷：从全题库抽取 8 道看图写字、5 道数笔画、6 组反义词
+            // 换一套题：从全题库随机抽取 8 道看图写字、5 道数笔画、6 组反义词
             const pool = this.shuffleArray([...CHUNYU_K_EXAM_DATA.picWriteFull]).slice(0, 8);
             this.picQuestions = pool.map(item => this.buildPicQuestion(item));
 
@@ -464,7 +465,7 @@ class ExamCenter {
 
         const indexLabel = document.getElementById('exam-pic-index-label');
         if (indexLabel) {
-            indexLabel.innerHTML = `第 <strong>${this.currentPicIdx + 1}</strong> / ${this.picQuestions.length} 题 ${q.isFocus ? '<span class="exam-focus-tag">🔥 真题重点</span>' : ''}`;
+            indexLabel.innerHTML = `第 <strong>${this.currentPicIdx + 1}</strong> / ${this.picQuestions.length} 题`;
         }
 
         const imgEl = document.getElementById('exam-pic-img');
@@ -761,13 +762,6 @@ class ExamCenter {
         // 默认不提前剧透高亮目标笔画；若已提交则直接高亮第 k 画
         this.highlightedStrokeIdx = q.checked ? (q.askIndex - 1) : -1;
         this.renderStrokeCharSVG(q.char, this.highlightedStrokeIdx, q.checked ? q.totalStrokes : 0);
-
-        const paperTag = document.getElementById('exam-stroke-paper-tag');
-        if (paperTag) {
-            paperTag.innerHTML = q.isPaperOriginal
-                ? '<span class="exam-focus-tag">📋 春雨K班试卷原题</span>'
-                : '<span class="exam-sub-tag">🌟 重点笔画巩固题</span>';
-        }
 
         // 渲染填空句子：“来” 一共有 [ ? ] 画，第 四 画是 [ ? ]。
         const sentenceEl = document.getElementById('exam-stroke-sentence');
@@ -1258,9 +1252,7 @@ class ExamCenter {
             `;
         }).join('');
 
-        const paperTitle = this.paperMode === 'chunyu_k'
-            ? '春雨K班汉字闯关测试卷 (真题同款练习卷)'
-            : '快乐小书法家 · K班汉字综合测试卷';
+        const paperTitle = '快乐小书法家 · 汉字闯关测试卷';
 
         printArea.innerHTML = `
             <div class="print-sheet exam-print-sheet">
@@ -1302,12 +1294,20 @@ class ExamCenter {
     }
 
     bindEvents() {
-        // 打开/关闭测试弹窗
-        const openBtn = document.getElementById('btn-open-exam');
-        if (openBtn) {
-            openBtn.addEventListener('click', () => {
+        // 顶栏主 Tab 切换（✍️ 趣味练字 vs 📝 闯关测试）
+        const practiceTabBtn = document.getElementById('primary-tab-practice');
+        if (practiceTabBtn) {
+            practiceTabBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
-                this.open('chunyu_k', 'focus');
+                this.switchAppTab('practice');
+            });
+        }
+
+        const examTabBtn = document.getElementById('primary-tab-exam');
+        if (examTabBtn) {
+            examTabBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.switchAppTab('exam');
             });
         }
 
@@ -1317,44 +1317,21 @@ class ExamCenter {
                 if (window.soundManager) window.soundManager.playPop();
                 const settingsModal = document.getElementById('settings-modal');
                 if (settingsModal) settingsModal.classList.remove('visible');
-                this.open('chunyu_k', 'focus');
+                this.switchAppTab('exam');
             });
         }
 
-        const closeBtn = document.getElementById('btn-close-exam');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
+        // 换一套题按钮
+        const refreshBtn = document.getElementById('btn-exam-refresh');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
-                this.close();
-            });
-        }
-
-        const modal = document.getElementById('exam-modal');
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    if (window.soundManager) window.soundManager.playPop();
-                    this.close();
+                this.loadPaper(true);
+                if (this.app) {
+                    this.app.showToast('🎲 已为您换上一套新题目，快来挑战吧！');
                 }
             });
         }
-
-        // 试卷模式切换（春雨K班真题卷 vs 随机闯关卷）
-        document.querySelectorAll('.exam-mode-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                const m = btn.dataset.mode;
-                this.loadPaper(m, m === 'chunyu_k' ? this.picScope : 'all22');
-            });
-        });
-
-        // 看图写字题量切换（错题特训 8 题 vs 整卷 22 题）
-        document.querySelectorAll('.exam-scope-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (window.soundManager) window.soundManager.playPop();
-                this.loadPaper('chunyu_k', btn.dataset.scope);
-            });
-        });
 
         // 三大题型 Tab 切换
         document.querySelectorAll('.exam-sec-tab').forEach(tab => {
@@ -1453,16 +1430,14 @@ class ExamCenter {
                 this.matchedPairs = {};
                 this.selectedLeftChar = null;
                 this.selectedRightChar = null;
-                if (this.paperMode === 'random') {
-                    this.rightColChars = this.shuffleArray([...this.rightColChars]);
-                }
+                this.rightColChars = this.shuffleArray([...this.rightColChars]);
                 this.renderAntonymSection();
                 this.updateOverallProgress();
             });
         }
 
         window.addEventListener('resize', () => {
-            if (this.activeSection === 'sec3') {
+            if (this.activeAppTab === 'exam' && this.activeSection === 'sec3') {
                 this.renderAntonymLines();
             }
         });
