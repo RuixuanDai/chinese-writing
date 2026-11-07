@@ -14,6 +14,7 @@ class HanziGuide {
         this.currentStrokeIndex = 0;
         this.onQuizCompleteCallback = null;
         this.onStrokeSuccessCallback = null;
+        this.onModeChange = null;
         this.currentSize = 0;
 
         this.initResizeObserver();
@@ -69,7 +70,11 @@ class HanziGuide {
 
         // 清空容器
         this.targetEl.innerHTML = '';
+        const wasQuiz = this.isQuizMode;
         this.isQuizMode = false;
+        if (wasQuiz && typeof this.onModeChange === 'function') {
+            this.onModeChange(false);
+        }
 
         const size = this.getFrameInnerSize();
         this.currentSize = size;
@@ -194,6 +199,9 @@ class HanziGuide {
         this.currentStrokeIndex = 0;
         this.onQuizCompleteCallback = options.onComplete;
         this.onStrokeSuccessCallback = options.onStrokeSuccess;
+        if (typeof this.onModeChange === 'function') {
+            this.onModeChange(true);
+        }
 
         this.writer.quiz({
             onCorrectStroke: (data) => {
@@ -218,6 +226,9 @@ class HanziGuide {
             },
             onComplete: (summary) => {
                 this.isQuizMode = false;
+                if (typeof this.onModeChange === 'function') {
+                    this.onModeChange(false);
+                }
                 if (window.soundManager) {
                     window.soundManager.playVictory();
                 }
@@ -231,8 +242,17 @@ class HanziGuide {
     // 重置或退出跟写模式
     reset() {
         if (!this.writer) return;
+        const wasQuiz = this.isQuizMode;
         this.isQuizMode = false;
+        if (typeof this.writer.cancelQuiz === 'function') {
+            try {
+                this.writer.cancelQuiz();
+            } catch (e) {}
+        }
         this.writer.showCharacter();
+        if (wasQuiz && typeof this.onModeChange === 'function') {
+            this.onModeChange(false);
+        }
     }
 
     // 生成笔画分解图示条 (拆分汉字笔画顺序步骤展示)

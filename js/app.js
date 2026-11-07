@@ -41,6 +41,7 @@ class KidWritingApp {
         this.autoEvalSpeech = this.safeGetStorage('kid_app_auto_eval_speech', 'true') !== 'false'; // 评分后自动朗读点评 (家长可在设置页关闭)
         this.deferredInstallPrompt = null;
         this._mobileBannerDismissed = false;
+        this._modalOpenedFromSettings = false;
 
         this.canvasEngine = null;
         this.hanziGuide = null;
@@ -101,6 +102,7 @@ class KidWritingApp {
 
         // 2. 初始化笔顺引擎并恢复写字框与写字画板大小记忆
         this.hanziGuide = new HanziGuide('hanzi-writer-box');
+        this.hanziGuide.onModeChange = () => this.scheduleNavSync();
         const savedFrameSize = this.safeGetStorage('kid_app_guide_frame_size', 'medium');
         this.setGuideFrameSize(['small', 'medium', 'large'].includes(savedFrameSize) ? savedFrameSize : 'medium');
 
@@ -188,6 +190,9 @@ class KidWritingApp {
             window.examCenter = this.examCenter;
             this.examCenter.switchAppTab('exam');
         }
+
+        // 11.5 初始化移动端 / Android 系统后退导航栈（返回上层页面而非直接退出应用）
+        this.initBackNavigation();
 
         // 12. 初始化 PWA 离线缓存与桌面安装支持
         this.initPWA();
@@ -315,6 +320,8 @@ class KidWritingApp {
         }
 
         // 4. 重置状态提示
+        const startQuizBtn = document.getElementById('btn-start-quiz');
+        if (startQuizBtn) startQuizBtn.classList.remove('pulse');
         this.setQuizStatus('点击下方“播放笔顺”或“笔顺跟写闯关”开始练习！');
     }
 
@@ -472,6 +479,7 @@ class KidWritingApp {
                 }, 60);
             }
             if (window.soundManager) window.soundManager.playPop();
+            this.scheduleNavSync();
         };
 
         this.switchMobileTab = switchTab;
@@ -598,6 +606,7 @@ class KidWritingApp {
         if (openSettingsBtn && settingsModal) {
             openSettingsBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
+                this._modalOpenedFromSettings = false;
                 this.refreshSettingsPanel();
                 settingsModal.classList.add('visible');
             });
@@ -626,6 +635,7 @@ class KidWritingApp {
         if (settingsIpadBtn) {
             settingsIpadBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
+                this._modalOpenedFromSettings = true;
                 if (settingsModal) settingsModal.classList.remove('visible');
                 this.openIpadGuideModal();
             });
@@ -635,6 +645,7 @@ class KidWritingApp {
         if (statStarsCard) {
             statStarsCard.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
+                this._modalOpenedFromSettings = true;
                 if (settingsModal) settingsModal.classList.remove('visible');
                 this.openGashapon();
             });
@@ -643,6 +654,7 @@ class KidWritingApp {
         if (statStickersCard) {
             statStickersCard.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
+                this._modalOpenedFromSettings = true;
                 if (settingsModal) settingsModal.classList.remove('visible');
                 this.openStickerBook();
             });
@@ -839,6 +851,7 @@ class KidWritingApp {
             this.selectChar(firstChar);
             customInput.value = '';
             if (window.soundManager) window.soundManager.playPop();
+            this.scheduleNavSync();
         };
 
         if (customBtn) customBtn.addEventListener('click', handleCustomSearch);
@@ -1237,14 +1250,7 @@ class KidWritingApp {
         const evalSpeakBtn = document.getElementById('btn-eval-speak');
 
         const handleCloseEvalModal = () => {
-            if (this._evalSpeechTimer) {
-                clearTimeout(this._evalSpeechTimer);
-                this._evalSpeechTimer = null;
-            }
-            if (window.soundManager && window.soundManager.stopSpeaking) {
-                window.soundManager.stopSpeaking();
-            }
-            this.resetEvalSpeakButton();
+            this.closeEvalModal();
         };
 
         if (evalSpeakBtn) {
@@ -1354,6 +1360,7 @@ class KidWritingApp {
         const closeModal = () => {
             modal.classList.remove('visible');
             if (window.soundManager) window.soundManager.playPop();
+            this.scheduleNavSync();
         };
 
         closeBtn.onclick = () => {
@@ -1560,6 +1567,7 @@ class KidWritingApp {
         const closeModal = () => {
             modal.classList.remove('visible');
             if (window.soundManager) window.soundManager.playPop();
+            this.scheduleNavSync();
         };
 
         closeBtn.onclick = closeModal;
@@ -1785,7 +1793,10 @@ class KidWritingApp {
 
         // Safari / 移动端浏览器未触发 beforeinstallprompt 时，打开图文添加到主屏幕指南
         const settingsModal = document.getElementById('settings-modal');
-        if (settingsModal) settingsModal.classList.remove('visible');
+        if (settingsModal && settingsModal.classList.contains('visible')) {
+            this._modalOpenedFromSettings = true;
+            settingsModal.classList.remove('visible');
+        }
         this.openIpadGuideModal();
         this.showToast('💡 请点击浏览器菜单中的【分享 ➔ 添加到主屏幕】或【安装应用】即可生成桌面图标！', 4000);
     }
@@ -1991,7 +2002,10 @@ class KidWritingApp {
         const clearCharsEl = document.getElementById('clear-modal-chars');
         if (clearStarsEl) clearStarsEl.textContent = this.stars || 0;
         if (clearCharsEl) clearCharsEl.textContent = (this.completedChars && this.completedChars.length) || 0;
-        if (clearModal) clearModal.classList.add('visible');
+        if (clearModal) {
+            this._modalOpenedFromSettings = true;
+            clearModal.classList.add('visible');
+        }
     }
 
     // 清空本地数据
@@ -2557,6 +2571,336 @@ class KidWritingApp {
         btn.classList.remove('speaking');
         const label = btn.querySelector('.eval-speak-text');
         if (label) label.textContent = '听点评';
+    }
+
+    // ================= 17. Android / 移动端系统返回键层级导航管理 =================
+    // 让 Android 侧滑返回手势与物理返回键逐层回到上一级页面（弹窗 ➔ 子页 ➔ 闯关大厅），避免误触直接退出应用
+    initBackNavigation() {
+        if (this._backNavInitialized || typeof window === 'undefined' || !window.history) return;
+        this._backNavInitialized = true;
+
+        this._navSyncQueued = false;
+        this._isHandlingPopState = false;
+        this._rewindingToIdx = null;
+        this._rewindSafetyTimer = null;
+
+        const initState = window.history.state;
+        if (initState && initState.__kidNav && typeof initState.idx === 'number' && initState.idx > 0 && initState.sessionId) {
+            this._navSessionId = initState.sessionId;
+            this._actualHistoryIdx = initState.idx;
+            this._rootGuardArmed = true;
+        } else {
+            this._navSessionId = `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+            this._actualHistoryIdx = 0;
+            this._rootGuardArmed = false;
+            try {
+                window.history.replaceState({
+                    __kidNav: true,
+                    sessionId: this._navSessionId,
+                    idx: 0
+                }, '');
+            } catch (e) {}
+        }
+
+        // 在真实用户手势激活 (pointerup / click / keydown) 时挂载根页面防误退守卫条目，
+        // 遵循 Chrome Android History Manipulation Intervention 机制以确保系统返回手势可靠派发 popstate
+        const armRootGuardOnGesture = (e) => {
+            if (e && e.type === 'keydown' && (e.key === 'Escape' || e.key === 'Esc')) return;
+            if (!this._rootGuardArmed) {
+                this._rootGuardArmed = true;
+                this.scheduleNavSync();
+            }
+        };
+        ['pointerup', 'click', 'keydown'].forEach((evtName) => {
+            window.addEventListener(evtName, armRootGuardOnGesture, { capture: true, passive: true });
+        });
+
+        if (typeof MutationObserver !== 'undefined') {
+            const observer = new MutationObserver(() => {
+                this.scheduleNavSync();
+            });
+            document.querySelectorAll('.modal-overlay').forEach((modalEl) => {
+                observer.observe(modalEl, { attributes: true, attributeFilter: ['class'] });
+            });
+            const mainContainer = document.getElementById('main-container');
+            if (mainContainer) {
+                observer.observe(mainContainer, { attributes: true, attributeFilter: ['class'] });
+            }
+            if (document.body) {
+                observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+            }
+            this._navMutationObserver = observer;
+        }
+
+        window.addEventListener('resize', () => {
+            this.scheduleNavSync();
+        });
+
+        window.addEventListener('popstate', (event) => {
+            const st = event.state;
+            const prevIdx = this._actualHistoryIdx;
+            if (st && st.__kidNav && st.sessionId === this._navSessionId && typeof st.idx === 'number') {
+                this._actualHistoryIdx = st.idx;
+            } else {
+                this._actualHistoryIdx = 0;
+            }
+
+            // 应用内关闭/返回按钮主动触发的 history.go(-delta) 已对齐，不重复执行界面返回
+            if (this._rewindingToIdx !== null) {
+                if (this._rewindSafetyTimer) {
+                    clearTimeout(this._rewindSafetyTimer);
+                    this._rewindSafetyTimer = null;
+                }
+                this._rewindingToIdx = null;
+                this.scheduleNavSync();
+                return;
+            }
+
+            // 若浏览器触发了前进 (Forward)，将历史游标拉回与当前真实界面一致的深度
+            if (this._actualHistoryIdx > prevIdx) {
+                this.scheduleNavSync();
+                return;
+            }
+
+            const depthBefore = this.computeNavDepth();
+            if (depthBefore > 0) {
+                const steps = Math.max(1, prevIdx - this._actualHistoryIdx);
+                this._isHandlingPopState = true;
+                try {
+                    for (let i = 0; i < steps && this.computeNavDepth() > 0; i++) {
+                        this.stepBackOneLevel();
+                    }
+                } finally {
+                    this._isHandlingPopState = false;
+                }
+                if (this._actualHistoryIdx === 0) {
+                    this._rootGuardArmed = false;
+                }
+                this.scheduleNavSync();
+                return;
+            }
+
+            // 已在最顶层首页（🎮 闯关乐园大厅且无弹窗）：首次返回弹出温馨提示，再按一次即可自然退出
+            if (this._actualHistoryIdx === 0) {
+                this._rootGuardArmed = false;
+            }
+            this.showToast('👋 已在首页，再按一次返回即可退出', 2200);
+        });
+
+        this.scheduleNavSync();
+    }
+
+    getOpenModalStack() {
+        const orderedIds = [
+            'settings-modal',
+            'mobile-device-modal',
+            'ipad-guide-modal',
+            'sticker-book-modal',
+            'gashapon-modal',
+            'reward-modal',
+            'eval-modal',
+            'clear-data-modal'
+        ];
+        const open = [];
+        for (const id of orderedIds) {
+            const el = document.getElementById(id);
+            if (el && el.classList.contains('visible')) {
+                open.push(id);
+            }
+        }
+        document.querySelectorAll('.modal-overlay.visible').forEach((el) => {
+            if (el.id && !open.includes(el.id)) {
+                open.push(el.id);
+            }
+        });
+        return open;
+    }
+
+    computeNavDepth() {
+        let depth = 0;
+        const ec = this.examCenter;
+        const inGame = !!(ec && ec.activeGame);
+
+        if (!ec || ec.activeAppTab === 'exam') {
+            if (inGame) depth += 1;
+        } else {
+            if (inGame) depth += 1;
+            depth += 1;
+
+            const mainContainer = document.getElementById('main-container');
+            const isMobileCanvasTab = (window.innerWidth <= 600)
+                && !!(mainContainer && mainContainer.classList.contains('mobile-tab-canvas'));
+            if (isMobileCanvasTab) {
+                depth += 1;
+            }
+            if (this.hanziGuide && this.hanziGuide.isQuizMode) {
+                depth += 1;
+            }
+        }
+
+        const openModals = this.getOpenModalStack();
+        if (openModals.length === 0) {
+            this._modalOpenedFromSettings = false;
+        } else {
+            depth += openModals.length;
+            if (this._modalOpenedFromSettings && !openModals.includes('settings-modal')) {
+                depth += 1;
+            }
+        }
+
+        return depth;
+    }
+
+    scheduleNavSync() {
+        if (!this._backNavInitialized || this._navSyncQueued || this._isHandlingPopState) return;
+        this._navSyncQueued = true;
+        Promise.resolve().then(() => {
+            this._navSyncQueued = false;
+            this.syncNavigationHistory();
+        });
+    }
+
+    syncNavigationHistory() {
+        if (!this._backNavInitialized || this._isHandlingPopState || !window.history) return;
+        if (this._rewindingToIdx !== null) return;
+
+        const depth = this.computeNavDepth();
+        const desiredIdx = depth + (this._rootGuardArmed ? 1 : 0);
+
+        if (desiredIdx > this._actualHistoryIdx) {
+            while (this._actualHistoryIdx < desiredIdx) {
+                this._actualHistoryIdx += 1;
+                try {
+                    window.history.pushState({
+                        __kidNav: true,
+                        sessionId: this._navSessionId,
+                        idx: this._actualHistoryIdx
+                    }, '');
+                } catch (e) {
+                    break;
+                }
+            }
+        } else if (desiredIdx < this._actualHistoryIdx) {
+            const delta = this._actualHistoryIdx - desiredIdx;
+            this._rewindingToIdx = desiredIdx;
+            if (this._rewindSafetyTimer) clearTimeout(this._rewindSafetyTimer);
+            this._rewindSafetyTimer = setTimeout(() => {
+                this._rewindingToIdx = null;
+                this._rewindSafetyTimer = null;
+            }, 180);
+            try {
+                window.history.go(-delta);
+            } catch (e) {
+                clearTimeout(this._rewindSafetyTimer);
+                this._rewindSafetyTimer = null;
+                this._rewindingToIdx = null;
+            }
+        }
+    }
+
+    closeEvalModal() {
+        if (this._evalSpeechTimer) {
+            clearTimeout(this._evalSpeechTimer);
+            this._evalSpeechTimer = null;
+        }
+        if (window.soundManager && window.soundManager.stopSpeaking) {
+            window.soundManager.stopSpeaking();
+        }
+        this.resetEvalSpeakButton();
+        const evalModal = document.getElementById('eval-modal');
+        if (evalModal) {
+            evalModal.classList.remove('visible');
+        }
+    }
+
+    exitQuizGuideMode() {
+        if (this.hanziGuide && this.hanziGuide.isQuizMode) {
+            this.hanziGuide.reset();
+        }
+        const startQuizBtn = document.getElementById('btn-start-quiz');
+        if (startQuizBtn) {
+            startQuizBtn.classList.remove('pulse');
+        }
+        this.setQuizStatus('点击下方“播放笔顺”或“笔顺跟写闯关”开始练习！');
+    }
+
+    stepBackOneLevel() {
+        document.body.classList.remove('writing-active');
+
+        // 1. 优先关闭最顶层打开的弹窗；若子弹窗从「⚙️ 设置」进入，返回时回到上层「⚙️ 设置」
+        const openModals = this.getOpenModalStack();
+        if (openModals.length > 0) {
+            const topId = openModals[openModals.length - 1];
+            const shouldReturnToSettings = this._modalOpenedFromSettings
+                && openModals.length === 1
+                && topId !== 'settings-modal';
+
+            if (window.soundManager) window.soundManager.playPop();
+
+            if (topId === 'eval-modal') {
+                this.closeEvalModal();
+            } else if (topId === 'ipad-guide-modal') {
+                const el = document.getElementById(topId);
+                if (el) el.classList.remove('visible');
+                try {
+                    localStorage.setItem('kid_app_intro_seen', 'true');
+                } catch (e) {}
+            } else if (topId === 'mobile-device-modal') {
+                const el = document.getElementById(topId);
+                if (el) el.classList.remove('visible');
+                try {
+                    sessionStorage.setItem('kid_app_mobile_prompt_seen', 'true');
+                    localStorage.setItem('kid_app_intro_seen', 'true');
+                } catch (e) {}
+            } else {
+                const el = document.getElementById(topId);
+                if (el) el.classList.remove('visible');
+            }
+
+            if (shouldReturnToSettings) {
+                this._modalOpenedFromSettings = false;
+                const settingsModal = document.getElementById('settings-modal');
+                if (settingsModal) {
+                    this.refreshSettingsPanel();
+                    settingsModal.classList.add('visible');
+                }
+            }
+            return true;
+        }
+
+        // 2. 位于「✍️ 趣味练字」：手机画板子页 ➔ 认字与笔顺 ➔ 退出笔顺跟写 ➔ 回到「🎮 闯关乐园」
+        if (this.examCenter && this.examCenter.activeAppTab === 'practice') {
+            const mainContainer = document.getElementById('main-container');
+            const isMobileCanvasTab = (window.innerWidth <= 600)
+                && !!(mainContainer && mainContainer.classList.contains('mobile-tab-canvas'));
+
+            if (isMobileCanvasTab && typeof this.switchMobileTab === 'function') {
+                this.switchMobileTab('studio');
+                return true;
+            }
+
+            if (this.hanziGuide && this.hanziGuide.isQuizMode) {
+                if (window.soundManager) window.soundManager.playPop();
+                this.exitQuizGuideMode();
+                return true;
+            }
+
+            if (window.soundManager) window.soundManager.playPop();
+            this.examCenter.switchAppTab('exam');
+            return true;
+        }
+
+        // 3. 位于「🎮 闯关乐园」具体小游戏时：返回闯关乐园游戏大厅
+        if (this.examCenter && this.examCenter.activeAppTab === 'exam' && this.examCenter.activeGame) {
+            if (window.soundManager && typeof window.soundManager.stopSpeaking === 'function') {
+                window.soundManager.stopSpeaking();
+            }
+            this.examCenter.sfx('playPop');
+            this.examCenter.showHub();
+            return true;
+        }
+
+        return false;
     }
 }
 

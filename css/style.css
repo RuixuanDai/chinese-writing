@@ -43,6 +43,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden; /* 保证单页面显示所有内容，严禁页面出现纵向滚动条 */
+    overscroll-behavior: none; /* 禁用移动端边缘横向滑动翻页与下拉刷新，配合 history 返回层级 */
     display: flex;
     flex-direction: column;
 }

@@ -475,6 +475,9 @@ class ExamCenter {
                 } catch (e) {}
             }, 60);
         }
+        if (this.app && typeof this.app.scheduleNavSync === 'function') {
+            this.app.scheduleNavSync();
+        }
     }
 
     open() {
@@ -505,6 +508,9 @@ class ExamCenter {
         if (hub) hub.hidden = false;
         if (stage) stage.hidden = true;
         this.renderHub();
+        if (this.app && typeof this.app.scheduleNavSync === 'function') {
+            this.app.scheduleNavSync();
+        }
     }
 
     renderHub() {
@@ -574,6 +580,9 @@ class ExamCenter {
             mole: () => this.startMole()
         };
         if (starters[gameId]) starters[gameId]();
+        if (this.app && typeof this.app.scheduleNavSync === 'function') {
+            this.app.scheduleNavSync();
+        }
     }
 
     // ==================== 公共反馈：熊猫老师、金星、连对 ====================
