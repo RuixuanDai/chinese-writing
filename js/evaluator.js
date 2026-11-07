@@ -1,14 +1,44 @@
 /**
- * evaluator.js - 汉字书写智能评分与归一化骨架文字识别引擎
- * 综合评估：
- *   1. 笔画数、笔顺、运笔方向与逐笔几何贴合度 (满分 40 分)
- *   2. 间架结构、重心对齐与宽高比例 (满分 30 分)
- *   3. 骨架覆盖率 (Recall) 与字迹精准度 (Precision) (满分 30 分)
- *   4. 自由默写归一化字符识别 (支持平移/缩放不变性与易混字判别)
+ * evaluator.js - 汉字书写智能评分与多特征融合手写识别引擎
+ *
+ * 综合评估与识别架构：
+ *   1. 智能笔触去噪与短点画保护（保留轻点“点”画，滤除边缘误触杂点）
+ *   2. 标准字模去顿笔装饰简化 + WeakMap 预计算模板缓存（全库 117 字毫秒级检索）
+ *   3. 双模态归一化（保长宽比 Isotropic + 半弹性框对齐 Semi-Elastic，兼容高矮胖瘦手写习惯）
+ *   4. 折笔拆分自动缝合（如“口/日/田/山/出/几”将折画分两笔书写时首尾自动合并识别）
+ *   5. 高斯切向骨架覆盖率 + 逐笔完整性校验（严防漏笔/多笔误判）+ 14×14 五通道方向模糊栅格余弦
+ *   6. 易混字拓扑结构特征判别（精准区分 人/入/八、上/下/土、石/右/左、儿/几/九、木/禾/本 等）
  */
+
+const KNOWN_VISUAL_CONFUSERS = {
+    '一': '二三十', '二': '一三十土工', '三': '二王土丰', '十': '千土大一二', '千': '十禾干',
+    '人': '入八大个', '入': '人八', '八': '人入六',
+    '大': '太天人木犬', '太': '大天木犬', '天': '大太夫开',
+    '上': '下土止正', '下': '上丁卜', '土': '上二工王士',
+    '口': '日田目中四', '日': '目口白田电百', '目': '日口白自田耳', '田': '口日目由电四', '白': '日百目自', '百': '白日耳',
+    '中': '口虫申', '虫': '中虽', '电': '田日由', '四': '田口西', '西': '四面',
+    '木': '禾本米十林大', '禾': '木本米千', '本': '木禾体米', '米': '木禾来半', '来': '米木夹',
+    '山': '出巾', '出': '山击',
+    '石': '右左后百', '右': '石左古后', '左': '右石在工', '后': '石右',
+    '儿': '几九八人', '几': '儿九凡风', '九': '几儿力丸', '七': '十匕儿',
+    '小': '少水八', '少': '小水',
+    '水': '永冰小求', '永': '水衣冰', '冰': '水永冲',
+    '去': '云土丢会', '云': '去二会', '会': '云去合',
+    '立': '六文辛', '六': '立八文大', '文': '六立大父',
+    '牛': '午年手生', '年': '牛午生', '生': '牛年土王', '手': '毛牛丰千',
+    '羊': '半米美干', '半': '羊平米',
+    '马': '鸟乌与', '鸟': '马乌鸡鸣',
+    '月': '日用目丹同', '门': '问们间口',
+    '开': '天井并关', '关': '天开美羊',
+    '东': '车乐练', '车': '东牛',
+    '江': '红工河汪', '红': '江工丝',
+    '子': '了字孑才', '习': '刁羽飞', '飞': '习气乙',
+    '万': '方力乃', '早': '草十日旱', '正': '上止五王', '五': '正丑王'
+};
 
 class ChineseWritingEvaluator {
     constructor() {
+        this._templateCache = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
         if (typeof document !== 'undefined') {
             this.offscreenCanvas = document.createElement('canvas');
             this.offscreenCtx = this.offscreenCanvas.getContext('2d');
@@ -19,7 +49,7 @@ class ChineseWritingEvaluator {
     }
 
     /**
-     * 对用户的画板书写进行全方位智能评测（标准练字评分，校准后更严谨真实）
+     * 对用户的画板书写进行全方位智能评测（标准练字评分：兼顾笔顺、结构与字形）
      */
     evaluate(drawCanvas, charInfo, strokeList, hanziData, canvasSize) {
         const width = drawCanvas.width;
@@ -41,7 +71,7 @@ class ChineseWritingEvaluator {
         const userPixels = userImgData.data;
 
         const bounds = this.calculateBoundingBoxAndCentroid(userPixels, width, height);
-        if (bounds.totalPixels < 90) {
+        if (bounds.totalPixels < 45 && strokeList.length === 0) {
             return {
                 valid: false,
                 message: '字迹太轻微或笔画过少，请多写几笔再评分哦！'
@@ -49,13 +79,20 @@ class ChineseWritingEvaluator {
         }
 
         let resolvedHanziData = hanziData;
-        if (!resolvedHanziData && typeof window !== 'undefined' && window.STROKE_DATA_CACHE && charInfo && charInfo.char) {
-            resolvedHanziData = window.STROKE_DATA_CACHE[charInfo.char] || null;
+        const targetChar = charInfo ? charInfo.char : '';
+        if (!resolvedHanziData && typeof window !== 'undefined' && window.STROKE_DATA_CACHE && targetChar) {
+            resolvedHanziData = window.STROKE_DATA_CACHE[targetChar] || null;
         }
 
-        // 归一化骨架匹配分析（兼具平移缩放容差与真实字形鉴别力）
-        const validStrokes = this.filterValidStrokes(strokeList);
-        const canonicalMatch = this.computeCanonicalSimilarity(validStrokes, resolvedHanziData, cssSize);
+        const validStrokes = this.filterValidStrokes(strokeList, cssSize);
+        if (validStrokes.length === 0) {
+            return {
+                valid: false,
+                message: '字迹太轻微或笔画过少，请多写几笔再评分哦！'
+            };
+        }
+
+        const canonicalMatch = this.computeCanonicalSimilarity(validStrokes, resolvedHanziData, cssSize, targetChar);
 
         // 1. 维度一：笔画数、笔画顺序、运笔走向与逐笔位置精度评测 (满分 40 分)
         const strokeEval = this.evaluateStrokes(validStrokes, charInfo, resolvedHanziData, bounds, cssSize, canonicalMatch);
@@ -64,24 +101,32 @@ class ChineseWritingEvaluator {
         const structureEval = this.evaluateStructure(bounds, width, height, resolvedHanziData, cssSize);
 
         // 3. 维度三：骨架覆盖率与字形贴合度评测 (满分 30 分)
-        const shapeEval = this.evaluateShape(userPixels, charInfo.char, width, height, bounds, resolvedHanziData, cssSize, validStrokes, canonicalMatch);
+        const shapeEval = this.evaluateShape(userPixels, targetChar, width, height, bounds, resolvedHanziData, cssSize, validStrokes, canonicalMatch);
 
-        // 检测是否误写成了字库中的其它易混汉字
+        // 检测是否明显误写成了字库中的其它易混汉字（提高鉴别裕度，杜绝正常手写被误报为其它字）
         let confusedChar = null;
-        if (typeof window !== 'undefined' && window.STROKE_DATA_CACHE && charInfo && charInfo.char) {
+        if (typeof window !== 'undefined' && window.STROKE_DATA_CACHE && targetChar && canonicalMatch.similarity < 76) {
             const cache = window.STROKE_DATA_CACHE;
-            const userM = validStrokes.length;
+            const userCtx = this._prepareUserContext(validStrokes, cssSize);
+            const knownSet = KNOWN_VISUAL_CONFUSERS[targetChar] || '';
             let bestOtherSim = 0;
+
             for (const cand of Object.keys(cache)) {
-                if (cand === charInfo.char) continue;
+                if (cand === targetChar) continue;
                 const cData = cache[cand];
-                if (!cData || !cData.medians || Math.abs(cData.medians.length - userM) > 1) continue;
-                const cMatch = this.computeCanonicalSimilarity(validStrokes, cData, cssSize);
-                if (cMatch.similarity > bestOtherSim) {
+                if (!cData || !cData.medians) continue;
+                if (Math.abs(cData.medians.length - validStrokes.length) > 1) continue;
+
+                const cMatch = this._matchPreparedUserToStd(userCtx, cData, cand);
+                const isKnownConfuser = knownSet.includes(cand);
+                const requiredMargin = isKnownConfuser ? 5.5 : 11.5;
+                const minOtherSim = isKnownConfuser ? 68 : 76;
+
+                if (cMatch.similarity >= minOtherSim &&
+                    cMatch.similarity > canonicalMatch.similarity + requiredMargin &&
+                    cMatch.similarity > bestOtherSim) {
                     bestOtherSim = cMatch.similarity;
-                    if (cMatch.similarity >= 68 && cMatch.similarity > canonicalMatch.similarity + 3.5) {
-                        confusedChar = cand;
-                    }
+                    confusedChar = cand;
                 }
             }
         }
@@ -92,27 +137,30 @@ class ChineseWritingEvaluator {
         const hasOrderError = strokeEval.inversionsCount > 0;
         const hasReverseError = strokeEval.reverseCount > 0;
 
-        // 严格封顶约束：杜绝乱画、错字或错笔顺拿到虚高分数
+        // 封顶约束：乱画或错字限制低分，但正常书写（含折笔微调）给予合理分数
         if (confusedChar) {
+            totalScore = Math.min(totalScore, 54);
+        } else if (canonicalMatch && (canonicalMatch.skeletonF1 < 0.46 || canonicalMatch.rasterSim < 0.48)) {
             totalScore = Math.min(totalScore, 52);
-        } else if (canonicalMatch && (canonicalMatch.skeletonF1 < 0.52 || canonicalMatch.matchedStrokeRatio < 0.45)) {
-            totalScore = Math.min(totalScore, 52);
-        } else if (canonicalMatch && (canonicalMatch.skeletonF1 < 0.68 || canonicalMatch.matchedStrokeRatio < 0.68)) {
+        } else if (canonicalMatch && (canonicalMatch.skeletonF1 < 0.58 && canonicalMatch.rasterSim < 0.60)) {
             totalScore = Math.min(totalScore, 66);
         }
 
-        if (strokeEval.diff >= 2) {
+        if (strokeEval.effectiveDiff >= 2) {
             totalScore = Math.min(totalScore, 62);
-        } else if (strokeEval.diff === 1) {
-            totalScore = Math.min(totalScore, 75);
+        } else if (strokeEval.diff >= 1 && strokeEval.effectiveDiff >= 1) {
+            totalScore = Math.min(totalScore, 76);
+        } else if (strokeEval.diff >= 1 && strokeEval.effectiveDiff === 0) {
+            // 折笔拆分但字形完整：轻度封顶提醒一笔写成
+            totalScore = Math.min(totalScore, 83);
         }
 
         if (strokeEval.inversionsCount >= 2 || (hasOrderError && hasReverseError)) {
-            totalScore = Math.min(totalScore, 65);
+            totalScore = Math.min(totalScore, 66);
         } else if (strokeEval.inversionsCount === 1) {
-            totalScore = Math.min(totalScore, 75);
+            totalScore = Math.min(totalScore, 76);
         } else if (hasReverseError) {
-            totalScore = Math.min(totalScore, 77);
+            totalScore = Math.min(totalScore, 78);
         }
 
         totalScore = Math.max(25, Math.min(96, Math.round(totalScore)));
@@ -146,7 +194,7 @@ class ChineseWritingEvaluator {
         } else {
             grade = '【需加强 · 循序渐进】';
             stars = 1;
-            if (canonicalMatch && canonicalMatch.skeletonF1 < 0.52) {
+            if (canonicalMatch && canonicalMatch.skeletonF1 < 0.48) {
                 sealText = '认准字形';
                 teacherComment = '所写字形与当前汉字偏差较大，请先观察左侧字模与笔顺演示再下笔哦！';
             } else if (hasOrderError) {
@@ -158,7 +206,7 @@ class ChineseWritingEvaluator {
             }
         }
 
-        const suggestions = this.synthesizeConciseSuggestions(totalScore, strokeEval, structureEval, shapeEval, confusedChar, charInfo ? charInfo.char : '');
+        const suggestions = this.synthesizeConciseSuggestions(totalScore, strokeEval, structureEval, shapeEval, confusedChar, targetChar);
 
         return {
             valid: true,
@@ -187,36 +235,118 @@ class ChineseWritingEvaluator {
     }
 
     /**
-     * 过滤极微小误触杂点（保留短点画，但滤除 < 5px 的手掌擦碰噪点）
+     * 智能过滤边缘误触杂点，同时完整保留真实的短“点”画（含轻触单点 isTapDot）
      */
-    filterValidStrokes(strokeList) {
+    filterValidStrokes(strokeList, cssSize = 300) {
         if (!strokeList || strokeList.length === 0) return [];
-        const filtered = strokeList.filter(s => {
-            const pts = s.points || [];
-            if (pts.length <= 1) return false;
+
+        const minSubstantialLen = Math.max(5, cssSize * 0.022);
+        const meta = strokeList.map(s => {
+            const rawPts = (s && Array.isArray(s.points) && s.points.length > 0)
+                ? s.points
+                : (s && s.startPoint ? [s.startPoint, s.endPoint || s.startPoint] : []);
             let len = 0;
-            for (let i = 1; i < pts.length; i++) {
-                len += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            for (let i = 0; i < rawPts.length; i++) {
+                const p = rawPts[i];
+                if (p.x < minX) minX = p.x;
+                if (p.x > maxX) maxX = p.x;
+                if (p.y < minY) minY = p.y;
+                if (p.y > maxY) maxY = p.y;
+                if (i > 0) {
+                    len += Math.hypot(p.x - rawPts[i - 1].x, p.y - rawPts[i - 1].y);
+                }
             }
-            return len >= 5;
-        });
-        return filtered.length > 0 ? filtered : strokeList;
+            return {
+                stroke: s,
+                rawPts,
+                len,
+                cx: (minX + maxX) / 2,
+                cy: (minY + maxY) / 2,
+                minX, minY, maxX, maxY,
+                startTime: (s && s.startPoint && s.startPoint.time) || (rawPts[0] && rawPts[0].time) || 0,
+                endTime: (s && s.endPoint && s.endPoint.time) || (rawPts[rawPts.length - 1] && rawPts[rawPts.length - 1].time) || 0
+            };
+        }).filter(m => m.rawPts.length > 0);
+
+        if (meta.length === 0) return [];
+
+        // 计算主体笔画包围盒，用于识别落在字外远处的边缘手掌误触噪点
+        const substantial = meta.filter(m => m.len >= minSubstantialLen);
+        let coreMinX = Infinity, coreMinY = Infinity, coreMaxX = -Infinity, coreMaxY = -Infinity;
+        for (const m of substantial) {
+            if (m.minX < coreMinX) coreMinX = m.minX;
+            if (m.maxX > coreMaxX) coreMaxX = m.maxX;
+            if (m.minY < coreMinY) coreMinY = m.minY;
+            if (m.maxY > coreMaxY) coreMaxY = m.maxY;
+        }
+        const hasCore = substantial.length > 0;
+        const margin = Math.max(42, cssSize * 0.28);
+
+        const kept = [];
+        for (let i = 0; i < meta.length; i++) {
+            const m = meta[i];
+            if (m.len >= minSubstantialLen) {
+                kept.push(m.stroke);
+                continue;
+            }
+
+            // 过滤抬笔瞬间 (< 75ms) 在上一笔终点原地的极微小抖动重影
+            if (kept.length > 0 && m.len < 3.8 && !m.stroke.isTapDot) {
+                const prev = kept[kept.length - 1];
+                const prevPts = prev.points || [];
+                const prevEnd = prevPts[prevPts.length - 1] || prev.endPoint;
+                const prevEndTime = (prev.endPoint && prev.endPoint.time) || (prevEnd && prevEnd.time) || 0;
+                if (prevEnd && prevEndTime && m.startTime && (m.startTime - prevEndTime >= 0) && (m.startTime - prevEndTime < 75)) {
+                    if (Math.hypot(m.cx - prevEnd.x, m.cy - prevEnd.y) < 6) {
+                        continue;
+                    }
+                }
+            }
+
+            // 过滤远离主体字形区域的微小边缘擦碰噪点 (< 3.5px 且在主体包围盒大幅外围)
+            if (hasCore && m.len < 3.5 && !m.stroke.isTapDot) {
+                const outX = m.cx < coreMinX - margin || m.cx > coreMaxX + margin;
+                const outY = m.cy < coreMinY - margin || m.cy > coreMaxY + margin;
+                if (outX || outY) {
+                    continue;
+                }
+            }
+
+            // 保留真实短点画：若长度过短（如指尖轻点），合成为标准东南向短点矢量以便切向与栅格提取
+            if (m.len < 4.2) {
+                const p0 = m.rawPts[0];
+                const dotHalf = Math.max(2.2, cssSize * 0.012);
+                const pStart = { x: p0.x - dotHalf * 0.65, y: p0.y - dotHalf * 0.85 };
+                const pEnd = { x: p0.x + dotHalf * 0.65, y: p0.y + dotHalf * 0.85 };
+                kept.push({
+                    ...m.stroke,
+                    isTapDot: true,
+                    points: [pStart, pEnd],
+                    startPoint: pStart,
+                    endPoint: pEnd
+                });
+            } else {
+                kept.push(m.stroke);
+            }
+        }
+
+        return kept.length > 0 ? kept : [meta[0].stroke];
     }
 
     /**
-     * 自由默写识别与评测（专用于「📝 闯关测试 · 看图写汉字」无描红默写）
+     * 自由默写识别与评测（专用于「🎮 闯关乐园 · 看图写字」无描红默写）
      * 特点：
-     *   1. 对用户字迹与标准字模均做保长宽比的归一化对齐，不因默写偏左/偏右/偏小而误判；
-     *   2. 结合骨架双向覆盖度、切向方向角余弦、笔画相对拓扑位置进行精准识别；
-     *   3. 兼容儿童常见的折笔拆分（如“山/出/田/口/去”将折画分成两笔书写）；
-     *   4. 全字库比对易混字（如把“上”写成“下/土”，把“禾”写成“木”），给出针对性纠错提示。
+     *   1. 融合双模态归一化骨架、逐笔完整性、折笔自动缝合与 14×14 五通道方向栅格余弦；
+     *   2. 对默写位置偏移、大小缩放、高矮胖瘦比例差异、轻触点画、折笔拆分及偶发笔顺颠倒具备强鲁棒性；
+     *   3. 精准拦截漏笔、多笔、乱画及真正的易混字（如把“上”写成“下/土”，把“禾”写成“木”）。
      */
     recognizeAndEvaluateFreehand(drawCanvas, targetChars, strokeList, canvasSize, candidatePoolChars = null) {
         const width = drawCanvas.width;
         const height = drawCanvas.height;
         const cssSize = canvasSize || drawCanvas.clientWidth || 260;
 
-        const validStrokes = this.filterValidStrokes(strokeList);
+        const validStrokes = this.filterValidStrokes(strokeList, cssSize);
         if (validStrokes.length === 0) {
             return {
                 valid: false,
@@ -226,7 +356,7 @@ class ChineseWritingEvaluator {
 
         const userImgData = drawCanvas.getContext('2d').getImageData(0, 0, width, height);
         const bounds = this.calculateBoundingBoxAndCentroid(userImgData.data, width, height);
-        if (bounds.totalPixels < 65) {
+        if (bounds.totalPixels < 30 && validStrokes.length <= 1 && validStrokes[0].isTapDot) {
             return {
                 valid: false,
                 message: '字迹太轻或笔画太少啦，请认真写出完整汉字哦！'
@@ -235,100 +365,143 @@ class ChineseWritingEvaluator {
 
         const cache = (typeof window !== 'undefined' && window.STROKE_DATA_CACHE) ? window.STROKE_DATA_CACHE : {};
         const targets = Array.isArray(targetChars) ? targetChars : [targetChars];
+        const userCtx = this._prepareUserContext(validStrokes, cssSize);
 
-        // 1. 评估目标字（支持一图多解，取最优匹配）
+        // 1. 评估目标字（支持同义备选字，取最优匹配）
         let bestTargetChar = targets[0];
         let bestTargetMatch = null;
-        let bestTargetEval = null;
 
         for (const tChar of targets) {
             const tData = cache[tChar] || null;
-            const cMatch = this.computeCanonicalSimilarity(validStrokes, tData, cssSize);
-            const charInfo = (typeof getCharInfo === 'function' && getCharInfo(tChar)) || {
-                char: tChar,
-                strokes: tData && tData.strokes ? tData.strokes.length : 1
-            };
-            const fullEval = this.evaluate(drawCanvas, charInfo, validStrokes, tData, cssSize);
+            const cMatch = this._matchPreparedUserToStd(userCtx, tData, tChar);
             if (!bestTargetMatch || cMatch.similarity > bestTargetMatch.similarity) {
                 bestTargetChar = tChar;
                 bestTargetMatch = cMatch;
-                bestTargetEval = fullEval;
             }
         }
 
-        // 2. 在易混字/题库字池中检索是否有更匹配的其它汉字（识别用户是不是写成了别的字）
+        // 2. 检索题库/字库中是否有明显更匹配的其它汉字（识别是否写成了别的字）
         const poolChars = candidatePoolChars || Object.keys(cache);
-        let bestOtherChar = null;
-        let bestOtherMatch = null;
+        const knownSet = KNOWN_VISUAL_CONFUSERS[bestTargetChar] || '';
         const userM = validStrokes.length;
+
+        let bestKnownConfuserChar = null;
+        let bestKnownConfuserMatch = null;
+        let bestGeneralOtherChar = null;
+        let bestGeneralOtherMatch = null;
 
         for (const candChar of poolChars) {
             if (targets.includes(candChar)) continue;
             const cData = cache[candChar];
             if (!cData || !cData.medians) continue;
             const stdN = cData.medians.length;
-            // 仅在笔画数相近的候选字中比对
-            if (Math.abs(userM - stdN) > 1) continue;
+            if (userM < stdN - 1 || userM > stdN + 2) continue;
 
-            const cMatch = this.computeCanonicalSimilarity(validStrokes, cData, cssSize);
-            if (!bestOtherMatch || cMatch.similarity > bestOtherMatch.similarity) {
-                bestOtherChar = candChar;
-                bestOtherMatch = cMatch;
+            const cMatch = this._matchPreparedUserToStd(userCtx, cData, candChar);
+            if (knownSet.includes(candChar)) {
+                if (!bestKnownConfuserMatch || cMatch.similarity > bestKnownConfuserMatch.similarity) {
+                    bestKnownConfuserChar = candChar;
+                    bestKnownConfuserMatch = cMatch;
+                }
+            } else {
+                if (!bestGeneralOtherMatch || cMatch.similarity > bestGeneralOtherMatch.similarity) {
+                    bestGeneralOtherChar = candChar;
+                    bestGeneralOtherMatch = cMatch;
+                }
             }
         }
 
-        // 3. 判定是否默写正确
+        // 3. 判定笔画数（折笔合并后有效笔画数 M_eff）与完整性是否达标
         const stdData = cache[bestTargetChar];
         const expectedStrokes = (stdData && stdData.strokes) ? stdData.strokes.length : 1;
+        const effM = bestTargetMatch.effectiveStrokeCount;
         const strokeDiff = userM - expectedStrokes;
-        const strokeDiffAbs = Math.abs(strokeDiff);
+        const effDiff = effM - expectedStrokes;
 
-        // 根据总笔画数动态设定折笔拆分容差：
-        // 1~2画字不允许少写，最多允许折笔多1画；3画字允许 [3, 4]；4画及以上允许 [-1, +2]
         let strokeCountAcceptable = false;
         if (expectedStrokes === 1) {
-            strokeCountAcceptable = (userM === 1);
+            strokeCountAcceptable = (effM === 1 && userM <= 2);
         } else if (expectedStrokes === 2) {
-            strokeCountAcceptable = (userM === 2 || (userM === 3 && bestTargetMatch.skeletonF1 >= 0.78));
+            strokeCountAcceptable = (effM === 2 && userM >= 2 && userM <= 3);
         } else if (expectedStrokes === 3) {
-            strokeCountAcceptable = (userM >= 3 && userM <= 4);
+            strokeCountAcceptable = (
+                (effM === 3 && userM >= 3 && userM <= 5) ||
+                (effM === 2 && userM === 2 && bestTargetMatch.uncoveredStdStrokes === 0 && bestTargetMatch.rasterSim >= 0.74) ||
+                (effM === 4 && userM === 4 && bestTargetMatch.extraUserStrokes === 0 && bestTargetMatch.rasterSim >= 0.68)
+            );
         } else {
-            strokeCountAcceptable = (strokeDiff >= -1 && strokeDiff <= 2);
+            strokeCountAcceptable = (effDiff >= -1 && effDiff <= 1 && strokeDiff >= -1 && strokeDiff <= 3);
         }
 
-        // 是否被易混字击败（例如题目是“上”，但用户写的是“下”或“土”；或题目是“禾”，写成了“木”）
-        const confusedWithOther = !!(
-            bestOtherMatch &&
-            bestOtherMatch.similarity >= 64 &&
-            bestOtherMatch.similarity > bestTargetMatch.similarity + 2.5
-        );
+        // 逐笔完整性校验：防止漏写关键笔画（如“太”漏点变“大”、“禾”漏撇变“木”）或多写无关笔画
+        let completenessOk = false;
+        if (expectedStrokes <= 3) {
+            completenessOk = (bestTargetMatch.uncoveredStdStrokes === 0 && bestTargetMatch.extraUserStrokes === 0);
+        } else if (expectedStrokes <= 5) {
+            completenessOk = (
+                (bestTargetMatch.uncoveredStdStrokes === 0 && bestTargetMatch.extraUserStrokes === 0) ||
+                (bestTargetMatch.uncoveredStdStrokes + bestTargetMatch.extraUserStrokes <= 1 &&
+                    effM === expectedStrokes &&
+                    bestTargetMatch.skeletonF1 >= 0.70 &&
+                    bestTargetMatch.rasterSim >= 0.72)
+            );
+        } else {
+            completenessOk = (
+                bestTargetMatch.uncoveredStdStrokes <= 1 &&
+                bestTargetMatch.extraUserStrokes <= 1
+            );
+        }
+
+        // 易混字双级判定：
+        // (A) 针对已知形近易混字（如 上/下/土、木/禾/本、石/右、日/目/田），相差 > 4.5 分即精准纠错；
+        // (B) 针对字库其余无关汉字，仅当目标匹配偏弱 (< 71) 且其它字大幅领先 (> +11 分) 时才判为错字，彻底消除误伤！
+        let confusedWithChar = null;
+        let confusedSimilarity = 0;
+
+        if (bestKnownConfuserMatch &&
+            bestKnownConfuserMatch.similarity >= 63 &&
+            bestKnownConfuserMatch.uncoveredStdStrokes === 0 &&
+            bestKnownConfuserMatch.similarity > bestTargetMatch.similarity + 4.5) {
+            confusedWithChar = bestKnownConfuserChar;
+            confusedSimilarity = Math.round(bestKnownConfuserMatch.similarity);
+        } else if (bestGeneralOtherMatch &&
+            bestTargetMatch.similarity < 71 &&
+            bestGeneralOtherMatch.similarity >= 76 &&
+            bestGeneralOtherMatch.uncoveredStdStrokes === 0 &&
+            bestGeneralOtherMatch.similarity > bestTargetMatch.similarity + 11.0) {
+            confusedWithChar = bestGeneralOtherChar;
+            confusedSimilarity = Math.round(bestGeneralOtherMatch.similarity);
+        }
 
         const isShapeMatched = (
-            bestTargetMatch.skeletonRecall >= 0.58 &&
-            bestTargetMatch.skeletonPrecision >= 0.58 &&
-            bestTargetMatch.skeletonF1 >= 0.60 &&
-            bestTargetMatch.matchedStrokeRatio >= 0.72 &&
-            bestTargetMatch.similarity >= 64 &&
-            bestTargetMatch.avgDirectionCos >= 0.50
+            completenessOk &&
+            bestTargetMatch.skeletonRecall >= 0.50 &&
+            bestTargetMatch.skeletonPrecision >= 0.50 &&
+            bestTargetMatch.skeletonF1 >= 0.52 &&
+            bestTargetMatch.rasterSim >= 0.52 &&
+            bestTargetMatch.similarity >= 54
         );
 
-        const isPass = strokeCountAcceptable && isShapeMatched && !confusedWithOther;
+        const isPass = strokeCountAcceptable && isShapeMatched && !confusedWithChar;
 
-        // 默写得分：理性校准得分曲线，普通默写 76~86 分，特别工整 88~94 分，不虚高
-        let freehandScore = bestTargetEval ? bestTargetEval.totalScore : Math.round(bestTargetMatch.similarity * 0.85);
+        // 默写得分：理性校准得分曲线
+        const charInfo = (typeof getCharInfo === 'function' && getCharInfo(bestTargetChar)) || {
+            char: bestTargetChar,
+            strokes: expectedStrokes
+        };
+        const fullEval = this.evaluate(drawCanvas, charInfo, validStrokes, stdData, cssSize);
+
+        let freehandScore = fullEval ? fullEval.totalScore : Math.round(bestTargetMatch.similarity * 0.85);
         if (isPass) {
-            const structScore = bestTargetEval ? bestTargetEval.metrics.structureScore : 22;
+            const structScore = fullEval ? fullEval.metrics.structureScore : 22;
             const calibrated = Math.round(
                 bestTargetMatch.similarity * 0.62 +
-                structScore * 0.88 +
+                structScore * 0.85 +
                 (bestTargetMatch.matchedStrokeRatio * 10)
             );
-            freehandScore = Math.min(94, Math.max(72, calibrated));
-            if (strokeDiffAbs >= 1) {
-                freehandScore = Math.min(freehandScore, 79);
-            }
-            if (bestTargetEval && bestTargetEval.metrics.strokeScore < 26) {
-                freehandScore = Math.min(freehandScore, 78);
+            freehandScore = Math.min(95, Math.max(74, calibrated));
+            if (Math.abs(strokeDiff) >= 1) {
+                freehandScore = Math.min(freehandScore, 82);
             }
         } else {
             freehandScore = Math.min(freehandScore, 58);
@@ -341,202 +514,770 @@ class ChineseWritingEvaluator {
             totalScore: Math.max(25, Math.min(98, Math.round(freehandScore))),
             expectedStrokes,
             userStrokes: userM,
+            effectiveStrokes: effM,
             strokeDiff,
             strokeCountAcceptable,
-            confusedWithChar: confusedWithOther ? bestOtherChar : null,
-            confusedSimilarity: confusedWithOther ? Math.round(bestOtherMatch.similarity) : 0,
+            confusedWithChar,
+            confusedSimilarity,
             targetSimilarity: Math.round(bestTargetMatch.similarity),
             skeletonRecall: bestTargetMatch.skeletonRecall,
             skeletonPrecision: bestTargetMatch.skeletonPrecision,
             skeletonF1: bestTargetMatch.skeletonF1,
-            suggestions: bestTargetEval ? bestTargetEval.suggestions : []
+            rasterSim: bestTargetMatch.rasterSim,
+            suggestions: fullEval ? fullEval.suggestions : []
         };
     }
 
     /**
-     * 计算用户笔画与标准字模在归一化坐标系 [-0.5, 0.5] 下的骨架覆盖率、切向余弦与综合相似度
+     * 计算用户笔画与标准字模在归一化坐标系下的综合相似度 (0 ~ 100)
      */
-    computeCanonicalSimilarity(validStrokes, hanziData, canvasSize = 360) {
+    computeCanonicalSimilarity(validStrokes, hanziData, canvasSize = 360, charKey = '') {
         if (!hanziData || !hanziData.medians || hanziData.medians.length === 0 || !validStrokes || validStrokes.length === 0) {
             return {
                 similarity: 50,
                 skeletonRecall: 0.5,
                 skeletonPrecision: 0.5,
                 skeletonF1: 0.5,
+                rasterSim: 0.5,
+                matchedStrokeRatio: 0.5,
                 avgDirectionCos: 0.5,
-                orderedStrokeScore: 0.5
+                orderedStrokeScore: 0.5,
+                aspectScore: 0.8,
+                effectiveStrokeCount: validStrokes ? validStrokes.length : 0,
+                uncoveredStdStrokes: 0,
+                extraUserStrokes: 0
             };
         }
 
-        const stdTransformed = hanziData.medians.map(m => this.transformMedian(m, canvasSize));
+        const userCtx = this._prepareUserContext(validStrokes, canvasSize);
+        return this._matchPreparedUserToStd(userCtx, hanziData, charKey);
+    }
 
-        // 1. 提取用户笔画与标准笔画的稠密采样点及局部切向单位向量
-        const userSampledStrokes = validStrokes.map(s => {
-            const pts = (s.points && s.points.length > 0) ? s.points : [s.startPoint, s.endPoint];
-            return this.resampleStrokeWithTangents(pts, 14);
-        });
-        const stdSampledStrokes = stdTransformed.map(pts => this.resampleStrokeWithTangents(pts, 14));
-
-        // 2. 计算各自包围盒并归一化到 [-0.5, 0.5]（保持宽高比，设置最小跨度下限防止“一/丨”被拉伸变形）
-        const minSpan = canvasSize * 0.25;
-        const userNorm = this.normalizeStrokeSet(userSampledStrokes, minSpan);
-        const stdNorm = this.normalizeStrokeSet(stdSampledStrokes, minSpan);
-
-        // 3. 展平所有采样点，计算双向骨架覆盖度 (Tangential Chamfer Matching)
-        const uAllPts = [];
-        userNorm.strokes.forEach((s, sIdx) => {
-            s.points.forEach(p => uAllPts.push({ ...p, strokeIdx: sIdx }));
-        });
-        const sAllPts = [];
-        stdNorm.strokes.forEach((s, sIdx) => {
-            s.points.forEach(p => sAllPts.push({ ...p, strokeIdx: sIdx }));
-        });
-
-        const distThreshold = 0.125; // 归一化空间距离容差（收紧以精准区分易混字）
-        const cosThreshold = 0.65;   // 切向夹角容差 (约 49 度，严格区分横/竖/撇/捺)
-
-        // Skeleton Recall: 标准骨架上各点被用户同方向笔画覆盖的连续得分
-        let coveredStdScore = 0;
-        for (const sp of sAllPts) {
-            let bestDist = Infinity;
-            let bestCos = 0;
-            for (const up of uAllPts) {
-                const d = Math.hypot(sp.nx - up.nx, sp.ny - up.ny);
-                const dot = sp.tx * up.tx + sp.ty * up.ty;
-                const absDot = Math.abs(dot);
-                if (absDot >= cosThreshold && d < bestDist) {
-                    bestDist = d;
-                    bestCos = dot;
-                }
+    /**
+     * 预处理用户书写特征（单次提取，供全字库 117 字高速比对复用）
+     */
+    _prepareUserContext(validStrokes, canvasSize = 300) {
+        const K = 12;
+        const rawPolylines = validStrokes.map(s => {
+            if (s.points && s.points.length >= 2) return s.points;
+            if (s.points && s.points.length === 1) {
+                const p = s.points[0];
+                return [{ x: p.x - 1.5, y: p.y - 2.0 }, { x: p.x + 1.5, y: p.y + 2.0 }];
             }
-            if (bestDist <= distThreshold) {
-                const distWeight = 1 - (bestDist / distThreshold) * 0.45;
-                const dirWeight = bestCos >= 0 ? 1.0 : 0.55;
-                coveredStdScore += distWeight * dirWeight;
-            }
+            const a = s.startPoint || { x: 0, y: 0 };
+            const b = s.endPoint || { x: a.x + 2, y: a.y + 2 };
+            return [a, b];
+        });
+
+        const sampled = rawPolylines.map(pts => this.resampleStrokeWithTangents(pts, K));
+        const minSpan = Math.max(36, canvasSize * 0.22);
+
+        const isoNorm = this.normalizeStrokeSet(sampled, minSpan, false);
+        const elasticNorm = this.normalizeStrokeSet(sampled, minSpan, true);
+        const raster = this._rasterizeNormalizedStrokes(elasticNorm.strokes);
+        const aspect = (isoNorm.boxWidth + canvasSize * 0.14) / (isoNorm.boxHeight + canvasSize * 0.14);
+
+        return {
+            rawPolylines,
+            sampled,
+            canvasSize,
+            minSpan,
+            isoNorm,
+            elasticNorm,
+            raster,
+            aspect,
+            rawCount: validStrokes.length
+        };
+    }
+
+    /**
+     * 获取或构建标准汉字特征模板（WeakMap 缓存，避免重复变换与栅格化）
+     */
+    _getStdTemplate(hanziData) {
+        if (this._templateCache && this._templateCache.has(hanziData)) {
+            return this._templateCache.get(hanziData);
         }
 
-        // Skeleton Precision: 用户写下的笔画中有多少比例精准贴合在标准骨架上
-        let validUserScore = 0;
-        for (const up of uAllPts) {
-            let bestDist = Infinity;
-            let bestCos = 0;
-            for (const sp of sAllPts) {
-                const d = Math.hypot(up.nx - sp.nx, up.ny - sp.ny);
-                const dot = up.tx * sp.tx + up.ty * sp.ty;
-                const absDot = Math.abs(dot);
-                if (absDot >= cosThreshold && d < bestDist) {
-                    bestDist = d;
-                    bestCos = dot;
-                }
-            }
-            if (bestDist <= distThreshold) {
-                const distWeight = 1 - (bestDist / distThreshold) * 0.45;
-                const dirWeight = bestCos >= 0 ? 1.0 : 0.55;
-                validUserScore += distWeight * dirWeight;
+        const refSize = 300;
+        const K = 12;
+        const minSpan = refSize * 0.22;
+
+        const transformed = hanziData.medians.map(m => {
+            const pts = this.transformMedian(m, refSize);
+            return this._cleanReferencePoints(pts);
+        });
+
+        const isCompoundStroke = transformed.map(pts => this._detectCompoundBend(pts));
+        const sampled = transformed.map(pts => this.resampleStrokeWithTangents(pts, K));
+        const isoNorm = this.normalizeStrokeSet(sampled, minSpan, false);
+        const elasticNorm = this.normalizeStrokeSet(sampled, minSpan, true);
+        const raster = this._rasterizeNormalizedStrokes(elasticNorm.strokes);
+        const aspect = (isoNorm.boxWidth + refSize * 0.14) / (isoNorm.boxHeight + refSize * 0.14);
+
+        const tpl = {
+            N: sampled.length,
+            isCompoundStroke,
+            hasCompound: isCompoundStroke.some(Boolean),
+            isoNorm,
+            elasticNorm,
+            raster,
+            aspect
+        };
+
+        if (this._templateCache) {
+            this._templateCache.set(hanziData, tpl);
+        }
+        return tpl;
+    }
+
+    /**
+     * 去除楷体字模起笔处的微小“顿笔”斜钩伪影，使标准切向量与人类自然直笔一致
+     */
+    _cleanReferencePoints(pts) {
+        if (!pts || pts.length < 3) return pts;
+        let totalLen = 0;
+        for (let i = 1; i < pts.length; i++) {
+            totalLen += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+        }
+        if (totalLen < 12) return pts;
+
+        const out = pts.slice();
+        const seg0 = Math.hypot(out[1].x - out[0].x, out[1].y - out[0].y);
+        const seg1 = Math.hypot(out[2].x - out[1].x, out[2].y - out[1].y);
+        if (seg0 > 0 && seg0 < totalLen * 0.15 && seg1 > seg0 * 1.4) {
+            const v0x = (out[1].x - out[0].x) / seg0, v0y = (out[1].y - out[0].y) / seg0;
+            const v1x = (out[2].x - out[1].x) / seg1, v1y = (out[2].y - out[1].y) / seg1;
+            const cos = v0x * v1x + v0y * v1y;
+            if (cos < 0.86) {
+                // 将顿笔折角平滑回主干反方向延伸，保持笔画总跨度不变但消除 45° 伪切向
+                out[0] = {
+                    x: out[1].x - v1x * seg0 * 0.65,
+                    y: out[1].y - v1y * seg0 * 0.65
+                };
             }
         }
+        return out;
+    }
 
-        const skeletonRecall = sAllPts.length > 0 ? (coveredStdScore / sAllPts.length) : 0;
-        const skeletonPrecision = uAllPts.length > 0 ? (validUserScore / uAllPts.length) : 0;
+    /**
+     * 检测标准笔画是否包含真实折角/弯钩（用于判定是否允许用户折笔拆分合并）
+     */
+    _detectCompoundBend(pts) {
+        if (!pts || pts.length < 3) return false;
+        let totalLen = 0;
+        const cum = [0];
+        for (let i = 1; i < pts.length; i++) {
+            totalLen += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+            cum.push(totalLen);
+        }
+        if (totalLen < 22) return false;
+
+        for (let i = 1; i < pts.length - 1; i++) {
+            const leftLen = cum[i];
+            const rightLen = totalLen - cum[i];
+            if (leftLen < totalLen * 0.14 || rightLen < totalLen * 0.14) continue;
+            const ax = pts[i].x - pts[0].x, ay = pts[i].y - pts[0].y;
+            const bx = pts[pts.length - 1].x - pts[i].x, by = pts[pts.length - 1].y - pts[i].y;
+            const la = Math.hypot(ax, ay), lb = Math.hypot(bx, by);
+            if (la > 8 && lb > 8) {
+                const cos = (ax * bx + ay * by) / (la * lb);
+                if (cos < 0.68) return true; // 折角 > ~47°（涵盖横折、竖折、撇折、横撇、竖弯钩、横折钩、竖钩）
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 将已预处理的用户书写与目标标准汉字进行深度几何、栅格与拓扑匹配
+     */
+    _matchPreparedUserToStd(userCtx, hanziData, charKey = '') {
+        const tpl = this._getStdTemplate(hanziData);
+
+        // 1. 尝试对用户的折笔拆分或中途断笔进行首尾虚合并（仅在几何连续且显著降低匹配代价时生效）
+        const mergedElasticStrokes = this._mergeSplitUserStrokes(userCtx.elasticNorm.strokes, tpl.elasticNorm.strokes, tpl.isCompoundStroke);
+        const mergeCount = userCtx.elasticNorm.strokes.length - mergedElasticStrokes.length;
+        const effectiveStrokeCount = mergedElasticStrokes.length;
+
+        // 同步合并保长宽比空间中的对应笔画
+        const mergedIsoStrokes = mergeCount > 0
+            ? this._mergeSplitUserStrokes(userCtx.isoNorm.strokes, tpl.isoNorm.strokes, tpl.isCompoundStroke)
+            : userCtx.isoNorm.strokes;
+
+        // 2. 计算双模态高斯切向骨架覆盖度与逐笔完整性
+        const elasticSkel = this._computeGaussianSkeletonMetrics(mergedElasticStrokes, tpl.elasticNorm.strokes);
+        const isoSkel = this._computeGaussianSkeletonMetrics(mergedIsoStrokes, tpl.isoNorm.strokes);
+
+        const skeletonRecall = elasticSkel.recall * 0.65 + isoSkel.recall * 0.35;
+        const skeletonPrecision = elasticSkel.precision * 0.65 + isoSkel.precision * 0.35;
         const skeletonF1 = (skeletonRecall + skeletonPrecision) > 0
             ? (2 * skeletonRecall * skeletonPrecision) / (skeletonRecall + skeletonPrecision)
             : 0;
 
-        // 4. 逐笔归一化向量与相对位置匹配（区分“上/下/土”、“人/入/大”、“木/禾”、“左/右”）
-        const M = userNorm.strokes.length;
-        const N = stdNorm.strokes.length;
-        const strokePairs = [];
-        for (let u = 0; u < M; u++) {
-            for (let s = 0; s < N; s++) {
-                const uStk = userNorm.strokes[u];
-                const sStk = stdNorm.strokes[s];
-                let ptDist = 0;
-                let dirCosSum = 0;
-                const K = uStk.points.length;
-                for (let k = 0; k < K; k++) {
-                    ptDist += Math.hypot(uStk.points[k].nx - sStk.points[k].nx, uStk.points[k].ny - sStk.points[k].ny);
-                    dirCosSum += (uStk.points[k].tx * sStk.points[k].tx + uStk.points[k].ty * sStk.points[k].ty);
+        const uncoveredStdStrokes = Math.min(elasticSkel.uncoveredStd, isoSkel.uncoveredStd);
+        const extraUserStrokes = Math.min(elasticSkel.extraUser, isoSkel.extraUser);
+
+        // 3. 24×24 五通道方向模糊栅格余弦相似度（天然对折笔、连笔、笔顺颠倒完全鲁棒）
+        const rasterSim = this._computeRasterCosine(userCtx.raster, tpl.raster);
+
+        // 4. 逐笔最优配对得分（允许单笔轻微倒插或笔顺调整以支持自由默写识别，练字评分由 evaluateStrokes 单独严查）
+        const strokeAlign = this._computeStrokeAlignment(mergedElasticStrokes, tpl.elasticNorm.strokes, skeletonF1, rasterSim);
+
+        // 5. 宽高比兼容性（温和惩罚极端比例失调，如把“日”写成扁线或把“一”写成竖杆，但不苛责常规胖瘦差异）
+        const aspectLogDiff = Math.abs(Math.log(userCtx.aspect / tpl.aspect));
+        const aspectScore = Math.max(0, Math.min(1, 1 - Math.max(0, aspectLogDiff - 0.16) * 0.90));
+
+        // 6. 有效笔画数一致性因子
+        const effDiff = Math.abs(effectiveStrokeCount - tpl.N);
+        const strokeCountFactor = effDiff === 0 ? 1.0 : (effDiff === 1 ? 0.84 : (effDiff === 2 ? 0.60 : 0.32));
+
+        // 7. 基础融合分 (0 ~ 100)
+        let sim = (
+            skeletonF1 * 0.34 +
+            rasterSim * 0.30 +
+            strokeAlign.orderedStrokeScore * 0.22 +
+            aspectScore * 0.06 +
+            strokeCountFactor * 0.08
+        ) * 100;
+
+        // 8. 漏笔与多笔完整性硬惩罚（精准区分 大/太/天、木/禾/本、口/日/目、二/三）
+        if (uncoveredStdStrokes > 0) {
+            const perMissingPenalty = tpl.N <= 4 ? 13.5 : (tpl.N <= 6 ? 10.5 : 8.0);
+            sim -= uncoveredStdStrokes * perMissingPenalty;
+        }
+        if (extraUserStrokes > 0) {
+            const perExtraPenalty = tpl.N <= 4 ? 13.5 : (tpl.N <= 6 ? 10.5 : 8.0);
+            sim -= extraUserStrokes * perExtraPenalty;
+        }
+
+        // 9. 针对高频易混字对的拓扑结构微调判别（人/入/八、上/下/土、石/右/左、儿/几/九）
+        if (charKey) {
+            sim += this._computeTopologicalAdjustment(charKey, mergedIsoStrokes, mergedElasticStrokes);
+        }
+
+        return {
+            similarity: Math.max(0, Math.min(100, sim)),
+            skeletonRecall,
+            skeletonPrecision,
+            skeletonF1,
+            rasterSim,
+            matchedStrokeRatio: strokeAlign.matchedStrokeRatio,
+            avgDirectionCos: strokeAlign.avgDirectionCos,
+            orderedStrokeScore: strokeAlign.orderedStrokeScore,
+            aspectScore,
+            effectiveStrokeCount,
+            mergeCount,
+            uncoveredStdStrokes,
+            extraUserStrokes
+        };
+    }
+
+    /**
+     * 首尾相连折笔拆分/中途断笔自动缝合
+     * 仅当相邻两笔终点与起点紧邻 (gap <= 0.27)，且合并后与某一标准折笔（或同向直笔）高度吻合时才合并
+     */
+    _mergeSplitUserStrokes(userStrokes, stdStrokes, isCompoundStroke) {
+        const M = userStrokes.length;
+        const N = stdStrokes.length;
+        if (M <= 1 || M <= N) return userStrokes;
+
+        let curr = userStrokes.slice();
+        const maxMerges = Math.min(3, M - N);
+
+        for (let step = 0; step < maxMerges && curr.length > N; step++) {
+            let bestIdx = -1;
+            let bestGain = 0;
+            let bestMerged = null;
+
+            for (let i = 0; i < curr.length - 1; i++) {
+                const sA = curr[i];
+                const sB = curr[i + 1];
+                const endA = sA.points[sA.points.length - 1];
+                const startB = sB.points[0];
+                const gap = Math.hypot(endA.nx - startB.nx, endA.ny - startB.ny);
+                if (gap > 0.27) continue;
+
+                const dirAx = endA.nx - sA.points[0].nx, dirAy = endA.ny - sA.points[0].ny;
+                const dirBx = sB.points[sB.points.length - 1].nx - startB.nx, dirBy = sB.points[sB.points.length - 1].ny - startB.ny;
+                const lenA = Math.hypot(dirAx, dirAy), lenB = Math.hypot(dirBx, dirBy);
+                const collinear = (lenA > 0.04 && lenB > 0.04)
+                    ? ((dirAx * dirBx + dirAy * dirBy) / (lenA * lenB) >= 0.65 && gap <= 0.16)
+                    : (gap <= 0.12);
+
+                const merged = this._concatNormalizedStrokes(sA, sB);
+
+                for (let s = 0; s < N; s++) {
+                    if (!isCompoundStroke[s] && !collinear) continue;
+                    const costMerged = this._normStrokePairCost(merged, stdStrokes[s]);
+                    const costSeparate = Math.min(
+                        this._normStrokePairCost(sA, stdStrokes[s]),
+                        this._normStrokePairCost(sB, stdStrokes[s])
+                    );
+                    const gain = costSeparate - costMerged;
+                    if (costMerged < 0.38 && gain > 0.04 && gain > bestGain) {
+                        bestGain = gain;
+                        bestIdx = i;
+                        bestMerged = merged;
+                    }
                 }
-                ptDist /= K;
-                const avgCos = dirCosSum / K;
-                const lenDiff = Math.abs(uStk.len - sStk.len);
-                const cost = ptDist + (1 - Math.max(-0.5, avgCos)) * 0.25 + lenDiff * 0.35;
-                strokePairs.push({ u, s, cost, ptDist, avgCos, lenDiff });
+            }
+
+            if (bestIdx >= 0 && bestMerged) {
+                curr.splice(bestIdx, 2, bestMerged);
+            } else {
+                break;
             }
         }
-        strokePairs.sort((a, b) => a.cost - b.cost);
 
-        const uUsed = Array(M).fill(false);
-        const sUsed = Array(N).fill(false);
+        return curr;
+    }
+
+    /**
+     * 连接两条归一化笔画并等距重采样为 K 点
+     */
+    _concatNormalizedStrokes(sA, sB) {
+        const K = sA.points.length;
+        const raw = [
+            ...sA.points.map(p => ({ x: p.nx, y: p.ny })),
+            ...sB.points.map(p => ({ x: p.nx, y: p.ny }))
+        ];
+        const res = this.resampleStrokeWithTangents(raw, K);
+        return {
+            len: res.len,
+            points: res.points.map(p => ({
+                x: p.x,
+                y: p.y,
+                nx: p.x,
+                ny: p.y,
+                tx: p.tx,
+                ty: p.ty
+            }))
+        };
+    }
+
+    _normStrokePairCost(uStk, sStk) {
+        const K = uStk.points.length;
+        let fwdDist = 0, dirCos = 0;
+        for (let k = 0; k < K; k++) {
+            fwdDist += Math.hypot(uStk.points[k].nx - sStk.points[k].nx, uStk.points[k].ny - sStk.points[k].ny);
+            dirCos += (uStk.points[k].tx * sStk.points[k].tx + uStk.points[k].ty * sStk.points[k].ty);
+        }
+        fwdDist /= K;
+        dirCos /= K;
+        const lenDiff = Math.abs(uStk.len - sStk.len);
+        return fwdDist + (1 - Math.max(-0.4, dirCos)) * 0.20 + lenDiff * 0.25;
+    }
+
+    /**
+     * 平滑高斯核切向骨架覆盖率 + 逐笔漏写/多写完整性统计（短点画支持全向点击容差）
+     */
+    _computeGaussianSkeletonMetrics(uStrokes, sStrokes) {
+        const uAll = [];
+        for (let ui = 0; ui < uStrokes.length; ui++) {
+            const pts = uStrokes[ui].points;
+            const isDot = uStrokes[ui].len < 0.18;
+            for (let k = 0; k < pts.length; k++) {
+                uAll.push({ nx: pts[k].nx, ny: pts[k].ny, tx: pts[k].tx, ty: pts[k].ty, si: ui, isDot });
+            }
+        }
+        const sAll = [];
+        for (let si = 0; si < sStrokes.length; si++) {
+            const pts = sStrokes[si].points;
+            const isDot = sStrokes[si].len < 0.18;
+            for (let k = 0; k < pts.length; k++) {
+                sAll.push({ nx: pts[k].nx, ny: pts[k].ny, tx: pts[k].tx, ty: pts[k].ty, si, isDot });
+            }
+        }
+
+        const invTwoSigmaSq = 1 / (2 * 0.162 * 0.162);
+        const stdStrokeSums = new Float32Array(sStrokes.length);
+        const userStrokeSums = new Float32Array(uStrokes.length);
+
+        let recallSum = 0;
+        for (let i = 0; i < sAll.length; i++) {
+            const sp = sAll[i];
+            let bestVal = 0;
+            for (let j = 0; j < uAll.length; j++) {
+                const up = uAll[j];
+                const dx = sp.nx - up.nx;
+                const dy = sp.ny - up.ny;
+                const d2 = dx * dx + dy * dy;
+                if (d2 > 0.19) continue;
+
+                let dirW;
+                if (sp.isDot || up.isDot) {
+                    dirW = 0.88;
+                } else {
+                    const dot = sp.tx * up.tx + sp.ty * up.ty;
+                    const absDot = Math.abs(dot);
+                    if (absDot < 0.35) continue;
+                    dirW = (0.34 + 0.66 * ((absDot - 0.35) / 0.65)) * (dot >= -0.15 ? 1.0 : 0.78);
+                }
+
+                const val = Math.exp(-d2 * invTwoSigmaSq) * dirW;
+                if (val > bestVal) bestVal = val;
+            }
+            recallSum += bestVal;
+            stdStrokeSums[sp.si] += bestVal;
+        }
+
+        let precisionSum = 0;
+        for (let j = 0; j < uAll.length; j++) {
+            const up = uAll[j];
+            let bestVal = 0;
+            for (let i = 0; i < sAll.length; i++) {
+                const sp = sAll[i];
+                const dx = up.nx - sp.nx;
+                const dy = up.ny - sp.ny;
+                const d2 = dx * dx + dy * dy;
+                if (d2 > 0.19) continue;
+
+                let dirW;
+                if (sp.isDot || up.isDot) {
+                    dirW = 0.88;
+                } else {
+                    const dot = up.tx * sp.tx + up.ty * sp.ty;
+                    const absDot = Math.abs(dot);
+                    if (absDot < 0.35) continue;
+                    dirW = (0.34 + 0.66 * ((absDot - 0.35) / 0.65)) * (dot >= -0.15 ? 1.0 : 0.78);
+                }
+
+                const val = Math.exp(-d2 * invTwoSigmaSq) * dirW;
+                if (val > bestVal) bestVal = val;
+            }
+            precisionSum += bestVal;
+            userStrokeSums[up.si] += bestVal;
+        }
+
+        let uncoveredStd = 0;
+        for (let s = 0; s < sStrokes.length; s++) {
+            const K = sStrokes[s].points.length || 1;
+            const avg = stdStrokeSums[s] / K;
+            const minReq = sStrokes[s].len < 0.18 ? 0.24 : 0.31;
+            if (avg < minReq) uncoveredStd++;
+        }
+
+        let extraUser = 0;
+        for (let u = 0; u < uStrokes.length; u++) {
+            const K = uStrokes[u].points.length || 1;
+            const avg = userStrokeSums[u] / K;
+            const minReq = uStrokes[u].len < 0.18 ? 0.24 : 0.29;
+            if (avg < minReq) extraUser++;
+        }
+
+        return {
+            recall: sAll.length > 0 ? (recallSum / sAll.length) : 0,
+            precision: uAll.length > 0 ? (precisionSum / uAll.length) : 0,
+            uncoveredStd,
+            extraUser
+        };
+    }
+
+    /**
+     * 逐笔二分贪心对齐得分（兼容自由默写中的连笔与局部逆笔）
+     */
+    _computeStrokeAlignment(uStrokes, sStrokes, skeletonF1, rasterSim) {
+        const M = uStrokes.length;
+        const N = sStrokes.length;
+        const pairs = [];
+
+        for (let u = 0; u < M; u++) {
+            const uStk = uStrokes[u];
+            const K = uStk.points.length;
+            for (let s = 0; s < N; s++) {
+                const sStk = sStrokes[s];
+                let fwdDist = 0, revDist = 0, fwdCos = 0, revCos = 0;
+                for (let k = 0; k < K; k++) {
+                    const up = uStk.points[k];
+                    const spFwd = sStk.points[k];
+                    const spRev = sStk.points[K - 1 - k];
+                    fwdDist += Math.hypot(up.nx - spFwd.nx, up.ny - spFwd.ny);
+                    revDist += Math.hypot(up.nx - spRev.nx, up.ny - spRev.ny);
+                    fwdCos += (up.tx * spFwd.tx + up.ty * spFwd.ty);
+                    revCos += (-up.tx * spRev.tx - up.ty * spRev.ty);
+                }
+                fwdDist /= K; revDist /= K;
+                fwdCos /= K; revCos /= K;
+
+                const useRev = revDist + 0.05 < fwdDist;
+                const ptDist = useRev ? revDist + 0.03 : fwdDist;
+                const avgCos = useRev ? revCos * 0.88 : fwdCos;
+                const lenDiff = Math.abs(uStk.len - sStk.len);
+                const cost = ptDist + (1 - Math.max(-0.4, avgCos)) * 0.22 + lenDiff * 0.28;
+                pairs.push({ u, s, cost, ptDist, avgCos, lenDiff });
+            }
+        }
+        pairs.sort((a, b) => a.cost - b.cost);
+
+        const uUsed = new Uint8Array(M);
+        const sUsed = new Uint8Array(N);
         let matchedCount = 0;
         let wellMatchedCount = 0;
         let sumPtDist = 0;
         let sumDirCos = 0;
 
-        for (const p of strokePairs) {
+        for (let i = 0; i < pairs.length; i++) {
+            const p = pairs[i];
             if (!uUsed[p.u] && !sUsed[p.s]) {
-                uUsed[p.u] = true;
-                sUsed[p.s] = true;
+                uUsed[p.u] = 1;
+                sUsed[p.s] = 1;
                 matchedCount++;
-                sumPtDist += p.ptDist + p.lenDiff * 0.25;
+                sumPtDist += p.ptDist + p.lenDiff * 0.20;
                 sumDirCos += p.avgCos;
-                if (p.ptDist <= 0.14 && p.avgCos >= 0.55 && p.lenDiff <= 0.28) {
+                if (p.ptDist <= 0.19 && p.avgCos >= 0.42 && p.lenDiff <= 0.36) {
                     wellMatchedCount++;
                 }
             }
         }
 
-        // 未匹配上的多写/漏写笔画计入重罚
-        const unmatchedCount = Math.max(M, N) - matchedCount;
-        const totalStrokeSlots = Math.max(M, N, 1);
-        const avgMatchedDist = (sumPtDist + unmatchedCount * 0.32) / totalStrokeSlots;
+        const totalSlots = Math.max(M, N, 1);
+        const unmatched = totalSlots - matchedCount;
+        const avgMatchedDist = (sumPtDist + unmatched * 0.30) / totalSlots;
         const avgDirectionCos = matchedCount > 0 ? (sumDirCos / matchedCount) : 0;
-        // 如果骨架整体高度贴合 (skeletonF1 >= 0.78)，说明是折笔拆分（如“山/田/出”多1笔），给予折笔容差
-        const effectiveWellMatched = (skeletonF1 >= 0.78 && M > N && M <= N + 2)
-            ? Math.max(wellMatchedCount / totalStrokeSlots, skeletonF1)
-            : (wellMatchedCount / totalStrokeSlots);
+
+        let matchedStrokeRatio = wellMatchedCount / totalSlots;
+        // 连笔容差：4 画以上汉字若快写连了 1 笔但骨架与方向栅格均高度吻合，平滑补偿配对率
+        if (N >= 4 && M === N - 1 && skeletonF1 >= 0.68 && rasterSim >= 0.70) {
+            matchedStrokeRatio = Math.max(matchedStrokeRatio, (skeletonF1 + rasterSim) * 0.46);
+        }
 
         const orderedStrokeScore = Math.max(0, Math.min(1,
-            (1 - avgMatchedDist / 0.30) * 0.55 +
+            (1 - avgMatchedDist / 0.34) * 0.52 +
             Math.max(0, avgDirectionCos) * 0.20 +
-            effectiveWellMatched * 0.25
+            matchedStrokeRatio * 0.28
         ));
 
-        // 5. 宽高比一致性（例如“一”是扁宽，“日/月”偏竖长）
-        const uAspect = (userNorm.boxWidth + canvasSize * 0.12) / (userNorm.boxHeight + canvasSize * 0.12);
-        const sAspect = (stdNorm.boxWidth + canvasSize * 0.12) / (stdNorm.boxHeight + canvasSize * 0.12);
-        const aspectRatioDiff = Math.abs(Math.log(uAspect / sAspect));
-        const aspectScore = Math.max(0, 1 - aspectRatioDiff * 0.85);
+        return {
+            matchedStrokeRatio,
+            avgDirectionCos,
+            orderedStrokeScore
+        };
+    }
 
-        // 6. 笔画数匹配度
-        const strokeDiffAbs = Math.abs(M - N);
-        const strokeCountFactor = strokeDiffAbs === 0 ? 1.0 : (strokeDiffAbs === 1 ? 0.82 : (strokeDiffAbs === 2 ? 0.62 : 0.35));
+    /**
+     * 14×14 五通道方向模糊栅格化（纯浮点计算，零 DOM 开销，单字 < 0.02ms，天然吸收曲直与框形差异）
+     */
+    _rasterizeNormalizedStrokes(normStrokes) {
+        const G = 14;
+        const planeSize = G * G;
+        const raw = new Float32Array(planeSize * 5);
 
-        // 综合相似度 (0 ~ 100)
-        const rawSim = (
-            skeletonF1 * 0.44 +
-            orderedStrokeScore * 0.38 +
-            aspectScore * 0.08 +
-            strokeCountFactor * 0.10
-        ) * 100;
+        const splat = (gx, gy, w, c1, c2, c3, c4) => {
+            const x0 = Math.floor(gx), y0 = Math.floor(gy);
+            const fx = gx - x0, fy = gy - y0;
+            for (let dy = 0; dy <= 1; dy++) {
+                const y = y0 + dy;
+                if (y < 0 || y >= G) continue;
+                const wy = dy === 0 ? (1 - fy) : fy;
+                for (let dx = 0; dx <= 1; dx++) {
+                    const x = x0 + dx;
+                    if (x < 0 || x >= G) continue;
+                    const wt = w * wy * (dx === 0 ? (1 - fx) : fx);
+                    const idx = y * G + x;
+                    raw[idx] += wt;
+                    raw[planeSize + idx] += wt * c1;
+                    raw[planeSize * 2 + idx] += wt * c2;
+                    raw[planeSize * 3 + idx] += wt * c3;
+                    raw[planeSize * 4 + idx] += wt * c4;
+                }
+            }
+        };
+
+        for (let s = 0; s < normStrokes.length; s++) {
+            const pts = normStrokes[s].points;
+            const isDot = normStrokes[s].len < 0.18;
+            if (!pts || pts.length === 0) continue;
+            for (let i = 0; i < pts.length - 1; i++) {
+                const a = pts[i], b = pts[i + 1];
+                const segLen = Math.hypot(b.nx - a.nx, b.ny - a.ny);
+                const steps = Math.max(1, Math.ceil(segLen * G * 1.5));
+                let c1, c2, c3, c4;
+                if (isDot) {
+                    c1 = 0.25; c2 = 0.25; c3 = 0.50; c4 = 0.50;
+                } else {
+                    const tx = a.tx, ty = a.ty;
+                    c1 = tx * tx;
+                    c2 = ty * ty;
+                    const d1 = (tx - ty) * 0.70710678;
+                    const d2 = (tx + ty) * 0.70710678;
+                    c3 = d1 * d1;
+                    c4 = d2 * d2;
+                }
+                const stepW = Math.max(0.45, segLen * G) / (steps + 1);
+
+                for (let k = 0; k <= steps; k++) {
+                    const t = k / steps;
+                    const nx = a.nx + (b.nx - a.nx) * t;
+                    const ny = a.ny + (b.ny - a.ny) * t;
+                    const gx = ((nx + 0.56) / 1.12) * (G - 1);
+                    const gy = ((ny + 0.56) / 1.12) * (G - 1);
+                    splat(gx, gy, stepW, c1, c2, c3, c4);
+                }
+            }
+        }
+
+        // 两轮可分离 [0.25, 0.5, 0.25] 高斯平滑，提供自然局部位置容差
+        const tmp = new Float32Array(planeSize);
+        const blurred = new Float32Array(planeSize * 5);
+        for (let ch = 0; ch < 5; ch++) {
+            const offset = ch * planeSize;
+            let src = raw.subarray(offset, offset + planeSize);
+            let dst = blurred.subarray(offset, offset + planeSize);
+            for (let pass = 0; pass < 2; pass++) {
+                const input = pass === 0 ? src : dst;
+                for (let y = 0; y < G; y++) {
+                    const row = y * G;
+                    for (let x = 0; x < G; x++) {
+                        const l = input[row + Math.max(0, x - 1)];
+                        const c = input[row + x];
+                        const r = input[row + Math.min(G - 1, x + 1)];
+                        tmp[row + x] = 0.25 * l + 0.5 * c + 0.25 * r;
+                    }
+                }
+                for (let y = 0; y < G; y++) {
+                    const ym = Math.max(0, y - 1) * G;
+                    const yc = y * G;
+                    const yp = Math.min(G - 1, y + 1) * G;
+                    for (let x = 0; x < G; x++) {
+                        dst[yc + x] = 0.25 * tmp[ym + x] + 0.5 * tmp[yc + x] + 0.25 * tmp[yp + x];
+                    }
+                }
+            }
+        }
+
+        let totalNormSq = 0;
+        for (let i = 0; i < planeSize; i++) totalNormSq += blurred[i] * blurred[i];
+        let dirNormSq = 0;
+        for (let i = planeSize; i < planeSize * 5; i++) dirNormSq += blurred[i] * blurred[i];
 
         return {
-            similarity: Math.max(0, Math.min(100, rawSim)),
-            skeletonRecall,
-            skeletonPrecision,
-            skeletonF1,
-            matchedStrokeRatio: effectiveWellMatched,
-            avgDirectionCos,
-            orderedStrokeScore,
-            aspectScore
+            data: blurred,
+            planeSize,
+            totalNorm: Math.sqrt(totalNormSq) || 1e-6,
+            dirNorm: Math.sqrt(dirNormSq) || 1e-6
         };
+    }
+
+    _computeRasterCosine(rA, rB) {
+        const P = rA.planeSize;
+        const a = rA.data, b = rB.data;
+        let dotTotal = 0;
+        for (let i = 0; i < P; i++) dotTotal += a[i] * b[i];
+        let dotDir = 0;
+        for (let i = P; i < P * 5; i++) dotDir += a[i] * b[i];
+
+        const totalCos = dotTotal / (rA.totalNorm * rB.totalNorm);
+        const dirCos = dotDir / (rA.dirNorm * rB.dirNorm);
+        return Math.max(0, Math.min(1, totalCos * 0.32 + dirCos * 0.68));
+    }
+
+    /**
+     * 高频易混字拓扑结构特征判别（解决纯距离匹配在 人/入/八、上/下/土、石/右/左 等上的盲区）
+     */
+    _computeTopologicalAdjustment(charKey, isoStrokes, elasticStrokes) {
+        const M = isoStrokes.length;
+
+        // 1. 「人 / 入 / 八」二画撇捺顶点关系判别
+        if ((charKey === '人' || charKey === '入' || charKey === '八') && M === 2) {
+            let sPie = null, sNa = null;
+            for (const s of isoStrokes) {
+                const p0 = s.points[0], p1 = s.points[s.points.length - 1];
+                const dx = p1.nx - p0.nx, dy = p1.ny - p0.ny;
+                if (dy > 0.12 && dx < -0.06 && !sPie) sPie = s;
+                else if (dy > 0.12 && dx > 0.06 && !sNa) sNa = s;
+            }
+            if (!sPie || !sNa) return -8;
+
+            const pieTop = sPie.points[0];
+            const naTop = sNa.points[0];
+            let minGap = Infinity;
+            for (const pa of sPie.points) {
+                for (const pb of sNa.points) {
+                    const d = Math.hypot(pa.nx - pb.nx, pa.ny - pb.ny);
+                    if (d < minGap) minGap = d;
+                }
+            }
+
+            const isSeparated = (minGap > 0.115 && pieTop.nx < naTop.nx - 0.06);
+            const naClearlyHigher = (!isSeparated && naTop.ny < pieTop.ny - 0.075);
+
+            if (charKey === '八') {
+                return isSeparated ? 7.5 : -9.0;
+            }
+            if (charKey === '入') {
+                if (isSeparated) return -9.0;
+                return naClearlyHigher ? 7.5 : -6.5;
+            }
+            if (charKey === '人') {
+                if (isSeparated) return -8.5;
+                if (naClearlyHigher) return -6.5;
+                // 人类手写“人”常见两笔在顶端相接 (naTop.ny ≈ pieTop.ny) 或捺起于撇中上部，均给予正向加分！
+                return 7.0;
+            }
+        }
+
+        // 2. 「上 / 下 / 土」横竖相对位置与穿插判别
+        if ((charKey === '上' || charKey === '下' || charKey === '土') && M === 3) {
+            let vert = null;
+            const others = [];
+            for (const s of elasticStrokes) {
+                const p0 = s.points[0], p1 = s.points[s.points.length - 1];
+                if (Math.abs(p1.ny - p0.ny) > Math.abs(p1.nx - p0.nx) * 1.4 && s.len > 0.35 && !vert) {
+                    vert = s;
+                } else {
+                    others.push(s);
+                }
+            }
+            if (!vert || others.length !== 2) return 0;
+
+            const stemX = (vert.points[0].nx + vert.points[vert.points.length - 1].nx) / 2;
+            others.sort((a, b) => a.points[0].ny - b.points[0].ny);
+            const upper = others[0], lower = others[1];
+            const upperMeanY = (upper.points[0].ny + upper.points[upper.points.length - 1].ny) / 2;
+            const lowerMeanY = (lower.points[0].ny + lower.points[lower.points.length - 1].ny) / 2;
+            const upperMinX = Math.min(upper.points[0].nx, upper.points[upper.points.length - 1].nx);
+            const upperMaxX = Math.max(upper.points[0].nx, upper.points[upper.points.length - 1].nx);
+
+            if (charKey === '下') {
+                return (upper.len > lower.len * 1.35 && upperMeanY < -0.15) ? 7.0 : -10.0;
+            }
+            if (charKey === '上') {
+                if (lowerMeanY < 0.15 || upper.len > lower.len * 0.92) return -9.0;
+                const staysRightOfStem = upperMinX >= stemX - 0.10 && upperMaxX > stemX + 0.06;
+                return staysRightOfStem ? 7.5 : -7.5;
+            }
+            if (charKey === '土') {
+                if (lowerMeanY < 0.15) return -9.0;
+                const crossesStem = upperMinX < stemX - 0.11 && upperMaxX > stemX + 0.11;
+                return crossesStem ? 7.5 : -7.5;
+            }
+        }
+
+        // 3. 「石 / 右」首横与首撇出头关系判别
+        if ((charKey === '石' || charKey === '右') && M >= 5) {
+            let topHeng = null, topPie = null;
+            for (let i = 0; i < Math.min(3, M); i++) {
+                const s = elasticStrokes[i];
+                const p0 = s.points[0], p1 = s.points[s.points.length - 1];
+                const dx = p1.nx - p0.nx, dy = p1.ny - p0.ny;
+                if (!topHeng && dx > 0.25 && Math.abs(dy) < dx * 0.45) topHeng = s;
+                if (!topPie && dx < -0.18 && dy > 0.22) topPie = s;
+            }
+            if (topHeng && topPie) {
+                const hengY = (topHeng.points[0].ny + topHeng.points[topHeng.points.length - 1].ny) / 2;
+                const pieStartY = topPie.points[0].ny;
+                const pieSticksAbove = pieStartY < hengY - 0.085;
+                if (charKey === '右') return pieSticksAbove ? 6.5 : -7.5;
+                if (charKey === '石') return !pieSticksAbove ? 6.5 : -7.5;
+            }
+        }
+
+        return 0;
     }
 
     /**
      * 对单笔点集按弧长重采样并计算每个采样点的单位切向量 (tx, ty)
      */
-    resampleStrokeWithTangents(points, numPoints = 14) {
+    resampleStrokeWithTangents(points, numPoints = 12) {
         const res = this.resampleStroke(points, numPoints);
         const pts = res.points;
         const K = pts.length;
@@ -549,17 +1290,18 @@ class ChineseWritingEvaluator {
             return {
                 x: p.x,
                 y: p.y,
-                tx: mag > 1e-4 ? dx / mag : 1,
-                ty: mag > 1e-4 ? dy / mag : 0
+                tx: mag > 1e-4 ? dx / mag : 0.6,
+                ty: mag > 1e-4 ? dy / mag : 0.8
             };
         });
         return { points: withTangents, len: res.len };
     }
 
     /**
-     * 将一组笔画归一化到以包围盒中心为原点、最大跨度为 1 的 [-0.5, 0.5] 空间
+     * 将一组笔画归一化到 [-0.5, 0.5] 空间
+     * @param {boolean} elastic - true 时启用半弹性长宽对齐（吸收手写胖瘦差异，同时保留 0.36*iso 下限保护“一/丨”）
      */
-    normalizeStrokeSet(sampledStrokes, minSpan = 80) {
+    normalizeStrokeSet(sampledStrokes, minSpan = 70, elastic = false) {
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
         for (const s of sampledStrokes) {
             for (const p of s.points) {
@@ -573,19 +1315,34 @@ class ChineseWritingEvaluator {
         const boxHeight = Math.max(1, maxY - minY);
         const cx = (minX + maxX) / 2;
         const cy = (minY + maxY) / 2;
-        const span = Math.max(boxWidth, boxHeight, minSpan);
+        const isoSpan = Math.max(boxWidth, boxHeight, minSpan);
 
-        const normStrokes = sampledStrokes.map(s => ({
-            len: s.len / span,
-            points: s.points.map(p => ({
-                x: p.x,
-                y: p.y,
-                nx: (p.x - cx) / span,
-                ny: (p.y - cy) / span,
-                tx: p.tx,
-                ty: p.ty
-            }))
-        }));
+        const scaleX = elastic ? Math.max(boxWidth * 0.65 + isoSpan * 0.35, isoSpan * 0.36) : isoSpan;
+        const scaleY = elastic ? Math.max(boxHeight * 0.65 + isoSpan * 0.35, isoSpan * 0.36) : isoSpan;
+
+        const normStrokes = sampledStrokes.map(s => {
+            const mapped = s.points.map(p => {
+                const stx = p.tx / scaleX;
+                const sty = p.ty / scaleY;
+                const tMag = Math.hypot(stx, sty) || 1;
+                return {
+                    x: p.x,
+                    y: p.y,
+                    nx: (p.x - cx) / scaleX,
+                    ny: (p.y - cy) / scaleY,
+                    tx: stx / tMag,
+                    ty: sty / tMag
+                };
+            });
+            let normLen = 0;
+            for (let i = 1; i < mapped.length; i++) {
+                normLen += Math.hypot(mapped[i].nx - mapped[i - 1].nx, mapped[i].ny - mapped[i - 1].ny);
+            }
+            return {
+                len: normLen,
+                points: mapped
+            };
+        });
 
         return {
             strokes: normStrokes,
@@ -593,7 +1350,7 @@ class ChineseWritingEvaluator {
             boxHeight,
             cx,
             cy,
-            span
+            span: isoSpan
         };
     }
 
@@ -616,7 +1373,7 @@ class ChineseWritingEvaluator {
             strokeIssue = '📌 笔画提醒：漏写了笔画，请对照左侧标准笔顺补齐。';
         } else if (strokeEval.diff > 0) {
             strokeIssue = '📌 笔画提醒：笔画稍有多余，转折处一笔写成不要断开。';
-        } else if (strokeEval.avgSpatialDist > 20) {
+        } else if (strokeEval.avgSpatialDist > 22) {
             strokeIssue = '💡 落笔位置：部分笔画位置偏离标准字模，多观察每一笔的起止点！';
         }
 
@@ -828,18 +1585,24 @@ class ChineseWritingEvaluator {
             targetStrokeCount = (charInfo && parseInt(charInfo.strokes, 10)) || 1;
         }
 
-        // 1. 笔画数量检测（加大区分度）
-        const diff = Math.abs(userStrokeCount - targetStrokeCount);
-        if (diff === 0) {
+        const diff = userStrokeCount - targetStrokeCount;
+        const absDiff = Math.abs(diff);
+        const effCount = canonicalMatch ? canonicalMatch.effectiveStrokeCount : userStrokeCount;
+        const effectiveDiff = Math.abs(effCount - targetStrokeCount);
+
+        if (absDiff === 0) {
             feedback.push(`✅ 笔画数量完全正确：标准 ${targetStrokeCount} 笔，你正好写了 ${userStrokeCount} 笔！`);
-        } else if (diff === 1) {
+        } else if (absDiff === 1 && effectiveDiff === 0) {
+            score -= 5;
+            warnings.push(`💡 转折提示：标准为 ${targetStrokeCount} 笔，你把转折分成了 ${userStrokeCount} 笔，折画一笔写成会更规范哦！`);
+        } else if (absDiff === 1) {
             score -= 8;
             if (userStrokeCount < targetStrokeCount) {
                 warnings.push(`⚠️ 笔画少写了 1 笔：标准应为 ${targetStrokeCount} 笔，你写了 ${userStrokeCount} 笔。`);
             } else {
                 warnings.push(`⚠️ 笔画多写了 1 笔：标准应为 ${targetStrokeCount} 笔，你写了 ${userStrokeCount} 笔，注意折笔一气呵成。`);
             }
-        } else if (diff === 2) {
+        } else if (absDiff === 2) {
             score -= 16;
             warnings.push(`💡 笔画数差异较大：标准为 ${targetStrokeCount} 笔，实际写了 ${userStrokeCount} 笔。`);
         } else {
@@ -851,10 +1614,9 @@ class ChineseWritingEvaluator {
         let reverseCount = 0;
         let avgSpatialDist = 0;
 
-        // 2. 笔画空间关联、位置精度、顺序与走向评测
         if (hanziData && hanziData.medians && hanziData.medians.length > 0) {
             const stdMedians = hanziData.medians;
-            const stdTransformed = stdMedians.map(m => this.transformMedian(m, canvasSize));
+            const stdTransformed = stdMedians.map(m => this._cleanReferencePoints(this.transformMedian(m, canvasSize)));
             const M = validStrokes.length;
             const N = stdTransformed.length;
 
@@ -905,7 +1667,7 @@ class ChineseWritingEvaluator {
                 }
             }
 
-            // A. 逐笔几何精度扣分（位置偏移 + 角度偏差 + 长短偏差，最高扣 16 分）
+            // A. 逐笔几何精度扣分
             let sumSpatial = 0;
             let sumAngle = 0;
             let sumLenRatio = 0;
@@ -921,9 +1683,9 @@ class ChineseWritingEvaluator {
             const avgAngleRad = M > 0 ? (sumAngle / M) : 0;
             const avgLenRatio = M > 0 ? (sumLenRatio / M) : 1;
 
-            const spatialPenalty = Math.min(14, Math.max(0, (avgSpatialDist - 6) * 0.34));
-            const anglePenalty = Math.min(7, Math.max(0, (avgAngleRad - 0.10) * 16));
-            const lenPenalty = Math.min(6, Math.max(0, (avgLenRatio - 1.12) * 9));
+            const spatialPenalty = Math.min(13, Math.max(0, (avgSpatialDist - 7) * 0.32));
+            const anglePenalty = Math.min(6, Math.max(0, (avgAngleRad - 0.12) * 14));
+            const lenPenalty = Math.min(6, Math.max(0, (avgLenRatio - 1.15) * 8));
             score -= Math.round(spatialPenalty + anglePenalty + lenPenalty);
 
             // B. 运笔方向检测 (倒插笔检测)
@@ -974,8 +1736,8 @@ class ChineseWritingEvaluator {
                 score -= orderPenalty;
             }
 
-            if (diff === 0 && inversions.length === 0 && reverseStrokes.length === 0 && avgSpatialDist <= 22) {
-                feedback.push(`✨ 笔画顺序与运笔走向标准规范，落笔准确！`);
+            if (absDiff === 0 && inversions.length === 0 && reverseStrokes.length === 0 && avgSpatialDist <= 22) {
+                feedback.push('✨ 笔画顺序与运笔走向标准规范，落笔准确！');
             }
         }
 
@@ -987,13 +1749,14 @@ class ChineseWritingEvaluator {
             inversionsCount,
             reverseCount,
             diff,
+            absDiff,
+            effectiveDiff,
             avgSpatialDist
         };
     }
 
     /**
      * 维度二：间架结构、重心对齐与宽高比例评测 (满分 30 分)
-     * 改进：直接与当前汉字标准骨架的真实包围盒与重心比对（适配扁宽字“一/二/三”与竖长字“月/日/目”）
      */
     evaluateStructure(bounds, canvasWidth, canvasHeight, hanziData = null, cssSize = 360) {
         let score = 30;
@@ -1030,7 +1793,7 @@ class ChineseWritingEvaluator {
             }
         }
 
-        // 1. 重心偏移评测 (最高扣 12 分)
+        // 1. 重心偏移评测
         const offsetX = bounds.centroidX - targetCenterX;
         const offsetY = bounds.centroidY - targetCenterY;
         const distFromTargetCenter = Math.hypot(offsetX, offsetY);
@@ -1039,7 +1802,7 @@ class ChineseWritingEvaluator {
         if (centerRatio <= 0.04) {
             feedback.push('✅ 间架结构居中：重心稳固，与标准字模中心对齐！');
         } else {
-            const centerPenalty = Math.min(12, Math.max(1, Math.round((centerRatio - 0.03) * 48)));
+            const centerPenalty = Math.min(12, Math.max(1, Math.round((centerRatio - 0.03) * 46)));
             score -= centerPenalty;
             if (centerRatio >= 0.13) {
                 let dirText = '';
@@ -1054,7 +1817,7 @@ class ChineseWritingEvaluator {
             }
         }
 
-        // 2. 大小占格比例评测 (与标准字跨度对比，最高扣 11 分)
+        // 2. 大小占格比例评测
         const userSpan = Math.max(bounds.boxWidth, bounds.boxHeight, canvasWidth * 0.12);
         const targetSpan = Math.max(targetWidth, targetHeight, canvasWidth * 0.25);
         const spanRatio = userSpan / targetSpan;
@@ -1062,21 +1825,21 @@ class ChineseWritingEvaluator {
         if (spanRatio >= 0.90 && spanRatio <= 1.10) {
             feedback.push('✅ 比例饱满得体：字形大小适中，舒展大方！');
         } else if (spanRatio < 0.90) {
-            const sizePenalty = Math.min(11, Math.max(1, Math.round((0.92 - spanRatio) * 32)));
+            const sizePenalty = Math.min(11, Math.max(1, Math.round((0.92 - spanRatio) * 30)));
             score -= sizePenalty;
             feedback.push('💡 占格提示：字写得偏小了，可以放开手脚把笔画写得更舒展！');
         } else {
-            const sizePenalty = Math.min(10, Math.max(1, Math.round((spanRatio - 1.08) * 28)));
+            const sizePenalty = Math.min(10, Math.max(1, Math.round((spanRatio - 1.08) * 26)));
             score -= sizePenalty;
             feedback.push('💡 占格提示：字写得偏大了，注意外围留白，不要顶满边框。');
         }
 
-        // 3. 宽高长短比例评测 (最高扣 8 分)
+        // 3. 宽高长短比例评测
         const uAspect = (bounds.boxWidth + canvasWidth * 0.12) / (bounds.boxHeight + canvasHeight * 0.12);
         const tAspect = (targetWidth + canvasWidth * 0.12) / (targetHeight + canvasHeight * 0.12);
         const aspectDiff = Math.abs(Math.log(uAspect / tAspect));
-        if (aspectDiff > 0.10) {
-            const aspectPenalty = Math.min(8, Math.max(1, Math.round((aspectDiff - 0.08) * 22)));
+        if (aspectDiff > 0.12) {
+            const aspectPenalty = Math.min(8, Math.max(1, Math.round((aspectDiff - 0.10) * 20)));
             score -= aspectPenalty;
         }
 
@@ -1088,7 +1851,6 @@ class ChineseWritingEvaluator {
 
     /**
      * 维度三：字形饱满度与骨架贴合度 (满分 30 分)
-     * 改进：综合像素精准度、标准骨架覆盖度与归一化骨架 F1，拉开高分与低分差距
      */
     evaluateShape(userPixels, char, width, height, bounds, hanziData, canvasSize = 360, validStrokes = [], canonicalMatch = null) {
         const feedback = [];
@@ -1098,7 +1860,14 @@ class ChineseWritingEvaluator {
             this.offscreenCtx = this.offscreenCanvas.getContext('2d');
         }
         if (!this.offscreenCanvas || !this.offscreenCtx) {
-            return { score: 24, coverageRate: 0.75, validRate: 0.75, feedback: ['✅ 笔画饱满，字形完整'] };
+            const skelF1 = canonicalMatch ? canonicalMatch.skeletonF1 : 0.75;
+            const simScore = Math.max(6, Math.min(30, Math.round(4 + 26 * Math.pow(skelF1, 1.15))));
+            return {
+                score: simScore,
+                coverageRate: canonicalMatch ? canonicalMatch.skeletonRecall : 0.75,
+                validRate: canonicalMatch ? canonicalMatch.skeletonPrecision : 0.75,
+                feedback: ['✅ 笔画饱满，字形完整']
+            };
         }
 
         this.offscreenCanvas.width = width;
@@ -1151,7 +1920,7 @@ class ChineseWritingEvaluator {
         let validUserStrokes = 0;
         let totalUser = 0;
         const step = Math.max(2, Math.round(dpr * 2));
-        const toleranceRadius = Math.round(11 * dpr); // 收紧容差半径，提高评分严谨度
+        const toleranceRadius = Math.round(11 * dpr);
 
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
@@ -1180,26 +1949,25 @@ class ChineseWritingEvaluator {
 
         const skelRecall = canonicalMatch ? canonicalMatch.skeletonRecall : pixelCoverage;
         const skelPrecision = canonicalMatch ? canonicalMatch.skeletonPrecision : validRate;
-        const effectiveCoverage = pixelCoverage * 0.55 + skelRecall * 0.45;
-        const effectiveValid = validRate * 0.60 + skelPrecision * 0.40;
+        const effectiveCoverage = pixelCoverage * 0.50 + skelRecall * 0.50;
+        const effectiveValid = validRate * 0.55 + skelPrecision * 0.45;
 
-        // 连续非线性映射计分 (满分 30 分 = 精准度 14 分 + 覆盖度 14 分 + 基础 2 分，高分需极高重合度)
-        const precisionNorm = Math.pow(Math.max(0, Math.min(1, (effectiveValid - 0.30) / 0.66)), 1.25);
-        const coverageNorm = Math.pow(Math.max(0, Math.min(1, (effectiveCoverage - 0.28) / 0.66)), 1.25);
+        const precisionNorm = Math.pow(Math.max(0, Math.min(1, (effectiveValid - 0.28) / 0.66)), 1.22);
+        const coverageNorm = Math.pow(Math.max(0, Math.min(1, (effectiveCoverage - 0.26) / 0.66)), 1.22);
         const rawScore = 2 + 14 * precisionNorm + 14 * coverageNorm;
         const score = Math.max(3, Math.min(30, Math.round(rawScore)));
 
-        if (effectiveValid >= 0.82) {
+        if (effectiveValid >= 0.80) {
             feedback.push('✅ 笔画轨迹工整，紧贴标准字模！');
-        } else if (effectiveValid >= 0.64) {
+        } else if (effectiveValid >= 0.62) {
             feedback.push('👌 笔画大体贴合字模，部分笔端略有偏移。');
         } else {
             feedback.push('💡 笔形控制提示：部分笔画偏离字模较远，注意起笔与收笔位置。');
         }
 
-        if (effectiveCoverage >= 0.72) {
+        if (effectiveCoverage >= 0.70) {
             feedback.push('✅ 汉字关键骨架完整饱满。');
-        } else if (effectiveCoverage >= 0.52) {
+        } else if (effectiveCoverage >= 0.50) {
             feedback.push('💡 部分笔画偏短或未写到位，可多加练习。');
         } else {
             feedback.push('💡 字形骨架覆盖率偏低，请完整书写每一笔。');

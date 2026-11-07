@@ -115,6 +115,7 @@ class HanziGuide {
                 showCharacter: true,
                 strokeAnimationSpeed: this.speed,
                 delayBetweenStrokes: 220,
+                leniency: 1.22,
                 showHintAfterMisses: 2,
                 highlightOnComplete: true,
                 charDataLoader: charLoader,

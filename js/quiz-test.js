@@ -134,6 +134,18 @@ const GP_VISUAL_CONFUSERS = {
     '虫': '中', '竹': '个', '门': '问', '问': '门', '鱼': '鸟', '叶': '十', '立': '六', '六': '立'
 };
 
+// 看图写字专属优选双字提示词（彻底消除同义画面歧义，如「太阳」区分“阳/日”，「开门」区分“开/门”）
+const GP_PW_CLUE_WORDS = {
+    '一': '第一', '二': '二月', '三': '三个', '四': '四季', '五': '五星',
+    '六': '六月', '七': '七色', '八': '八方', '九': '九月', '十': '十分',
+    '人': '大人', '入': '出入', '出': '出来', '来': '回来', '去': '回去',
+    '日': '红日', '阳': '太阳', '光': '月光', '水': '喝水', '江': '长江', '冰': '冰雪',
+    '土': '泥土', '地': '大地', '田': '水田', '木': '树木', '禾': '禾苗',
+    '口': '张口', '牙': '刷牙', '目': '目光', '耳': '耳朵', '足': '手足', '走': '走路',
+    '子': '孩子', '儿': '儿童', '妈': '爸妈', '门': '大门', '开': '开门', '关': '关门',
+    '书': '看书', '学': '学习', '文': '语文', '边': '河边', '里': '家里', '外': '外面', '后': '后面'
+};
+
 // ==================== 4. 游戏列表 ====================
 const GP_GAMES = [
     { id: 'picwrite', icon: '✍️', title: '看图写字', desc: '看图片，凭记忆写出汉字', theme: 'orange', intro: '图上画的是什么？在米字格里写出来吧！' },
@@ -346,9 +358,15 @@ class ExamCenter {
         } catch (e) {}
     }
 
-    charPrompt(ch) {
+    clueWord(ch) {
+        if (GP_PW_CLUE_WORDS[ch]) return GP_PW_CLUE_WORDS[ch];
         const info = this.info(ch);
         const w = info ? info.words.find(x => x.length === 2 && x.includes(ch) && x[0] !== x[1]) : null;
+        return w || '';
+    }
+
+    charPrompt(ch) {
+        const w = this.clueWord(ch);
         return w ? `${ch}，${w}的${ch}` : ch;
     }
 
@@ -702,6 +720,7 @@ class ExamCenter {
             pyTag.hidden = true;
             pyTag.textContent = info.pinyin;
         }
+        this.renderPwClue(ch, false);
         this.setTraceButton(false);
         this.setPwFeedback('idle');
         this.setPwSubmitLabel(false);
@@ -712,7 +731,29 @@ class ExamCenter {
             this.examCanvas.setTraceSettings(false);
             this.examCanvas.clear(false);
         }
-        this.setMascot('图上画的是什么？在米字格里写出来吧！', 'idle');
+        const cw = this.clueWord(ch);
+        const masked = cw ? cw.replace(ch, '（？）') : '这个字';
+        this.setMascot(`看图填词：<strong>${masked}</strong>，在米字格里写出来吧！`, 'idle');
+    }
+
+    renderPwClue(ch, revealed = false) {
+        const clueEl = document.getElementById('pw-word-clue');
+        if (!clueEl) return;
+        const cw = this.clueWord(ch);
+        if (!cw || cw.length !== 2 || !cw.includes(ch)) {
+            clueEl.hidden = true;
+            clueEl.innerHTML = '';
+            return;
+        }
+        clueEl.hidden = false;
+        clueEl.innerHTML = cw.split('').map(c => {
+            if (c === ch) {
+                return revealed
+                    ? `<span class="pw-clue-ans">${c}</span>`
+                    : `<span class="pw-clue-blank">？</span>`;
+            }
+            return `<span class="pw-clue-known">${c}</span>`;
+        }).join('');
     }
 
     setTraceButton(on) {
@@ -731,7 +772,7 @@ class ExamCenter {
         const box = document.getElementById('pw-feedback');
         if (!box) return;
         box.className = `pw-feedback ${state === 'correct' ? 'is-correct' : (state === 'wrong' ? 'is-wrong' : '')}`;
-        box.innerHTML = state === 'idle'
+        box.innerHTML = (state === 'idle' && !html)
             ? '<div class="pw-fb-idle">👀 看图想一想，在米字格里写出这个字，写好后点 <strong>✅ 写好了</strong>！</div>'
             : html;
     }
@@ -765,7 +806,7 @@ class ExamCenter {
 
         const info = this.info(ch) || { pinyin: '' };
         const stamp = document.getElementById('pw-stamp');
-        const word = (info.words || []).find(w => w.length === 2 && w.includes(ch)) || '';
+        const word = this.clueWord(ch) || (info.words || []).find(w => w.length === 2 && w.includes(ch)) || '';
 
         if (res.isPass) {
             this.pw.status = 'correct';
@@ -774,6 +815,7 @@ class ExamCenter {
                 stamp.className = 'pw-stamp correct show';
                 stamp.textContent = '✓';
             }
+            this.renderPwClue(ch, true);
             this.registerCorrect();
             this.awardStars(stars, stamp);
             if (this.app && typeof this.app.markCharCompleted === 'function') this.app.markCharCompleted(ch);
@@ -794,6 +836,53 @@ class ExamCenter {
             this.setMascot(`${this.praise()} 就是“${ch}”字！`, 'happy');
             this.speak(`写对啦！${this.charPrompt(ch)}`);
         } else {
+            // 检查小朋友是否把同义画面写成了另一个同组好字（如看到太阳写了“日”，看到开门写了“门”）
+            const cache = window.STROKE_DATA_CACHE || {};
+            const validUserStrokes = evaluator.filterValidStrokes(this.examCanvas.strokeList, this.examCanvas.cssSize);
+            let sameGroupWritten = null;
+            for (const cand of Object.keys(cache)) {
+                if (cand === ch || !this.sameGroup(ch, cand)) continue;
+                const cData = cache[cand];
+                if (!cData || !cData.medians) continue;
+                const stdN = cData.medians.length;
+                if (res.userStrokes < stdN - 1 || res.userStrokes > stdN + 2) continue;
+                const cMatch = evaluator.computeCanonicalSimilarity(
+                    validUserStrokes,
+                    cData,
+                    this.examCanvas.cssSize,
+                    cand
+                );
+                if (cMatch.similarity >= 60 &&
+                    Math.abs(cMatch.effectiveStrokeCount - stdN) <= 1 &&
+                    cMatch.uncoveredStdStrokes === 0 &&
+                    cMatch.extraUserStrokes === 0 &&
+                    cMatch.rasterSim >= 0.56) {
+                    sameGroupWritten = cand;
+                    break;
+                }
+            }
+
+            if (sameGroupWritten) {
+                this.sfx('playPop');
+                const targetWordTip = word ? `「${word}」的` : '';
+                this.setPwFeedback('idle', `
+                    <div class="pw-fb-row">
+                        <span class="pw-fb-char">${sameGroupWritten}</span>
+                        <div class="pw-fb-text">
+                            <strong>👏 你写的“${sameGroupWritten}”字很工整哦！</strong>
+                            <span>不过这题考的是${targetWordTip}“<strong>${ch}</strong>”（${info.pinyin}），清空重写“${ch}”试试吧！</span>
+                        </div>
+                        <div class="pw-fb-actions">
+                            <button type="button" class="btn-hint tone-blue" data-pw-act="clear">🗑️ 清空重写</button>
+                            <button type="button" class="btn-hint tone-red" data-pw-act="trace">✏️ 描红提示</button>
+                        </div>
+                    </div>
+                `);
+                this.setMascot(`你写的“${sameGroupWritten}”真棒！这题词语是${word || ch}，试试写“${ch}”吧！`, 'think');
+                this.speak(`你写的${sameGroupWritten}字真棒！不过这题要写${this.charPrompt(ch)}哦！`);
+                return;
+            }
+
             this.pw.status = 'wrong';
             this.pw.failCount += 1;
             if (stamp) {
@@ -831,6 +920,10 @@ class ExamCenter {
         if (act === 'next') {
             this.sfx('playPop');
             this.nextPicwrite();
+        } else if (act === 'clear') {
+            this.sfx('playEraser');
+            if (this.examCanvas) this.examCanvas.clear(false);
+            this.setPwFeedback('idle');
         } else if (act === 'trace') {
             this.sfx('playPop');
             if (this.examCanvas) {
@@ -1774,12 +1867,17 @@ class ExamCenter {
         const cache = window.STROKE_DATA_CACHE || {};
 
         const picItems = gpShuffle(this.writingPool.slice()).slice(0, 10).map(ch => this.info(ch)).filter(Boolean);
-        const picGridHtml = picItems.map(q => `
+        const picGridHtml = picItems.map(q => {
+            const cw = this.clueWord(q.char);
+            const clueTxt = cw ? cw.replace(q.char, '（  ）') : '';
+            return `
             <div class="exam-print-pic-cell">
                 <div class="exam-print-img-box"><img src="${q.image}" alt="看图写字"></div>
+                ${clueTxt ? `<div style="font-size:12px;font-weight:700;color:#334155;">${clueTxt}</div>` : ''}
                 <div class="exam-print-mizi"><span class="grid-cross-h"></span><span class="grid-cross-v"></span></div>
             </div>
-        `).join('');
+        `;
+        }).join('');
 
         const stkItems = gpShuffle(Object.keys(GP_STROKE_TYPE_DATA).filter(ch => {
             const types = GP_STROKE_TYPE_DATA[ch].split(' ');
@@ -1885,6 +1983,16 @@ class ExamCenter {
         on('btn-exam-print-paper', 'click', () => this.printExamPaper());
 
         // 看图写字
+        on('pw-img', 'click', () => {
+            if (!this.pw) return;
+            this.sfx('playPop');
+            this.sayChar(this.pw.char);
+        });
+        on('pw-word-clue', 'click', () => {
+            if (!this.pw) return;
+            this.sfx('playPop');
+            this.sayChar(this.pw.char);
+        });
         on('btn-pw-speak', 'click', () => {
             if (!this.pw) return;
             this.pw.usedHint = true;

@@ -5836,6 +5836,63 @@ body.app-mode-exam #header-search-box {
     box-shadow: 0 4px 10px rgba(29, 78, 216, 0.3);
 }
 
+.pw-word-clue {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1.5px solid #fed7aa;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12);
+    cursor: pointer;
+    z-index: 2;
+    white-space: nowrap;
+}
+
+.pw-word-clue[hidden] {
+    display: none;
+}
+
+.pw-clue-known {
+    font-family: "KaiTi", "STKaiti", serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: #334155;
+    line-height: 1;
+}
+
+.pw-clue-blank,
+.pw-clue-ans {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.pw-clue-blank {
+    border: 2px dashed #f97316;
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.pw-clue-ans {
+    border: 2px solid #10b981;
+    background: #ecfdf5;
+    color: #059669;
+    font-family: "KaiTi", "STKaiti", serif;
+    font-size: 18px;
+}
+
 .pw-hint-row {
     display: flex;
     justify-content: center;
@@ -7340,6 +7397,24 @@ body.app-mode-exam #header-search-box {
     .pw-img-frame {
         width: clamp(96px, 30vw, 132px);
         height: clamp(96px, 30vw, 132px);
+    }
+
+    .pw-word-clue {
+        bottom: 4px;
+        gap: 3px;
+        padding: 2px 8px;
+    }
+
+    .pw-clue-known {
+        font-size: 15px;
+    }
+
+    .pw-clue-blank,
+    .pw-clue-ans {
+        width: 20px;
+        height: 20px;
+        font-size: 12.5px;
+        border-radius: 5px;
     }
 
     .pw-hint-row {

@@ -399,7 +399,11 @@ class HandwritingCanvas {
                 this.currentStroke.endPoint = { x: pos.x, y: pos.y, time: pos.time };
             }
 
-            if (this.points.length >= 3) {
+            if (this.points.length === 2) {
+                const p0 = this.points[0];
+                const p1 = this.points[1];
+                this.drawSegment(p0, p0, p1);
+            } else if (this.points.length >= 3) {
                 const len = this.points.length;
                 const p0 = this.points[len - 3];
                 const p1 = this.points[len - 2];
@@ -412,6 +416,12 @@ class HandwritingCanvas {
             if (!this.isDrawing) return;
             // 如果抬起的不是活跃书写指针 (比如抬起的是搭在屏幕上的手掌)，绝不能中断画笔的书写！
             if (this.activePointerId !== null && e.pointerId !== this.activePointerId) return;
+
+            if (this.points.length >= 2) {
+                const pPrev = this.points[this.points.length - 2];
+                const pLast = this.points[this.points.length - 1];
+                this.drawSegment(pPrev, pLast, pLast);
+            }
 
             this.isDrawing = false;
             this.activePointerId = null;
@@ -432,6 +442,19 @@ class HandwritingCanvas {
             }, 120);
 
             if (this.currentStroke && this.brushType !== 'eraser') {
+                if (this.currentStroke.points && this.currentStroke.points.length === 1) {
+                    const p0 = this.currentStroke.points[0];
+                    const dotEnd = {
+                        x: p0.x + 1.8,
+                        y: p0.y + 2.4,
+                        pressure: p0.pressure,
+                        pointerType: p0.pointerType,
+                        time: Date.now()
+                    };
+                    this.currentStroke.points.push(dotEnd);
+                    this.currentStroke.endPoint = { x: dotEnd.x, y: dotEnd.y, time: dotEnd.time };
+                    this.currentStroke.isTapDot = true;
+                }
                 this.strokeList.push(this.currentStroke);
             }
             this.currentStroke = null;
