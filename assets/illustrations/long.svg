@@ -1,47 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgLong" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#fff1f2"/>
-      <stop offset="100%" stop-color="#fecdd3"/>
-    </radialGradient>
-    <filter id="shadowLong" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.2"/>
-    </filter>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgLong)"/>
-  <!-- Lucky Clouds -->
-  <path d="M 80 120 Q 100 90 130 110 Q 160 90 180 120 Q 190 150 160 160 Q 100 160 80 120 Z" fill="#ffffff" opacity="0.6"/>
-  <path d="M 320 380 Q 340 350 370 370 Q 400 350 420 380 Q 430 410 400 420 Q 340 420 320 380 Z" fill="#ffffff" opacity="0.6"/>
-  <g filter="url(#shadowLong)">
-    <!-- Serpentine Dragon Body -->
-    <path d="M 180 230 Q 160 340 250 360 Q 350 380 370 290 Q 380 200 300 210 Q 230 220 280 140" stroke="#10b981" stroke-width="44" stroke-linecap="round" fill="none"/>
-    <path d="M 180 230 Q 160 340 250 360 Q 350 380 370 290 Q 380 200 300 210 Q 230 220 280 140" stroke="#fef08a" stroke-width="22" stroke-linecap="round" fill="none"/>
-    <!-- Tail Fin (Fluffy) -->
-    <polygon points="280,140 260,95 310,105 295,130" fill="#f43f5e"/>
-    <polygon points="280,140 295,110 330,130" fill="#f59e0b"/>
-    <!-- Cute Dragon Head -->
-    <circle cx="165" cy="220" r="55" fill="#10b981"/>
-    <ellipse cx="140" cy="235" rx="35" ry="25" fill="#34d399"/>
-    <!-- Belly ridge scales -->
-    <circle cx="215" cy="330" r="7" fill="#fbbf24"/>
-    <circle cx="265" cy="360" r="7" fill="#fbbf24"/>
-    <circle cx="325" cy="340" r="7" fill="#fbbf24"/>
-    <circle cx="360" cy="270" r="7" fill="#fbbf24"/>
-    <!-- Little Horns -->
-    <polygon points="160,175 140,125 175,160" fill="#f59e0b"/>
-    <polygon points="185,175 205,125 195,165" fill="#f59e0b"/>
-    <!-- Whiskers -->
-    <path d="M 125 235 Q 90 220 70 250" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" fill="none"/>
-    <path d="M 130 245 Q 95 260 85 290" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" fill="none"/>
-    <!-- Eyes -->
-    <circle cx="150" cy="205" r="10" fill="#1e293b"/>
-    <circle cx="147" cy="201" r="3.5" fill="#ffffff"/>
-    <!-- Rosy Cheek -->
-    <circle cx="165" cy="240" r="9" fill="#f43f5e" opacity="0.4"/>
-    <!-- Nostril -->
-    <circle cx="125" cy="228" r="3" fill="#065f46"/>
-    <!-- Pearl of Wisdom -->
-    <circle cx="230" cy="260" r="18" fill="#fbbf24"/>
-    <circle cx="225" cy="255" r="5" fill="#ffffff"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Glowing golden dragon pearl on left -->
+      <circle cx="38" cy="84" r="15" fill="#facc15" stroke="#f59e0b" stroke-width="3"/>
+      <circle cx="33" cy="79" r="4.5" fill="#ffffff" opacity="0.8"/>
+      <!-- Golden dorsal crest spikes behind dragon body -->
+      <path d="M74 78 C110 56 128 124 162 100 C180 86 174 52 152 48" fill="none" stroke="#f59e0b" stroke-width="26" stroke-linecap="round" stroke-dasharray="4 11"/>
+      <!-- Sinuous emerald dragon body & golden belly stripe -->
+      <path d="M74 84 C110 62 128 130 162 106 C180 92 174 56 152 52" fill="none" stroke="#10b981" stroke-width="22" stroke-linecap="round"/>
+      <path d="M76 89 C110 68 128 134 160 111" fill="none" stroke="#fde047" stroke-width="6.5" stroke-linecap="round"/>
+      <!-- Little dragon legs/claws -->
+      <path d="M98 96 L92 118 M86 118 L98 118 M144 116 L142 136 M135 136 L149 136" stroke="#059669" stroke-width="6.5" stroke-linecap="round"/>
+      <!-- Festive red dragon tail tuft -->
+      <path d="M152 52 Q136 42 144 32 Q158 36 160 48 Z" fill="#ef4444"/>
+      <!-- Dragon head with golden antlers, red mane, snout, whiskers -->
+      <g transform="translate(70, 80) scale(1.12)">
+        <!-- Antlers -->
+        <path d="M-2 -20 L4 -38 M4 -30 L12 -34 M8 -18 L18 -34" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+        <!-- Flowing red mane -->
+        <path d="M6 -18 Q24 -24 22 -6 Q28 2 14 8 Z" fill="#ef4444"/>
+        <!-- Head & snout -->
+        <ellipse cx="-2" cy="-4" rx="18" ry="15" fill="#10b981"/>
+        <rect x="-26" y="-8" width="22" height="14" rx="7" fill="#10b981"/>
+        <path d="M-22 6 Q-8 14 6 6" fill="#fde047"/>
+        <!-- Whiskers -->
+        <path d="M-22 -4 Q-32 -16 -36 -8" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Nostril & bright eye -->
+        <circle cx="-20" cy="-3" r="2.2" fill="#064e3b"/>
+        <circle cx="-4" cy="-7" r="4.5" fill="#ffffff"/><circle cx="-5" cy="-7" r="2.5" fill="#1e293b"/>
+      </g>
+      <!-- Soft auspicious cloud at bottom -->
+      <g fill="#ffffff" opacity="0.9">
+        <circle cx="84" cy="160" r="13"/><circle cx="104" cy="155" r="17"/><circle cx="124" cy="161" r="12"/>
+      </g>
+    
 </svg>

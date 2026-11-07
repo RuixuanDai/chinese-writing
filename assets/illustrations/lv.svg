@@ -1,34 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgLv" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#f0fdf4"/>
       <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+    
+    <radialGradient id="sp" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="62%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#15803d"/>
     </radialGradient>
-    <filter id="shadowLv" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#16a34a" flood-opacity="0.25"/>
-    </filter>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgLv)"/>
-  <!-- Vibrant Green Four-Leaf Clover (绿色) -->
-  <g filter="url(#shadowLv)">
-    <path d="M 250 250 Q 240 380 230 420" stroke="#15803d" stroke-width="9" fill="none" stroke-linecap="round"/>
-    <!-- 4 Heart-shaped Clover Leaves -->
-    <path d="M 250 250 C 210 150 290 150 250 250 Z" fill="#22c55e" stroke="#16a34a" stroke-width="2"/>
-    <circle cx="230" cy="170" r="30" fill="#22c55e"/>
-    <circle cx="270" cy="170" r="30" fill="#22c55e"/>
-
-    <path d="M 250 250 C 350 210 350 290 250 250 Z" fill="#16a34a" stroke="#15803d" stroke-width="2"/>
-    <circle cx="330" cy="230" r="30" fill="#16a34a"/>
-    <circle cx="330" cy="270" r="30" fill="#16a34a"/>
-
-    <path d="M 250 250 C 290 350 210 350 250 250 Z" fill="#22c55e" stroke="#16a34a" stroke-width="2"/>
-    <circle cx="270" cy="330" r="30" fill="#22c55e"/>
-    <circle cx="230" cy="330" r="30" fill="#22c55e"/>
-
-    <path d="M 250 250 C 150 290 150 210 250 250 Z" fill="#4ade80" stroke="#16a34a" stroke-width="2"/>
-    <circle cx="170" cy="270" r="30" fill="#4ade80"/>
-    <circle cx="170" cy="230" r="30" fill="#4ade80"/>
-    <!-- Dew drop -->
-    <circle cx="260" cy="180" r="6" fill="#ffffff" opacity="0.8"/>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+  <!-- Soft paint droplets -->
+  <circle cx="42" cy="48" r="8" fill="#22c55e" />
+  <circle cx="158" cy="44" r="6.5" fill="#22c55e" />
+  <circle cx="34" cy="112" r="5.5" fill="#15803d"/>
+  <!-- Rich scalloped paint splash -->
+  <path d="M100 30 C118 28 132 38 140 50 C156 54 166 68 160 85 C166 102 156 120 140 124 C132 138 112 142 96 136 C78 142 58 134 52 118 C38 110 36 90 46 76 C42 58 56 42 74 42 C82 32 90 30 100 30 Z" fill="url(#sp)" />
+  <!-- Glossy specular highlight on splash -->
+  <path d="M70 54 Q88 42 112 48" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" opacity="0.65"/>
+  <circle cx="62" cy="64" r="3.5" fill="#ffffff" opacity="0.7"/>
+  <!-- Cute matching wax crayon (bottom-left) -->
+  <g transform="translate(56, 158) rotate(-24)">
+    <polygon points="-34,0 -20,-9 -20,9" fill="#15803d" />
+    <rect x="-20" y="-9" width="52" height="18" rx="3" fill="#22c55e" />
+    <rect x="-12" y="-9" width="6" height="18" fill="#1e293b" opacity="0.28"/>
+    <rect x="18" y="-9" width="6" height="18" fill="#1e293b" opacity="0.28"/>
+    <rect x="-6" y="-4" width="24" height="8" rx="3" fill="#ffffff" opacity="0.45"/>
+  </g>
+  <!-- Artist wooden paintbrush with colored bristles (bottom-right) -->
+  <g transform="translate(142, 152) rotate(-38)">
+    <rect x="-6" y="-4" width="54" height="9" rx="4.5" fill="#d97706"/>
+    <rect x="-16" y="-5" width="12" height="11" rx="2" fill="#cbd5e1"/>
+    <path d="M-16 -5 C-28 -7 -36 -3 -40 1 C-34 6 -26 8 -16 6 Z" fill="#22c55e" />
+    <path d="M-26 -2 Q-32 0 -36 1" fill="none" stroke="#86efac" stroke-width="2" stroke-linecap="round"/>
   </g>
 </svg>

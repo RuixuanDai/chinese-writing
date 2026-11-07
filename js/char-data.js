@@ -5204,7 +5204,7 @@ window.CHARACTER_ILLUSTRATION_MAP = {
     "画": "assets/illustrations/hua_draw.svg",
     "校": "assets/illustrations/xiao_school.svg",
     "早": "assets/illustrations/zao.svg",
-    "红": "assets/illustrations/hong.jpg",
+    "红": "assets/illustrations/hong.svg",
     "黄": "assets/illustrations/huang.svg",
     "蓝": "assets/illustrations/lan_blue.svg",
     "绿": "assets/illustrations/lv.svg",

@@ -6301,6 +6301,7 @@ body.app-mode-exam #header-search-box {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 12px;
 }
 
@@ -6310,10 +6311,52 @@ body.app-mode-exam #header-search-box {
     min-height: 130px;
 }
 
+.wd-img-frame[hidden] {
+    display: none !important;
+}
+
+#bl-img,
+#wd-img,
+#wd-word,
+#ml-target-img {
+    cursor: pointer;
+}
+
 .wd-word {
     display: flex;
-    gap: 10px;
+    align-items: flex-end;
+    gap: 12px;
     flex-shrink: 0;
+}
+
+.wd-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.wd-py {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    padding: 1px 10px;
+    border-radius: 999px;
+    background: #ede9fe;
+    border: 1.5px solid #c4b5fd;
+    color: #5b21b6;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+}
+
+.wd-py.is-empty {
+    background: transparent;
+    border-color: transparent;
+    visibility: hidden;
+    padding: 1px 4px;
 }
 
 .wd-char,
@@ -7075,7 +7118,7 @@ body.app-mode-exam #header-search-box {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .balloon,
+    .balloon:not(.popped):not(.fly-away),
     .bl-cloud,
     .game-hub-mascot,
     .game-combo-pill,

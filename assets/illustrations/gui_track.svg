@@ -1,26 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgGuiTrack" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#eff6ff"/>
-      <stop offset="100%" stop-color="#bfdbfe"/>
-    </radialGradient>
-    <filter id="shadowGuiTrack" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgGuiTrack)"/>
-  <g filter="url(#shadowGuiTrack)">
-    <!-- Wooden Sleepers / Cross Ties -->
-    <rect x="80" y="420" width="340" height="18" fill="#78350f"/>
-    <rect x="110" y="360" width="280" height="16" fill="#78350f"/>
-    <rect x="140" y="305" width="220" height="15" fill="#78350f"/>
-    <rect x="170" y="255" width="160" height="14" fill="#78350f"/>
-    <rect x="200" y="210" width="100" height="12" fill="#78350f"/>
-    <!-- Steel Rails -->
-    <line x1="120" y1="450" x2="220" y2="200" stroke="#94a3b8" stroke-width="12" stroke-linecap="round"/>
-    <line x1="380" y1="450" x2="280" y2="200" stroke="#94a3b8" stroke-width="12" stroke-linecap="round"/>
-    <!-- High speed train coming -->
-    <polygon points="210,130 290,130 280,200 220,200" fill="#3b82f6"/>
-    <ellipse cx="250" cy="130" rx="40" ry="20" fill="#ffffff"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Green meadow -->
+      <path d="M0 78 Q100 68 200 78 L200 200 L0 200 Z" fill="#86efac"/>
+      <!-- Gravel ballast bed -->
+      <polygon points="86,76 114,76 172,190 28,190" fill="#cbd5e1"/>
+      <!-- Wooden railway sleepers (枕木) -->
+      <rect x="82" y="86" width="36" height="4" rx="2" fill="#78350f"/><rect x="72.4" y="104.4" width="55.2" height="5" rx="2" fill="#78350f"/><rect x="62.8" y="122.80000000000001" width="74.4" height="6" rx="2" fill="#78350f"/><rect x="53.2" y="141.2" width="93.6" height="7" rx="2" fill="#78350f"/><rect x="43.599999999999994" y="159.60000000000002" width="112.80000000000001" height="8" rx="2" fill="#78350f"/><rect x="34" y="178" width="132" height="9" rx="2" fill="#78350f"/>
+      <!-- Gleaming silver steel rails -->
+      <line x1="92" y1="76" x2="48" y2="190" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+      <line x1="92" y1="76" x2="48" y2="190" stroke="#e2e8f0" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="108" y1="76" x2="152" y2="190" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+      <line x1="108" y1="76" x2="152" y2="190" stroke="#e2e8f0" stroke-width="2.2" stroke-linecap="round"/>
+    
 </svg>

@@ -1,22 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgGuo" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#fffbeb"/>
       <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowGuo" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#ca8a04" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgGuo)"/>
-  <!-- Basket of Fresh Fruit (水果) -->
-  <g filter="url(#shadowGuo)">
-    <!-- Fruits inside basket -->
-    <circle cx="210" cy="240" r="45" fill="#ef4444"/>
-    <circle cx="280" cy="235" r="42" fill="#f97316"/>
-    <circle cx="330" cy="260" r="30" fill="#a855f7"/>
-    <!-- Woven Basket -->
-    <path d="M 140 270 L 170 410 C 200 430 300 430 330 410 L 360 270 Z" fill="#d97706" stroke="#b45309" stroke-width="5"/>
-    <path d="M 120 270 Q 250 290 380 270" stroke="#92400e" stroke-width="12" fill="none" stroke-linecap="round"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <ellipse cx="100" cy="166" rx="64" ry="10" fill="#d97706" opacity="0.2"/>
+      <!-- Golden pear on right -->
+      <path d="M128 68 C138 68 142 84 148 96 C156 112 146 130 128 130 C110 130 102 112 110 96 C116 84 118 68 128 68 Z" fill="#facc15" stroke="#ca8a04" stroke-width="2.5"/>
+      <path d="M128 68 L132 56" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+      <!-- Bright orange on left -->
+      <circle cx="68" cy="108" r="24" fill="#fb923c" stroke="#ea580c" stroke-width="2.5"/>
+      <!-- Glossy red apple front-center -->
+      <path d="M100 78 C84 68 66 82 68 106 C70 126 86 136 100 132 C114 136 130 126 132 106 C134 82 116 68 100 78 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="2.5"/>
+      <path d="M100 80 L102 64" stroke="#78350f" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M102 68 Q116 58 120 70 Q110 76 102 68 Z" fill="#22c55e"/>
+      <circle cx="84" cy="94" r="5" fill="#ffffff" opacity="0.55"/>
+      <!-- Woven fruit bowl -->
+      <path d="M36 118 L164 118 C156 154 134 166 100 166 C66 166 44 154 36 118 Z" fill="#d97706" stroke="#92400e" stroke-width="3"/>
+      <rect x="32" y="114" width="136" height="10" rx="5" fill="#f59e0b" stroke="#92400e" stroke-width="2.5"/>
+      <path d="M52 136 L148 136 M64 150 L136 150" stroke="#92400e" stroke-width="2.5" opacity="0.55"/>
+    
 </svg>

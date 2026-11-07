@@ -1,30 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgShi" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
       <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowShi" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#854d0e" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgShi)"/>
-  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
-  <g filter="url(#shadowShi)">
-    <!-- Silk Scroll -->
-    <rect x="110" y="90" width="280" height="300" rx="14" fill="#fffbeb" stroke="#d97706" stroke-width="5"/>
-    <line x1="160" y1="120" x2="160" y2="360" stroke="#fca5a5" stroke-width="2"/>
-    <line x1="200" y1="120" x2="200" y2="360" stroke="#fca5a5" stroke-width="2"/>
-    <line x1="240" y1="120" x2="240" y2="360" stroke="#fca5a5" stroke-width="2"/>
-    <!-- Classical Plum Branch -->
-    <path d="M 390 120 Q 320 180 270 240 Q 230 300 130 340" stroke="#78350f" stroke-width="8" stroke-linecap="round" fill="none"/>
-    <!-- Red Plum Blossoms -->
-    <circle cx="340" cy="160" r="14" fill="#ef4444"/>
-    <circle cx="340" cy="160" r="5" fill="#facc15"/>
-    <circle cx="280" cy="225" r="15" fill="#ef4444"/>
-    <circle cx="280" cy="225" r="5" fill="#facc15"/>
-    <circle cx="220" cy="285" r="13" fill="#ef4444"/>
-    <circle cx="220" cy="285" r="4" fill="#facc15"/>
-    <circle cx="360" cy="200" r="10" fill="#f87171"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Hanging cord -->
+      <path d="M72 28 L100 14 L128 28" fill="none" stroke="#b45309" stroke-width="3" stroke-linecap="round"/>
+      <!-- Top & bottom wooden scroll rollers -->
+      <rect x="34" y="28" width="132" height="10" rx="5" fill="#92400e"/>
+      <rect x="44" y="34" width="112" height="124" fill="#fffbeb" stroke="#d97706" stroke-width="2.5"/>
+      <rect x="30" y="156" width="140" height="12" rx="6" fill="#92400e"/>
+      <circle cx="30" cy="162" r="5" fill="#f59e0b"/><circle cx="170" cy="162" r="5" fill="#f59e0b"/>
+      <!-- Golden moon & ink-wash mountains inside scroll -->
+      <circle cx="74" cy="64" r="13" fill="#fde047"/>
+      <polygon points="46,146 78,102 108,146" fill="#94a3b8" opacity="0.65"/>
+      <polygon points="82,146 118,92 154,146" fill="#64748b" opacity="0.75"/>
+      <!-- Vertical poetic brush-line columns (decorative, zero text!) & red seal -->
+      <line x1="138" y1="52" x2="138" y2="96" stroke="#334155" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 5"/>
+      <line x1="124" y1="56" x2="124" y2="90" stroke="#334155" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 5"/>
+      <rect x="120" y="102" width="10" height="10" rx="2" fill="#dc2626"/>
+      <!-- Red plum blossom twig -->
+      <path d="M46 86 Q66 92 80 82" fill="none" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="64" cy="88" r="4.5" fill="#f43f5e"/><circle cx="78" cy="82" r="4" fill="#fb7185"/>
+    
 </svg>

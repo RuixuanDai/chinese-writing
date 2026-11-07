@@ -1,29 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgKai" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowKai" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgKai)"/>
-  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#fde68a" opacity="0.6"/>
-  <!-- Doorway Frame with Warm Sunshine radiating inside -->
-  <g filter="url(#shadowKai)">
-    <!-- Outer Arch Frame -->
-    <rect x="110" y="100" width="280" height="310" rx="20" fill="#78350f"/>
-    <!-- Inner Sunlight Area -->
-    <rect x="130" y="120" width="240" height="290" rx="10" fill="#fef08a"/>
-    <!-- Sunbeams bursting from doorway -->
-    <polygon points="170,120 200,410 140,410" fill="#ffffff" opacity="0.5"/>
-    <polygon points="250,120 300,410 220,410" fill="#ffffff" opacity="0.5"/>
-    <!-- Left Door Leaf Swung Open at perspective angle -->
-    <polygon points="130,120 70,140 70,390 130,410" fill="#ef4444"/>
-    <circle cx="85" cy="270" r="8" fill="#facc15"/>
-    <!-- Right Door Leaf Swung Open at perspective angle -->
-    <polygon points="370,120 430,140 430,390 370,410" fill="#ef4444"/>
-    <circle cx="415" cy="270" r="8" fill="#facc15"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Doorway frame -->
+      <rect x="44" y="34" width="112" height="136" rx="6" fill="#38bdf8" stroke="#92400e" stroke-width="6"/>
+      <!-- Bright outdoor scene revealed inside open doorway -->
+      <circle cx="100" cy="66" r="12" fill="#fde047"/>
+      <path d="M47 132 Q100 116 153 132 L153 167 L47 167 Z" fill="#4ade80"/>
+      <!-- Left door panel swung open outward in perspective -->
+      <polygon points="44,34 18,48 18,158 44,170" fill="#d97706" stroke="#78350f" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="26" cy="104" r="3.5" fill="#fde047"/>
+      <!-- Right door panel swung open outward in perspective -->
+      <polygon points="156,34 182,48 182,158 156,170" fill="#d97706" stroke="#78350f" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="174" cy="104" r="3.5" fill="#fde047"/>
+      <!-- Outward opening motion arrows -->
+      <path d="M84 98 L58 98 M66 90 L56 98 L66 106" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M116 98 L142 98 M134 90 L144 98 L134 106" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
 </svg>

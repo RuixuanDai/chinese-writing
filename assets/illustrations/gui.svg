@@ -1,31 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgGui" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#ecfeff"/>
       <stop offset="100%" stop-color="#cffafe"/>
-    </radialGradient>
-    <filter id="shadowGui" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#0e7490" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgGui)"/>
-  <!-- Cute Green Turtle (乌龟) -->
-  <g filter="url(#shadowGui)">
-    <!-- 4 Flippers -->
-    <ellipse cx="170" cy="210" rx="35" ry="20" fill="#4ade80" transform="rotate(-30, 170, 210)"/>
-    <ellipse cx="330" cy="210" rx="35" ry="20" fill="#4ade80" transform="rotate(30, 330, 210)"/>
-    <ellipse cx="180" cy="330" rx="30" ry="18" fill="#4ade80" transform="rotate(30, 180, 330)"/>
-    <ellipse cx="320" cy="330" rx="30" ry="18" fill="#4ade80" transform="rotate(-30, 320, 330)"/>
-    <!-- Head -->
-    <circle cx="250" cy="160" r="40" fill="#4ade80"/>
-    <circle cx="235" cy="150" r="5" fill="#0f172a"/>
-    <circle cx="265" cy="150" r="5" fill="#0f172a"/>
-    <circle cx="233" cy="148" r="1.5" fill="#ffffff"/>
-    <circle cx="263" cy="148" r="1.5" fill="#ffffff"/>
-    <path d="M 243 170 Q 250 176 257 170" stroke="#15803d" stroke-width="2.5" fill="none"/>
-    <!-- Round Shell -->
-    <ellipse cx="250" cy="270" rx="100" ry="90" fill="#15803d" stroke="#166534" stroke-width="5"/>
-    <ellipse cx="250" cy="270" rx="60" ry="50" fill="#22c55e"/>
-    <circle cx="250" cy="270" r="25" fill="#86efac"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <ellipse cx="100" cy="154" rx="62" ry="12" fill="#0891b2" opacity="0.18"/>
+      <!-- Back legs & cute little tail -->
+      <polygon points="38,128 22,124 36,118" fill="#4ade80"/>
+      <ellipse cx="58" cy="142" rx="11" ry="14" fill="#22c55e"/>
+      <ellipse cx="118" cy="142" rx="11" ry="14" fill="#22c55e"/>
+      <!-- Smiling turtle head extending right -->
+      <path d="M128 122 C142 118 150 96 164 96 C176 96 180 112 170 122 C158 132 142 134 128 132 Z" fill="#4ade80" stroke="#16a34a" stroke-width="2.5"/>
+      <circle cx="164" cy="106" r="3.5" fill="#1e293b"/><circle cx="163" cy="105" r="1.2" fill="#ffffff"/>
+      <path d="M162 115 Q168 119 173 114" fill="none" stroke="#14532d" stroke-width="2" stroke-linecap="round"/>
+      <!-- Dome carapace shell with hexagon pattern & yellow rim -->
+      <path d="M36 126 C38 74 134 74 138 126 Z" fill="#15803d" stroke="#14532d" stroke-width="3"/>
+      <path d="M62 88 L108 88 L120 112 L52 112 Z" fill="none" stroke="#86efac" stroke-width="2.5" stroke-linejoin="round"/>
+      <line x1="85" y1="80" x2="85" y2="124" stroke="#86efac" stroke-width="2.5"/>
+      <rect x="32" y="122" width="110" height="10" rx="5" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>
+      <!-- Front legs -->
+      <ellipse cx="66" cy="146" rx="12" ry="13" fill="#4ade80" stroke="#16a34a" stroke-width="2"/>
+      <ellipse cx="112" cy="146" rx="12" ry="13" fill="#4ade80" stroke="#16a34a" stroke-width="2"/>
+    
 </svg>

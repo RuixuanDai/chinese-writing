@@ -1,30 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgWo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
       <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowWo" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#854d0e" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgWo)"/>
-  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#fde68a" opacity="0.6"/>
-  <!-- Two Friendly Hands Shaking Warmly -->
-  <g filter="url(#shadowWo)">
-    <!-- Left Hand / Cuff (Blue shirt) -->
-    <rect x="70" y="210" width="90" height="80" rx="14" fill="#3b82f6"/>
-    <path d="M 150 230 L 250 250 L 260 280 L 150 270 Z" fill="#fcd34d"/>
-    <!-- Right Hand / Cuff (Red shirt) -->
-    <rect x="340" y="210" width="90" height="80" rx="14" fill="#ef4444"/>
-    <path d="M 350 230 L 250 250 L 240 280 L 350 270 Z" fill="#f59e0b"/>
-    <!-- Clasped Fingers (握手) -->
-    <ellipse cx="250" cy="265" rx="45" ry="32" fill="#d97706"/>
-    <circle cx="235" cy="265" r="10" fill="#fcd34d"/>
-    <circle cx="265" cy="265" r="10" fill="#fcd34d"/>
-    <!-- Golden Friendship Sparks -->
-    <circle cx="250" cy="180" r="10" fill="#facc15"/>
-    <circle cx="220" cy="195" r="6" fill="#facc15"/>
-    <circle cx="280" cy="195" r="6" fill="#facc15"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Left blue sleeve & wrist -->
+      <rect x="14" y="76" width="42" height="34" rx="8" transform="rotate(12 35 93)" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2.5"/>
+      <!-- Right red sleeve & wrist -->
+      <rect x="144" y="76" width="42" height="34" rx="8" transform="rotate(-12 165 93)" fill="#ef4444" stroke="#b91c1c" stroke-width="2.5"/>
+      <!-- Clasped hands in center -->
+      <path d="M52 84 C72 72 96 72 114 82 L138 96 C144 104 138 124 122 128 L86 130 C66 128 54 114 52 104 Z" fill="#fed7aa" stroke="#c2410c" stroke-width="3"/>
+      <path d="M148 84 C128 72 104 72 86 82" fill="none" stroke="#c2410c" stroke-width="3" stroke-linecap="round"/>
+      <!-- Thumbs & wrapped clasping fingers -->
+      <rect x="82" y="74" width="32" height="13" rx="6.5" transform="rotate(-14 98 80)" fill="#fdba74" stroke="#c2410c" stroke-width="2.5"/>
+      <rect x="74" y="112" width="11" height="22" rx="5.5" transform="rotate(24 80 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/><rect x="85" y="110" width="11" height="22" rx="5.5" transform="rotate(24 91 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/><rect x="96" y="108" width="11" height="22" rx="5.5" transform="rotate(24 102 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/><rect x="107" y="106" width="11" height="22" rx="5.5" transform="rotate(24 113 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/>
+      <!-- Warm heart/sparkle lines above handshake -->
+      <path d="M100 44 L100 56 M80 50 L86 60 M120 50 L114 60" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+    
 </svg>

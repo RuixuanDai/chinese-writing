@@ -51,22 +51,24 @@ const GP_STROKE_TYPE_DATA = {
     '人': 'pie na', '入': 'pie na', '大': 'heng pie na', '天': 'heng heng pie na', '太': 'heng pie na dian',
     '口': 'shu hengzhe heng', '日': 'shu hengzhe heng heng', '目': 'shu hengzhe heng heng heng',
     '田': 'shu hengzhe heng shu heng', '中': 'shu hengzhe heng shu', '上': 'shu heng heng', '下': 'heng shu dian',
-    '土': 'heng shu heng', '木': 'heng shu pie ?', '本': 'heng shu pie na heng', '禾': 'pie heng shu pie ?',
-    '米': 'dian pie heng shu pie ?', '来': 'heng dian pie heng shu pie na', '水': 'shugou hengpie pie na',
-    '火': 'dian pie pie ?', '山': 'shu shuzhe shu', '出': 'shuzhe shu shu shuzhe shu',
+    '土': 'heng shu heng', '木': 'heng shu pie na', '本': 'heng shu pie na heng', '禾': 'pie heng shu pie na',
+    '米': 'dian pie heng shu pie na', '来': 'heng dian pie heng shu pie na', '水': 'shugou hengpie pie na',
+    '火': 'dian pie pie na', '山': 'shu shuzhe shu', '出': 'shuzhe shu shu shuzhe shu',
     '石': 'heng pie shu hengzhe heng', '左': 'heng pie heng shu heng', '右': 'pie heng shu hengzhe heng',
     '月': 'pie hengzhegou heng heng', '立': 'dian heng dian pie heng', '去': 'heng shu heng piezhe dian',
-    '坐': 'pie dian pie dian heng shu heng', '走': 'heng shu heng shu heng pie na', '小': 'shugou ? dian',
-    '少': 'shu ? ? pie', '多': 'pie hengpie dian pie hengpie dian', '四': 'shu hengzhe pie ? heng',
-    '五': 'heng shu hengzhe heng', '六': 'dian heng pie dian', '七': 'heng shuwangou', '八': 'pie ?', '九': 'pie ?',
+    '坐': 'pie dian pie dian heng shu heng', '走': 'heng shu heng shu heng pie na', '小': 'shugou pie dian',
+    '少': 'shu pie dian pie', '多': 'pie hengpie dian pie hengpie dian', '四': 'shu hengzhe pie ? heng',
+    '五': 'heng shu hengzhe heng', '六': 'dian heng pie dian', '七': 'heng shuwangou', '八': 'pie na', '九': 'pie ?',
     '开': 'heng heng pie shu', '关': 'dian pie heng heng pie na',
     '高': 'dian heng shu hengzhe heng shu hengzhegou shu hengzhe heng',
+    '低': 'pie shu pie ? heng ? dian',
     '前': 'dian pie heng shu hengzhegou heng heng shu shugou', '后': 'pie pie heng shu hengzhe heng',
     '里': 'shu hengzhe heng heng shu heng heng', '外': 'pie hengpie dian shu dian',
     '羊': 'dian pie heng heng heng shu', '牛': 'pie heng heng shu',
     '春': 'heng heng heng pie na shu hengzhe heng heng', '夏': 'heng pie shu hengzhe heng heng heng pie hengpie na',
     '秋': 'pie heng shu pie dian dian pie pie ?', '冬': 'pie hengpie na dian dian',
-    '鱼': 'pie hengpie shu hengzhe heng shu heng heng', '马': 'hengzhe ? ?', '鸟': 'pie hengzhegou dian ? heng',
+    '鱼': 'pie hengpie shu hengzhe heng shu heng heng', '马': 'hengzhe ? heng', '鸟': 'pie hengzhegou dian ? heng',
+    '飞': '? pie dian',
     '手': 'pie heng heng shugou', '足': 'shu hengzhe heng shu heng pie na', '心': 'dian ? dian dian',
     '书': 'hengzhe hengzhegou shu dian', '学': 'dian dian pie dian hengou hengpie shugou heng',
     '子': 'hengpie shugou heng', '文': 'dian heng pie na', '白': 'pie shu hengzhe heng heng',
@@ -77,50 +79,58 @@ const GP_STROKE_TYPE_DATA = {
     '花': 'heng shu shu pie shu pie shuwangou', '叶': 'shu hengzhe heng heng shu',
     '竹': 'pie heng shu pie heng shugou', '光': 'shu dian pie heng pie shuwangou',
     '阳': '? shu shu hengzhe heng heng', '地': 'heng shu ti hengzhegou shu shuwangou',
-    '电': 'shu hengzhe heng heng shuwangou', '耳': 'heng shu shu heng heng ti', '牙': 'heng ? shugou pie',
+    '电': 'shu hengzhe heng heng shuwangou', '耳': 'heng shu shu heng heng ti', '牙': 'heng shuzhe shugou pie',
     '头': 'dian dian heng pie dian', '儿': 'pie shuwangou', '老': 'heng shu heng pie pie shuwangou',
     '友': 'heng pie hengpie na', '习': 'hengzhegou dian ti', '写': 'dian hengou ? ? ?',
     '正': 'heng shu heng shu heng', '早': 'shu hengzhe heng heng heng shu',
     '永': 'dian hengzhegou hengpie pie na', '百': 'heng pie shu hengzhe heng heng', '千': 'pie heng shu',
     '万': 'heng hengzhegou pie', '东': 'heng piezhe shugou pie dian', '西': 'heng shu hengzhe pie ? heng',
     '北': 'shu heng ti pie shuwangou', '半': 'dian pie heng heng shu',
-    '果': 'shu hengzhe heng heng heng shu pie ?', '瓜': 'pie pie ? dian na',
+    '果': 'shu hengzhe heng heng heng shu pie na', '瓜': 'pie pie ? dian na',
     '豆': 'heng shu hengzhe heng dian pie heng', '红': 'piezhe piezhe ti heng shu heng',
-    '车': 'heng piezhe heng shu', '舟': 'pie ? hengzhegou dian heng dian', '年': 'pie heng heng shu heng shu',
-    '会': 'pie na heng heng piezhe dian', '妈': '? pie heng hengzhe ? ?', '江': 'dian dian ti heng shu heng',
+    '车': 'heng piezhe heng shu', '舟': 'pie pie hengzhegou dian heng dian', '年': 'pie heng heng shu heng shu',
+    '会': 'pie na heng heng piezhe dian', '妈': '? pie ti hengzhe ? heng', '江': 'dian dian ti heng shu heng',
     '冰': 'dian ti shugou hengpie pie na', '边': 'hengzhegou pie dian ? ?'
 };
 
 // ==================== 3. 反义词好朋友（35 组，可配小图标帮助理解） ====================
 const GP_ANTONYM_PAIRS = [
-    { a: '大', b: '小', ea: '🐘', eb: '🐭' }, { a: '多', b: '少' }, { a: '上', b: '下', ea: '⬆️', eb: '⬇️' },
-    { a: '左', b: '右', ea: '⬅️', eb: '➡️' }, { a: '出', b: '入' }, { a: '来', b: '去' },
-    { a: '开', b: '关', ea: '🔓', eb: '🔒' }, { a: '高', b: '低' }, { a: '前', b: '后' },
-    { a: '里', b: '外' }, { a: '远', b: '近' }, { a: '长', b: '短' },
+    { a: '大', b: '小', ea: '🐘', eb: '🐭' }, { a: '多', b: '少', ea: '🍇', eb: '🍒' }, { a: '上', b: '下', ea: '⬆️', eb: '⬇️' },
+    { a: '左', b: '右', ea: '⬅️', eb: '➡️' }, { a: '出', b: '入', ea: '🚪', eb: '🏠' }, { a: '来', b: '去', ea: '👋', eb: '🚶' },
+    { a: '开', b: '关', ea: '🔓', eb: '🔒' }, { a: '高', b: '低', ea: '🦒', eb: '🐜' }, { a: '前', b: '后' },
+    { a: '里', b: '外', ea: '📦', eb: '🌳' }, { a: '远', b: '近', ea: '🔭', eb: '🔍' }, { a: '长', b: '短', ea: '🐍', eb: '🐛' },
     { a: '黑', b: '白', ea: '⚫', eb: '⚪' }, { a: '冷', b: '热', ea: '🥶', eb: '🥵' },
     { a: '快', b: '慢', ea: '🐇', eb: '🐢' }, { a: '早', b: '晚', ea: '🌅', eb: '🌙' },
     { a: '天', b: '地', ea: '☁️', eb: '🌏' }, { a: '东', b: '西' }, { a: '南', b: '北' },
     { a: '男', b: '女', ea: '👦', eb: '👧' }, { a: '有', b: '无' }, { a: '胖', b: '瘦' },
-    { a: '好', b: '坏', ea: '👍', eb: '👎' }, { a: '新', b: '旧' }, { a: '对', b: '错', ea: '✅', eb: '❌' },
-    { a: '哭', b: '笑', ea: '😭', eb: '😄' }, { a: '买', b: '卖' }, { a: '真', b: '假' },
-    { a: '正', b: '反' }, { a: '轻', b: '重' }, { a: '深', b: '浅' }, { a: '粗', b: '细' },
+    { a: '好', b: '坏', ea: '👍', eb: '👎' }, { a: '新', b: '旧', ea: '✨', eb: '🕰️' }, { a: '对', b: '错', ea: '✅', eb: '❌' },
+    { a: '哭', b: '笑', ea: '😭', eb: '😄' }, { a: '买', b: '卖', ea: '🛒', eb: '🏷️' }, { a: '真', b: '假' },
+    { a: '正', b: '反' }, { a: '轻', b: '重', ea: '🪶', eb: '🏋️' }, { a: '深', b: '浅' }, { a: '粗', b: '细' },
     { a: '甜', b: '苦', ea: '🍬', eb: '🍵' }, { a: '方', b: '圆', ea: '🟦', eb: '🔵' }, { a: '进', b: '退' }
 ];
 
-// 抽象字（不适合看图出题，仍用于听音 / 组词游戏）
-const GP_ABSTRACT_CHARS = '子文白几太生会见只个学习写读正永课问说答乐思知识记算题百千万亿东西南北左右前后边间里外半零初末高低远近多少爱善美诚礼信仁德和敬勤俭宽勇恒想动快节年喜庆贺谜团圆戏福愿甜香亲幼';
+// 抽象字及纯情境插画字（不适合单靠看图猜字，仍用于听音 / 组词 / 数笔画游戏）
+const GP_ABSTRACT_CHARS = '大小中来去出入空光地子文白几太生会见只个学习写读正永课问说答乐思知识记算题百千万亿东西南北左右前后边间里外半零初末高低远近多少爱善美诚礼信仁德和敬勤俭宽勇恒想动快节年喜庆贺谜团圆戏福愿甜香亲幼';
 // 看图默写不出的字（图片难以唯一对应）
 const GP_WRITE_EXCLUDE = '只个会几习写永半正生见太友老本早东西北百千万';
 // 插画里直接画有汉字的字（会泄露答案，不用于看图类游戏）
 const GP_TEXT_IN_PICTURE = '只个师粮站喜贺谜饼联福万东西南北左右习早永课识';
 
-// 意思/图片相近的字组：互不作为干扰项，翻牌时不同时出现，避免答案有歧义
+// 意思/画面元素相近的字组：互不作为干扰项，翻牌时不同时出现，彻底避免看图选字歧义
 const GP_SIMILAR_GROUPS = [
-    '日阳光晴夏热', '水江河湖海泉', '木树林', '土地泥', '雨云阴雷电', '雪冰冬霜', '雾露霜',
-    '口牙', '目眉', '脸头', '手握抱招抬', '足走跑跳迈登追', '人大立', '爸爷老师', '妈奶',
-    '哥弟儿子幼', '姐妹', '家亲', '房屋院楼城市街', '车路道街站轨', '舟船港', '果桃李梨橙桔杏',
-    '米饭粮麦面', '饼团圆', '鸟雁燕鹤', '鸭鹅', '鱼鲸', '狗狼狐狸', '虎豹狮', '春花草', '秋叶',
-    '唱歌乐', '书本册读学', '笔写画', '看望见', '听耳', '灯光', '福喜庆贺年节', '虫蝶蜂', '星月', '红紫'
+    '天空晴云日阳虹霞夏热', '雨云阴雷电雾', '雪冰冬霜', '雾露霜', '星月夜',
+    '水江河湖海泉露冰汤茶', '海港舟船桥鱼鲸龟游',
+    '木树林叶秋霜', '树果桃李梨橙桔杏瓜', '花草春芽苗禾竹菜叶兰梅莲菊', '土地泥田山石禾苗草',
+    '山石高登', '房屋院楼家亲校城亭塔门开关市街道桥', '车路道街站轨桥市', '港塔灯火光明红日阳',
+    '人儿友哥弟姐妹爸妈爷奶老师幼立身头脸坐走跑跳迈登追游抱招抬唱读看笑哭腹',
+    '头脸目眉口鼻耳牙心腹手足身看听唱笑哭',
+    '手握抱招抬一二三四五六七八九十', '一二三红黄蓝球', '上下里外玩球红黄橙',
+    '足走跑跳迈登追立坐',
+    '米饭粮麦面禾豆饼团圆', '果桃李梨橙桔杏瓜菜',
+    '鸟雁燕鹤鸡鸭鹅飞春', '鱼鲸龟海', '狗狼狐狸', '猫虎豹狮', '虫蝶蜂追',
+    '书本册读学诗画笔写', '画笔红', '画笔黄', '画笔蓝', '画笔绿', '画笔黑', '画笔紫', '画笔青', '画笔白',
+    '蓝青', '绿青', '红紫', '黑白',
+    '唱歌乐听耳', '看望见目', '福喜庆贺年节团圆灯龙'
 ];
 
 // 字形相近的字（作为干扰项，练习细致辨认）
@@ -138,13 +148,23 @@ const GP_VISUAL_CONFUSERS = {
 const GP_PW_CLUE_WORDS = {
     '一': '第一', '二': '二月', '三': '三个', '四': '四季', '五': '五星',
     '六': '六月', '七': '七色', '八': '八方', '九': '九月', '十': '十分',
-    '人': '大人', '入': '出入', '出': '出来', '来': '回来', '去': '回去',
+    '人': '大人', '入': '出入', '出': '出来', '来': '本来', '去': '出去',
     '日': '红日', '阳': '太阳', '光': '月光', '水': '喝水', '江': '长江', '冰': '冰雪',
-    '土': '泥土', '地': '大地', '田': '水田', '木': '树木', '禾': '禾苗',
+    '土': '泥土', '地': '大地', '田': '水田', '木': '木头', '禾': '禾苗',
     '口': '张口', '牙': '刷牙', '目': '目光', '耳': '耳朵', '足': '手足', '走': '走路',
     '子': '孩子', '儿': '儿童', '妈': '爸妈', '门': '大门', '开': '开门', '关': '关门',
     '书': '看书', '学': '学习', '文': '语文', '边': '河边', '里': '家里', '外': '外面', '后': '后面'
 };
+
+// 组词填空：多音字读音修正 & 不宜配单字插画的转义复合词
+const GP_WORD_PINYIN_OVERRIDES = {
+    '音乐:1': 'yuè', '少儿:0': 'shào', '年少:1': 'shào', '少幼:0': 'shào'
+};
+const GP_WORD_NO_IMAGE = new Set([
+    '马上', '开心', '关心', '小心', '点心', '中心', '放心', '用心', '好心',
+    '生气', '客气', '力气', '东西', '花生', '火车', '风车', '水手', '明白',
+    '大人', '小人', '高人', '大方', '多少', '大小', '高低', '长短', '早晚'
+]);
 
 // ==================== 4. 游戏列表 ====================
 const GP_GAMES = [
@@ -249,9 +269,10 @@ class ExamCenter {
         const textInPic = new Set(GP_TEXT_IN_PICTURE);
         this.allChars = Object.keys(this.charInfoMap);
         this.picturePool = this.allChars.filter(ch => this.charInfoMap[ch].image && !abstract.has(ch) && !textInPic.has(ch));
+        this.picturePoolSet = new Set(this.picturePool);
         this.listenPool = this.allChars.filter(ch => this.charInfoMap[ch].pinyin);
         this.writingPool = this.allChars.filter(ch => cache[ch] && cache[ch].medians && cache[ch].medians.length <= 8
-            && this.charInfoMap[ch].image && !writeEx.has(ch) && !textInPic.has(ch));
+            && this.charInfoMap[ch].image && !abstract.has(ch) && !writeEx.has(ch) && !textInPic.has(ch));
         this.strokePool = Object.keys(cache).filter(ch => cache[ch].medians && cache[ch].medians.length <= 10);
 
         // 组词填空题库：所有双字词（排除叠词）
@@ -306,10 +327,10 @@ class ExamCenter {
 
     // 生成选项：1 个字形相近字 + 同类字 + 其他字，排除意思相近 / 同音 / 可组成别的词的字
     buildOptions(target, total = 4, opts = {}) {
-        const { pool, avoidHomophone = false, validator = null, sameCatCount = 1 } = opts;
+        const { pool, avoidHomophone = false, validator = null, sameCatCount = 1, targetPinyin = '' } = opts;
         const picked = [];
         const tInfo = this.info(target) || {};
-        const tTone = gpToneless(tInfo.pinyin);
+        const tTone = gpToneless(targetPinyin || tInfo.pinyin);
         const ok = (c) => {
             if (!c || c === target || picked.includes(c)) return false;
             const info = this.info(c);
@@ -1039,7 +1060,7 @@ class ExamCenter {
     }
 
     playListenPrompt() {
-        if (!this.ls) return;
+        if (!this.ls || this.ls.locked || this.activeGame !== 'listen') return;
         const btn = document.getElementById('btn-ls-play');
         if (btn) {
             btn.classList.add('playing');
@@ -1075,40 +1096,70 @@ class ExamCenter {
             this.setMascot(`${this.praise()} 就是“${c}”！`, 'happy');
             this.later(() => this.nextListen(), 1600);
         } else {
+            const curChar = this.ls.char;
             this.ls.tries += 1;
             card.disabled = true;
             card.classList.add('wrong', 'revealed');
             this.sfx('playMistake');
             if (this.ls.tries === 1) this.registerWrong();
             this.setMascot(`这是“${c}”（${this.py(c)}），再听一遍哦！`, 'oops');
-            this.speak(`这是${c}，再听一遍。`, () => this.later(() => this.playListenPrompt(), 200));
+            this.speak(`这是${c}，再听一遍。`, () => this.later(() => {
+                if (this.ls && !this.ls.locked && this.ls.char === curChar) this.playListenPrompt();
+            }, 200));
         }
     }
 
     // ==================== 游戏 4：🧩 组词填空 ====================
+    pickWordImage(word) {
+        if (!word || word.length !== 2 || GP_WORD_NO_IMAGE.has(word) || !this.picturePoolSet) return '';
+        if (word === '开门' || word === '关门') {
+            return this.picturePoolSet.has(word[0]) ? this.info(word[0]).image : '';
+        }
+        const suffixes = '子头儿面边里外上下前后中色';
+        if (suffixes.includes(word[1]) && this.picturePoolSet.has(word[0])) {
+            return this.info(word[0]).image;
+        }
+        if (this.picturePoolSet.has(word[1])) return this.info(word[1]).image;
+        if (this.picturePoolSet.has(word[0])) return this.info(word[0]).image;
+        return '';
+    }
+
     nextWord() {
         const entry = this.pickNext('word', this.wordPool);
         if (!entry) return;
         const { target, word, idx } = entry;
+        const targetPy = GP_WORD_PINYIN_OVERRIDES[`${word}:${idx}`] || this.py(target);
         const validator = (c) => {
             const cand = idx === 0 ? c + word[1] : word[0] + c;
             return !this.allWords.has(cand);
         };
-        const options = this.buildOptions(target, 4, { pool: this.listenPool, avoidHomophone: true, validator, sameCatCount: 1 });
+        const options = this.buildOptions(target, 4, {
+            pool: this.listenPool,
+            avoidHomophone: true,
+            targetPinyin: targetPy,
+            validator,
+            sameCatCount: 1
+        });
         this.wd = { target, word, idx, tries: 0, locked: false };
 
-        const info = this.info(target);
+        const imgSrc = this.pickWordImage(word);
         const img = document.getElementById('wd-img');
+        const imgFrame = img ? img.closest('.wd-img-frame') : null;
+        if (imgFrame) imgFrame.hidden = !imgSrc;
         if (img) {
-            img.src = info ? info.image : '';
-            img.alt = '组词填空提示图';
-            this.flash(img, 'gp-pop-in', 500);
+            if (imgSrc) {
+                img.src = imgSrc;
+                img.alt = '组词填空提示图';
+                this.flash(img, 'gp-pop-in', 500);
+            } else {
+                img.removeAttribute('src');
+            }
         }
         const wordEl = document.getElementById('wd-word');
         if (wordEl) {
             wordEl.innerHTML = word.split('').map((c, i) => (i === idx
-                ? '<span class="wd-blank" id="wd-blank">？</span>'
-                : `<span class="wd-char">${c}</span>`)).join('');
+                ? `<span class="wd-slot"><span class="wd-py">${targetPy}</span><span class="wd-blank" id="wd-blank">？</span></span>`
+                : `<span class="wd-slot"><span class="wd-py is-empty" aria-hidden="true">&nbsp;</span><span class="wd-char">${c}</span></span>`)).join('');
         }
         const opts = document.getElementById('wd-options');
         if (opts) {
@@ -1118,7 +1169,7 @@ class ExamCenter {
                 </button>
             `).join('');
         }
-        this.setMascot('听一听，选一个字把词语补完整！', 'idle');
+        this.setMascot('看拼音、听一听，选一个字把词语补完整！', 'idle');
         this.later(() => this.speak(word), 400);
     }
 
@@ -1267,6 +1318,7 @@ class ExamCenter {
         sk.step = 2;
         sk.tries = 0;
         sk.locked = false;
+        this.renderStrokeStatic(sk.askIdx, sk.total);
         const q = document.getElementById('sk-question');
         if (q) q.innerHTML = `<span class="sk-q-char">“${sk.char}”</span>的第 <span class="sk-q-em">${GP_CN_NUM[sk.askIdx]}</span> 画是什么笔画？`;
         const opts = document.getElementById('sk-options');
@@ -1279,7 +1331,7 @@ class ExamCenter {
                 </button>
             `).join('');
         }
-        this.setMascot(`看看数字 ${sk.askIdx + 1}，第${GP_CN_NUM[sk.askIdx]}画是什么笔画？`, 'idle');
+        this.setMascot(`看看红色高亮的第 ${sk.askIdx + 1} 画，是什么笔画？`, 'idle');
         this.speak(`第${GP_CN_NUM[sk.askIdx]}画是什么笔画？`);
     }
 
@@ -1381,7 +1433,12 @@ class ExamCenter {
     strokeLabelsSvg(data, upTo, highlightIdx) {
         let html = '';
         const limit = Math.min(upTo, data.medians.length);
-        for (let i = 0; i < limit; i++) html += this.strokeLabelSvg(data, i, i === highlightIdx);
+        for (let i = 0; i < limit; i++) {
+            if (i !== highlightIdx) html += this.strokeLabelSvg(data, i, false);
+        }
+        if (highlightIdx >= 0 && highlightIdx < limit) {
+            html += this.strokeLabelSvg(data, highlightIdx, true);
+        }
         return html;
     }
 
@@ -1668,7 +1725,10 @@ class ExamCenter {
         btn.classList.add('flipped');
         this.sfx('playPop');
         mm.open.push(card.id);
-        if (mm.open.length < 2) return;
+        if (mm.open.length < 2) {
+            if (card.kind === 'char') this.speak(card.key);
+            return;
+        }
 
         mm.flips += 1;
         const [a, b] = mm.open.map(id => mm.cards[id]);
@@ -1689,6 +1749,7 @@ class ExamCenter {
             this.setMascot(`${this.praise()} “${a.key}”配对成功！`, 'happy');
             if (mm.matchedPairs === mm.total) this.later(() => this.finishMemory(), 800);
         } else {
+            if (card.kind === 'char') this.speak(card.key);
             mm.lock = true;
             this.registerWrong();
             this.setMascot('不是一对哦，记住它们的位置！', 'oops');
@@ -1737,11 +1798,14 @@ class ExamCenter {
                 </div>
             `).join('');
         }
-        this.ml = { running: false, target: null, hits: 0, sinceTarget: 0, token: 0, distractors: [] };
+        this.ml = { running: false, switching: false, target: null, hits: 0, sinceTarget: 0, token: 0, distractors: [] };
         this.resetMoleHoles();
         this.pickMoleTarget(false);
         this.setMoleButton();
-        this.setMascot('点“开始”，地鼠就要冒出来啦！敲出和图片一样的字！', 'idle');
+        this.setMascot('地鼠就要冒出来啦！敲出和图片一样的字！', 'idle');
+        this.moleLater(() => {
+            if (this.activeGame === 'mole' && this.ml && !this.ml.running) this.resumeMole();
+        }, 450);
     }
 
     pickMoleTarget(announce = true) {
@@ -1751,6 +1815,8 @@ class ExamCenter {
         this.ml.target = ch;
         this.ml.hits = 0;
         this.ml.sinceTarget = 0;
+        this.ml.switching = false;
+        this.resetMoleHoles();
         this.ml.distractors = this.buildOptions(ch, 6, { pool: this.picturePool, sameCatCount: 2 }).filter(c => c !== ch);
         const img = document.getElementById('ml-target-img');
         if (img) {
@@ -1805,37 +1871,39 @@ class ExamCenter {
     spawnMole() {
         const ml = this.ml;
         if (!ml || !ml.running) return;
-        const holes = Array.from(document.querySelectorAll('#ml-field .ml-hole'));
-        const free = holes.filter(h => !h.classList.contains('up'));
-        const upCount = holes.length - free.length;
-        if (free.length && upCount < 2) {
-            const hole = gpPick(free);
-            const targetUp = holes.some(h => h.classList.contains('up') && h.dataset.char === ml.target);
-            let ch;
-            if (!targetUp && (ml.sinceTarget >= 2 || Math.random() < 0.45)) {
-                ch = ml.target;
-                ml.sinceTarget = 0;
-            } else {
-                ch = gpPick(ml.distractors.length ? ml.distractors : this.picturePool.filter(c => c !== ml.target));
-                ml.sinceTarget += 1;
+        if (!ml.switching) {
+            const holes = Array.from(document.querySelectorAll('#ml-field .ml-hole'));
+            const free = holes.filter(h => !h.classList.contains('up'));
+            const upCount = holes.length - free.length;
+            if (free.length && upCount < 2) {
+                const hole = gpPick(free);
+                const targetUp = holes.some(h => h.classList.contains('up') && h.dataset.char === ml.target);
+                let ch;
+                if (!targetUp && (ml.sinceTarget >= 2 || Math.random() < 0.45)) {
+                    ch = ml.target;
+                    ml.sinceTarget = 0;
+                } else {
+                    ch = gpPick(ml.distractors.length ? ml.distractors : this.picturePool.filter(c => c !== ml.target));
+                    ml.sinceTarget += 1;
+                }
+                const token = ++ml.token;
+                hole.dataset.char = ch;
+                hole.dataset.token = String(token);
+                const sign = hole.querySelector('.ml-sign');
+                if (sign) sign.textContent = ch;
+                hole.classList.remove('hit', 'miss');
+                hole.classList.add('up');
+                this.moleLater(() => {
+                    if (hole.dataset.token === String(token)) hole.classList.remove('up', 'hit', 'miss');
+                }, 2700);
             }
-            const token = ++ml.token;
-            hole.dataset.char = ch;
-            hole.dataset.token = String(token);
-            const sign = hole.querySelector('.ml-sign');
-            if (sign) sign.textContent = ch;
-            hole.classList.remove('hit', 'miss');
-            hole.classList.add('up');
-            this.moleLater(() => {
-                if (hole.dataset.token === String(token)) hole.classList.remove('up', 'hit', 'miss');
-            }, 2700);
         }
         this.moleLater(() => this.spawnMole(), 900 + Math.random() * 550);
     }
 
     onMoleTap(hole) {
         const ml = this.ml;
-        if (!ml || !ml.running || !hole || !hole.classList.contains('up') || hole.classList.contains('hit') || hole.classList.contains('miss')) return;
+        if (!ml || !ml.running || ml.switching || !hole || !hole.classList.contains('up') || hole.classList.contains('hit') || hole.classList.contains('miss')) return;
         const ch = hole.dataset.char;
         const token = hole.dataset.token;
         if (ch === ml.target) {
@@ -1849,6 +1917,7 @@ class ExamCenter {
                 if (hole.dataset.token === token) hole.classList.remove('up', 'hit');
             }, 520);
             if (ml.hits >= 3) {
+                ml.switching = true;
                 this.moleLater(() => this.pickMoleTarget(true), 650);
             } else {
                 this.setMascot(`${this.praise()} 敲中“${ch}”啦！`, 'happy');
@@ -2043,6 +2112,7 @@ class ExamCenter {
 
         // 气球选字
         delegate('bl-sky', '.balloon', (btn) => this.onBalloonTap(btn));
+        on('bl-img', 'click', () => this.balloonHint());
         on('btn-bl-speak', 'click', () => this.balloonHint());
 
         // 听音找字
@@ -2055,6 +2125,16 @@ class ExamCenter {
 
         // 组词填空
         delegate('wd-options', '.wd-piece', (btn) => this.onWordTap(btn));
+        on('wd-img', 'click', () => {
+            if (!this.wd) return;
+            this.sfx('playPop');
+            this.speak(this.wd.word);
+        });
+        on('wd-word', 'click', () => {
+            if (!this.wd) return;
+            this.sfx('playPop');
+            this.speak(this.wd.word);
+        });
         on('btn-wd-speak', 'click', () => {
             if (!this.wd) return;
             this.sfx('playPop');
@@ -2069,8 +2149,7 @@ class ExamCenter {
             this.playStrokeCount(() => {
                 const sk = this.sk;
                 if (!sk) return;
-                if (sk.step === 2 && sk.done) this.renderStrokeStatic(sk.askIdx, sk.total);
-                else this.renderStrokeStatic(-1, sk.total);
+                this.renderStrokeStatic(sk.step === 2 ? sk.askIdx : -1, sk.total);
                 this.speak(`${sk.char}字一共${sk.total}画。`);
             });
         });
@@ -2089,6 +2168,15 @@ class ExamCenter {
             this.sfx('playPop');
             this.newAntonymRound();
         });
+        const antBoard = document.getElementById('exam-ant-board');
+        if (antBoard && typeof ResizeObserver === 'function') {
+            this._antResizeObs = new ResizeObserver(() => {
+                if (this.activeAppTab === 'exam' && this.activeGame === 'antonym') {
+                    this.renderAntonymLines();
+                }
+            });
+            this._antResizeObs.observe(antBoard);
+        }
 
         // 翻牌配对
         delegate('mm-grid', '.mm-card', (btn) => this.onMemoryTap(btn));
@@ -2105,6 +2193,11 @@ class ExamCenter {
         on('btn-ml-toggle', 'click', () => {
             this.sfx('playPop');
             this.toggleMole();
+        });
+        on('ml-target-img', 'click', () => {
+            if (!this.ml || !this.ml.target) return;
+            this.sfx('playPop');
+            this.sayChar(this.ml.target);
         });
         on('btn-ml-speak', 'click', () => {
             if (!this.ml || !this.ml.target) return;

@@ -1,24 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgXia" cx="50%" cy="60%" r="70%">
-      <stop offset="0%" stop-color="#fb7185"/>
-      <stop offset="40%" stop-color="#c084fc"/>
-      <stop offset="100%" stop-color="#38bdf8"/>
-    </radialGradient>
-    <filter id="shadowXia" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#a855f7" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4c1d95"/>
+      <stop offset="100%" stop-color="#fb7185"/>
+    </linearGradient>
+    
+      <linearGradient id="skyXia" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#6d28d9"/>
+        <stop offset="45%" stop-color="#ec4899"/>
+        <stop offset="80%" stop-color="#fb923c"/>
+        <stop offset="100%" stop-color="#fde047"/>
+      </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgXia)"/>
-  <!-- Distant mountain silhouette in sunset -->
-  <polygon points="0,480 150,390 280,480" fill="#4c1d95" opacity="0.7"/>
-  <polygon points="200,480 360,370 500,480" fill="#3b0764" opacity="0.8"/>
-  <g filter="url(#shadowXia)">
-    <!-- Golden Setting Sun on horizon -->
-    <circle cx="250" cy="380" r="70" fill="#fef08a"/>
-    <!-- Rosy Glowing Evening Clouds (晚霞) -->
-    <ellipse cx="160" cy="230" rx="100" ry="32" fill="#f43f5e" opacity="0.8"/>
-    <ellipse cx="340" cy="200" rx="110" ry="35" fill="#f97316" opacity="0.8"/>
-    <ellipse cx="240" cy="290" rx="130" ry="38" fill="#fbbf24" opacity="0.85"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <rect width="200" height="200" rx="32" fill="url(#skyXia)"/>
+      <!-- Glowing half-set sun at horizon -->
+      <circle cx="100" cy="154" r="26" fill="#fef08a" opacity="0.9"/>
+      <!-- Sweeping rosy, coral, and golden sunset cloud ribbons (彩霞) -->
+      <path d="M16 70 Q56 54 96 66 Q134 56 178 68 Q158 82 112 80 Q62 84 16 70 Z" fill="#fda4af" opacity="0.9"/>
+      <path d="M28 98 Q78 84 128 94 Q164 88 188 100 Q152 114 98 110 Q52 112 28 98 Z" fill="#fdba74" opacity="0.92"/>
+      <path d="M12 124 Q64 114 114 122 Q154 116 176 126 Q136 136 82 134 Q38 136 12 124 Z" fill="#fef08a" opacity="0.88"/>
+      <!-- Dark purple mountain silhouettes at bottom -->
+      <path d="M0 162 L44 134 L88 158 L144 128 L200 158 L200 200 L0 200 Z" fill="#312e81"/>
+    
 </svg>

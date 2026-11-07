@@ -1,25 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgGang" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#eff6ff"/>
-      <stop offset="100%" stop-color="#bfdbfe"/>
-    </radialGradient>
-    <filter id="shadowGang" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e40af" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgGang)"/>
-  <!-- Sea Water -->
-  <path d="M 0 350 Q 250 310 500 350 L 500 500 L 0 500 Z" fill="#0284c7"/>
-  <g filter="url(#shadowGang)">
-    <!-- Red & White Striped Lighthouse -->
-    <polygon points="340,160 380,160 395,420 325,420" fill="#ffffff"/>
-    <polygon points="345,210 375,210 380,270 340,270" fill="#ef4444"/>
-    <polygon points="335,330 385,330 390,380 330,380" fill="#ef4444"/>
-    <!-- Lighthouse Lantern Room -->
-    <rect x="345" y="120" width="30" height="40" rx="4" fill="#facc15"/>
-    <polygon points="360,95 335,120 385,120" fill="#b91c1c"/>
-    <!-- Light Beam shining out -->
-    <polygon points="345,135 50,70 50,140" fill="#fef08a" opacity="0.5"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Blue harbor water -->
+      <rect x="0" y="108" width="200" height="92" fill="#0284c7"/>
+      <!-- Red-and-white lighthouse on right breakwater -->
+      <polygon points="154,114 160,52 172,52 178,114" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <rect x="157" y="68" width="18" height="12" fill="#ef4444"/>
+      <rect x="155" y="92" width="22" height="12" fill="#ef4444"/>
+      <polygon points="158,52 166,40 174,52" fill="#dc2626"/>
+      <polygon points="158,48 112,38 112,58" fill="#fef08a" opacity="0.55"/>
+      <!-- Cargo/passenger ship moored in harbor -->
+      <rect x="58" y="84" width="46" height="18" rx="3" fill="#ffffff" stroke="#475569" stroke-width="2"/>
+      <rect x="74" y="70" width="14" height="14" fill="#f97316"/>
+      <polygon points="46,100 116,100 106,120 56,120" fill="#1e293b"/>
+      <line x1="52" y1="112" x2="110" y2="112" stroke="#ef4444" stroke-width="4"/>
+      <!-- Foreground stone harbor pier & mooring bollard -->
+      <rect x="0" y="138" width="136" height="24" rx="4" fill="#94a3b8" stroke="#475569" stroke-width="2.5"/>
+      <rect x="98" y="126" width="12" height="14" rx="3" fill="#334155"/>
+      <path d="M58 108 Q80 132 104 130" fill="none" stroke="#fde047" stroke-width="2.8"/>
+    
 </svg>

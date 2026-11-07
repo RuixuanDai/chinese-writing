@@ -1,32 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgCe" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowCe" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#854d0e" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgCe)"/>
-  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
-  <!-- Bamboo Slips (Classical Chinese Ce 册) -->
-  <g filter="url(#shadowCe)">
-    <rect x="110" y="110" width="40" height="280" rx="6" fill="#ca8a04"/>
-    <rect x="160" y="110" width="40" height="280" rx="6" fill="#d97706"/>
-    <rect x="210" y="110" width="40" height="280" rx="6" fill="#ca8a04"/>
-    <rect x="260" y="110" width="40" height="280" rx="6" fill="#d97706"/>
-    <rect x="310" y="110" width="40" height="280" rx="6" fill="#ca8a04"/>
-    <rect x="360" y="110" width="40" height="280" rx="6" fill="#d97706"/>
-    <!-- Connecting Strings (Horizontal) -->
-    <rect x="95" y="170" width="320" height="14" rx="4" fill="#dc2626"/>
-    <rect x="95" y="320" width="320" height="14" rx="4" fill="#dc2626"/>
-    <!-- Characters on Bamboo -->
-    <line x1="130" y1="210" x2="130" y2="280" stroke="#451a03" stroke-width="4"/>
-    <line x1="180" y1="210" x2="180" y2="280" stroke="#451a03" stroke-width="4"/>
-    <line x1="230" y1="210" x2="230" y2="280" stroke="#451a03" stroke-width="4"/>
-    <line x1="280" y1="210" x2="280" y2="280" stroke="#451a03" stroke-width="4"/>
-    <line x1="330" y1="210" x2="330" y2="280" stroke="#451a03" stroke-width="4"/>
-    <line x1="380" y1="210" x2="380" y2="280" stroke="#451a03" stroke-width="4"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Bottom booklet (green) -->
+      <g transform="translate(104, 110) rotate(8)">
+        <rect x="-46" y="-52" width="92" height="112" rx="8" fill="#10b981" stroke="#047857" stroke-width="2.5"/>
+        <rect x="-42" y="-48" width="84" height="104" rx="5" fill="#ffffff"/>
+        <rect x="-46" y="-52" width="84" height="108" rx="7" fill="#34d399" stroke="#047857" stroke-width="2.5"/>
+      </g>
+      <!-- Top booklet (amber/orange with traditional spine binding) -->
+      <g transform="translate(94, 102) rotate(-6)">
+        <rect x="-46" y="-54" width="92" height="114" rx="8" fill="#ffffff" stroke="#b45309" stroke-width="2.5"/>
+        <rect x="-46" y="-54" width="84" height="110" rx="7" fill="#f59e0b" stroke="#b45309" stroke-width="2.5"/>
+        <!-- Spine binding & stitched cords -->
+        <rect x="-46" y="-54" width="16" height="110" rx="5" fill="#1e3a8a"/>
+        <line x1="-46" y1="-34" x2="-26" y2="-34" stroke="#fef3c7" stroke-width="2.5"/><line x1="-46" y1="-12" x2="-26" y2="-12" stroke="#fef3c7" stroke-width="2.5"/><line x1="-46" y1="10" x2="-26" y2="10" stroke="#fef3c7" stroke-width="2.5"/><line x1="-46" y1="32" x2="-26" y2="32" stroke="#fef3c7" stroke-width="2.5"/>
+        <!-- Clean cover label plaque (no text) -->
+        <rect x="-14" y="-32" width="34" height="56" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <circle cx="3" cy="-4" r="9" fill="#fbbf24"/>
+      </g>
+    
 </svg>

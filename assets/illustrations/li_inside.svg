@@ -1,55 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgLi" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fff7ed"/>
-      <stop offset="100%" stop-color="#ffedd5"/>
-    </radialGradient>
-    <filter id="shadowLi" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9a3412" flood-opacity="0.2"/>
-    </filter>
-  </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgLi)"/>
-  <ellipse cx="250" cy="440" rx="170" ry="22" fill="#fed7aa" opacity="0.6"/>
-
-  <!-- Glowing Heart nestled safe and snug INSIDE the open box (里 / 里面 / 心里) -->
-  <g filter="url(#shadowLi)">
-    <!-- Box Back / Interior Wall (darker to show depth inside) -->
-    <rect x="130" y="220" width="240" height="190" rx="16" fill="#be185d"/>
-    <polygon points="130,220 180,180 370,180 370,220" fill="#9d174d"/>
-
-    <!-- Glowing Sweet Heart safe INSIDE the box -->
-    <g transform="translate(250, 245)">
-      <circle cx="-25" cy="-20" r="45" fill="#f43f5e"/>
-      <circle cx="25" cy="-20" r="45" fill="#f43f5e"/>
-      <polygon points="-65,-7 65,-7 0,65" fill="#f43f5e"/>
-      <!-- Soft highlight on heart -->
-      <circle cx="-30" cy="-35" r="14" fill="#fb7185" opacity="0.8"/>
-      <circle cx="-35" cy="-40" r="5" fill="#ffffff" opacity="0.9"/>
-      <!-- Cute happy face on heart -->
-      <path d="M -20 -15 Q -10 -25 0 -15" stroke="#881337" stroke-width="4" stroke-linecap="round" fill="none"/>
-      <path d="M 0 -15 Q 10 -25 20 -15" stroke="#881337" stroke-width="4" stroke-linecap="round" fill="none"/>
-      <path d="M -10 0 Q 0 12 10 0" stroke="#881337" stroke-width="4" stroke-linecap="round" fill="none"/>
-      <circle cx="-22" cy="-5" r="6" fill="#fda4af"/>
-      <circle cx="22" cy="-5" r="6" fill="#fda4af"/>
-    </g>
-
-    <!-- Box Front & Sides (Wrapping around, so heart is clearly INSIDE) -->
-    <path d="M 120 270 L 380 270 L 370 420 L 130 420 Z" fill="#ec4899"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf2f8"/>
+      <stop offset="100%" stop-color="#fce7f3"/>
+    </linearGradient>
     
-    <!-- Golden ribbon & bow on box front -->
-    <rect x="235" y="270" width="30" height="150" fill="#facc15"/>
-    <ellipse cx="230" cy="275" rx="20" ry="12" fill="#facc15" transform="rotate(-25, 230, 275)"/>
-    <ellipse cx="270" cy="275" rx="20" ry="12" fill="#facc15" transform="rotate(25, 270, 275)"/>
-    <circle cx="250" cy="275" r="9" fill="#eab308"/>
-
-    <!-- Arrow indicating "INSIDE" (从外到内 / 在里面) -->
-    <g transform="translate(100, 150)">
-      <path d="M 20 20 Q 60 40 85 85" stroke="#3b82f6" stroke-width="6" stroke-dasharray="8 6" stroke-linecap="round" fill="none"/>
-      <polygon points="95,95 80,80 92,72" fill="#3b82f6"/>
+  </defs>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Back rim of open box -->
+      <polygon points="48,96 152,96 164,112 36,112" fill="#9d174d"/>
+      <!-- Glowing golden ball sitting INSIDE the box -->
+      <circle cx="100" cy="102" r="22" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+      <circle cx="93" cy="95" r="5" fill="#ffffff" opacity="0.75"/>
+      <!-- Front of box overlapping lower half of ball -->
+      <rect x="48" y="108" width="104" height="60" rx="6" fill="#ec4899" stroke="#be185d" stroke-width="3"/>
+      <rect x="92" y="108" width="16" height="60" fill="#fde047"/>
+      <!-- Open flaps -->
+      <polygon points="48,108 26,92 38,82 54,98" fill="#f472b6" stroke="#be185d" stroke-width="2"/>
+      <polygon points="152,108 174,92 162,82 146,98" fill="#f472b6" stroke="#be185d" stroke-width="2"/>
+      <g transform="translate(100, 66)">
+      <line x1="0" y1="-22" x2="0" y2="-4" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+      <polygon points="0,8 -11,-8 11,-8" fill="#ef4444"/>
     </g>
-
-    <!-- Sparkles inside box -->
-    <polygon points="175,200 178,210 188,213 178,216 175,226 172,216 162,213 172,210" fill="#fde047"/>
-    <polygon points="325,190 328,198 336,200 328,202 325,210 322,202 314,200 322,198" fill="#fde047"/>
-  </g>
+    
 </svg>

@@ -1,28 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bgField" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ecfdf5"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
     </linearGradient>
-    <filter id="shadowField" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#ca8a04" flood-opacity="0.25"/>
-    </filter>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgField)"/>
-  <!-- Rice Paddy Field Grid (田) -->
-  <g filter="url(#shadowField)">
-    <!-- Main Outer Field Border -->
-    <rect x="90" y="90" width="320" height="320" rx="20" fill="#fef08a" stroke="#ca8a04" stroke-width="6"/>
-    <!-- 4 Field Plots -->
-    <rect x="105" y="105" width="135" height="135" rx="10" fill="#86efac" stroke="#16a34a" stroke-width="3"/>
-    <rect x="260" y="105" width="135" height="135" rx="10" fill="#fde047" stroke="#ca8a04" stroke-width="3"/>
-    <rect x="105" y="260" width="135" height="135" rx="10" fill="#fde047" stroke="#ca8a04" stroke-width="3"/>
-    <rect x="260" y="260" width="135" height="135" rx="10" fill="#86efac" stroke="#16a34a" stroke-width="3"/>
-    <!-- Cross paths resembling 田 character -->
-    <rect x="240" y="90" width="20" height="320" fill="#d97706"/>
-    <rect x="90" y="240" width="320" height="20" fill="#d97706"/>
-    <!-- Little green sprouts in field -->
-    <path d="M 160 170 Q 170 145 180 170" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <path d="M 315 325 Q 325 300 335 325" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <!-- Distant soft green hills -->
+      <path d="M0 78 Q50 48 105 72 Q155 46 200 74 L200 100 L0 100 Z" fill="#86efac"/>
+      <path d="M0 86 Q75 64 140 84 Q175 72 200 86 L200 105 L0 105 Z" fill="#4ade80"/>
+      <!-- Perspective trapezoidal 田 paddy field -->
+      <polygon points="36,92 164,92 188,176 12,176" fill="#bef264" stroke="#a16207" stroke-width="7" stroke-linejoin="round"/>
+      <!-- Watery green paddy plots (4 quadrants) -->
+      <polygon points="42,97 96,97 96,130 29,130" fill="#84cc16"/>
+      <polygon points="104,97 158,97 171,130 104,130" fill="#65a30d"/>
+      <polygon points="27,137 96,137 96,171 18,171" fill="#65a30d"/>
+      <polygon points="104,137 173,137 182,171 104,171" fill="#84cc16"/>
+      <!-- Earthen cross-ridges forming 田 -->
+      <line x1="100" y1="92" x2="100" y2="176" stroke="#b45309" stroke-width="8"/>
+      <line x1="25" y1="133" x2="175" y2="133" stroke="#b45309" stroke-width="7.5"/>
+      <!-- Cute rice sprout tufts inside the 4 paddy squares -->
+      
+        <path d="M62 116 Q57 106 54 104 M62 116 L62 103 M62 116 Q67 106 70 104" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+        <path d="M78 116 Q73 106 70 104 M78 116 L78 103 M78 116 Q83 106 86 104" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+        <path d="M124 116 Q119 106 116 104 M124 116 L124 103 M124 116 Q129 106 132 104" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+        <path d="M142 116 Q137 106 134 104 M142 116 L142 103 M142 116 Q147 106 150 104" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+        <path d="M48 156 Q43 146 40 144 M48 156 L48 143 M48 156 Q53 146 56 144" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+        <path d="M72 156 Q67 146 64 144 M72 156 L72 143 M72 156 Q77 146 80 144" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+        <path d="M128 156 Q123 146 120 144 M128 156 L128 143 M128 156 Q133 146 136 144" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+        <path d="M154 156 Q149 146 146 144 M154 156 L154 143 M154 156 Q159 146 162 144" stroke="#dcfce7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      
+    
 </svg>

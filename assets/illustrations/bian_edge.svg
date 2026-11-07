@@ -1,28 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgBian" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fff1f2"/>
-      <stop offset="100%" stop-color="#ffe4e6"/>
-    </radialGradient>
-    <filter id="shadowBian" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9f1239" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgBian)"/>
-  <g filter="url(#shadowBian)">
-    <!-- Golden Border Frame -->
-    <rect x="80" y="80" width="340" height="340" rx="24" fill="#f59e0b"/>
-    <rect x="100" y="100" width="300" height="300" rx="16" fill="#fde68a"/>
-    <!-- Inside painting -->
-    <rect x="120" y="120" width="260" height="260" rx="10" fill="#67e8f9"/>
-    <!-- Sun and hills inside -->
-    <circle cx="320" cy="180" r="30" fill="#f97316"/>
-    <circle cx="180" cy="380" r="120" fill="#22c55e"/>
-    <circle cx="320" cy="380" r="140" fill="#15803d"/>
-    <!-- Sparkles on the border edge -->
-    <circle cx="80" cy="80" r="12" fill="#ef4444"/>
-    <circle cx="420" cy="80" r="12" fill="#3b82f6"/>
-    <circle cx="80" cy="420" r="12" fill="#10b981"/>
-    <circle cx="420" cy="420" r="12" fill="#eab308"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <rect x="0" y="54" width="200" height="146" rx="28" fill="#86efac"/>
+      <!-- Pond water on left -->
+      <path d="M0 74 Q96 82 104 134 Q110 176 74 200 L0 200 Z" fill="#38bdf8"/>
+      <!-- Highlighted golden shoreline bank edge (岸边/河边) -->
+      <path d="M0 74 Q96 82 104 134 Q110 176 74 200" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
+      <!-- Cute flower beside the bank -->
+      <line x1="136" y1="126" x2="136" y2="152" stroke="#15803d" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="136" cy="122" r="9" fill="#fb7185"/><circle cx="136" cy="122" r="4" fill="#fde047"/>
+      <g transform="translate(96, 86)">
+      <line x1="0" y1="-22" x2="0" y2="-4" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+      <polygon points="0,8 -11,-8 11,-8" fill="#ef4444"/>
+    </g>
+    
 </svg>

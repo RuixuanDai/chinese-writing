@@ -1,34 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgDog" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef9c3"/>
       <stop offset="100%" stop-color="#fde68a"/>
-    </radialGradient>
-    <filter id="shadowDog" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#d97706" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgDog)"/>
-  <!-- Cheerful Puppy with Floppy Ears (小狗) -->
-  <g filter="url(#shadowDog)">
-    <!-- Floppy Ears -->
-    <ellipse cx="160" cy="210" rx="28" ry="50" fill="#92400e" transform="rotate(20, 160, 210)"/>
-    <ellipse cx="340" cy="210" rx="28" ry="50" fill="#92400e" transform="rotate(-20, 340, 210)"/>
-    <!-- Head -->
-    <circle cx="250" cy="220" r="75" fill="#f59e0b"/>
-    <!-- Body -->
-    <ellipse cx="250" cy="340" rx="80" ry="85" fill="#f59e0b"/>
-    <ellipse cx="250" cy="350" rx="50" ry="55" fill="#fef3c7"/>
-    <!-- Big Friendly Eyes -->
-    <circle cx="215" cy="205" r="9" fill="#0f172a"/>
-    <circle cx="285" cy="205" r="9" fill="#0f172a"/>
-    <circle cx="212" cy="202" r="3" fill="#ffffff"/>
-    <circle cx="282" cy="202" r="3" fill="#ffffff"/>
-    <!-- Cute Snout & Black Nose -->
-    <ellipse cx="250" cy="240" rx="35" ry="25" fill="#fef3c7"/>
-    <ellipse cx="250" cy="230" rx="14" ry="9" fill="#0f172a"/>
-    <circle cx="248" cy="228" r="2" fill="#ffffff"/>
-    <!-- Happy Panting Mouth with Tongue -->
-    <path d="M 242 245 C 242 265 258 265 258 245" fill="#f43f5e"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <ellipse cx="100" cy="168" rx="48" ry="10" fill="#d97706" opacity="0.2"/>
+      <!-- Wagging tail -->
+      <path d="M130 144 Q158 132 154 108" fill="none" stroke="#d97706" stroke-width="11" stroke-linecap="round"/>
+      <!-- Solid chubby sitting body + cream belly patch (NOT a hole!) -->
+      <ellipse cx="100" cy="134" rx="36" ry="34" fill="#f59e0b"/>
+      <ellipse cx="100" cy="138" rx="22" ry="22" fill="#fef3c7"/>
+      <!-- Hind & front paws -->
+      <ellipse cx="72" cy="162" rx="13" ry="9" fill="#d97706"/>
+      <ellipse cx="128" cy="162" rx="13" ry="9" fill="#d97706"/>
+      <ellipse cx="86" cy="164" rx="10" ry="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <ellipse cx="114" cy="164" rx="10" ry="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <!-- Red collar & golden bell -->
+      <rect x="74" y="100" width="52" height="9" rx="4.5" fill="#ef4444"/>
+      <circle cx="100" cy="110" r="6.5" fill="#facc15" stroke="#b45309" stroke-width="1.8"/>
+      <!-- Floppy brown ears -->
+      <ellipse cx="62" cy="72" rx="14" ry="26" transform="rotate(18 62 72)" fill="#92400e"/>
+      <ellipse cx="138" cy="72" rx="14" ry="26" transform="rotate(-18 138 72)" fill="#92400e"/>
+      <!-- Puppy head -->
+      <ellipse cx="100" cy="72" rx="36" ry="32" fill="#f59e0b"/>
+      <ellipse cx="100" cy="82" rx="20" ry="15" fill="#fef3c7"/>
+      <!-- Eyes, nose, tongue -->
+      <circle cx="85" cy="68" r="5" fill="#1e293b"/><circle cx="83.5" cy="66.5" r="1.8" fill="#ffffff"/>
+      <circle cx="115" cy="68" r="5" fill="#1e293b"/><circle cx="113.5" cy="66.5" r="1.8" fill="#ffffff"/>
+      <ellipse cx="100" cy="77" rx="6.5" ry="4.5" fill="#451a03"/>
+      <path d="M95 86 Q100 96 105 86 Z" fill="#fb7185"/>
+      <path d="M92 84 Q100 90 108 84" fill="none" stroke="#451a03" stroke-width="2.2" stroke-linecap="round"/>
+    
 </svg>

@@ -1,40 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgZi" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#faf5ff"/>
       <stop offset="100%" stop-color="#f3e8ff"/>
+    </linearGradient>
+    
+    <radialGradient id="sp" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#d8b4fe"/>
+      <stop offset="62%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#6b21a8"/>
     </radialGradient>
-    <filter id="shadowZi" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#7e22ce" flood-opacity="0.25"/>
-    </filter>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgZi)"/>
-  <!-- Juicy Purple Grapes (紫色) -->
-  <g filter="url(#shadowZi)">
-    <!-- Vine & Leaf -->
-    <path d="M 250 140 Q 240 80 290 85" stroke="#65a30d" stroke-width="8" fill="none" stroke-linecap="round"/>
-    <path d="M 250 130 C 180 110 180 60 245 90 Z" fill="#84cc16" stroke="#4d7c0f" stroke-width="3"/>
-    <!-- Grapes Cluster -->
-    <!-- Row 1 -->
-    <circle cx="210" cy="180" r="28" fill="#9333ea"/>
-    <circle cx="255" cy="175" r="28" fill="#a855f7"/>
-    <circle cx="295" cy="180" r="28" fill="#7e22ce"/>
-    <!-- Row 2 -->
-    <circle cx="190" cy="225" r="28" fill="#7e22ce"/>
-    <circle cx="235" cy="220" r="28" fill="#9333ea"/>
-    <circle cx="275" cy="220" r="28" fill="#a855f7"/>
-    <circle cx="315" cy="225" r="28" fill="#9333ea"/>
-    <!-- Row 3 -->
-    <circle cx="215" cy="270" r="28" fill="#a855f7"/>
-    <circle cx="255" cy="265" r="28" fill="#7e22ce"/>
-    <circle cx="295" cy="270" r="28" fill="#9333ea"/>
-    <!-- Row 4 -->
-    <circle cx="235" cy="315" r="26" fill="#7e22ce"/>
-    <circle cx="275" cy="315" r="26" fill="#9333ea"/>
-    <!-- Bottom -->
-    <circle cx="255" cy="360" r="24" fill="#a855f7"/>
-    <!-- Highlights -->
-    <circle cx="245" cy="165" r="6" fill="#ffffff" opacity="0.6"/>
-    <circle cx="265" cy="255" r="6" fill="#ffffff" opacity="0.6"/>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+  <!-- Soft paint droplets -->
+  <circle cx="42" cy="48" r="8" fill="#a855f7" />
+  <circle cx="158" cy="44" r="6.5" fill="#a855f7" />
+  <circle cx="34" cy="112" r="5.5" fill="#6b21a8"/>
+  <!-- Rich scalloped paint splash -->
+  <path d="M100 30 C118 28 132 38 140 50 C156 54 166 68 160 85 C166 102 156 120 140 124 C132 138 112 142 96 136 C78 142 58 134 52 118 C38 110 36 90 46 76 C42 58 56 42 74 42 C82 32 90 30 100 30 Z" fill="url(#sp)" />
+  <!-- Glossy specular highlight on splash -->
+  <path d="M70 54 Q88 42 112 48" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" opacity="0.65"/>
+  <circle cx="62" cy="64" r="3.5" fill="#ffffff" opacity="0.7"/>
+  <!-- Cute matching wax crayon (bottom-left) -->
+  <g transform="translate(56, 158) rotate(-24)">
+    <polygon points="-34,0 -20,-9 -20,9" fill="#6b21a8" />
+    <rect x="-20" y="-9" width="52" height="18" rx="3" fill="#a855f7" />
+    <rect x="-12" y="-9" width="6" height="18" fill="#1e293b" opacity="0.28"/>
+    <rect x="18" y="-9" width="6" height="18" fill="#1e293b" opacity="0.28"/>
+    <rect x="-6" y="-4" width="24" height="8" rx="3" fill="#ffffff" opacity="0.45"/>
+  </g>
+  <!-- Artist wooden paintbrush with colored bristles (bottom-right) -->
+  <g transform="translate(142, 152) rotate(-38)">
+    <rect x="-6" y="-4" width="54" height="9" rx="4.5" fill="#d97706"/>
+    <rect x="-16" y="-5" width="12" height="11" rx="2" fill="#cbd5e1"/>
+    <path d="M-16 -5 C-28 -7 -36 -3 -40 1 C-34 6 -26 8 -16 6 Z" fill="#a855f7" />
+    <path d="M-26 -2 Q-32 0 -36 1" fill="none" stroke="#d8b4fe" stroke-width="2" stroke-linecap="round"/>
   </g>
 </svg>

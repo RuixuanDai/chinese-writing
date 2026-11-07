@@ -1,31 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgJin" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#ecfdf5"/>
       <stop offset="100%" stop-color="#d1fae5"/>
-    </radialGradient>
-    <filter id="shadowJin" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#047857" flood-opacity="0.25"/>
-    </filter>
+    </linearGradient>
+    
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgJin)"/>
-  <g filter="url(#shadowJin)">
-    <!-- Giant Green Leaf Close Up -->
-    <path d="M 60 420 Q 150 140 420 180 Q 380 420 60 420 Z" fill="#22c55e"/>
-    <path d="M 60 420 Q 240 280 420 180" stroke="#16a34a" stroke-width="8" fill="none"/>
-    <!-- Close-Up Cute Ladybug right in front -->
-    <circle cx="270" cy="270" r="85" fill="#ef4444"/>
-    <path d="M 270 185 L 270 355" stroke="#18181b" stroke-width="6"/>
-    <!-- Ladybug Head and Antennas -->
-    <circle cx="350" cy="270" r="34" fill="#18181b"/>
-    <circle cx="360" cy="260" r="7" fill="#ffffff"/>
-    <path d="M 370 250 Q 400 230 415 240" stroke="#18181b" stroke-width="5" stroke-linecap="round" fill="none"/>
-    <path d="M 370 280 Q 400 295 410 310" stroke="#18181b" stroke-width="5" stroke-linecap="round" fill="none"/>
-    <!-- Black Spots on Shell -->
-    <circle cx="230" cy="225" r="16" fill="#18181b"/>
-    <circle cx="230" cy="315" r="16" fill="#18181b"/>
-    <circle cx="295" cy="225" r="15" fill="#18181b"/>
-    <circle cx="295" cy="315" r="15" fill="#18181b"/>
-    <circle cx="260" cy="270" r="12" fill="#18181b"/>
-  </g>
+  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
+  
+      <polygon points="118,86 148,54 178,86" fill="#cbd5e1" opacity="0.6"/>
+      <path d="M0 86 L200 86 L200 200 L0 200 Z" fill="#86efac"/>
+      <path d="M148 86 L112 200 L64 200 L140 86 Z" fill="#fde68a"/>
+      <!-- Big foreground flower right up close -->
+      <line x1="68" y1="116" x2="68" y2="176" stroke="#15803d" stroke-width="7" stroke-linecap="round"/>
+      <ellipse cx="52" cy="148" rx="14" ry="7" transform="rotate(-25 52 148)" fill="#22c55e"/>
+      <ellipse cx="84" cy="148" rx="14" ry="7" transform="rotate(25 84 148)" fill="#22c55e"/>
+      <circle cx="86" cy="104" r="12" fill="#fb7185"/><circle cx="77" cy="119.5884572681199" r="12" fill="#fb7185"/><circle cx="59" cy="119.5884572681199" r="12" fill="#fb7185"/><circle cx="50" cy="104" r="12" fill="#fb7185"/><circle cx="58.99999999999999" cy="88.4115427318801" r="12" fill="#fb7185"/><circle cx="77" cy="88.4115427318801" r="12" fill="#fb7185"/>
+      <circle cx="68" cy="104" r="11" fill="#fde047"/>
+      <g transform="translate(68, 66)">
+      <line x1="0" y1="-22" x2="0" y2="-4" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+      <polygon points="0,8 -11,-8 11,-8" fill="#ef4444"/>
+    </g>
+    
 </svg>
