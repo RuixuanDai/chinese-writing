@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_zhong_hv" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_zhong_hv)"/>
+
+  <!-- Heavy iron kettlebell / weight -->
+  <path d="M76 74 C76 44 124 44 124 74" fill="none" stroke="#334155" stroke-width="10" stroke-linecap="round"/>
+  <polygon points="56,74 144,74 158,156 42,156" fill="#1e293b" stroke="#0f172a" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="84" cy="114" r="5" fill="#94a3b8"/><circle cx="116" cy="114" r="5" fill="#94a3b8"/>
+  <path d="M84 134 Q100 124 116 134" fill="none" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+  <!-- Downward gravity arrows -->
+  <path d="M28 96 L28 142 M28 142 L20 130 M28 142 L36 130" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+  <path d="M172 96 L172 142 M172 142 L164 130 M172 142 L180 130" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+
+</svg>

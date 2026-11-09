@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_qian_sh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_qian_sh)"/>
+
+  <path d="M0 90 L200 90 L200 200 L0 200 Z" fill="#38bdf8"/>
+  <path d="M0 126 L112 126 L136 184 L200 184 L200 200 L0 200 Z" fill="#fde047"/>
+  <!-- Highlighted SHALLOW depth on left -->
+  <line x1="56" y1="94" x2="56" y2="122" stroke="#ef4444" stroke-width="5"/>
+  <path d="M56 42 L56 80" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="56,86 46,72 66,72" fill="#ef4444"/>
+
+</svg>

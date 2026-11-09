@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_re_hot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_re_hot)"/>
+
+  <!-- Thermometer with high red mercury -->
+  <rect x="86" y="34" width="28" height="96" rx="14" fill="#ffffff" stroke="#e11d48" stroke-width="4"/>
+  <circle cx="100" cy="144" r="24" fill="#ffffff" stroke="#e11d48" stroke-width="4"/>
+  <rect x="93" y="48" width="14" height="86" rx="7" fill="#ef4444"/>
+  <circle cx="100" cy="144" r="16" fill="#ef4444"/>
+  <!-- Heat waves & sun rays -->
+  <path d="M46 106 Q38 92 48 78 T46 50" fill="none" stroke="#f97316" stroke-width="4" stroke-linecap="round"/>
+  <path d="M154 106 Q146 92 156 78 T154 50" fill="none" stroke="#f97316" stroke-width="4" stroke-linecap="round"/>
+
+</svg>

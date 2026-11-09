@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_xiao_sm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#fde047"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_xiao_sm)"/>
+
+  <circle cx="100" cy="100" r="52" fill="#fed7aa" stroke="#f97316" stroke-width="3"/>
+  <path d="M50 92 Q100 40 150 92" fill="#451a03"/>
+  <!-- Happy arched eyes -->
+  <path d="M70 94 Q78 82 86 94" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M114 94 Q122 82 130 94" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="66" cy="108" r="8" fill="#fb7185" opacity="0.55"/>
+  <circle cx="134" cy="108" r="8" fill="#fb7185" opacity="0.55"/>
+  <!-- Big happy laughing mouth -->
+  <path d="M78 112 Q100 142 122 112 Z" fill="#ef4444" stroke="#991b1b" stroke-width="2.5"/>
+  <path d="M82 114 L118 114" stroke="#ffffff" stroke-width="4"/>
+
+</svg>

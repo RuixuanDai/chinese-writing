@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_qing_lt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_qing_lt)"/>
+
+  <!-- Soft floating feather drifting upward -->
+  <path d="M52 148 Q78 88 148 48 C142 88 106 124 52 148 Z" fill="#ffffff" stroke="#0284c7" stroke-width="3"/>
+  <path d="M44 156 Q88 104 148 48" fill="none" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Upward breeze arrows -->
+  <path d="M64 76 L64 46 M64 46 L56 56 M64 46 L72 56" stroke="#0ea5e9" stroke-width="3.5" stroke-linecap="round"/>
+
+</svg>

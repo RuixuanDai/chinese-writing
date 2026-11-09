@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_jing_cl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_jing_cl)"/>
+
+  <circle cx="100" cy="104" r="56" fill="#ffffff" stroke="#0ea5e9" stroke-width="4"/>
+  <circle cx="100" cy="104" r="40" fill="#f0f9ff" stroke="#bae6fd" stroke-width="2"/>
+  <line x1="68" y1="88" x2="96" y2="60" stroke="#bae6fd" stroke-width="6" stroke-linecap="round"/>
+  <!-- Bright clean sparkles -->
+  <polygon points="148,44 152,56 164,60 152,64 148,76 144,64 132,60 144,56" fill="#facc15"/>
+  <polygon points="52,132 55,140 63,143 55,146 52,154 49,146 41,143 49,140" fill="#facc15"/>
+  <polygon points="116,92 119,100 127,103 119,106 116,114 113,106 105,103 113,100" fill="#38bdf8"/>
+
+</svg>

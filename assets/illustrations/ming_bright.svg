@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_ming" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#fde047"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_ming)"/>
+
+  <!-- Radiant glow -->
+  <circle cx="100" cy="100" r="72" fill="#ffffff" opacity="0.55"/>
+  <!-- Left: Bright Sun (日) -->
+  <circle cx="70" cy="96" r="32" fill="#f97316" stroke="#ea580c" stroke-width="3"/>
+  <circle cx="70" cy="96" r="24" fill="#facc15"/>
+  <!-- Right: Golden Crescent Moon (月) -->
+  <path d="M126 60 A38 38 0 1 1 112 134 A30 30 0 1 0 126 60 Z" fill="#eab308" stroke="#ca8a04" stroke-width="3"/>
+  <!-- Sparkles of brightness -->
+  <polygon points="100,26 103,36 113,39 103,42 100,52 97,42 87,39 97,36" fill="#f59e0b"/>
+  <polygon points="100,144 103,152 111,155 103,158 100,166 97,158 89,155 97,152" fill="#f59e0b"/>
+
+</svg>

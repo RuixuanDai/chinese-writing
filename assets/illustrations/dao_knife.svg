@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_dao_kn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_dao_kn)"/>
+
+  <g transform="rotate(-30 100 100)">
+    <!-- Wooden handle with rivets -->
+    <rect x="30" y="88" width="52" height="22" rx="8" fill="#92400e" stroke="#451a03" stroke-width="3"/>
+    <circle cx="44" cy="99" r="3" fill="#fde047"/><circle cx="66" cy="99" r="3" fill="#fde047"/>
+    <!-- Curved silver blade -->
+    <path d="M82 84 L168 84 C164 114 134 120 82 116 Z" fill="#cbd5e1" stroke="#475569" stroke-width="3" stroke-linejoin="round"/>
+    <line x1="86" y1="112" x2="156" y2="102" stroke="#ffffff" stroke-width="2.5"/>
+  </g>
+
+</svg>

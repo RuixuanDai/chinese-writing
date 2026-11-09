@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_qiu" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_qiu)"/>
+
+  <ellipse cx="100" cy="166" rx="48" ry="10" fill="#16a34a" opacity="0.3"/>
+  <circle cx="100" cy="100" r="58" fill="#f97316" stroke="#9a3412" stroke-width="4"/>
+  <!-- Classic ball seams -->
+  <line x1="42" y1="100" x2="158" y2="100" stroke="#7c2d12" stroke-width="4"/>
+  <line x1="100" y1="42" x2="100" y2="158" stroke="#7c2d12" stroke-width="4"/>
+  <path d="M58 58 Q100 100 58 142" fill="none" stroke="#7c2d12" stroke-width="4"/>
+  <path d="M142 58 Q100 100 142 142" fill="none" stroke="#7c2d12" stroke-width="4"/>
+
+</svg>

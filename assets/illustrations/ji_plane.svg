@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_ji_pl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_ji_pl)"/>
+
+  <!-- Wing (behind) -->
+  <polygon points="78,96 108,52 124,52 104,96" fill="#2563eb"/>
+  <!-- Fuselage -->
+  <path d="M28 104 C28 88 136 84 168 98 C176 102 176 112 164 114 L42 114 L26 80 L44 80 L54 96 Z" fill="#ffffff" stroke="#2563eb" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Windows & foreground wing -->
+  <circle cx="82" cy="100" r="3.5" fill="#38bdf8"/><circle cx="98" cy="100" r="3.5" fill="#38bdf8"/>
+  <circle cx="114" cy="100" r="3.5" fill="#38bdf8"/><circle cx="130" cy="100" r="3.5" fill="#38bdf8"/>
+  <polygon points="74,108 112,152 128,152 106,108" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2.5"/>
+
+</svg>

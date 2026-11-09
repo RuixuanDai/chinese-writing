@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_mao_ht" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_mao_ht)"/>
+
+  <!-- Wide hat brim -->
+  <ellipse cx="100" cy="132" rx="76" ry="22" fill="#f59e0b" stroke="#b45309" stroke-width="3.5"/>
+  <!-- Hat dome & red ribbon band -->
+  <path d="M48 126 C48 56 152 56 152 126 Z" fill="#facc15" stroke="#b45309" stroke-width="3.5"/>
+  <path d="M48 118 Q100 130 152 118 L152 128 Q100 140 48 128 Z" fill="#ef4444"/>
+  <circle cx="100" cy="58" r="10" fill="#ef4444"/>
+
+</svg>

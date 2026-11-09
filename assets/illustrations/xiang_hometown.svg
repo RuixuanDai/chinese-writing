@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_xiang_hm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_xiang_hm)"/>
+
+  <!-- Distant hills & rising chimney smoke -->
+  <polygon points="0,120 68,68 140,120" fill="#86efac"/>
+  <polygon points="80,120 148,60 200,120" fill="#4ade80"/>
+  <rect x="0" y="120" width="200" height="80" fill="#22c55e"/>
+  <!-- Winding hometown river -->
+  <path d="M110 120 Q70 148 120 200 L164 200 Q106 148 126 120 Z" fill="#38bdf8"/>
+  <!-- Little cottage with warm smoke curl -->
+  <path d="M64 78 Q58 62 68 48" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="56,86 36,104 76,104" fill="#b45309"/>
+  <rect x="42" y="104" width="28" height="22" fill="#ffffff"/>
+
+</svg>

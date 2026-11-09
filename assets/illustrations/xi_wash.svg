@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_xi_wash" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_xi_wash)"/>
+
+  <!-- Water faucet at top -->
+  <path d="M40 36 L96 36 Q112 36 112 52 L112 62" fill="none" stroke="#64748b" stroke-width="14" stroke-linecap="round"/>
+  <rect x="72" y="20" width="24" height="8" rx="4" fill="#3b82f6"/>
+  <!-- Streaming water & soap bubbles -->
+  <line x1="106" y1="68" x2="102" y2="112" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,6"/>
+  <line x1="118" y1="68" x2="122" y2="112" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,6"/>
+  <!-- Two hands rubbing together with white foam bubbles -->
+  <ellipse cx="86" cy="134" rx="28" ry="18" transform="rotate(-15 86 134)" fill="#fed7aa" stroke="#ea580c" stroke-width="2.5"/>
+  <ellipse cx="118" cy="136" rx="28" ry="18" transform="rotate(15 118 136)" fill="#fed7aa" stroke="#ea580c" stroke-width="2.5"/>
+  <circle cx="96" cy="122" r="10" fill="#ffffff" opacity="0.9"/><circle cx="112" cy="118" r="12" fill="#ffffff" opacity="0.9"/>
+  <circle cx="104" cy="134" r="11" fill="#ffffff" opacity="0.9"/><circle cx="136" cy="108" r="6" fill="#ffffff" opacity="0.85"/>
+
+</svg>

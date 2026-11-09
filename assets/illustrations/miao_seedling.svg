@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_miao" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_miao)"/>
+
+  <!-- Rich soil ridges at bottom -->
+  <path d="M16 144 Q100 132 184 144 L184 176 Q100 184 16 176 Z" fill="#92400e"/>
+  <!-- 3 lush green young seedlings (艸+田=苗) -->
+  <g stroke="#16a34a" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M56 146 L56 88"/><path d="M56 116 Q36 96 34 78"/><path d="M56 108 Q76 88 78 72"/>
+    <path d="M100 146 L100 74"/><path d="M100 106 Q78 84 76 64"/><path d="M100 98 Q122 76 124 58"/>
+    <path d="M144 146 L144 88"/><path d="M144 116 Q124 96 122 78"/><path d="M144 108 Q164 88 166 72"/>
+  </g>
+
+</svg>

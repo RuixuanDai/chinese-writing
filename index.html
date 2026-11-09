@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261109_v16">
+    <link rel="stylesheet" href="css/style.css?v=20261109_v17">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -96,8 +96,9 @@
         </div>
     </div>
 
-    <!-- 汉字分类与选单条 -->
+    <!-- 汉字分类与选单条（支持按学龄分级 K-1 / K / G1 / G2 / G3+ 与 12 大趣味主题筛选） -->
     <section class="char-selector-section">
+        <div id="practice-grade-bar" class="practice-grade-bar"></div>
         <div id="category-bar" class="category-bar"></div>
         <div id="char-list-grid" class="char-list-grid"></div>
     </section>
@@ -146,6 +147,7 @@
                                 <span class="btn-speak-text">点我读</span>
                             </button>
                             <div class="cognition-meta-badges">
+                                <span class="meta-pill grade-meta-pill" id="info-grade-badge" title="适龄阶段与书写难度">🐣 K-1 · ★</span>
                                 <span class="meta-pill">部首：<strong id="info-radical">一</strong></span>
                                 <span class="meta-pill">笔画：<strong id="info-stroke-count">1 画</strong></span>
                             </div>
@@ -381,6 +383,17 @@
                     <button type="button" id="btn-exam-print-paper" class="btn-hub-action" title="随机生成一张 A4 纸质测试卷">🖨️ 打印试卷</button>
                 </div>
             </div>
+            <!-- 学龄分级 (K-1 / K / G1 / G2 / G3+) 与 难度调节 (轻松 / 标准 / 挑战) 筛选条 -->
+            <div class="game-level-bar" aria-label="学龄分级与闯关难度选择">
+                <div class="game-level-group grade-group">
+                    <span class="game-level-label">🎓 学龄分级：</span>
+                    <div id="game-grade-pills" class="game-grade-pills" role="group" aria-label="选择适龄阶段"></div>
+                </div>
+                <div class="game-level-group diff-group">
+                    <span class="game-level-label">⚡ 闯关难度：</span>
+                    <div id="game-diff-pills" class="game-diff-pills" role="group" aria-label="选择闯关难度"></div>
+                </div>
+            </div>
             <div id="game-card-grid" class="game-card-grid" role="list" aria-label="闯关小游戏"></div>
         </div>
 
@@ -397,6 +410,7 @@
                     <div id="game-mascot-bubble" class="game-mascot-bubble"></div>
                 </div>
                 <div class="game-topbar-stats">
+                    <button type="button" id="btn-game-stage-diff" class="btn-game-stage-diff" title="点击切换当前闯关难度（轻松 / 标准 / 挑战）">全部 · ⭐标准</button>
                     <button type="button" id="btn-game-practice-char" class="btn-game-practice-char" title="前往趣味练字学习这个字的笔顺与写法" hidden>📖 学这字</button>
                     <span id="game-combo" class="game-combo-pill" hidden>🔥 连对 ×2</span>
                     <span id="game-stars" class="game-stars-pill" title="本轮赢得的星星">⭐ 0</span>
@@ -1016,15 +1030,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261109_v16"></script>
-    <script src="lib/web-online-tts.js?v=20261109_v16"></script>
-    <script src="js/sound.js?v=20261109_v16"></script>
-    <script src="js/char-data.js?v=20261109_v16"></script>
-    <script src="js/stroke-cache.js?v=20261109_v16"></script>
-    <script src="js/canvas.js?v=20261109_v16"></script>
-    <script src="js/hanzi-guide.js?v=20261109_v16"></script>
-    <script src="js/evaluator.js?v=20261109_v16"></script>
-    <script src="js/quiz-test.js?v=20261109_v16"></script>
-    <script src="js/app.js?v=20261109_v16"></script>
+    <script src="lib/web-natural-tts.js?v=20261109_v17"></script>
+    <script src="lib/web-online-tts.js?v=20261109_v17"></script>
+    <script src="js/sound.js?v=20261109_v17"></script>
+    <script src="js/char-data.js?v=20261109_v17"></script>
+    <script src="js/stroke-cache.js?v=20261109_v17"></script>
+    <script src="js/canvas.js?v=20261109_v17"></script>
+    <script src="js/hanzi-guide.js?v=20261109_v17"></script>
+    <script src="js/evaluator.js?v=20261109_v17"></script>
+    <script src="js/quiz-test.js?v=20261109_v17"></script>
+    <script src="js/app.js?v=20261109_v17"></script>
 </body>
 </html>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_wa_sk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_wa_sk)"/>
+
+  <path d="M84 36 L132 36 L132 118 C132 142 114 156 92 156 L58 156 C40 156 36 136 52 124 L84 108 Z" fill="#22c55e" stroke="#15803d" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Cuff, heel & toe patches -->
+  <rect x="84" y="36" width="48" height="16" rx="3" fill="#fde047" stroke="#15803d" stroke-width="2.5"/>
+  <line x1="84" y1="70" x2="132" y2="70" stroke="#fde047" stroke-width="6"/>
+  <line x1="84" y1="88" x2="132" y2="88" stroke="#fde047" stroke-width="6"/>
+  <path d="M58 156 C40 156 36 136 52 124 L64 118 L72 156 Z" fill="#ef4444"/>
+
+</svg>

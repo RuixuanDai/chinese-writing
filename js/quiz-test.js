@@ -145,58 +145,100 @@ const GP_STROKE_TYPE_DATA = {
     '饼': 'pie hengou ? dian pie heng heng pie shu', '团': 'shu hengzhe heng shugou pie heng',
     '圆': 'shu hengzhe shu hengzhe heng shu hengzhe pie dian heng', '灯': 'dian pie pie dian heng shugou',
     '戏': 'hengpie dian heng ? pie dian', '钟': 'pie heng heng heng ? shu hengzhe heng shu',
-    '玩': 'heng heng shu ti heng heng pie shuwangou'
+    '玩': 'heng heng shu ti heng heng pie shuwangou',
+    '女': '? pie heng', '男': 'shu hengzhe heng shu heng hengzhegou pie',
+    '我': 'pie heng shugou ti ? pie dian', '你': 'pie shu pie hengou shugou pie dian',
+    '好': '? pie heng hengpie shugou heng', '王': 'heng heng shu heng',
+    '工': 'heng shu heng', '主': 'dian heng heng shu heng',
+    '今': 'pie na dian hengpie', '明': 'shu hengzhe heng heng pie hengzhegou heng heng',
+    '午': 'pie heng heng shu', '苗': 'heng shu shu shu hengzhe heng shu heng',
+    '芽': 'heng shu shu heng piezhe shugou pie', '根': 'heng shu pie dian hengzhe heng heng ? pie na',
+    '枝': 'heng shu pie dian heng shu hengpie na', '松': 'heng shu pie dian pie dian piezhe dian',
+    '柳': 'heng shu pie dian pie ? pie hengzhegou shu', '荷': 'heng shu shu pie shu heng shu hengzhe heng shugou',
+    '虾': 'shu hengzhe heng shu ti dian heng shu dian', '贝': 'shu hengzhe pie dian',
+    '哭': 'shu hengzhe heng shu hengzhe heng heng pie na dian', '笑': 'pie heng dian pie heng dian pie heng pie na',
+    '穿': 'dian dian hengou pie dian heng piezhe shugou pie', '洗': 'dian dian ti pie heng shu heng pie shuwangou',
+    '扫': 'heng shugou ti hengzhe heng heng', '拍': 'heng shugou ti pie shu hengzhe heng heng',
+    '拉': 'heng shugou ti dian heng dian pie heng', '吹': 'shu hengzhe heng pie hengou pie na',
+    '饺': 'pie hengou ? dian heng pie dian pie na', '勺': 'pie hengzhegou dian',
+    '盐': 'heng shu ti shu dian shu hengzhe shu shu heng', '油': 'dian dian ti shu hengzhe heng shu heng',
+    '字': 'dian dian hengou hengpie shugou heng', '词': 'dian ? hengzhegou heng shu hengzhe heng',
+    '句': 'pie hengzhegou shu hengzhe heng', '纸': 'piezhe piezhe ti pie ? heng ?',
+    '灰': 'heng pie dian pie pie na', '粉': 'dian pie heng shu pie dian pie na hengzhegou pie',
+    '金': 'pie na heng heng shu dian pie heng', '玉': 'heng heng shu heng dian',
+    '宝': 'dian dian hengou heng heng shu heng dian', '方': 'dian heng hengzhegou pie',
+    '长': 'pie heng ? na', '冷': 'dian ti pie na dian hengpie dian',
+    '热': 'heng shugou ti pie ? dian dian dian dian dian', '旧': 'shu shu hengzhe heng heng',
+    '轻': 'heng piezhe shu ti hengpie dian heng shu heng', '重': 'pie heng shu hengzhe heng heng shu heng heng',
+    '干': 'heng heng shu', '净': 'dian ti pie hengou hengzhe heng heng shugou',
+    '苦': 'heng shu shu heng shu shu hengzhe heng', '坏': 'heng shu ti heng pie shu dian',
+    '对': 'hengpie dian heng shugou dian', '进': 'heng heng pie shu dian ? na',
+    '退': 'hengzhe heng heng ? pie dian dian ? na', '浅': 'dian dian ti heng heng ? pie dian',
+    '细': 'piezhe piezhe ti shu hengzhe heng shu heng', '胖': 'pie hengzhegou heng heng dian pie heng heng shu',
+    '衣': 'dian heng pie ? pie na', '袜': 'dian hengpie shu pie dian heng heng shu pie na',
+    '伞': 'pie na dian pie heng shu', '刀': 'hengzhegou pie',
+    '尺': 'hengzhe heng pie na', '包': 'pie hengzhegou hengzhe heng shuwangou',
+    '床': 'dian heng pie heng shu pie na', '桌': 'shu heng shu hengzhe heng heng heng shu pie na',
+    '国': 'shu hengzhe heng heng shu heng dian heng', '华': 'pie shu pie shuwangou heng shu',
+    '京': 'dian heng shu hengzhe heng shugou pie dian', '村': 'heng shu pie dian heng shugou dian',
+    '乡': 'piezhe piezhe pie', '园': 'shu hengzhe heng heng pie shuwangou heng',
+    '场': 'heng shu ti ? pie pie', '店': 'dian heng pie shu heng shu hengzhe heng',
+    '机': 'heng shu pie dian pie ?', '铁': 'pie heng heng heng ? pie heng heng pie na'
 };
 
-// ==================== 3. 反义词好朋友（35 组，可配小图标帮助理解） ====================
+// ==================== 3. 反义词好朋友（35 组，可配小图标帮助理解，支持按年级筛选） ====================
 const GP_ANTONYM_PAIRS = [
-    { a: '大', b: '小', ea: '🐘', eb: '🐭' }, { a: '多', b: '少', ea: '🍇', eb: '🍒' }, { a: '上', b: '下', ea: '⬆️', eb: '⬇️' },
-    { a: '左', b: '右', ea: '⬅️', eb: '➡️' }, { a: '出', b: '入', ea: '🚪', eb: '🏠' }, { a: '来', b: '去', ea: '👋', eb: '🚶' },
-    { a: '开', b: '关', ea: '🔓', eb: '🔒' }, { a: '高', b: '低', ea: '🦒', eb: '🐜' }, { a: '前', b: '后' },
-    { a: '里', b: '外', ea: '📦', eb: '🌳' }, { a: '远', b: '近', ea: '🔭', eb: '🔍' }, { a: '长', b: '短', ea: '🐍', eb: '🐛' },
-    { a: '黑', b: '白', ea: '⚫', eb: '⚪' }, { a: '冷', b: '热', ea: '🥶', eb: '🥵' },
-    { a: '快', b: '慢', ea: '🐇', eb: '🐢' }, { a: '早', b: '晚', ea: '🌅', eb: '🌙' },
-    { a: '天', b: '地', ea: '☁️', eb: '🌏' }, { a: '东', b: '西' }, { a: '南', b: '北' },
-    { a: '男', b: '女', ea: '👦', eb: '👧' }, { a: '有', b: '无' }, { a: '胖', b: '瘦' },
-    { a: '好', b: '坏', ea: '👍', eb: '👎' }, { a: '新', b: '旧', ea: '✨', eb: '🕰️' }, { a: '对', b: '错', ea: '✅', eb: '❌' },
-    { a: '哭', b: '笑', ea: '😭', eb: '😄' }, { a: '买', b: '卖', ea: '🛒', eb: '🏷️' }, { a: '真', b: '假' },
-    { a: '正', b: '反' }, { a: '轻', b: '重', ea: '🪶', eb: '🏋️' }, { a: '深', b: '浅' }, { a: '粗', b: '细' },
-    { a: '甜', b: '苦', ea: '🍬', eb: '🍵' }, { a: '方', b: '圆', ea: '🟦', eb: '🔵' }, { a: '进', b: '退' }
+    { a: '大', b: '小', ea: '🐘', eb: '🐭', g: 'k-1' }, { a: '多', b: '少', ea: '🍇', eb: '🍒', g: 'k' }, { a: '上', b: '下', ea: '⬆️', eb: '⬇️', g: 'k-1' },
+    { a: '左', b: '右', ea: '⬅️', eb: '➡️', g: 'k-1' }, { a: '出', b: '入', ea: '🚪', eb: '🏠', g: 'k' }, { a: '来', b: '去', ea: '👋', eb: '🚶', g: 'k' },
+    { a: '开', b: '关', ea: '🔓', eb: '🔒', g: 'k-1' }, { a: '高', b: '低', ea: '🦒', eb: '🐜', g: 'g1' }, { a: '前', b: '后', g: 'g1' },
+    { a: '里', b: '外', ea: '📦', eb: '🌳', g: 'g1' }, { a: '远', b: '近', ea: '🔭', eb: '🔍', g: 'g1' }, { a: '长', b: '短', ea: '🐍', eb: '🐛', g: 'k' },
+    { a: '黑', b: '白', ea: '⚫', eb: '⚪', g: 'k' }, { a: '冷', b: '热', ea: '🥶', eb: '🥵', g: 'g2' },
+    { a: '快', b: '慢', ea: '🐇', eb: '🐢', g: 'g2' }, { a: '早', b: '晚', ea: '🌅', eb: '🌙', g: 'k' },
+    { a: '天', b: '地', ea: '☁️', eb: '🌏', g: 'k-1' }, { a: '东', b: '西', g: 'g1' }, { a: '南', b: '北', g: 'g1' },
+    { a: '男', b: '女', ea: '👦', eb: '👧', g: 'k-1' }, { a: '有', b: '无', g: 'g1' }, { a: '胖', b: '瘦', ea: '🐼', eb: '🏃', g: 'g2' },
+    { a: '好', b: '坏', ea: '👍', eb: '👎', g: 'g2' }, { a: '新', b: '旧', ea: '✨', eb: '🕰️', g: 'g2' }, { a: '对', b: '错', ea: '✅', eb: '❌', g: 'g2' },
+    { a: '哭', b: '笑', ea: '😭', eb: '😄', g: 'k' }, { a: '买', b: '卖', ea: '🛒', eb: '🏷️', g: 'g2' }, { a: '真', b: '假', g: 'g3' },
+    { a: '正', b: '反', g: 'g2' }, { a: '轻', b: '重', ea: '🪶', eb: '🏋️', g: 'g2' }, { a: '深', b: '浅', g: 'g2' }, { a: '粗', b: '细', g: 'g2' },
+    { a: '甜', b: '苦', ea: '🍬', eb: '🍵', g: 'g2' }, { a: '方', b: '圆', ea: '🟦', eb: '🔵', g: 'k' }, { a: '进', b: '退', g: 'g2' }
 ];
 
 // 抽象字及纯情境插画字（不适合单靠看图猜字，仍用于听音 / 组词 / 数笔画游戏）
-const GP_ABSTRACT_CHARS = '大小中来去出入空光地子文白几太生会见只个学习写读正永课问说答乐思知识记算题百千万亿东西南北左右前后边间里外半零初末高低远近多少爱善美诚礼信仁德和敬勤俭宽勇恒想动快节年喜庆贺谜团圆戏福愿甜香亲幼';
+const GP_ABSTRACT_CHARS = '大小中来去出入空光地子文白几太生会见只个学习写读正永课问说答乐思知识记算题百千万亿东西南北左右前后边间里外半零初末高低远近多少爱善美诚礼信仁德和敬勤俭宽勇恒想动快节年喜庆贺谜团圆戏福愿甜香亲幼今明午晚好坏对错长短进退深浅冷热新旧轻重干粗细胖瘦主方我你词句华乡';
 // 看图默写不出的字（图片难以唯一对应）
-const GP_WRITE_EXCLUDE = '只个会几习写永半正生见太友老本早东西北百千万';
+const GP_WRITE_EXCLUDE = '只个会几习写永半正生见太友老本早东西北百千万主方我你今明午晚词句好坏对错长短进退深浅冷热新旧轻重干粗细胖瘦华乡';
 // 插画里直接画有汉字的字（会泄露答案，不用于看图类游戏）
-const GP_TEXT_IN_PICTURE = '只个师粮站喜贺谜饼联福万东西南北左右习早永课识';
+const GP_TEXT_IN_PICTURE = '只个师粮站喜贺谜饼联福万东西南北左右习早永课识字';
 
 // 意思/画面元素相近的字组：互不作为干扰项，翻牌时不同时出现，彻底避免看图选字歧义
 const GP_SIMILAR_GROUPS = [
-    '天空晴云日阳虹霞夏热', '雨云阴雷电雾', '雪冰冬霜', '雾露霜', '星月夜',
-    '水江河湖海泉露冰汤茶', '海港舟船桥鱼鲸龟游',
-    '木树林叶秋霜', '树果桃李梨橙桔杏瓜', '花草春芽苗禾竹菜叶兰梅莲菊', '土地泥田山石禾苗草',
-    '山石高登', '房屋院楼家亲校城亭塔门开关市街道桥', '车路道街站轨桥市', '港塔灯火光明红日阳',
-    '人儿友哥弟姐妹爸妈爷奶老师幼立身头脸坐走跑跳迈登追游抱招抬唱读看笑哭腹',
-    '头脸目眉口鼻耳牙心腹手足身看听唱笑哭',
-    '手握抱招抬一二三四五六七八九十', '一二三红黄蓝球', '上下里外玩球红黄橙',
-    '足走跑跳迈登追立坐',
-    '米饭粮麦面禾豆饼团圆', '果桃李梨橙桔杏瓜菜',
-    '鸟雁燕鹤鸡鸭鹅飞春', '鱼鲸龟海', '狗狼狐狸', '猫虎豹狮', '虫蝶蜂追',
-    '书本册读学诗画笔写', '画笔红', '画笔黄', '画笔蓝', '画笔绿', '画笔黑', '画笔紫', '画笔青', '画笔白',
-    '蓝青', '绿青', '红紫', '黑白',
-    '唱歌乐听耳', '看望见目', '福喜庆贺年节团圆灯龙'
+    '天空晴云日阳虹霞夏热明晚午', '雨云阴雷电雾伞', '雪冰冬霜冷', '雾露霜', '星月夜晚',
+    '水江河湖海泉露冰汤茶深浅洗净油', '海港舟船桥鱼鲸龟游虾蟹贝宝',
+    '木树林叶秋霜根枝松柳村', '树果桃李梨橙桔杏瓜', '花草春芽苗禾竹菜叶兰梅莲菊荷苦', '土地泥田山石禾苗草根芽',
+    '山石高登村乡', '房屋院楼家亲校城亭塔门开关市街道桥村乡园场店京国华窗床桌椅', '车路道街站轨桥市机铁', '港塔灯火光明红日阳京华',
+    '人儿友哥弟姐妹爸妈爷奶老师幼立身头脸坐走跑跳迈登追游抱招抬唱读看笑哭腹男女我你王主工穿洗扫拍拉推吹睡',
+    '头脸目眉口鼻耳牙心腹手足身看听唱笑哭吹睡镜',
+    '手握抱招抬拍拉推扫洗一二三四五六七八九十', '一二三红黄蓝球粉灰', '上下里外玩球红黄橙',
+    '足走跑跳迈登追立坐进退鞋袜',
+    '米饭粮麦面禾豆饼团圆蛋糕饺碗筷勺盘盐油', '果桃李梨橙桔杏瓜菜苦酸甜',
+    '鸟雁燕鹤鸡鸭鹅飞春蛋', '鱼鲸龟海虾蟹贝', '狗狼狐狸鼠', '猫虎豹狮鼠', '虫蝶蜂追蛇虾蟹',
+    '书本册读学诗画笔写字词句纸墨琴棋尺刀包桌椅', '画笔红粉', '画笔黄', '画笔蓝', '画笔绿', '画笔黑灰', '画笔紫', '画笔青', '画笔白',
+    '蓝青', '绿青', '红紫粉', '黑白灰银', '金银玉宝王主',
+    '唱歌乐听耳琴', '看望见目镜', '福喜庆贺年节团圆灯龙国华京',
+    '衣帽鞋袜伞穿包干新旧'
 ];
 
 // 字形相近的字（作为干扰项，练习细致辨认）
 const GP_VISUAL_CONFUSERS = {
-    '日': '目白田电', '目': '日白自', '白': '日百自', '田': '日电', '电': '田', '木': '禾本米', '禾': '木米',
-    '本': '木', '米': '来木', '来': '米', '大': '天太人', '天': '大', '太': '大', '人': '入八大', '入': '人八',
-    '八': '人入', '土': '上工王', '上': '土下', '下': '上', '千': '十', '十': '千', '口': '日中田', '中': '口',
-    '山': '出', '出': '山', '牛': '年', '年': '牛', '鸟': '马', '马': '鸟', '儿': '几九', '几': '儿九', '九': '儿几',
-    '万': '方', '方': '万', '石': '右', '右': '石左', '左': '右', '少': '小', '小': '少', '去': '云', '云': '去',
-    '水': '永冰', '冰': '水', '永': '水', '东': '车', '车': '东', '早': '草', '草': '早', '江': '红', '红': '江',
-    '虫': '中', '竹': '个', '门': '问', '问': '门', '鱼': '鸟', '叶': '十', '立': '六', '六': '立'
+    '日': '目白田电旧', '目': '日白自贝', '白': '日百自', '田': '日电男', '电': '田', '木': '禾本米村机', '禾': '木米',
+    '本': '木', '米': '来木粉', '来': '米', '大': '天太人', '天': '大', '太': '大', '人': '入八大今伞', '入': '人八',
+    '八': '人入', '土': '上工王干', '上': '土下', '下': '上', '千': '十干午', '十': '千干午', '口': '日中田国园', '中': '口虫',
+    '山': '出', '出': '山', '牛': '年午生', '年': '牛午', '鸟': '马鸡鸭', '马': '鸟妈', '儿': '几九', '几': '儿九机', '九': '儿几刀',
+    '万': '方刀', '方': '万刀', '石': '右', '右': '石左', '左': '右工', '少': '小沙', '小': '少水', '去': '云', '云': '去会',
+    '水': '永冰', '冰': '水冷净', '永': '水衣', '东': '车', '车': '东轻', '早': '草什', '草': '早苗苦荷', '江': '红河洗油', '红': '江纸细',
+    '虫': '中虾蛇', '竹': '个笑筷笔', '门': '问间', '问': '门间', '鱼': '鸟', '叶': '十', '立': '六拉', '六': '立',
+    '王': '主玉工土', '主': '王玉', '玉': '王主宝国', '工': '土王干左', '干': '千十土工午', '午': '牛干千',
+    '刀': '力几九万尺', '尺': '刀尸', '贝': '见目', '见': '贝', '今': '人会伞', '明': '日月朋', '我': '找成', '你': '他',
+    '女': '妈姐妹好', '子': '字好学', '字': '子宝学', '包': '句勺抱', '勺': '包句', '句': '包勺'
 };
 
 // 看图写字专属优选双字提示词（彻底消除同义画面歧义，如「太阳」区分“阳/日”，「开门」区分“开/门”）
@@ -210,7 +252,17 @@ const GP_PW_CLUE_WORDS = {
     '头': '头发', '身': '身体', '子': '孩子', '儿': '儿童', '妈': '爸妈',
     '家': '家人', '房': '房屋', '屋': '屋子', '院': '院子', '门': '大门', '开': '开门', '关': '关门',
     '书': '看书', '学': '学习', '文': '语文', '抬': '抬起', '钟': '时钟',
-    '边': '河边', '里': '家里', '外': '外面', '后': '后面'
+    '边': '河边', '里': '家里', '外': '外面', '后': '后面',
+    '王': '国王', '工': '工人', '鼠': '松鼠', '蛇': '小蛇', '虾': '小虾', '蟹': '螃蟹', '贝': '贝壳',
+    '苗': '禾苗', '芽': '发芽', '根': '树根', '枝': '树枝', '松': '松树', '柳': '柳树', '荷': '荷花',
+    '女': '女孩', '男': '男孩', '纸': '白纸', '墨': '笔墨', '琴': '钢琴', '棋': '下棋',
+    '蛋': '鸡蛋', '糕': '蛋糕', '饺': '饺子', '碗': '饭碗', '筷': '筷子', '勺': '勺子', '盘': '盘子',
+    '盐': '食盐', '油': '香油', '苦': '苦瓜', '酸': '酸梅', '灰': '灰色', '粉': '粉色',
+    '金': '黄金', '银': '白银', '玉': '美玉', '宝': '宝石', '哭': '哭泣', '笑': '微笑',
+    '睡': '睡觉', '穿': '穿衣', '洗': '洗手', '扫': '扫地', '拍': '拍球', '拉': '拉车', '推': '推车', '吹': '吹风',
+    '国': '祖国', '京': '北京', '村': '山村', '园': '公园', '场': '操场', '店': '商店', '机': '飞机', '铁': '磁铁',
+    '衣': '衣服', '帽': '帽子', '鞋': '球鞋', '袜': '袜子', '伞': '雨伞', '刀': '小刀', '尺': '尺子', '包': '书包',
+    '床': '小床', '桌': '书桌', '椅': '椅子', '窗': '窗户', '球': '皮球', '镜': '镜子', '慢': '慢慢', '净': '干净'
 };
 
 // 组词填空：多音字读音修正 & 不宜配单字插画的转义复合词
@@ -281,6 +333,8 @@ class ExamCenter {
         this.storedStars = this.loadJSON('kid_app_game_stars_v1', {});
         this.weakChars = this.loadJSON('kid_app_weak_chars_v1', {});
         this.scopeMode = 'all'; // 'all' | 'cat' | 'weak'
+        this.gradeFilter = this.loadJSON('kid_app_grade_filter_v1', 'all'); // 'all' | 'k-1' | 'k' | 'g1' | 'g2' | 'g3'
+        this.difficulty = this.loadJSON('kid_app_difficulty_v1', 'standard'); // 'easy' | 'standard' | 'hard'
         this.todayStats = this.loadToday();
     }
 
@@ -318,7 +372,9 @@ class ExamCenter {
                     pinyin: info.pinyin || item.pinyin || '',
                     words: Array.isArray(info.words) ? info.words.filter(w => typeof w === 'string') : [],
                     image: info.image || item.image || illMap[item.char] || '',
-                    catId: cat.id
+                    catId: cat.id,
+                    grade: info.grade || item.grade || 'g1',
+                    difficulty: info.difficulty || item.difficulty || 2
                 };
             });
         });
@@ -369,26 +425,133 @@ class ExamCenter {
         return typeof item === 'string' ? item : (item.target || '');
     }
 
-    // 根据当前出题范围模式（全部题库 / 当前分类 / 错题巩固）过滤题池，并在题数不足时平滑兜底
+    // 根据当前学龄分级（K-1 / K / G1 / G2 / G3）与出题范围模式过滤题池，并在题数不足时平滑兜底
     filterPoolByScope(pool) {
-        if (!pool || !pool.length || this.scopeMode === 'all') return pool;
+        if (!pool || !pool.length) return pool;
+        let base = pool;
+        if (this.gradeFilter && this.gradeFilter !== 'all') {
+            const byGrade = pool.filter(it => {
+                const info = this.info(this.itemChar(it));
+                return info && info.grade === this.gradeFilter;
+            });
+            if (byGrade.length >= 4) base = byGrade;
+        }
+        if (this.scopeMode === 'all') return base;
         if (this.scopeMode === 'cat') {
             const catId = (this.app && this.app.currentCategory) || 'starter';
-            const filtered = pool.filter(it => {
+            const filtered = base.filter(it => {
                 const info = this.info(this.itemChar(it));
                 return info && info.catId === catId;
             });
-            return filtered.length >= 4 ? filtered : pool;
+            if (filtered.length >= 4) return filtered;
+            const catAllGrades = pool.filter(it => {
+                const info = this.info(this.itemChar(it));
+                return info && info.catId === catId;
+            });
+            return catAllGrades.length >= 4 ? catAllGrades : base;
         }
         if (this.scopeMode === 'weak') {
             const weakKeys = new Set(Object.keys(this.weakChars || {}).filter(k => this.weakChars[k] > 0));
-            const weakFiltered = pool.filter(it => weakKeys.has(this.itemChar(it)));
+            const weakFiltered = base.filter(it => weakKeys.has(this.itemChar(it)));
             if (weakFiltered.length >= 4) return weakFiltered;
             const completed = new Set((this.app && Array.isArray(this.app.completedChars)) ? this.app.completedChars : []);
-            const unmastered = pool.filter(it => weakKeys.has(this.itemChar(it)) || !completed.has(this.itemChar(it)));
-            return unmastered.length >= 4 ? unmastered : pool;
+            const unmastered = base.filter(it => weakKeys.has(this.itemChar(it)) || !completed.has(this.itemChar(it)));
+            return unmastered.length >= 4 ? unmastered : base;
         }
-        return pool;
+        return base;
+    }
+
+    // 切换学龄分级（并可联动推荐难度）
+    setGradeFilter(gradeId, syncDefaultDiff = true, fromApp = false) {
+        const grades = window.CHARACTER_GRADES || [];
+        const gMeta = grades.find(g => g.id === gradeId) || { id: 'all', name: '🌈 全部学龄', defaultDiff: 'standard' };
+        this.gradeFilter = gMeta.id;
+        this.saveJSON('kid_app_grade_filter_v1', this.gradeFilter);
+        if (syncDefaultDiff && gMeta.defaultDiff) {
+            this.difficulty = gMeta.defaultDiff;
+            this.saveJSON('kid_app_difficulty_v1', this.difficulty);
+        }
+        this.queues = {};
+        this.renderLevelBar();
+        if (!fromApp && this.app && typeof this.app.onGradeOrDiffChange === 'function') {
+            this.app.onGradeOrDiffChange(this.gradeFilter, this.difficulty, true);
+        }
+        if (!fromApp && this.app && typeof this.app.showToast === 'function') {
+            const dMeta = (window.CHARACTER_DIFFICULTIES || []).find(d => d.id === this.difficulty);
+            const count = this.gradeFilter === 'all'
+                ? this.allChars.length
+                : this.allChars.filter(c => this.info(c) && this.info(c).grade === this.gradeFilter).length;
+            this.app.showToast(`🎓 已切换为【${gMeta.name}】（共 ${count} 字）· 难度：${dMeta ? dMeta.name : this.difficulty}`);
+        }
+    }
+
+    // 切换闯关与评测难度（easy / standard / hard）
+    setDifficulty(diffId, fromApp = false) {
+        const diffs = window.CHARACTER_DIFFICULTIES || [];
+        const dMeta = diffs.find(d => d.id === diffId) || { id: 'standard', name: '⭐ 标准闯关', desc: '' };
+        this.difficulty = dMeta.id;
+        this.saveJSON('kid_app_difficulty_v1', this.difficulty);
+        this.renderLevelBar();
+        if (!fromApp && this.app && typeof this.app.onGradeOrDiffChange === 'function') {
+            this.app.onGradeOrDiffChange(this.gradeFilter, this.difficulty, true);
+        }
+        if (!fromApp && this.app && typeof this.app.showToast === 'function') {
+            this.app.showToast(`⚡ 已切换为【${dMeta.name}】：${dMeta.desc}`);
+        }
+        // 若正在舞台游戏中，立即刷新当前小游戏题目以应用新难度
+        if (!fromApp && this.activeGame) {
+            this.enterGame(this.activeGame);
+        }
+    }
+
+    // 渲染大厅学龄分级与难度筛选栏 + 舞台顶部难度徽章
+    renderLevelBar() {
+        const grades = window.CHARACTER_GRADES || [
+            { id: 'all', name: '🌈 全部学龄', short: '全部', age: '3-9岁' },
+            { id: 'k-1', name: '🐣 K-1 启蒙', short: 'K-1', age: '3-4岁' },
+            { id: 'k',   name: '🌱 K班 学前', short: 'K班', age: '4-5岁' },
+            { id: 'g1',  name: '🌿 G1 一年级', short: 'G1', age: '5-6岁' },
+            { id: 'g2',  name: '🌳 G2 二年级', short: 'G2', age: '6-7岁' },
+            { id: 'g3',  name: '🏆 G3 进阶',  short: 'G3+', age: '7-9岁' }
+        ];
+        const diffs = window.CHARACTER_DIFFICULTIES || [
+            { id: 'easy',     name: '🌱 轻松启蒙', short: '🌱 轻松', desc: '3选项 · 慢速 · 自动拼音提示' },
+            { id: 'standard', name: '⭐ 标准闯关', short: '⭐ 标准', desc: '4选项 · 标准速度 · 词组提示' },
+            { id: 'hard',     name: '🔥 挑战进阶', short: '🔥 挑战', desc: '6选项 · 形近字干扰 · 严格评分' }
+        ];
+
+        const gradeContainer = document.getElementById('game-grade-pills');
+        if (gradeContainer) {
+            gradeContainer.innerHTML = grades.map(g => {
+                const count = g.id === 'all'
+                    ? (this.allChars ? this.allChars.length : 400)
+                    : (this.allChars ? this.allChars.filter(c => this.info(c) && this.info(c).grade === g.id).length : 0);
+                const active = this.gradeFilter === g.id ? 'active' : '';
+                return `<button type="button" class="gp-grade-pill ${active}" data-grade="${g.id}" title="${g.name}（${g.age} · ${count}字）">
+                    <span class="gp-pill-name">${g.name}</span>
+                    <span class="gp-pill-sub">${g.age} · ${count}字</span>
+                </button>`;
+            }).join('');
+        }
+
+        const diffContainer = document.getElementById('game-diff-pills');
+        if (diffContainer) {
+            diffContainer.innerHTML = diffs.map(d => {
+                const active = this.difficulty === d.id ? 'active' : '';
+                return `<button type="button" class="gp-diff-pill diff-${d.id} ${active}" data-diff="${d.id}" title="${d.name}：${d.desc}">
+                    <span>${d.name}</span>
+                </button>`;
+            }).join('');
+        }
+
+        const stageBadge = document.getElementById('btn-game-stage-diff');
+        if (stageBadge) {
+            const gCur = grades.find(g => g.id === this.gradeFilter) || grades[0];
+            const dCur = diffs.find(d => d.id === this.difficulty) || diffs[1];
+            const dEmoji = this.difficulty === 'easy' ? '🌱' : (this.difficulty === 'hard' ? '🔥' : '⭐');
+            stageBadge.textContent = `${gCur.short} · ${dEmoji}${dCur.short.replace(/^[^\s]+\s*/, '')}`;
+            stageBadge.dataset.diff = this.difficulty;
+        }
     }
 
     // 从题库随机无限出题（洗牌队列 + 错题智能优先复现，避免连续重复）
@@ -489,7 +652,7 @@ class ExamCenter {
         this.updateScopeBtn();
         if (this.app && typeof this.app.showToast === 'function') {
             if (this.scopeMode === 'all') {
-                this.app.showToast('🌟 已切换为【全部题库】：从全部 11 大主题 295 个汉字中随机出题');
+                this.app.showToast('🌟 已切换为【全部题库】：从全部 12 大主题 400 个汉字中随机出题');
             } else if (this.scopeMode === 'cat') {
                 const cats = (typeof CHARACTER_CATEGORIES !== 'undefined') ? CHARACTER_CATEGORIES : (window.CHARACTER_CATEGORIES || []);
                 const cur = cats.find(c => c.id === (this.app.currentCategory || 'starter'));
@@ -545,8 +708,9 @@ class ExamCenter {
         const need = Math.max(0, total - 1);
 
         const visual = gpShuffle((GP_VISUAL_CONFUSERS[target] || '').split(''));
+        const maxVisual = this.difficulty === 'hard' ? 2 : 1;
         for (const c of visual) {
-            if (picked.length >= 1) break;
+            if (picked.length >= maxVisual) break;
             if (ok(c)) picked.push(c);
         }
 
@@ -756,6 +920,7 @@ class ExamCenter {
         const today = document.getElementById('game-hub-today');
         if (today) today.textContent = `⭐ 今日 ${this.todayStats.stars}`;
         this.updateScopeBtn();
+        this.renderLevelBar();
         this.syncPracticeCharBtn();
     }
 
@@ -784,6 +949,7 @@ class ExamCenter {
         document.querySelectorAll('.game-panel').forEach(p => {
             p.classList.toggle('active', p.dataset.game === gameId);
         });
+        this.renderLevelBar();
         this.updateStats();
         this.setMascot(g.intro, 'idle');
 
@@ -956,7 +1122,7 @@ class ExamCenter {
         }
         const pyTag = document.getElementById('pw-pinyin');
         if (pyTag) {
-            pyTag.hidden = true;
+            pyTag.hidden = (this.difficulty !== 'easy');
             pyTag.textContent = info.pinyin;
         }
         this.renderPwClue(ch, false);
@@ -972,7 +1138,8 @@ class ExamCenter {
         }
         const cw = this.clueWord(ch);
         const masked = cw ? cw.replace(ch, '（？）') : '这个字';
-        this.setMascot(`看图填词：<strong>${masked}</strong>，在米字格里写出来吧！`, 'idle');
+        const diffTip = this.difficulty === 'easy' ? `（拼音：${info.pinyin}）` : '';
+        this.setMascot(`看图填词：<strong>${masked}</strong>${diffTip}，在米字格里写出来吧！`, 'idle');
     }
 
     renderPwClue(ch, revealed = false) {
@@ -1036,7 +1203,9 @@ class ExamCenter {
             this.examCanvas.drawCanvas,
             [ch],
             this.examCanvas.strokeList,
-            this.examCanvas.cssSize
+            this.examCanvas.cssSize,
+            null,
+            this.difficulty || 'standard'
         );
         if (!res || !res.valid) {
             if (this.app) this.app.showToast(res ? res.message : '请多写几笔再提交哦！');
@@ -1183,7 +1352,8 @@ class ExamCenter {
         const ch = this.pickNext('balloon', this.picturePool);
         if (!ch) return;
         const info = this.info(ch);
-        const options = this.buildOptions(ch, 4, { pool: this.picturePool, sameCatCount: 1 });
+        const optCount = this.difficulty === 'easy' ? 3 : (this.difficulty === 'hard' ? 6 : 4);
+        const options = this.buildOptions(ch, optCount, { pool: this.picturePool, sameCatCount: this.difficulty === 'hard' ? 2 : 1 });
         this.bl = { char: ch, tries: 0, hinted: false, locked: false };
 
         const img = document.getElementById('bl-img');
@@ -1195,6 +1365,7 @@ class ExamCenter {
         const colors = gpShuffle(['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'teal']);
         const sky = document.getElementById('bl-sky');
         if (sky) {
+            sky.dataset.count = String(optCount);
             sky.innerHTML = `
                 <span class="bl-cloud c1" aria-hidden="true">☁️</span>
                 <span class="bl-cloud c2" aria-hidden="true">☁️</span>
@@ -1255,13 +1426,16 @@ class ExamCenter {
     nextListen() {
         const ch = this.pickNext('listen', this.listenPool);
         if (!ch) return;
-        const options = this.buildOptions(ch, 4, { pool: this.listenPool, avoidHomophone: true, sameCatCount: 1 });
+        const optCount = this.difficulty === 'easy' ? 3 : (this.difficulty === 'hard' ? 6 : 4);
+        const options = this.buildOptions(ch, optCount, { pool: this.listenPool, avoidHomophone: true, sameCatCount: this.difficulty === 'hard' ? 2 : 1 });
         this.ls = { char: ch, tries: 0, locked: false };
 
         const grid = document.getElementById('ls-options');
         if (grid) {
+            grid.dataset.count = String(optCount);
+            const showPy = this.difficulty === 'easy' ? 'revealed' : '';
             grid.innerHTML = options.map(c => `
-                <button type="button" class="ls-card" data-char="${c}" aria-label="选项：${c}">
+                <button type="button" class="ls-card ${showPy}" data-char="${c}" aria-label="选项：${c}">
                     <span class="ls-card-char">${c}</span>
                     <span class="ls-card-py">${this.py(c)}</span>
                 </button>
@@ -1345,12 +1519,13 @@ class ExamCenter {
             const cand = idx === 0 ? c + word[1] : word[0] + c;
             return !this.allWords.has(cand);
         };
-        const options = this.buildOptions(target, 4, {
+        const optCount = this.difficulty === 'easy' ? 3 : (this.difficulty === 'hard' ? 6 : 4);
+        const options = this.buildOptions(target, optCount, {
             pool: this.listenPool,
             avoidHomophone: true,
             targetPinyin: targetPy,
             validator,
-            sameCatCount: 1
+            sameCatCount: this.difficulty === 'hard' ? 2 : 1
         });
         this.wd = { target, word, idx, tries: 0, locked: false };
 
@@ -1375,6 +1550,7 @@ class ExamCenter {
         }
         const opts = document.getElementById('wd-options');
         if (opts) {
+            opts.dataset.count = String(optCount);
             opts.innerHTML = options.map(c => `
                 <button type="button" class="wd-piece" data-char="${c}" aria-label="选项：${c}">
                     <span class="wd-piece-char">${c}</span>
@@ -1449,13 +1625,14 @@ class ExamCenter {
     }
 
     buildNumberOptions(total) {
+        const targetSize = this.difficulty === 'easy' ? 3 : (this.difficulty === 'hard' ? 5 : 4);
         const set = new Set([total]);
         const cands = gpShuffle([total - 2, total - 1, total + 1, total + 2, total + 3].filter(n => n >= 1 && n <= 16));
         for (const n of cands) {
-            if (set.size >= 4) break;
+            if (set.size >= targetSize) break;
             set.add(n);
         }
-        while (set.size < 4) set.add(Math.max(...set) + 1);
+        while (set.size < targetSize) set.add(Math.max(...set) + 1);
         return [...set].sort((a, b) => a - b);
     }
 
@@ -1523,7 +1700,8 @@ class ExamCenter {
     goStrokeStep2() {
         const sk = this.sk;
         if (!sk) return;
-        if (sk.askIdx < 0) {
+        // 轻松模式（K-1/K 启蒙）只考总笔画数，答对直接庆祝过关，不考专业笔画名称
+        if (sk.askIdx < 0 || this.difficulty === 'easy') {
             this.finishStroke();
             return;
         }
@@ -1720,7 +1898,16 @@ class ExamCenter {
 
     // ==================== 游戏 6：🔗 反义词连线 ====================
     newAntonymRound() {
-        const pairs = gpShuffle(GP_ANTONYM_PAIRS.slice()).slice(0, 6);
+        const pairCount = this.difficulty === 'easy' ? 4 : (this.difficulty === 'hard' ? 7 : 6);
+        let poolPairs = GP_ANTONYM_PAIRS.slice();
+        if (this.gradeFilter && this.gradeFilter !== 'all') {
+            const gradeOrder = ['k-1', 'k', 'g1', 'g2', 'g3'];
+            const maxIdx = Math.max(1, gradeOrder.indexOf(this.gradeFilter));
+            const allowed = new Set(gradeOrder.slice(0, maxIdx + 1));
+            const filtered = poolPairs.filter(p => allowed.has(p.g || 'g1'));
+            if (filtered.length >= pairCount) poolPairs = filtered;
+        }
+        const pairs = gpShuffle(poolPairs).slice(0, pairCount);
         this.ant = {
             pairs,
             right: gpShuffle(pairs.map(p => p.b)),
@@ -1889,15 +2076,25 @@ class ExamCenter {
 
     // ==================== 游戏 7：🃏 翻牌配对 ====================
     newMemoryRound() {
+        const targetPairs = this.difficulty === 'easy' ? 4 : (this.difficulty === 'hard' ? 8 : 6);
+        const scopedPool = this.filterPoolByScope(this.picturePool);
         const chosen = [];
         const usedCats = {};
-        for (const c of gpShuffle(this.picturePool.slice())) {
-            if (chosen.length >= 6) break;
+        for (const c of gpShuffle(scopedPool.slice())) {
+            if (chosen.length >= targetPairs) break;
             if (chosen.some(x => this.sameGroup(x, c))) continue;
             const cat = this.info(c).catId;
-            if ((usedCats[cat] || 0) >= 2) continue;
+            if ((usedCats[cat] || 0) >= 3) continue;
             chosen.push(c);
             usedCats[cat] = (usedCats[cat] || 0) + 1;
+        }
+        // 若同组过滤导致不足，从全图库补齐
+        if (chosen.length < targetPairs) {
+            for (const c of gpShuffle(this.picturePool.slice())) {
+                if (chosen.length >= targetPairs) break;
+                if (chosen.includes(c) || chosen.some(x => this.sameGroup(x, c))) continue;
+                chosen.push(c);
+            }
         }
         const cards = gpShuffle(chosen.flatMap(c => [{ key: c, kind: 'pic' }, { key: c, kind: 'char' }]))
             .map((card, i) => ({ ...card, id: i, matched: false }));
@@ -1905,6 +2102,7 @@ class ExamCenter {
 
         const grid = document.getElementById('mm-grid');
         if (grid) {
+            grid.dataset.pairs = String(chosen.length);
             grid.innerHTML = cards.map(card => `
                 <button type="button" class="mm-card" data-id="${card.id}" aria-label="翻牌">
                     <span class="mm-inner">
@@ -2083,15 +2281,18 @@ class ExamCenter {
     spawnMole() {
         const ml = this.ml;
         if (!ml || !ml.running) return;
+        const maxUp = this.difficulty === 'hard' ? 3 : 2;
+        const stayMs = this.difficulty === 'easy' ? 3300 : (this.difficulty === 'hard' ? 1900 : 2600);
+        const nextDelay = this.difficulty === 'easy' ? (1100 + Math.random() * 500) : (this.difficulty === 'hard' ? (660 + Math.random() * 400) : (900 + Math.random() * 520));
         if (!ml.switching) {
             const holes = Array.from(document.querySelectorAll('#ml-field .ml-hole'));
             const free = holes.filter(h => !h.classList.contains('up'));
             const upCount = holes.length - free.length;
-            if (free.length && upCount < 2) {
+            if (free.length && upCount < maxUp) {
                 const hole = gpPick(free);
                 const targetUp = holes.some(h => h.classList.contains('up') && h.dataset.char === ml.target);
                 let ch;
-                if (!targetUp && (ml.sinceTarget >= 2 || Math.random() < 0.45)) {
+                if (!targetUp && (ml.sinceTarget >= 2 || Math.random() < 0.48)) {
                     ch = ml.target;
                     ml.sinceTarget = 0;
                 } else {
@@ -2107,10 +2308,10 @@ class ExamCenter {
                 hole.classList.add('up');
                 this.moleLater(() => {
                     if (hole.dataset.token === String(token)) hole.classList.remove('up', 'hit', 'miss');
-                }, 2700);
+                }, stayMs);
             }
         }
-        this.moleLater(() => this.spawnMole(), 900 + Math.random() * 550);
+        this.moleLater(() => this.spawnMole(), nextDelay);
     }
 
     onMoleTap(hole) {
@@ -2118,6 +2319,7 @@ class ExamCenter {
         if (!ml || !ml.running || ml.switching || !hole || !hole.classList.contains('up') || hole.classList.contains('hit') || hole.classList.contains('miss')) return;
         const ch = hole.dataset.char;
         const token = hole.dataset.token;
+        const hitsNeeded = this.difficulty === 'easy' ? 2 : 3;
         if (ch === ml.target) {
             hole.classList.add('hit');
             this.burstAt(hole, ['#facc15', '#f97316', '#22c55e']);
@@ -2128,7 +2330,7 @@ class ExamCenter {
             this.moleLater(() => {
                 if (hole.dataset.token === token) hole.classList.remove('up', 'hit');
             }, 520);
-            if (ml.hits >= 3) {
+            if (ml.hits >= hitsNeeded) {
                 ml.switching = true;
                 this.moleLater(() => this.pickMoleTarget(true), 650);
             } else {
@@ -2156,7 +2358,8 @@ class ExamCenter {
         }
         const cache = window.STROKE_DATA_CACHE || {};
 
-        const picItems = gpShuffle(this.writingPool.slice()).slice(0, 10).map(ch => this.info(ch)).filter(Boolean);
+        const scopedWriting = this.filterPoolByScope(this.writingPool);
+        const picItems = gpShuffle(scopedWriting.slice()).slice(0, 10).map(ch => this.info(ch)).filter(Boolean);
         const picGridHtml = picItems.map(q => {
             const cw = this.clueWord(q.char);
             const clueTxt = cw ? cw.replace(q.char, '（  ）') : '';
@@ -2273,6 +2476,20 @@ class ExamCenter {
         on('btn-game-scope', 'click', () => this.cycleScopeMode());
         on('btn-game-practice-char', 'click', () => this.practiceCurrentChar());
         on('btn-exam-print-paper', 'click', () => this.printExamPaper());
+        delegate('game-grade-pills', '.gp-grade-pill', (pill) => {
+            this.sfx('playPop');
+            this.setGradeFilter(pill.dataset.grade, true);
+        });
+        delegate('game-diff-pills', '.gp-diff-pill', (pill) => {
+            this.sfx('playPop');
+            this.setDifficulty(pill.dataset.diff);
+        });
+        on('btn-game-stage-diff', 'click', () => {
+            this.sfx('playPop');
+            const order = ['easy', 'standard', 'hard'];
+            const next = order[(order.indexOf(this.difficulty) + 1) % order.length];
+            this.setDifficulty(next);
+        });
 
         // 看图写字
         on('pw-img', 'click', () => {

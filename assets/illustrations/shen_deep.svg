@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_shen_dp" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_shen_dp)"/>
+
+  <!-- Shallow ledge on left vs deep ocean trench on right -->
+  <path d="M0 70 L200 70 L200 200 L0 200 Z" fill="#0369a1"/>
+  <path d="M0 110 L76 110 L96 184 L200 184 L200 200 L0 200 Z" fill="#78350f"/>
+  <!-- Vertical double arrow showing DEEP water on right -->
+  <line x1="144" y1="76" x2="144" y2="176" stroke="#fde047" stroke-width="5"/>
+  <polygon points="144,70 135,84 153,84" fill="#fde047"/>
+  <polygon points="144,182 135,168 153,168" fill="#fde047"/>
+
+</svg>

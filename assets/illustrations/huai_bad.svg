@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_huai" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_huai)"/>
+
+  <!-- Red thumbs-down circle badge -->
+  <circle cx="100" cy="100" r="64" fill="#fee2e2" stroke="#ef4444" stroke-width="4"/>
+  <!-- Thumbs down hand -->
+  <rect x="52" y="58" width="24" height="50" rx="6" fill="#64748b"/>
+  <path d="M76 104 C86 104 94 132 98 146 C100 156 114 154 114 142 L112 118 L142 118 C152 118 152 104 144 100 C152 96 150 84 142 82 C148 78 146 68 138 66 C142 62 138 54 128 54 L76 54 Z" fill="#fed7aa" stroke="#ea580c" stroke-width="3.5" stroke-linejoin="round"/>
+
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_xia_sh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#cffafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_xia_sh)"/>
+
+  <!-- Long curved antennae -->
+  <path d="M68 70 Q28 42 24 84" fill="none" stroke="#ea580c" stroke-width="3" stroke-linecap="round"/>
+  <path d="M72 64 Q40 24 88 28" fill="none" stroke="#ea580c" stroke-width="3" stroke-linecap="round"/>
+  <!-- Curved segmented shrimp body -->
+  <path d="M72 78 C126 56 158 96 132 136 C116 156 88 154 78 142" fill="none" stroke="#fb923c" stroke-width="28" stroke-linecap="round"/>
+  <path d="M72 78 C126 56 158 96 132 136" fill="none" stroke="#ea580c" stroke-width="28" stroke-dasharray="6,14" stroke-linecap="round"/>
+  <!-- Tail fan & head eye -->
+  <polygon points="74,142 52,134 58,158" fill="#ef4444"/>
+  <polygon points="62,78 88,64 88,92" fill="#f97316"/>
+  <circle cx="74" cy="74" r="4" fill="#1e293b"/>
+
+</svg>

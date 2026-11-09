@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_you_o" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_you_o)"/>
+
+  <rect x="86" y="28" width="28" height="14" rx="4" fill="#ef4444"/>
+  <rect x="90" y="42" width="20" height="18" fill="#fef08a" stroke="#ca8a04" stroke-width="2.5"/>
+  <rect x="64" y="60" width="72" height="106" rx="18" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+  <rect x="74" y="88" width="52" height="46" rx="8" fill="#ffffff" opacity="0.85"/>
+  <!-- Golden oil drop emblem on label -->
+  <path d="M100 94 C90 108 88 118 100 124 C112 118 110 108 100 94 Z" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+
+</svg>

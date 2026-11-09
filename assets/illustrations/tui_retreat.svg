@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_tui_bk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_tui_bk)"/>
+
+  <line x1="148" y1="40" x2="148" y2="160" stroke="#94a3b8" stroke-width="6" stroke-dasharray="8,6"/>
+  <!-- Bold arrow pointing backward (left) away from line -->
+  <path d="M136 100 L48 100" stroke="#ea580c" stroke-width="10" stroke-linecap="round"/>
+  <polygon points="34,100 58,82 58,118" fill="#ea580c"/>
+
+</svg>

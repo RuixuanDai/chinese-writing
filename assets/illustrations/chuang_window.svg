@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_chuang_w" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_chuang_w)"/>
+
+  <rect x="42" y="36" width="116" height="120" rx="8" fill="#bae6fd" stroke="#92400e" stroke-width="6"/>
+  <circle cx="126" cy="68" r="14" fill="#facc15"/>
+  <!-- Window panes crossbars -->
+  <line x1="100" y1="36" x2="100" y2="156" stroke="#92400e" stroke-width="5"/>
+  <line x1="42" y1="96" x2="158" y2="96" stroke="#92400e" stroke-width="5"/>
+  <!-- Curtains on left & right -->
+  <path d="M44 38 L74 38 Q68 96 44 136 Z" fill="#f472b6" opacity="0.85"/>
+  <path d="M156 38 L126 38 Q132 96 156 136 Z" fill="#f472b6" opacity="0.85"/>
+  <rect x="32" y="152" width="136" height="12" rx="4" fill="#78350f"/>
+
+</svg>

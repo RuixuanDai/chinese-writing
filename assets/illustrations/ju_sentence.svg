@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_ju_s" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_ju_s)"/>
+
+  <rect x="22" y="68" width="156" height="64" rx="14" fill="#ffffff" stroke="#10b981" stroke-width="3.5"/>
+  <rect x="34" y="84" width="24" height="32" rx="5" fill="#a7f3d0"/>
+  <rect x="64" y="84" width="24" height="32" rx="5" fill="#a7f3d0"/>
+  <rect x="94" y="84" width="24" height="32" rx="5" fill="#a7f3d0"/>
+  <rect x="124" y="84" width="24" height="32" rx="5" fill="#a7f3d0"/>
+  <!-- Bold red Chinese full-stop period (句号 。) at end of sentence -->
+  <circle cx="162" cy="110" r="7" fill="none" stroke="#ef4444" stroke-width="4"/>
+
+</svg>

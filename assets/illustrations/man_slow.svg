@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_man_sl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_man_sl)"/>
+
+  <line x1="20" y1="154" x2="180" y2="154" stroke="#16a34a" stroke-width="5" stroke-linecap="round"/>
+  <!-- Soft snail body -->
+  <path d="M40 152 Q52 132 146 136 Q168 136 164 152 Z" fill="#fde047" stroke="#ca8a04" stroke-width="2.5"/>
+  <line x1="152" y1="138" x2="162" y2="116" stroke="#ca8a04" stroke-width="3"/><circle cx="162" cy="114" r="4" fill="#1e293b"/>
+  <line x1="142" y1="138" x2="148" y2="118" stroke="#ca8a04" stroke-width="3"/><circle cx="148" cy="116" r="4" fill="#1e293b"/>
+  <!-- Spiral snail shell -->
+  <circle cx="92" cy="106" r="38" fill="#fb923c" stroke="#c2410c" stroke-width="3.5"/>
+  <path d="M92 106 Q104 94 108 108 Q104 124 84 120 Q68 112 76 90 Q88 74 114 84" fill="none" stroke="#9a3412" stroke-width="4" stroke-linecap="round"/>
+
+</svg>

@@ -134,8 +134,19 @@ class KidWritingApp {
         }
 
         this.currentCategory = targetCat;
+        try {
+            this.gradeFilter = JSON.parse(localStorage.getItem('kid_app_grade_filter_v1')) || 'all';
+        } catch (e) {
+            this.gradeFilter = 'all';
+        }
+        try {
+            this.difficulty = JSON.parse(localStorage.getItem('kid_app_difficulty_v1')) || 'standard';
+        } catch (e) {
+            this.difficulty = 'standard';
+        }
 
-        // 4. 渲染分类标签与汉字列表
+        // 4. 渲染学龄分级栏、分类标签与汉字列表
+        this.renderPracticeGradeBar();
         this.renderCategories();
         this.renderCharList(targetCat);
 
@@ -193,13 +204,147 @@ class KidWritingApp {
         this.initPWA();
     }
 
-    // 渲染分类标签栏
+    // 渲染趣味练字顶部的学龄分级 (K-1 / K / G1 / G2 / G3+) 与评测难度条
+    renderPracticeGradeBar() {
+        const bar = document.getElementById('practice-grade-bar');
+        if (!bar) return;
+        const grades = window.CHARACTER_GRADES || [
+            { id: 'all', name: '🌈 全部学龄', short: '全部', age: '3-9岁', defaultDiff: 'standard' },
+            { id: 'k-1', name: '🐣 K-1 启蒙', short: 'K-1', age: '3-4岁', defaultDiff: 'easy' },
+            { id: 'k',   name: '🌱 K班 学前', short: 'K班', age: '4-5岁', defaultDiff: 'easy' },
+            { id: 'g1',  name: '🌿 G1 一年级', short: 'G1', age: '5-6岁', defaultDiff: 'standard' },
+            { id: 'g2',  name: '🌳 G2 二年级', short: 'G2', age: '6-7岁', defaultDiff: 'standard' },
+            { id: 'g3',  name: '🏆 G3 进阶',  short: 'G3+', age: '7-9岁', defaultDiff: 'hard' }
+        ];
+        const diffs = window.CHARACTER_DIFFICULTIES || [
+            { id: 'easy',     name: '🌱 轻松启蒙', short: '🌱 轻松', desc: '鼓励式宽松评分' },
+            { id: 'standard', name: '⭐ 标准闯关', short: '⭐ 标准', desc: '标准笔顺与结构评分' },
+            { id: 'hard',     name: '🔥 挑战进阶', short: '🔥 挑战', desc: '严格笔顺与间架评分' }
+        ];
+
+        const allItems = [];
+        (window.CHARACTER_CATEGORIES || []).forEach(c => (c.chars || []).forEach(ch => allItems.push(ch)));
+
+        const gradeHtml = grades.map(g => {
+            const cnt = g.id === 'all' ? allItems.length : allItems.filter(x => x.grade === g.id).length;
+            const active = this.gradeFilter === g.id ? 'active' : '';
+            return `<button type="button" class="prac-grade-pill ${active}" data-grade="${g.id}" title="${g.name}（${g.age} · 共 ${cnt} 字）">
+                <span>${g.name}</span>
+                <small>${cnt}字</small>
+            </button>`;
+        }).join('');
+
+        const diffHtml = diffs.map(d => {
+            const active = this.difficulty === d.id ? 'active' : '';
+            return `<button type="button" class="prac-diff-pill diff-${d.id} ${active}" data-diff="${d.id}" title="练字与闯关难度：${d.name}">
+                <span>${d.short || d.name}</span>
+            </button>`;
+        }).join('');
+
+        bar.innerHTML = `
+            <div class="prac-grade-left">
+                <span class="prac-bar-label">🎓 学龄：</span>
+                <div class="prac-grade-list">${gradeHtml}</div>
+            </div>
+            <div class="prac-grade-right">
+                <span class="prac-bar-label">⚡ 难度：</span>
+                <div class="prac-diff-list">${diffHtml}</div>
+            </div>
+        `;
+
+        bar.querySelectorAll('.prac-grade-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                const gId = btn.dataset.grade;
+                const gMeta = grades.find(x => x.id === gId);
+                const nextDiff = (gMeta && gMeta.defaultDiff) ? gMeta.defaultDiff : this.difficulty;
+                this.onGradeOrDiffChange(gId, nextDiff, false);
+                if (this.examCenter && typeof this.examCenter.setGradeFilter === 'function') {
+                    this.examCenter.setGradeFilter(gId, true, true);
+                }
+                const cnt = gId === 'all' ? allItems.length : allItems.filter(x => x.grade === gId).length;
+                this.showToast(`🎓 已筛选【${gMeta ? gMeta.name : gId}】（${cnt} 字）`);
+            });
+        });
+
+        bar.querySelectorAll('.prac-diff-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                const dId = btn.dataset.diff;
+                const dMeta = diffs.find(x => x.id === dId);
+                this.onGradeOrDiffChange(this.gradeFilter, dId, false);
+                if (this.examCenter && typeof this.examCenter.setDifficulty === 'function') {
+                    this.examCenter.setDifficulty(dId, true);
+                }
+                this.showToast(`⚡ 已切换难度为【${dMeta ? dMeta.name : dId}】`);
+            });
+        });
+    }
+
+    onGradeOrDiffChange(gradeId, diffId, fromExam = false) {
+        const gradeChanged = this.gradeFilter !== gradeId;
+        this.gradeFilter = gradeId || 'all';
+        this.difficulty = diffId || 'standard';
+        try {
+            localStorage.setItem('kid_app_grade_filter_v1', JSON.stringify(this.gradeFilter));
+            localStorage.setItem('kid_app_difficulty_v1', JSON.stringify(this.difficulty));
+        } catch (e) {}
+        this.renderPracticeGradeBar();
+        if (gradeChanged) {
+            if (this.gradeFilter !== 'all') {
+                this.currentCategory = '__grade_all__';
+            } else if (this.currentCategory === '__grade_all__') {
+                this.currentCategory = 'starter';
+            }
+            this.renderCategories();
+            this.renderCharList(this.currentCategory);
+            const firstBtn = document.querySelector('#char-list-grid .char-card-btn');
+            if (firstBtn && firstBtn.dataset.char && !document.querySelector(`#char-list-grid .char-card-btn[data-char="${this.currentChar}"]`)) {
+                this.selectChar(firstBtn.dataset.char);
+            }
+        }
+    }
+
+    // 渲染分类标签栏（当选定具体学龄时，自动置顶“本学龄全部汉字”并显示各分类下该学龄字数）
     renderCategories() {
         const catBar = document.getElementById('category-bar');
         if (!catBar) return;
         catBar.innerHTML = '';
 
-        CHARACTER_CATEGORIES.forEach((cat) => {
+        const gFilter = this.gradeFilter || 'all';
+        const grades = window.CHARACTER_GRADES || [];
+        const gMeta = grades.find(g => g.id === gFilter);
+
+        const tabs = [];
+        if (gFilter !== 'all') {
+            const gradeChars = [];
+            CHARACTER_CATEGORIES.forEach(c => (c.chars || []).forEach(ch => {
+                if (ch.grade === gFilter) gradeChars.push(ch);
+            }));
+            tabs.push({
+                id: '__grade_all__',
+                name: `${gMeta ? gMeta.name : '本学龄'}全部 (${gradeChars.length})`,
+                chars: gradeChars
+            });
+        }
+
+        CHARACTER_CATEGORIES.forEach(cat => {
+            const filteredChars = gFilter === 'all'
+                ? (cat.chars || [])
+                : (cat.chars || []).filter(ch => ch.grade === gFilter);
+            if (gFilter !== 'all' && filteredChars.length === 0) return;
+            tabs.push({
+                id: cat.id,
+                name: gFilter === 'all' ? cat.name : `${cat.name} (${filteredChars.length})`,
+                chars: filteredChars
+            });
+        });
+
+        if (!tabs.some(t => t.id === this.currentCategory) && tabs.length > 0) {
+            this.currentCategory = tabs[0].id;
+        }
+
+        tabs.forEach((cat) => {
             const btn = document.createElement('button');
             const isActive = (cat.id === this.currentCategory);
             btn.className = `cat-tab-btn ${isActive ? 'active' : ''}`;
@@ -210,11 +355,12 @@ class KidWritingApp {
                 document.querySelectorAll('.cat-tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 this.currentCategory = cat.id;
-                try {
-                    localStorage.setItem('kid_app_last_category', cat.id);
-                } catch (e) {}
+                if (cat.id !== '__grade_all__') {
+                    try {
+                        localStorage.setItem('kid_app_last_category', cat.id);
+                    } catch (e) {}
+                }
                 this.renderCharList(cat.id);
-                // 切换分类时，若当前汉字不在新分类中，自动选中该分类的第一个汉字，即刻呈现生动插画
                 if (cat.chars && cat.chars.length > 0) {
                     const alreadyInCat = cat.chars.some(c => c.char === this.currentChar);
                     if (!alreadyInCat) {
@@ -234,25 +380,42 @@ class KidWritingApp {
         });
     }
 
-    // 渲染当前分类下的汉字卡片
+    // 渲染当前分类下的汉字卡片（附带学龄标签）
     renderCharList(categoryId) {
         const listContainer = document.getElementById('char-list-grid');
         if (!listContainer) return;
         listContainer.innerHTML = '';
 
-        const cat = CHARACTER_CATEGORIES.find(c => c.id === categoryId) || CHARACTER_CATEGORIES[0];
-        
-        cat.chars.forEach(item => {
+        const gFilter = this.gradeFilter || 'all';
+        let charsToShow = [];
+        if (categoryId === '__grade_all__' && gFilter !== 'all') {
+            CHARACTER_CATEGORIES.forEach(c => (c.chars || []).forEach(ch => {
+                if (ch.grade === gFilter) charsToShow.push(ch);
+            }));
+        } else {
+            const cat = CHARACTER_CATEGORIES.find(c => c.id === categoryId) || CHARACTER_CATEGORIES[0];
+            charsToShow = gFilter === 'all'
+                ? (cat.chars || [])
+                : (cat.chars || []).filter(ch => ch.grade === gFilter);
+            if (charsToShow.length === 0) charsToShow = cat.chars || [];
+        }
+
+        const gradeShortMap = { 'k-1': 'K-1', 'k': 'K班', 'g1': 'G1', 'g2': 'G2', 'g3': 'G3+' };
+
+        charsToShow.forEach(item => {
             const card = document.createElement('button');
             const isCompleted = this.completedChars.includes(item.char);
             const hasIll = !!(item.image || (window.CHARACTER_ILLUSTRATION_MAP && window.CHARACTER_ILLUSTRATION_MAP[item.char]));
+            const gShort = gradeShortMap[item.grade] || 'G1';
             card.className = `char-card-btn ${item.char === this.currentChar ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${hasIll ? 'has-ill' : ''}`;
             card.dataset.char = item.char;
-            card.title = `${item.char} (${item.pinyin}) ${item.en ? '· ' + item.en : ''}`;
+            card.dataset.grade = item.grade || 'g1';
+            card.title = `${item.char} (${item.pinyin}) · ${gShort} · 难度${'★'.repeat(item.difficulty || 1)}`;
 
             card.innerHTML = `
                 <span class="char-py">${item.pinyin}</span>
                 <span class="char-hz">${item.char}</span>
+                <span class="char-grade-tag g-${item.grade || 'g1'}">${gShort}</span>
                 ${isCompleted ? '<span class="char-badge">⭐</span>' : ''}
             `;
 
@@ -340,6 +503,21 @@ class KidWritingApp {
         if (hzEl) hzEl.textContent = info.char;
         if (radEl) radEl.textContent = info.radical || '-';
         if (stkEl) stkEl.textContent = typeof info.strokes === 'number' ? `${info.strokes} 画` : info.strokes;
+
+        const gradeBadgeEl = document.getElementById('info-grade-badge');
+        if (gradeBadgeEl) {
+            const gradeLabels = {
+                'k-1': '🐣 K-1 启蒙',
+                'k':   '🌱 K班 学前',
+                'g1':  '🌿 G1 一年级',
+                'g2':  '🌳 G2 二年级',
+                'g3':  '🏆 G3 进阶'
+            };
+            const gLabel = gradeLabels[info.grade] || '🌿 G1 一年级';
+            const stars = '★'.repeat(info.difficulty || 1);
+            gradeBadgeEl.textContent = `${gLabel} · ${stars}`;
+            gradeBadgeEl.dataset.grade = info.grade || 'g1';
+        }
 
         // 汉字旁边英文释义更新与交互
         if (enEl) {
@@ -1399,7 +1577,7 @@ class KidWritingApp {
         const hanziData = this.hanziGuide.getCharData();
 
         const canvasSize = (this.canvasEngine && this.canvasEngine.cssSize) ? this.canvasEngine.cssSize : (drawCanvas.clientWidth || 360);
-        const result = window.chineseWritingEvaluator.evaluate(drawCanvas, charInfo, strokeList, hanziData, canvasSize);
+        const result = window.chineseWritingEvaluator.evaluate(drawCanvas, charInfo, strokeList, hanziData, canvasSize, this.difficulty || 'standard');
         if (!result.valid) {
             alert(result.message);
             return;

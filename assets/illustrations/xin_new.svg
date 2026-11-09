@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_xin_nw" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#fde047"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_xin_nw)"/>
+
+  <!-- Sparkling brand new red T-shirt / gift tag with ✨ sparkles -->
+  <polygon points="72,56 128,56 156,82 140,102 126,90 126,154 74,154 74,90 60,102 44,82" fill="#ef4444" stroke="#b91c1c" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M84 56 Q100 72 116 56" fill="#fef08a"/>
+  <!-- Bright NEW sparkles all around -->
+  <polygon points="44,44 48,54 58,58 48,62 44,72 40,62 30,58 40,54" fill="#f59e0b"/>
+  <polygon points="156,40 160,50 170,54 160,58 156,68 152,58 142,54 152,50" fill="#f59e0b"/>
+  <polygon points="154,126 157,134 165,137 157,140 154,148 151,140 143,137 151,134" fill="#f59e0b"/>
+
+</svg>

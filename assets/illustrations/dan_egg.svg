@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_dan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_dan)"/>
+
+  <!-- Whole egg on left -->
+  <path d="M64 46 C42 46 34 86 38 112 C42 134 86 134 90 112 C94 86 86 46 64 46 Z" fill="#fed7aa" stroke="#d97706" stroke-width="3"/>
+  <!-- Sunny-side-up egg on right -->
+  <path d="M92 118 C74 102 104 76 132 82 C164 88 176 118 158 142 C142 162 96 158 84 140 C76 128 96 122 92 118 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+  <circle cx="126" cy="118" r="20" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+  <circle cx="120" cy="112" r="5" fill="#fef08a"/>
+
+</svg>

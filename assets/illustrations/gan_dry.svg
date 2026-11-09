@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_gan_d" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_gan_d)"/>
+
+  <circle cx="156" cy="44" r="20" fill="#f97316"/>
+  <line x1="20" y1="74" x2="180" y2="74" stroke="#78350f" stroke-width="3.5"/>
+  <!-- Shirt hanging on line drying in the sun -->
+  <polygon points="68,74 124,74 142,96 128,110 118,100 118,152 74,152 74,100 64,110 50,96" fill="#38bdf8" stroke="#0284c7" stroke-width="2.5" stroke-linejoin="round"/>
+  <rect x="76" y="66" width="6" height="14" rx="2" fill="#ef4444"/>
+  <rect x="110" y="66" width="6" height="14" rx="2" fill="#ef4444"/>
+
+</svg>

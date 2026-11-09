@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_yi_chr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_yi_chr)"/>
+
+  <!-- Backrest -->
+  <rect x="62" y="34" width="12" height="134" rx="4" fill="#92400e"/>
+  <rect x="122" y="34" width="12" height="76" rx="4" fill="#92400e"/>
+  <rect x="62" y="42" width="72" height="16" rx="4" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+  <rect x="62" y="68" width="72" height="14" rx="4" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+  <!-- Seat & front legs -->
+  <polygon points="54,114 70,98 146,98 134,114" fill="#f59e0b" stroke="#78350f" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="56" y="114" width="12" height="54" rx="4" fill="#b45309"/>
+  <rect x="126" y="114" width="12" height="54" rx="4" fill="#b45309"/>
+
+</svg>

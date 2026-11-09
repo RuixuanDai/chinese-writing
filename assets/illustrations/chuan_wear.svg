@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_chuan_w" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_chuan_w)"/>
+
+  <circle cx="100" cy="60" r="22" fill="#fed7aa"/>
+  <path d="M78 54 Q100 30 122 54" fill="#451a03"/>
+  <circle cx="92" cy="60" r="2.5" fill="#1e293b"/><circle cx="108" cy="60" r="2.5" fill="#1e293b"/>
+  <path d="M94 68 Q100 73 106 68" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Sweater & arms sliding into sleeves with motion arrows -->
+  <path d="M70 88 L40 116" stroke="#f97316" stroke-width="16" stroke-linecap="round"/>
+  <path d="M130 88 L160 116" stroke="#f97316" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="36" cy="120" r="7" fill="#fed7aa"/><circle cx="164" cy="120" r="7" fill="#fed7aa"/>
+  <rect x="70" y="84" width="60" height="62" rx="12" fill="#f97316" stroke="#c2410c" stroke-width="2.5"/>
+  <line x1="100" y1="84" x2="100" y2="146" stroke="#fde047" stroke-width="3" stroke-dasharray="5,4"/>
+  <!-- Arrows showing arms going into sleeves -->
+  <path d="M52 80 L32 98 M32 98 L42 98 M32 98 L32 88" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M148 80 L168 98 M168 98 L158 98 M168 98 L168 88" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+
+</svg>

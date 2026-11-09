@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_hao" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#fde047"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_hao)"/>
+
+  <circle cx="100" cy="100" r="68" fill="#ffffff" opacity="0.7"/>
+  <!-- Big thumbs up -->
+  <rect x="48" y="92" width="26" height="54" rx="6" fill="#2563eb"/>
+  <path d="M74 96 C84 96 92 68 96 52 C98 42 112 44 112 56 L110 82 L142 82 C152 82 154 94 146 98 C154 102 152 114 144 116 C150 120 148 130 140 132 C144 136 140 146 130 146 L74 146 Z" fill="#fed7aa" stroke="#ea580c" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Sparkle stars -->
+  <polygon points="148,46 151,54 159,54 153,59 155,67 148,62 141,67 143,59 137,54 145,54" fill="#ef4444"/>
+  <circle cx="62" cy="58" r="5" fill="#f59e0b"/>
+
+</svg>

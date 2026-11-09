@@ -33,7 +33,10 @@ const KNOWN_VISUAL_CONFUSERS = {
     '东': '车乐练', '车': '东牛',
     '江': '红工河汪', '红': '江工丝',
     '子': '了字孑才', '习': '刁羽飞', '飞': '习气乙',
-    '万': '方力乃', '早': '草十日旱', '正': '上止五王', '五': '正丑王'
+    '万': '方力乃', '早': '草十日旱', '正': '上止五王', '五': '正丑王',
+    '王': '主玉工土三', '主': '王玉住', '玉': '王主宝', '工': '土王二干', '干': '千十土工',
+    '午': '牛干千', '刀': '力几九万', '尺': '尸户', '贝': '见目日', '今': '令会人',
+    '明': '朋日月', '你': '他作', '我': '找成', '衣': '农永', '方': '万刀'
 };
 
 class ChineseWritingEvaluator {
@@ -51,7 +54,7 @@ class ChineseWritingEvaluator {
     /**
      * 对用户的画板书写进行全方位智能评测（标准练字评分：兼顾笔顺、结构与字形）
      */
-    evaluate(drawCanvas, charInfo, strokeList, hanziData, canvasSize) {
+    evaluate(drawCanvas, charInfo, strokeList, hanziData, canvasSize, difficulty = 'standard') {
         const width = drawCanvas.width;
         const height = drawCanvas.height;
         const cssSize = canvasSize
@@ -161,6 +164,12 @@ class ChineseWritingEvaluator {
             totalScore = Math.min(totalScore, 76);
         } else if (hasReverseError) {
             totalScore = Math.min(totalScore, 78);
+        }
+
+        if (difficulty === 'easy' && !confusedChar) {
+            totalScore = Math.min(96, totalScore + 5);
+        } else if (difficulty === 'hard' && (hasOrderError || strokeEval.diff !== 0)) {
+            totalScore = Math.min(totalScore, 74);
         }
 
         totalScore = Math.max(25, Math.min(96, Math.round(totalScore)));
@@ -341,7 +350,7 @@ class ChineseWritingEvaluator {
      *   2. 对默写位置偏移、大小缩放、高矮胖瘦比例差异、轻触点画、折笔拆分及偶发笔顺颠倒具备强鲁棒性；
      *   3. 精准拦截漏笔、多笔、乱画及真正的易混字（如把“上”写成“下/土”，把“禾”写成“木”）。
      */
-    recognizeAndEvaluateFreehand(drawCanvas, targetChars, strokeList, canvasSize, candidatePoolChars = null) {
+    recognizeAndEvaluateFreehand(drawCanvas, targetChars, strokeList, canvasSize, candidatePoolChars = null, difficulty = 'standard') {
         const width = drawCanvas.width;
         const height = drawCanvas.height;
         const cssSize = canvasSize || drawCanvas.clientWidth || 260;
@@ -473,13 +482,16 @@ class ChineseWritingEvaluator {
             confusedSimilarity = Math.round(bestGeneralOtherMatch.similarity);
         }
 
+        const minSkel = difficulty === 'easy' ? 0.45 : (difficulty === 'hard' ? 0.56 : 0.50);
+        const minF1 = difficulty === 'easy' ? 0.47 : (difficulty === 'hard' ? 0.57 : 0.52);
+        const minSim = difficulty === 'easy' ? 49 : (difficulty === 'hard' ? 60 : 54);
         const isShapeMatched = (
             completenessOk &&
-            bestTargetMatch.skeletonRecall >= 0.50 &&
-            bestTargetMatch.skeletonPrecision >= 0.50 &&
-            bestTargetMatch.skeletonF1 >= 0.52 &&
-            bestTargetMatch.rasterSim >= 0.52 &&
-            bestTargetMatch.similarity >= 54
+            bestTargetMatch.skeletonRecall >= minSkel &&
+            bestTargetMatch.skeletonPrecision >= minSkel &&
+            bestTargetMatch.skeletonF1 >= minF1 &&
+            bestTargetMatch.rasterSim >= minF1 &&
+            bestTargetMatch.similarity >= minSim
         );
 
         const isPass = strokeCountAcceptable && isShapeMatched && !confusedWithChar;

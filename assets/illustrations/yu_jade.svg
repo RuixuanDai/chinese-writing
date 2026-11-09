@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_yu_jd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_yu_jd)"/>
+
+  <path d="M100 20 L100 54" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="100" cy="48" r="6" fill="#dc2626"/>
+  <!-- Round emerald jade ring (玉璧/玉佩) -->
+  <circle cx="100" cy="112" r="48" fill="#34d399" stroke="#059669" stroke-width="4"/>
+  <circle cx="100" cy="112" r="38" fill="none" stroke="#a7f3d0" stroke-width="2" stroke-dasharray="6,4"/>
+  <circle cx="100" cy="112" r="16" fill="#ecfdf5" stroke="#059669" stroke-width="4"/>
+  <line x1="94" y1="160" x2="90" y2="184" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="106" y1="160" x2="110" y2="184" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_chang_fd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_chang_fd)"/>
+
+  <!-- Oval running track & green inner field (操场) -->
+  <ellipse cx="100" cy="122" rx="76" ry="42" fill="#ef4444" stroke="#ffffff" stroke-width="3"/>
+  <ellipse cx="100" cy="122" rx="54" ry="26" fill="#22c55e" stroke="#ffffff" stroke-width="2.5"/>
+  <!-- Flagpole at top of playground -->
+  <line x1="100" y1="28" x2="100" y2="80" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="100,30 134,40 100,50" fill="#ef4444"/>
+
+</svg>

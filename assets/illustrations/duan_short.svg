@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_duan_s" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_duan_s)"/>
+
+  <!-- Faded long reference bar above -->
+  <g opacity="0.45">
+    <rect x="22" y="54" width="136" height="20" rx="4" fill="#94a3b8"/>
+    <polygon points="158,54 176,64 158,74" fill="#cbd5e1"/>
+  </g>
+  <!-- Highlighted SHORT pencil below -->
+  <rect x="22" y="118" width="58" height="22" rx="4" fill="#f97316" stroke="#c2410c" stroke-width="3"/>
+  <polygon points="80,118 98,129 80,140" fill="#fde68a" stroke="#b45309" stroke-width="2.5"/>
+  <line x1="24" y1="158" x2="94" y2="158" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="18,158 30,151 30,165" fill="#ef4444"/><polygon points="100,158 88,151 88,165" fill="#ef4444"/>
+
+</svg>

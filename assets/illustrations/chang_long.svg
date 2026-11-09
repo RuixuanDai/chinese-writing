@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_chang_l" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_chang_l)"/>
+
+  <!-- Highlighted LONG pencil/bar at top -->
+  <rect x="22" y="62" width="136" height="22" rx="4" fill="#10b981" stroke="#047857" stroke-width="3"/>
+  <polygon points="158,62 180,73 158,84" fill="#fde68a" stroke="#b45309" stroke-width="2.5"/>
+  <line x1="24" y1="42" x2="176" y2="42" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="18,42 30,35 30,49" fill="#ef4444"/><polygon points="182,42 170,35 170,49" fill="#ef4444"/>
+  <!-- Faded short reference bar below -->
+  <g opacity="0.45">
+    <rect x="22" y="124" width="56" height="20" rx="4" fill="#94a3b8"/>
+    <polygon points="78,124 94,134 78,144" fill="#cbd5e1"/>
+  </g>
+
+</svg>

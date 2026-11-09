@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_jin_gd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_jin_gd)"/>
+
+  <!-- Traditional gold ingot (金元宝) -->
+  <ellipse cx="100" cy="96" rx="36" ry="22" fill="#fde047" stroke="#ca8a04" stroke-width="3"/>
+  <path d="M36 92 Q64 114 100 114 Q136 114 164 92 L144 144 Q100 158 56 144 Z" fill="#facc15" stroke="#ca8a04" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Sparkles -->
+  <polygon points="52,46 55,54 63,57 55,60 52,68 49,60 41,57 49,54" fill="#f59e0b"/>
+  <polygon points="148,46 151,54 159,57 151,60 148,68 145,60 137,57 145,54" fill="#f59e0b"/>
+
+</svg>

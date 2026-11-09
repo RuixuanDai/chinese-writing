@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_shui_sl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e0e7ff"/>
+      <stop offset="100%" stop-color="#c7d2fe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_shui_sl)"/>
+
+  <!-- Pillow & blanket -->
+  <rect x="34" y="78" width="96" height="58" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+  <circle cx="82" cy="108" r="24" fill="#fed7aa"/>
+  <path d="M58 102 Q82 76 106 102" fill="#451a03"/>
+  <!-- Closed peaceful eyes (目+垂=睡) -->
+  <path d="M70 108 Q76 114 82 108" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+  <path d="M88 108 Q94 114 100 108" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+  <path d="M78 118 Q84 122 90 118" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round"/>
+  <path d="M28 126 Q100 114 172 126 L172 172 L28 172 Z" fill="#60a5fa" stroke="#2563eb" stroke-width="3"/>
+  <!-- Zzz sleep symbols -->
+  <polyline points="126,74 142,74 126,90 142,90" fill="none" stroke="#4f46e5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="148,46 168,46 148,66 168,66" fill="none" stroke="#4f46e5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>

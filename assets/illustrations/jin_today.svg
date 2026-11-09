@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_jin_td" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_jin_td)"/>
+
+  <rect x="38" y="42" width="124" height="126" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+  <path d="M38 54 Q38 42 50 42 L150 42 Q162 42 162 54 L162 72 L38 72 Z" fill="#ef4444"/>
+  <rect x="64" y="30" width="10" height="22" rx="5" fill="#475569"/>
+  <rect x="126" y="30" width="10" height="22" rx="5" fill="#475569"/>
+  <!-- Calendar grid cells -->
+  <rect x="52" y="86" width="24" height="22" rx="4" fill="#e2e8f0"/>
+  <rect x="88" y="86" width="24" height="22" rx="4" fill="#fef08a" stroke="#ef4444" stroke-width="3.5"/>
+  <circle cx="100" cy="97" r="5" fill="#ef4444"/>
+  <rect x="124" y="86" width="24" height="22" rx="4" fill="#e2e8f0"/>
+  <rect x="52" y="122" width="24" height="22" rx="4" fill="#e2e8f0"/>
+  <rect x="88" y="122" width="24" height="22" rx="4" fill="#e2e8f0"/>
+  <rect x="124" y="122" width="24" height="22" rx="4" fill="#e2e8f0"/>
+  <!-- Arrow pointing to Today's highlighted cell -->
+  <path d="M100 156 L100 116" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="100,110 91,122 109,122" fill="#ef4444"/>
+
+</svg>

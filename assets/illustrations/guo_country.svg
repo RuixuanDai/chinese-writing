@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_guo_cn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_guo_cn)"/>
+
+  <circle cx="100" cy="110" r="56" fill="#38bdf8" stroke="#0284c7" stroke-width="3.5"/>
+  <path d="M62 84 Q92 68 124 88 Q140 112 114 142 Q76 138 62 84 Z" fill="#4ade80"/>
+  <!-- Festive red flag on top -->
+  <line x1="92" y1="24" x2="92" y2="78" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
+  <rect x="92" y="26" width="44" height="28" rx="2" fill="#ef4444"/>
+  <circle cx="102" cy="36" r="4" fill="#fde047"/>
+
+</svg>

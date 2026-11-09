@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_fen_pk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fdf2f8"/>
+      <stop offset="100%" stop-color="#fce7f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_fen_pk)"/>
+
+  <g fill="#f472b6" stroke="#db2777" stroke-width="2">
+    <circle cx="72" cy="88" r="26"/><circle cx="104" cy="76" r="32"/><circle cx="132" cy="92" r="24"/>
+    <ellipse cx="102" cy="104" rx="44" ry="22"/>
+  </g>
+  <g transform="translate(52, 146) rotate(-25)">
+    <rect x="0" y="0" width="44" height="14" rx="3" fill="#ec4899"/><polygon points="44,0 58,7 44,14" fill="#f472b6"/>
+  </g>
+  <g transform="translate(116, 152) rotate(-35)">
+    <rect x="0" y="2" width="46" height="8" rx="4" fill="#d97706"/><path d="M46 1 Q62 0 60 6 Q58 12 46 11 Z" fill="#f472b6"/>
+  </g>
+
+</svg>

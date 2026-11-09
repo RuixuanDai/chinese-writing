@@ -1,7 +1,82 @@
 /**
- * char-data.js - 汉字题库与分类字典
- * 精选适合少儿启蒙、小学1-3年级的常用汉字 (295字)，涵盖11大趣味主题，配备精准拼音、看图识字插画、部首、笔画、词组和童趣例句
+ * char-data.js - 汉字题库与学龄分级字典
+ * 精选适合少儿启蒙 (K-1 / K) 至小学 1-3 年级 (G1-G3) 的常用汉字 (400字)，涵盖12大趣味主题与5大学龄分级
  */
+
+const CHARACTER_GRADES = [
+    {
+        "id": "all",
+        "name": "🌈 全部学龄",
+        "short": "全部",
+        "age": "3-9岁",
+        "desc": "全量 400 字题库",
+        "defaultDiff": "standard"
+    },
+    {
+        "id": "k-1",
+        "name": "🐣 K-1 启蒙",
+        "short": "K-1",
+        "age": "3-4岁",
+        "desc": "象形独体字与基础数字",
+        "defaultDiff": "easy"
+    },
+    {
+        "id": "k",
+        "name": "🌱 K班 学前",
+        "short": "K班",
+        "age": "4-5岁",
+        "desc": "高频生活与自然基础字",
+        "defaultDiff": "easy"
+    },
+    {
+        "id": "g1",
+        "name": "🌿 G1 一年级",
+        "short": "G1",
+        "age": "5-6岁",
+        "desc": "小学一年级核心生字",
+        "defaultDiff": "standard"
+    },
+    {
+        "id": "g2",
+        "name": "🌳 G2 二年级",
+        "short": "G2",
+        "age": "6-7岁",
+        "desc": "小学二年级常用合体字",
+        "defaultDiff": "standard"
+    },
+    {
+        "id": "g3",
+        "name": "🏆 G3 进阶",
+        "short": "G3+",
+        "age": "7-9岁",
+        "desc": "三四年级品德文化与进阶字",
+        "defaultDiff": "hard"
+    }
+];
+
+const CHARACTER_DIFFICULTIES = [
+    {
+        "id": "easy",
+        "name": "🌱 轻松启蒙",
+        "short": "轻松",
+        "stars": 1,
+        "desc": "3选项 · 慢速 · 自动拼音提示"
+    },
+    {
+        "id": "standard",
+        "name": "⭐ 标准闯关",
+        "short": "标准",
+        "stars": 2,
+        "desc": "4选项 · 标准速度 · 词组提示"
+    },
+    {
+        "id": "hard",
+        "name": "🔥 挑战进阶",
+        "short": "挑战",
+        "stars": 3,
+        "desc": "6选项 · 形近字干扰 · 严格评分"
+    }
+];
 
 const CHARACTER_CATEGORIES = [
     {
@@ -23,7 +98,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我是一个活泼可爱的小朋友。",
                 "icon": "☝️",
                 "label": "一个",
-                "image": "assets/illustrations/yi_one.jpg"
+                "image": "assets/illustrations/yi_one.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "二",
@@ -39,7 +116,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "一年有十二个月，二月有立春。",
                 "icon": "✌️",
                 "label": "两个",
-                "image": "assets/illustrations/er_two.jpg"
+                "image": "assets/illustrations/er_two.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "三",
@@ -55,7 +134,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "天空中飘着三个美丽的小气球。",
                 "icon": "👌",
                 "label": "三个",
-                "image": "assets/illustrations/san_three.jpg"
+                "image": "assets/illustrations/san_three.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "十",
@@ -71,7 +152,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我有十个手指头。",
                 "icon": "🔟",
                 "label": "十个",
-                "image": "assets/illustrations/shi.svg"
+                "image": "assets/illustrations/shi.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "人",
@@ -87,7 +170,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "做一个善良诚实的好人。",
                 "icon": "🧑",
                 "label": "人们",
-                "image": "assets/illustrations/ren.jpg"
+                "image": "assets/illustrations/ren.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "口",
@@ -103,7 +188,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们要大口大口吃蔬菜，身体棒棒的。",
                 "icon": "👄",
                 "label": "门口",
-                "image": "assets/illustrations/kou.svg"
+                "image": "assets/illustrations/kou.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "大",
@@ -119,7 +206,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我张开双手，大声说：我长大了！",
                 "icon": "🙆",
                 "label": "长大",
-                "image": "assets/illustrations/da_big.jpg"
+                "image": "assets/illustrations/da_big.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "小",
@@ -135,7 +224,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "手心里捧着一棵小小的绿芽。",
                 "icon": "🤏",
                 "label": "小苗",
-                "image": "assets/illustrations/xiao_small.jpg"
+                "image": "assets/illustrations/xiao_small.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "上",
@@ -151,7 +242,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "天天向上，努力学好本领。",
                 "icon": "🧗",
                 "label": "向上",
-                "image": "assets/illustrations/shang.svg"
+                "image": "assets/illustrations/shang.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "下",
@@ -167,7 +260,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "窗外下起了淅淅沥沥的春雨。",
                 "icon": "🌧️",
                 "label": "向下",
-                "image": "assets/illustrations/xia.svg"
+                "image": "assets/illustrations/xia.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "日",
@@ -183,7 +278,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "一轮红日从东方冉冉升起，日光温暖照耀。",
                 "icon": "☀️",
                 "label": "红日",
-                "image": "assets/illustrations/ri.jpg"
+                "image": "assets/illustrations/ri.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "月",
@@ -199,7 +296,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "弯弯的月亮像一条小船。",
                 "icon": "🌙",
                 "label": "月亮",
-                "image": "assets/illustrations/yue.jpg"
+                "image": "assets/illustrations/yue.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "水",
@@ -215,7 +314,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们要多喝温水，爱护身体。",
                 "icon": "💧",
                 "label": "清水",
-                "image": "assets/illustrations/shui.jpg"
+                "image": "assets/illustrations/shui.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "火",
@@ -231,7 +332,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "红红的火苗带给人们温暖。",
                 "icon": "🔥",
                 "label": "火焰",
-                "image": "assets/illustrations/huo.jpg"
+                "image": "assets/illustrations/huo.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "山",
@@ -247,7 +350,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "远处的青山披着绿色的外衣。",
                 "icon": "🏔️",
                 "label": "高山",
-                "image": "assets/illustrations/shan.jpg"
+                "image": "assets/illustrations/shan.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "石",
@@ -263,7 +368,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "溪流里的鹅卵石又圆又滑。",
                 "icon": "🪨",
                 "label": "石头",
-                "image": "assets/illustrations/shi_stone.svg"
+                "image": "assets/illustrations/shi_stone.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "田",
@@ -279,7 +386,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "稻田里长满了金黄色的麦穗。",
                 "icon": "🌾",
                 "label": "稻田",
-                "image": "assets/illustrations/tian_field.svg"
+                "image": "assets/illustrations/tian_field.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "土",
@@ -295,7 +404,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "肥沃的泥土滋养着幼苗。",
                 "icon": "🪴",
                 "label": "泥土",
-                "image": "assets/illustrations/tu.svg"
+                "image": "assets/illustrations/tu.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "木",
@@ -311,7 +422,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我用彩色积木搭了一座城堡。",
                 "icon": "🪵",
                 "label": "树木",
-                "image": "assets/illustrations/mu.jpg"
+                "image": "assets/illustrations/mu.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "天",
@@ -327,7 +440,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "蓝天上飘着几朵雪白的云。",
                 "icon": "🌤️",
                 "label": "天空",
-                "image": "assets/illustrations/tian_sky.svg"
+                "image": "assets/illustrations/tian_sky.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "子",
@@ -343,7 +458,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我是爸爸妈妈最爱的好孩子。",
                 "icon": "👶",
                 "label": "孩子",
-                "image": "assets/illustrations/zi.jpg"
+                "image": "assets/illustrations/zi.jpg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "中",
@@ -359,7 +476,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小金箭正正射中了靶心正中间。",
                 "icon": "🎯",
                 "label": "中间",
-                "image": "assets/illustrations/zhong.jpg"
+                "image": "assets/illustrations/zhong.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "文",
@@ -375,7 +494,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们要认真学好语文和汉字。",
                 "icon": "📜",
                 "label": "文化",
-                "image": "assets/illustrations/wen.jpg"
+                "image": "assets/illustrations/wen.jpg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "白",
@@ -391,7 +512,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "天上飘着朵朵雪白的云朵。",
                 "icon": "⚪",
                 "label": "白色",
-                "image": "assets/illustrations/bai_white.svg"
+                "image": "assets/illustrations/bai_white.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "门",
@@ -407,7 +530,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "清晨我们高高兴兴走进校门。",
                 "icon": "🚪",
                 "label": "大门",
-                "image": "assets/illustrations/men.svg"
+                "image": "assets/illustrations/men.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "云",
@@ -423,7 +548,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "朵朵白云像软绵绵的棉花糖。",
                 "icon": "⛅",
                 "label": "白云",
-                "image": "assets/illustrations/yun.svg"
+                "image": "assets/illustrations/yun.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "风",
@@ -439,7 +566,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "温暖的春风吹拂着绿草。",
                 "icon": "🪁",
                 "label": "春风",
-                "image": "assets/illustrations/feng.svg"
+                "image": "assets/illustrations/feng.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "雨",
@@ -455,7 +584,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春雨沙沙地下，滋润着泥土。",
                 "icon": "☔",
                 "label": "细雨",
-                "image": "assets/illustrations/yu.svg"
+                "image": "assets/illustrations/yu.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "禾",
@@ -471,7 +602,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "田地里的绿禾苗在阳光下茁壮成长。",
                 "icon": "🌾",
                 "label": "禾苗",
-                "image": "assets/illustrations/he.svg"
+                "image": "assets/illustrations/he.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "几",
@@ -487,7 +620,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "地毯上有几块彩色的积木。",
                 "icon": "🧱",
                 "label": "几个",
-                "image": "assets/illustrations/ji_few.jpg"
+                "image": "assets/illustrations/ji_few.jpg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "太",
@@ -503,7 +638,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "太阳公公把温暖灿烂的阳光洒满大地。",
                 "icon": "🌞",
                 "label": "太阳",
-                "image": "assets/illustrations/tai.jpg"
+                "image": "assets/illustrations/tai.jpg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "生",
@@ -519,7 +656,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们每天都在快乐地学习和生活。",
                 "icon": "🌱",
                 "label": "生长",
-                "image": "assets/illustrations/sheng.jpg"
+                "image": "assets/illustrations/sheng.jpg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "会",
@@ -535,7 +674,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我学会了搭积木城堡，真有成就感！",
                 "icon": "👍",
                 "label": "学会",
-                "image": "assets/illustrations/hui_can.jpg"
+                "image": "assets/illustrations/hui_can.jpg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "来",
@@ -551,7 +692,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小朋友张开双手，欢迎大家来到这里一起玩。",
                 "icon": "👋",
                 "label": "来到",
-                "image": "assets/illustrations/lai_come.jpg"
+                "image": "assets/illustrations/lai_come.jpg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "去",
@@ -567,7 +710,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "周末爸爸妈妈带我去公园看花。",
                 "icon": "🚶",
                 "label": "回去",
-                "image": "assets/illustrations/qu.jpg"
+                "image": "assets/illustrations/qu.jpg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "出",
@@ -583,7 +728,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小朋友推开家门，高高兴兴地出门去玩耍。",
                 "icon": "🚪",
                 "label": "出门",
-                "image": "assets/illustrations/chu_exit.jpg"
+                "image": "assets/illustrations/chu_exit.jpg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "入",
@@ -599,7 +746,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小朋友们高高兴兴地进入美丽的校园。",
                 "icon": "📥",
                 "label": "进入",
-                "image": "assets/illustrations/ru.jpg"
+                "image": "assets/illustrations/ru.jpg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "见",
@@ -615,7 +764,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "礼貌待人，放学回家记得和老师说再见。",
                 "icon": "👀",
                 "label": "看见",
-                "image": "assets/illustrations/jian.jpg"
+                "image": "assets/illustrations/jian.jpg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "只",
@@ -631,7 +782,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "树林里有一只百灵鸟在欢快地歌唱。",
                 "icon": "🐾",
                 "label": "一只",
-                "image": "assets/illustrations/zhi_measure.svg"
+                "image": "assets/illustrations/zhi_measure.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "个",
@@ -647,7 +800,81 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "每个小朋友都有一双灵巧的小手。",
                 "icon": "🎈",
                 "label": "一个",
-                "image": "assets/illustrations/ge_measure.svg"
+                "image": "assets/illustrations/ge_measure.svg",
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "王",
+                "pinyin": "wáng",
+                "en": "king",
+                "radical": "王",
+                "words": [
+                    "大王",
+                    "国王",
+                    "王子"
+                ],
+                "sentence": "森林里的狮子大王戴着金灿灿的皇冠。",
+                "icon": "👑",
+                "label": "国王",
+                "image": "assets/illustrations/wang_king.svg",
+                "strokes": 4,
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "工",
+                "pinyin": "gōng",
+                "en": "work",
+                "radical": "工",
+                "words": [
+                    "工人",
+                    "工作",
+                    "手工"
+                ],
+                "sentence": "勤劳的工人叔叔正在认真地建造房屋。",
+                "icon": "👷",
+                "label": "工人",
+                "image": "assets/illustrations/gong_work.svg",
+                "strokes": 3,
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "主",
+                "pinyin": "zhǔ",
+                "en": "host",
+                "radical": "丶",
+                "words": [
+                    "主人",
+                    "公主",
+                    "主持"
+                ],
+                "sentence": "热情的小主人端出甜美的水果招待客人。",
+                "icon": "🎀",
+                "label": "主人",
+                "image": "assets/illustrations/zhu_host.svg",
+                "strokes": 5,
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "方",
+                "pinyin": "fāng",
+                "en": "square",
+                "radical": "方",
+                "words": [
+                    "方正",
+                    "正方形",
+                    "地方"
+                ],
+                "sentence": "这块手帕是四四方方的正方形。",
+                "icon": "🟦",
+                "label": "方形",
+                "image": "assets/illustrations/fang_square.svg",
+                "strokes": 4,
+                "grade": "k",
+                "difficulty": 1
             }
         ]
     },
@@ -670,7 +897,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小马在广阔的草地上快乐地奔跑。",
                 "icon": "🐴",
                 "label": "小马",
-                "image": "assets/illustrations/ma.jpg"
+                "image": "assets/illustrations/ma.jpg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "牛",
@@ -686,7 +915,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "老黄牛勤勤恳恳地在田里耕作。",
                 "icon": "🐂",
                 "label": "黄牛",
-                "image": "assets/illustrations/niu.svg"
+                "image": "assets/illustrations/niu.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "羊",
@@ -702,7 +933,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "雪白的小绵羊身上毛茸茸的。",
                 "icon": "🐑",
                 "label": "绵羊",
-                "image": "assets/illustrations/yang.svg"
+                "image": "assets/illustrations/yang.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "鸟",
@@ -718,7 +951,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "清晨，小鸟在枝头欢快地歌唱。",
                 "icon": "🐦",
                 "label": "小鸟",
-                "image": "assets/illustrations/niao.svg"
+                "image": "assets/illustrations/niao.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "鱼",
@@ -734,7 +969,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "金色的小鱼在水草间吐着泡泡。",
                 "icon": "🐟",
                 "label": "金鱼",
-                "image": "assets/illustrations/yu_fish.svg"
+                "image": "assets/illustrations/yu_fish.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "虫",
@@ -750,7 +987,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "七星瓢虫是庄稼的好帮手。",
                 "icon": "🐛",
                 "label": "小虫",
-                "image": "assets/illustrations/chong.svg"
+                "image": "assets/illustrations/chong.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "狗",
@@ -766,7 +1005,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "忠诚的小狗摇着尾巴迎接主人。",
                 "icon": "🐶",
                 "label": "小狗",
-                "image": "assets/illustrations/gou.svg"
+                "image": "assets/illustrations/gou.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "猫",
@@ -782,7 +1023,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "国宝大熊猫最喜欢吃新鲜的竹子。",
                 "icon": "🐱",
                 "label": "小猫",
-                "image": "assets/illustrations/mao.svg"
+                "image": "assets/illustrations/mao.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "兔",
@@ -798,7 +1041,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小白兔蹦蹦跳跳，最爱吃胡萝卜。",
                 "icon": "🐰",
                 "label": "白兔",
-                "image": "assets/illustrations/tu_rabbit.svg"
+                "image": "assets/illustrations/tu_rabbit.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "鸭",
@@ -814,7 +1059,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春江水暖鸭先知。",
                 "icon": "🦆",
                 "label": "小鸭",
-                "image": "assets/illustrations/ya.svg"
+                "image": "assets/illustrations/ya.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "鹿",
@@ -830,7 +1077,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "美丽的小鹿在林间悠闲漫步。",
                 "icon": "🦌",
                 "label": "小鹿",
-                "image": "assets/illustrations/lu.svg"
+                "image": "assets/illustrations/lu.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "象",
@@ -846,7 +1095,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "大象用长长的鼻子喝水和卷起果实。",
                 "icon": "🐘",
                 "label": "大象",
-                "image": "assets/illustrations/xiang.svg"
+                "image": "assets/illustrations/xiang.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "鸡",
@@ -862,7 +1113,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "大公鸡清晨喔喔啼，叫醒了太阳。",
                 "icon": "🐔",
                 "label": "公鸡",
-                "image": "assets/illustrations/ji_chicken.svg"
+                "image": "assets/illustrations/ji_chicken.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "鹅",
@@ -878,7 +1131,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "鹅，鹅，鹅，曲项向天歌，白毛浮绿水。",
                 "icon": "🦢",
                 "label": "天鹅",
-                "image": "assets/illustrations/e.svg"
+                "image": "assets/illustrations/e.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "猪",
@@ -894,7 +1149,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "可爱的小胖猪呼噜噜地睡得正香。",
                 "icon": "🐷",
                 "label": "小猪",
-                "image": "assets/illustrations/zhu.svg"
+                "image": "assets/illustrations/zhu.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "熊",
@@ -910,7 +1167,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "森林里住着憨态可掬的黑熊一家。",
                 "icon": "🐻",
                 "label": "大熊",
-                "image": "assets/illustrations/xiong.svg"
+                "image": "assets/illustrations/xiong.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "龙",
@@ -926,7 +1185,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们都是自豪的龙的传人。",
                 "icon": "🐲",
                 "label": "神龙",
-                "image": "assets/illustrations/long.svg"
+                "image": "assets/illustrations/long.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "虎",
@@ -942,7 +1203,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "威猛的老虎是森林之王。",
                 "icon": "🐯",
                 "label": "老虎",
-                "image": "assets/illustrations/hu_tiger.svg"
+                "image": "assets/illustrations/hu_tiger.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "猴",
@@ -958,7 +1221,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "机灵的小金丝猴在枝头荡秋千。",
                 "icon": "🐵",
                 "label": "猴子",
-                "image": "assets/illustrations/hou.svg"
+                "image": "assets/illustrations/hou.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "龟",
@@ -974,7 +1239,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "可爱的小乌龟不慌不忙地向前爬行。",
                 "icon": "🐢",
                 "label": "乌龟",
-                "image": "assets/illustrations/gui.svg"
+                "image": "assets/illustrations/gui.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "蝶",
@@ -990,7 +1257,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "美丽的蝴蝶在百花丛中翩翩起舞。",
                 "icon": "🦋",
                 "label": "彩蝶",
-                "image": "assets/illustrations/die.svg"
+                "image": "assets/illustrations/die.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "蜂",
@@ -1006,7 +1275,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "勤劳的小蜜蜂迎着晨光去采蜜。",
                 "icon": "🐝",
                 "label": "蜜蜂",
-                "image": "assets/illustrations/feng_bee.svg"
+                "image": "assets/illustrations/feng_bee.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "蛙",
@@ -1022,7 +1293,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "池塘边的荷叶上蹲着一只绿色的小青蛙。",
                 "icon": "🐸",
                 "label": "青蛙",
-                "image": "assets/illustrations/wa.svg"
+                "image": "assets/illustrations/wa.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "狐",
@@ -1038,7 +1311,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "机灵的小狐狸在茂密的林间奔跑。",
                 "icon": "🦊",
                 "label": "狐狸",
-                "image": "assets/illustrations/hu_fox.svg"
+                "image": "assets/illustrations/hu_fox.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "狸",
@@ -1054,7 +1329,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小狐狸毛茸茸的尾巴格外漂亮。",
                 "icon": "🦝",
                 "label": "狸猫",
-                "image": "assets/illustrations/li.svg"
+                "image": "assets/illustrations/li.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "豹",
@@ -1070,7 +1347,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "猎豹是陆地上奔跑速度最快的动物。",
                 "icon": "🐆",
                 "label": "猎豹",
-                "image": "assets/illustrations/bao.svg"
+                "image": "assets/illustrations/bao.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "狼",
@@ -1086,7 +1365,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "狼群非常懂得团结协作的道理。",
                 "icon": "🐺",
                 "label": "野狼",
-                "image": "assets/illustrations/lang.svg"
+                "image": "assets/illustrations/lang.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "狮",
@@ -1102,7 +1383,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "威武雄壮的狮子在草原上休息。",
                 "icon": "🦁",
                 "label": "雄狮",
-                "image": "assets/illustrations/shi_lion.svg"
+                "image": "assets/illustrations/shi_lion.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "鲸",
@@ -1118,7 +1401,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "庞大的蓝鲸在浩瀚的深海中自由畅游。",
                 "icon": "🐋",
                 "label": "蓝鲸",
-                "image": "assets/illustrations/jing.svg"
+                "image": "assets/illustrations/jing.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "雁",
@@ -1134,7 +1419,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋天大雁排成整齐的人字形飞向南方。",
                 "icon": "🪿",
                 "label": "大雁",
-                "image": "assets/illustrations/yan_goose.svg"
+                "image": "assets/illustrations/yan_goose.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "燕",
@@ -1150,7 +1437,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小燕子在温暖的春天从南方飞回来了。",
                 "icon": "🕊️",
                 "label": "燕子",
-                "image": "assets/illustrations/yan_swallow.svg"
+                "image": "assets/illustrations/yan_swallow.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "鹤",
@@ -1166,7 +1455,99 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "优美的丹顶鹤在湖边翩翩起舞。",
                 "icon": "🦩",
                 "label": "仙鹤",
-                "image": "assets/illustrations/he_crane.svg"
+                "image": "assets/illustrations/he_crane.svg",
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "鼠",
+                "pinyin": "shǔ",
+                "en": "mouse",
+                "radical": "鼠",
+                "words": [
+                    "松鼠",
+                    "老鼠",
+                    "袋鼠"
+                ],
+                "sentence": "机灵的小松鼠在松树枝头跳来跳去。",
+                "icon": "🐭",
+                "label": "小鼠",
+                "image": "assets/illustrations/shu_mouse.svg",
+                "strokes": 13,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "蛇",
+                "pinyin": "shé",
+                "en": "snake",
+                "radical": "虫",
+                "words": [
+                    "小蛇",
+                    "青蛇",
+                    "水蛇"
+                ],
+                "sentence": "春天来了，冬眠的小青蛇从草丛里钻了出来。",
+                "icon": "🐍",
+                "label": "小蛇",
+                "image": "assets/illustrations/she_snake.svg",
+                "strokes": 11,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "虾",
+                "pinyin": "xiā",
+                "en": "shrimp",
+                "radical": "虫",
+                "words": [
+                    "小虾",
+                    "龙虾",
+                    "河虾"
+                ],
+                "sentence": "清澈的小河里游着许多活蹦乱跳的小虾。",
+                "icon": "🦐",
+                "label": "小虾",
+                "image": "assets/illustrations/xia_shrimp.svg",
+                "strokes": 9,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "蟹",
+                "pinyin": "xiè",
+                "en": "crab",
+                "radical": "虫",
+                "words": [
+                    "螃蟹",
+                    "海蟹",
+                    "蟹壳"
+                ],
+                "sentence": "沙滩上的小螃蟹举着两只大钳子横着走。",
+                "icon": "🦀",
+                "label": "螃蟹",
+                "image": "assets/illustrations/xie_crab.svg",
+                "strokes": 19,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "贝",
+                "pinyin": "bèi",
+                "en": "shell",
+                "radical": "贝",
+                "words": [
+                    "贝壳",
+                    "宝贝",
+                    "海贝"
+                ],
+                "sentence": "我们在金色的海滩上捡到了漂亮的贝壳。",
+                "icon": "🐚",
+                "label": "贝壳",
+                "image": "assets/illustrations/bei_shell.svg",
+                "strokes": 4,
+                "grade": "g1",
+                "difficulty": 2
             }
         ]
     },
@@ -1189,7 +1570,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春天来了，万物复苏，百花盛开。",
                 "icon": "🌸",
                 "label": "春天",
-                "image": "assets/illustrations/chun.svg"
+                "image": "assets/illustrations/chun.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "夏",
@@ -1205,7 +1588,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "夏天荷塘里开满了美丽的荷花。",
                 "icon": "🌻",
                 "label": "夏天",
-                "image": "assets/illustrations/xia_summer.svg"
+                "image": "assets/illustrations/xia_summer.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "秋",
@@ -1221,7 +1606,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋天到了，树叶换上了金黄的新装。",
                 "icon": "🍁",
                 "label": "秋天",
-                "image": "assets/illustrations/qiu.svg"
+                "image": "assets/illustrations/qiu.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "冬",
@@ -1237,7 +1624,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "冬天雪花飘飘，小朋友们一起堆雪人。",
                 "icon": "⛄",
                 "label": "冬天",
-                "image": "assets/illustrations/dong.svg"
+                "image": "assets/illustrations/dong.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "雪",
@@ -1253,7 +1642,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "洁白的雪花如蝴蝶般从天空中落下。",
                 "icon": "❄️",
                 "label": "雪花",
-                "image": "assets/illustrations/xue.svg"
+                "image": "assets/illustrations/xue.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "花",
@@ -1269,7 +1660,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "花园里的花朵绽放出迷人的芬芳。",
                 "icon": "🌺",
                 "label": "鲜花",
-                "image": "assets/illustrations/hua.svg"
+                "image": "assets/illustrations/hua.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "草",
@@ -1285,7 +1678,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "坚强的小草破土而出，迎接阳光。",
                 "icon": "🌿",
                 "label": "青草",
-                "image": "assets/illustrations/cao.svg"
+                "image": "assets/illustrations/cao.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "海",
@@ -1301,7 +1696,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "辽阔的大海翻滚着洁白的浪花。",
                 "icon": "🌊",
                 "label": "大海",
-                "image": "assets/illustrations/hai.svg"
+                "image": "assets/illustrations/hai.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "星",
@@ -1317,7 +1714,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "夜空中的星星一眨一眨地看着我们。",
                 "icon": "⭐",
                 "label": "星星",
-                "image": "assets/illustrations/xing.svg"
+                "image": "assets/illustrations/xing.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "阳",
@@ -1333,7 +1732,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "金灿灿的阳光照亮了每一个角落。",
                 "icon": "☀️",
                 "label": "阳光",
-                "image": "assets/illustrations/yang_sun.svg"
+                "image": "assets/illustrations/yang_sun.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "光",
@@ -1349,7 +1750,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "清澈的月光洒在静悄悄的小路上。",
                 "icon": "✨",
                 "label": "光芒",
-                "image": "assets/illustrations/guang.svg"
+                "image": "assets/illustrations/guang.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "树",
@@ -1365,7 +1768,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "大树张开双臂，为小鸟遮风挡雨。",
                 "icon": "🌳",
                 "label": "大树",
-                "image": "assets/illustrations/shu_tree.svg"
+                "image": "assets/illustrations/shu_tree.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "林",
@@ -1381,7 +1786,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "茂密的森林空气清新，鸟语花香。",
                 "icon": "🌲",
                 "label": "森林",
-                "image": "assets/illustrations/lin.svg"
+                "image": "assets/illustrations/lin.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "叶",
@@ -1397,7 +1804,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋天的银杏叶像一把把金黄的小扇子。",
                 "icon": "🍃",
                 "label": "绿叶",
-                "image": "assets/illustrations/ye.svg"
+                "image": "assets/illustrations/ye.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "竹",
@@ -1413,7 +1822,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "挺拔的竹子四季常青，生机盎然。",
                 "icon": "🎋",
                 "label": "翠竹",
-                "image": "assets/illustrations/zhu_bamboo.svg"
+                "image": "assets/illustrations/zhu_bamboo.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "江",
@@ -1429,7 +1840,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "壮美的长江奔流不息，流向东方。",
                 "icon": "🏞️",
                 "label": "江水",
-                "image": "assets/illustrations/jiang.svg"
+                "image": "assets/illustrations/jiang.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "河",
@@ -1445,7 +1858,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小河清澈见底，鱼儿自由自在游弋。",
                 "icon": "🌊",
                 "label": "小河",
-                "image": "assets/illustrations/he_river.svg"
+                "image": "assets/illustrations/he_river.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "湖",
@@ -1461,7 +1876,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "美丽的西湖像一颗璀璨的绿宝石。",
                 "icon": "⛵",
                 "label": "碧湖",
-                "image": "assets/illustrations/hu.svg"
+                "image": "assets/illustrations/hu.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "空",
@@ -1477,7 +1894,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "飞鸟在晴朗的天空中展翅高飞。",
                 "icon": "🌌",
                 "label": "天空",
-                "image": "assets/illustrations/kong_sky.svg"
+                "image": "assets/illustrations/kong_sky.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "地",
@@ -1493,7 +1912,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "大地母亲哺育着无数绿色的生命。",
                 "icon": "🌍",
                 "label": "大地",
-                "image": "assets/illustrations/di_earth.svg"
+                "image": "assets/illustrations/di_earth.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "泉",
@@ -1509,7 +1930,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "山间的清泉叮咚作响，宛如美妙的乐曲。",
                 "icon": "⛲",
                 "label": "清泉",
-                "image": "assets/illustrations/quan.svg"
+                "image": "assets/illustrations/quan.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "冰",
@@ -1525,7 +1948,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "冬天的小溪结上了一层晶莹的冰块。",
                 "icon": "🧊",
                 "label": "寒冰",
-                "image": "assets/illustrations/bing.svg"
+                "image": "assets/illustrations/bing.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "露",
@@ -1541,7 +1966,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "晶莹的晨露在绿叶上欢快地滚动。",
                 "icon": "💧",
                 "label": "晨露",
-                "image": "assets/illustrations/lu_dew.svg"
+                "image": "assets/illustrations/lu_dew.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "晴",
@@ -1557,7 +1984,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "雨过天晴，空中挂起了一道美丽的彩虹。",
                 "icon": "🌤️",
                 "label": "晴天",
-                "image": "assets/illustrations/qing.svg"
+                "image": "assets/illustrations/qing.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "阴",
@@ -1573,7 +2002,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "一寸光阴一寸金，我们要好好珍惜时间。",
                 "icon": "☁️",
                 "label": "阴天",
-                "image": "assets/illustrations/yin.svg"
+                "image": "assets/illustrations/yin.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "雾",
@@ -1589,7 +2020,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "清晨的薄雾像轻纱一般笼罩着群山。",
                 "icon": "🌫️",
                 "label": "晨雾",
-                "image": "assets/illustrations/wu_fog.svg"
+                "image": "assets/illustrations/wu_fog.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "霜",
@@ -1605,7 +2038,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋末早晨，草叶上凝结了洁白的霜花。",
                 "icon": "🌨️",
                 "label": "白霜",
-                "image": "assets/illustrations/shuang.svg"
+                "image": "assets/illustrations/shuang.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "雷",
@@ -1621,7 +2056,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "第一声春雷惊醒了正在冬眠的小动物。",
                 "icon": "🌩️",
                 "label": "春雷",
-                "image": "assets/illustrations/lei.svg"
+                "image": "assets/illustrations/lei.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "电",
@@ -1637,7 +2074,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "暴风雨前夕，天边划过一道耀眼的闪电。",
                 "icon": "⚡",
                 "label": "闪电",
-                "image": "assets/illustrations/dian.svg"
+                "image": "assets/illustrations/dian.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "虹",
@@ -1653,7 +2092,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "雨后天晴，天空绽放出七彩的彩虹。",
                 "icon": "🌈",
                 "label": "彩虹",
-                "image": "assets/illustrations/hong_rainbow.svg"
+                "image": "assets/illustrations/hong_rainbow.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "泥",
@@ -1669,7 +2110,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春雨过后，泥土里散发着清新的芬芳。",
                 "icon": "🪴",
                 "label": "红泥",
-                "image": "assets/illustrations/ni.svg"
+                "image": "assets/illustrations/ni.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "霞",
@@ -1685,7 +2128,207 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "傍晚金红色的晚霞染红了大半个天空。",
                 "icon": "🌄",
                 "label": "晚霞",
-                "image": "assets/illustrations/xia_sunset.svg"
+                "image": "assets/illustrations/xia_sunset.svg",
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "今",
+                "pinyin": "jīn",
+                "en": "today",
+                "radical": "人",
+                "words": [
+                    "今天",
+                    "今年",
+                    "今日"
+                ],
+                "sentence": "今天天气真晴朗，我们一起去公园春游。",
+                "icon": "📅",
+                "label": "今天",
+                "image": "assets/illustrations/jin_today.svg",
+                "strokes": 4,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "明",
+                "pinyin": "míng",
+                "en": "bright",
+                "radical": "日",
+                "words": [
+                    "明天",
+                    "光明",
+                    "明白"
+                ],
+                "sentence": "日和月合在一起，就是充满光明的明字。",
+                "icon": "☀️",
+                "label": "光明",
+                "image": "assets/illustrations/ming_bright.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "午",
+                "pinyin": "wǔ",
+                "en": "noon",
+                "radical": "十",
+                "words": [
+                    "中午",
+                    "上午",
+                    "下午"
+                ],
+                "sentence": "中午十二点，太阳高高挂在头顶正上方。",
+                "icon": "🕛",
+                "label": "中午",
+                "image": "assets/illustrations/wu_noon.svg",
+                "strokes": 4,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "晚",
+                "pinyin": "wǎn",
+                "en": "evening",
+                "radical": "日",
+                "words": [
+                    "晚上",
+                    "夜晚",
+                    "早晚"
+                ],
+                "sentence": "到了晚上，弯弯的月亮和星星在夜空闪烁。",
+                "icon": "🌙",
+                "label": "晚上",
+                "image": "assets/illustrations/wan_evening.svg",
+                "strokes": 11,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "苗",
+                "pinyin": "miáo",
+                "en": "seedling",
+                "radical": "艹",
+                "words": [
+                    "禾苗",
+                    "树苗",
+                    "青苗"
+                ],
+                "sentence": "春雨过后，田野里的绿色禾苗长得格外精神。",
+                "icon": "🌱",
+                "label": "禾苗",
+                "image": "assets/illustrations/miao_seedling.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "芽",
+                "pinyin": "yá",
+                "en": "sprout",
+                "radical": "艹",
+                "words": [
+                    "发芽",
+                    "嫩芽",
+                    "豆芽"
+                ],
+                "sentence": "泥土里的小种子破土而出，长出了嫩绿的新芽。",
+                "icon": "🌿",
+                "label": "发芽",
+                "image": "assets/illustrations/ya_sprout.svg",
+                "strokes": 7,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "根",
+                "pinyin": "gēn",
+                "en": "root",
+                "radical": "木",
+                "words": [
+                    "树根",
+                    "生根",
+                    "根本"
+                ],
+                "sentence": "大树的树根深深扎进泥土里汲取养分。",
+                "icon": "🌳",
+                "label": "树根",
+                "image": "assets/illustrations/gen_root.svg",
+                "strokes": 10,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "枝",
+                "pinyin": "zhī",
+                "en": "branch",
+                "radical": "木",
+                "words": [
+                    "树枝",
+                    "枝头",
+                    "柳枝"
+                ],
+                "sentence": "喜鹊站在高高的树枝上欢快地歌唱。",
+                "icon": "🌿",
+                "label": "树枝",
+                "image": "assets/illustrations/zhi_branch.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "松",
+                "pinyin": "sōng",
+                "en": "pine",
+                "radical": "木",
+                "words": [
+                    "松树",
+                    "青松",
+                    "松果"
+                ],
+                "sentence": "挺拔的松树一年四季都披着翠绿的衣裳。",
+                "icon": "🌲",
+                "label": "松树",
+                "image": "assets/illustrations/song_pine.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "柳",
+                "pinyin": "liǔ",
+                "en": "willow",
+                "radical": "木",
+                "words": [
+                    "柳树",
+                    "垂柳",
+                    "柳枝"
+                ],
+                "sentence": "春风吹过河岸，柳树垂下长长的绿色柳条。",
+                "icon": "🌿",
+                "label": "柳树",
+                "image": "assets/illustrations/liu_willow.svg",
+                "strokes": 9,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "荷",
+                "pinyin": "hé",
+                "en": "lotus",
+                "radical": "艹",
+                "words": [
+                    "荷花",
+                    "荷叶",
+                    "荷塘"
+                ],
+                "sentence": "夏天的池塘里开满了粉红的荷花，铺满碧绿的荷叶。",
+                "icon": "🪷",
+                "label": "荷花",
+                "image": "assets/illustrations/he_lotus.svg",
+                "strokes": 10,
+                "grade": "g1",
+                "difficulty": 2
             }
         ]
     },
@@ -1708,7 +2351,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们要好好爱护双目，让目光更加明亮清澈。",
                 "icon": "👀",
                 "label": "双目",
-                "image": "assets/illustrations/mu_eye.svg"
+                "image": "assets/illustrations/mu_eye.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "耳",
@@ -1724,7 +2369,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "竖起小耳朵，认真听老师讲课。",
                 "icon": "👂",
                 "label": "耳朵",
-                "image": "assets/illustrations/er_ear.svg"
+                "image": "assets/illustrations/er_ear.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "手",
@@ -1740,7 +2387,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "一双勤劳的小手能创造很多奇迹。",
                 "icon": "✋",
                 "label": "小手",
-                "image": "assets/illustrations/shou.svg"
+                "image": "assets/illustrations/shou.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "足",
@@ -1756,7 +2405,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "一双可爱的小脚丫留下了欢快的足迹。",
                 "icon": "🦶",
                 "label": "双足",
-                "image": "assets/illustrations/zu_feet.svg"
+                "image": "assets/illustrations/zu_feet.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "心",
@@ -1772,7 +2423,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "今天过得非常有意义，我心里特别开心。",
                 "icon": "❤️",
                 "label": "爱心",
-                "image": "assets/illustrations/xin.svg"
+                "image": "assets/illustrations/xin.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "牙",
@@ -1788,7 +2441,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "早晚认真刷牙，牙齿健康洁白。",
                 "icon": "🦷",
                 "label": "门牙",
-                "image": "assets/illustrations/ya_tooth.svg"
+                "image": "assets/illustrations/ya_tooth.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "爸",
@@ -1804,7 +2459,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "爸爸的手温暖又有力量。",
                 "icon": "👨",
                 "label": "爸爸",
-                "image": "assets/illustrations/ba.svg"
+                "image": "assets/illustrations/ba.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "妈",
@@ -1820,7 +2477,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "妈妈的笑容像春天里的阳光一样温暖。",
                 "icon": "👩",
                 "label": "妈妈",
-                "image": "assets/illustrations/ma_mom.svg"
+                "image": "assets/illustrations/ma_mom.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "家",
@@ -1836,7 +2495,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "温馨的家是充满欢笑的幸福港湾。",
                 "icon": "🏡",
                 "label": "家人",
-                "image": "assets/illustrations/jia.svg"
+                "image": "assets/illustrations/jia.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "友",
@@ -1852,7 +2513,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "好朋友之间要团结友爱、互帮互助。",
                 "icon": "🤝",
                 "label": "朋友",
-                "image": "assets/illustrations/you_friend.svg"
+                "image": "assets/illustrations/you_friend.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "哥",
@@ -1868,7 +2531,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "大哥哥带我一起去操场踢足球。",
                 "icon": "👦",
                 "label": "哥哥",
-                "image": "assets/illustrations/ge_brother.svg"
+                "image": "assets/illustrations/ge_brother.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "弟",
@@ -1884,7 +2549,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小弟弟学走路的样子真可爱。",
                 "icon": "🧒",
                 "label": "弟弟",
-                "image": "assets/illustrations/di_brother.svg"
+                "image": "assets/illustrations/di_brother.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "姐",
@@ -1900,7 +2567,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "姐姐耐心地教我画水彩画。",
                 "icon": "👧",
                 "label": "姐姐",
-                "image": "assets/illustrations/jie_sister.svg"
+                "image": "assets/illustrations/jie_sister.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "妹",
@@ -1916,7 +2585,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小妹妹笑起来脸上露出甜甜的酒窝。",
                 "icon": "👧",
                 "label": "妹妹",
-                "image": "assets/illustrations/mei_sister.svg"
+                "image": "assets/illustrations/mei_sister.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "头",
@@ -1932,7 +2603,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "写字时不要把头低得太低，保护视力。",
                 "icon": "🧑",
                 "label": "头部",
-                "image": "assets/illustrations/tou.svg"
+                "image": "assets/illustrations/tou.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "鼻",
@@ -1948,7 +2621,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小花狗的鼻子可灵敏啦。",
                 "icon": "👃",
                 "label": "鼻子",
-                "image": "assets/illustrations/bi_nose.svg"
+                "image": "assets/illustrations/bi_nose.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "身",
@@ -1964,7 +2639,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "坚持体育锻炼，身体更加强壮健康。",
                 "icon": "🧍",
                 "label": "身体",
-                "image": "assets/illustrations/shen.svg"
+                "image": "assets/illustrations/shen.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "儿",
@@ -1980,7 +2657,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们是新时代朝气蓬勃的少年儿童。",
                 "icon": "👶",
                 "label": "儿童",
-                "image": "assets/illustrations/er_child.svg"
+                "image": "assets/illustrations/er_child.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "老",
@@ -1996,7 +2675,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们要尊老爱幼，做一个懂礼貌的好学生。",
                 "icon": "👴",
                 "label": "老人",
-                "image": "assets/illustrations/lao.svg"
+                "image": "assets/illustrations/lao.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "师",
@@ -2012,7 +2693,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "辛勤的老师是指引我们前行的明灯。",
                 "icon": "👩‍🏫",
                 "label": "老师",
-                "image": "assets/illustrations/shi_teacher.svg"
+                "image": "assets/illustrations/shi_teacher.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "爷",
@@ -2028,7 +2711,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "老爷爷笑眯眯地给我们讲好听的童话故事。",
                 "icon": "👴",
                 "label": "爷爷",
-                "image": "assets/illustrations/ye_grandpa.svg"
+                "image": "assets/illustrations/ye_grandpa.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "奶",
@@ -2044,7 +2729,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "慈祥的奶奶亲手为我织了温暖的毛衣。",
                 "icon": "👵",
                 "label": "奶奶",
-                "image": "assets/illustrations/nai_grandma.svg"
+                "image": "assets/illustrations/nai_grandma.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "脸",
@@ -2060,7 +2747,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小朋友的笑脸就像一朵盛开的向日葵。",
                 "icon": "😊",
                 "label": "笑脸",
-                "image": "assets/illustrations/lian.svg"
+                "image": "assets/illustrations/lian.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "眉",
@@ -2076,7 +2765,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小姑娘长着一双弯弯好看的柳叶眉。",
                 "icon": "🤨",
                 "label": "眉毛",
-                "image": "assets/illustrations/mei_eyebrow.svg"
+                "image": "assets/illustrations/mei_eyebrow.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "骨",
@@ -2092,7 +2783,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "常喝牛奶多晒太阳，骨骼会长得更加强壮。",
                 "icon": "🦴",
                 "label": "骨骼",
-                "image": "assets/illustrations/gu_bone.svg"
+                "image": "assets/illustrations/gu_bone.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "腹",
@@ -2108,7 +2801,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "小花猫吃得饱饱的，露出圆滚滚的腹部。",
                 "icon": "🫃",
                 "label": "腹部",
-                "image": "assets/illustrations/fu_belly.svg"
+                "image": "assets/illustrations/fu_belly.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "亲",
@@ -2124,7 +2819,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "温暖亲切的家庭是我们最安心的港湾。",
                 "icon": "🫂",
                 "label": "亲人",
-                "image": "assets/illustrations/qin.svg"
+                "image": "assets/illustrations/qin.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "幼",
@@ -2140,7 +2837,81 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "尊老爱幼是我们中华民族的传统美德。",
                 "icon": "🍼",
                 "label": "幼儿",
-                "image": "assets/illustrations/you_young.svg"
+                "image": "assets/illustrations/you_young.svg",
+                "grade": "g3",
+                "difficulty": 2
+            },
+            {
+                "char": "女",
+                "pinyin": "nǚ",
+                "en": "girl",
+                "radical": "女",
+                "words": [
+                    "女生",
+                    "女儿",
+                    "女孩"
+                ],
+                "sentence": "扎着羊角辫的小女孩笑得像花儿一样甜。",
+                "icon": "👧",
+                "label": "女孩",
+                "image": "assets/illustrations/nv_girl.svg",
+                "strokes": 3,
+                "grade": "k-1",
+                "difficulty": 1
+            },
+            {
+                "char": "男",
+                "pinyin": "nán",
+                "en": "boy",
+                "radical": "田",
+                "words": [
+                    "男生",
+                    "男孩",
+                    "男女"
+                ],
+                "sentence": "阳光活泼的小男孩在操场上快乐地奔跑。",
+                "icon": "👦",
+                "label": "男孩",
+                "image": "assets/illustrations/nan_boy.svg",
+                "strokes": 7,
+                "grade": "k-1",
+                "difficulty": 1
+            },
+            {
+                "char": "我",
+                "pinyin": "wǒ",
+                "en": "I / me",
+                "radical": "戈",
+                "words": [
+                    "我们",
+                    "自己",
+                    "我的"
+                ],
+                "sentence": "我是一名热爱学习、讲礼貌的好孩子。",
+                "icon": "🙋",
+                "label": "我们",
+                "image": "assets/illustrations/wo_me.svg",
+                "strokes": 7,
+                "grade": "k-1",
+                "difficulty": 1
+            },
+            {
+                "char": "你",
+                "pinyin": "nǐ",
+                "en": "you",
+                "radical": "亻",
+                "words": [
+                    "你好",
+                    "你们",
+                    "你的"
+                ],
+                "sentence": "早上见到老师和同学，要微笑着说声你好。",
+                "icon": "👋",
+                "label": "你好",
+                "image": "assets/illustrations/ni_you.svg",
+                "strokes": 7,
+                "grade": "k-1",
+                "difficulty": 1
             }
         ]
     },
@@ -2163,7 +2934,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们每天都在探索和学习新知识。",
                 "icon": "🎒",
                 "label": "学习",
-                "image": "assets/illustrations/xue_study.svg"
+                "image": "assets/illustrations/xue_study.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "习",
@@ -2179,7 +2952,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "多温习、多练习，字就会越写越漂亮。",
                 "icon": "📝",
                 "label": "练习",
-                "image": "assets/illustrations/xi_study.svg"
+                "image": "assets/illustrations/xi_study.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "书",
@@ -2195,7 +2970,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "书籍是人类进步的阶梯，多读书有益处。",
                 "icon": "📖",
                 "label": "书本",
-                "image": "assets/illustrations/shu.svg"
+                "image": "assets/illustrations/shu.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "写",
@@ -2211,7 +2988,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "坐姿端正，认认真真写好每一个中国字。",
                 "icon": "✍️",
                 "label": "写字",
-                "image": "assets/illustrations/xie_write.svg"
+                "image": "assets/illustrations/xie_write.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "读",
@@ -2227,7 +3006,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "清晨教室里传来阵阵琅琅的读书声。",
                 "icon": "🗣️",
                 "label": "朗读",
-                "image": "assets/illustrations/du_read.svg"
+                "image": "assets/illustrations/du_read.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "画",
@@ -2243,7 +3024,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我用五彩水彩笔画出心中的美好世界。",
                 "icon": "🎨",
                 "label": "画画",
-                "image": "assets/illustrations/hua_draw.svg"
+                "image": "assets/illustrations/hua_draw.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "早",
@@ -2259,7 +3042,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "早睡早起身体好，做个健康好少年。",
                 "icon": "🌅",
                 "label": "早晨",
-                "image": "assets/illustrations/zao.svg"
+                "image": "assets/illustrations/zao.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "校",
@@ -2275,7 +3060,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "美丽的校园里处处洋溢着欢声笑语。",
                 "icon": "🏫",
                 "label": "学校",
-                "image": "assets/illustrations/xiao_school.svg"
+                "image": "assets/illustrations/xiao_school.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "正",
@@ -2291,7 +3078,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "写字时身体坐端正，握笔姿势要正确。",
                 "icon": "📐",
                 "label": "端正",
-                "image": "assets/illustrations/zheng_straight.svg"
+                "image": "assets/illustrations/zheng_straight.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "永",
@@ -2307,7 +3096,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "中华传统美德永远铭刻在每一个人的心间。",
                 "icon": "🖋️",
                 "label": "永远",
-                "image": "assets/illustrations/yong_eternal.svg"
+                "image": "assets/illustrations/yong_eternal.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "课",
@@ -2323,7 +3114,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "铃声响，进教室，认真听讲专心上课。",
                 "icon": "📚",
                 "label": "上课",
-                "image": "assets/illustrations/ke_lesson.svg"
+                "image": "assets/illustrations/ke_lesson.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "笔",
@@ -2339,7 +3132,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "握紧画笔，在宣纸上写下漂亮的笔迹。",
                 "icon": "🖌️",
                 "label": "毛笔",
-                "image": "assets/illustrations/bi.svg"
+                "image": "assets/illustrations/bi.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "本",
@@ -2355,7 +3150,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "书本里蕴藏着无穷无尽的科学秘密。",
                 "icon": "📓",
                 "label": "本子",
-                "image": "assets/illustrations/ben_book.svg"
+                "image": "assets/illustrations/ben_book.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "问",
@@ -2371,7 +3168,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "遇到不懂的问题，我们要主动向老师提问。",
                 "icon": "❓",
                 "label": "提问",
-                "image": "assets/illustrations/wen_ask.svg"
+                "image": "assets/illustrations/wen_ask.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "歌",
@@ -2387,7 +3186,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "动听的儿歌陪伴我们快乐成长。",
                 "icon": "🎵",
                 "label": "儿歌",
-                "image": "assets/illustrations/ge_song.svg"
+                "image": "assets/illustrations/ge_song.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "诗",
@@ -2403,7 +3204,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "中华经典古诗韵味悠长，意境深远。",
                 "icon": "📜",
                 "label": "古诗",
-                "image": "assets/illustrations/shi_poem.svg"
+                "image": "assets/illustrations/shi_poem.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "听",
@@ -2419,7 +3222,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "学会认真倾听他人的发言也是好习惯。",
                 "icon": "🎧",
                 "label": "听讲",
-                "image": "assets/illustrations/ting_listen.svg"
+                "image": "assets/illustrations/ting_listen.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "说",
@@ -2435,7 +3240,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "说话要清楚明白，有礼貌地表达自己的想法。",
                 "icon": "💬",
                 "label": "说话",
-                "image": "assets/illustrations/shuo_speak.svg"
+                "image": "assets/illustrations/shuo_speak.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "答",
@@ -2451,7 +3258,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "积极举手，自信大声回答老师提问。",
                 "icon": "🙋",
                 "label": "回答",
-                "image": "assets/illustrations/da_answer.svg"
+                "image": "assets/illustrations/da_answer.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "乐",
@@ -2467,7 +3276,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "快乐的小书法家们在这里共同进步。",
                 "icon": "🎹",
                 "label": "快乐",
-                "image": "assets/illustrations/le_music.svg"
+                "image": "assets/illustrations/le_music.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "思",
@@ -2483,7 +3294,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "遇到难题勤于思考，培养解决问题的能力。",
                 "icon": "💭",
                 "label": "思考",
-                "image": "assets/illustrations/si_think.svg"
+                "image": "assets/illustrations/si_think.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "知",
@@ -2499,7 +3312,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "知识就像辽阔的海洋，等待我们去探索。",
                 "icon": "💡",
                 "label": "知识",
-                "image": "assets/illustrations/zhi_knowledge.svg"
+                "image": "assets/illustrations/zhi_knowledge.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "识",
@@ -2515,7 +3330,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "多读书多旅行，能让我们认识更广阔的世界。",
                 "icon": "🔍",
                 "label": "认识",
-                "image": "assets/illustrations/shi_recognize.svg"
+                "image": "assets/illustrations/shi_recognize.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "记",
@@ -2531,7 +3348,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "上课认真做好笔记，重要内容牢记心间。",
                 "icon": "🧠",
                 "label": "记住",
-                "image": "assets/illustrations/ji_note.svg"
+                "image": "assets/illustrations/ji_note.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "算",
@@ -2547,7 +3366,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "每天坚持练习口算心算，反应又快又准。",
                 "icon": "🧮",
                 "label": "计算",
-                "image": "assets/illustrations/suan_calc.svg"
+                "image": "assets/illustrations/suan_calc.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "题",
@@ -2563,7 +3384,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "认真仔细审题，养成规范答题的好习惯。",
                 "icon": "📋",
                 "label": "做题",
-                "image": "assets/illustrations/ti_quiz.svg"
+                "image": "assets/illustrations/ti_quiz.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "册",
@@ -2579,7 +3402,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我最喜欢翻看图文并茂的彩色科学画册。",
                 "icon": "📑",
                 "label": "画册",
-                "image": "assets/illustrations/ce_booklet.svg"
+                "image": "assets/illustrations/ce_booklet.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "奖",
@@ -2595,7 +3420,135 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "期末获得了三好学生奖状，全家都为我高兴。",
                 "icon": "🏆",
                 "label": "奖状",
-                "image": "assets/illustrations/jiang_award.svg"
+                "image": "assets/illustrations/jiang_award.svg",
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "字",
+                "pinyin": "zì",
+                "en": "character",
+                "radical": "宀",
+                "words": [
+                    "汉字",
+                    "写字",
+                    "识字"
+                ],
+                "sentence": "我们在米字格里一笔一画认真练习写汉字。",
+                "icon": "🀄",
+                "label": "汉字",
+                "image": "assets/illustrations/zi_char.svg",
+                "strokes": 6,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "词",
+                "pinyin": "cí",
+                "en": "word",
+                "radical": "讠",
+                "words": [
+                    "词语",
+                    "组词",
+                    "诗词"
+                ],
+                "sentence": "把两个好朋友一样的汉字拼在一起就能组成词语。",
+                "icon": "🧩",
+                "label": "词语",
+                "image": "assets/illustrations/ci_word.svg",
+                "strokes": 7,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "句",
+                "pinyin": "jù",
+                "en": "sentence",
+                "radical": "口",
+                "words": [
+                    "句子",
+                    "造句",
+                    "诗句"
+                ],
+                "sentence": "用学过的词语连成一句通顺完整的话吧。",
+                "icon": "💬",
+                "label": "句子",
+                "image": "assets/illustrations/ju_sentence.svg",
+                "strokes": 5,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "纸",
+                "pinyin": "zhǐ",
+                "en": "paper",
+                "radical": "纟",
+                "words": [
+                    "白纸",
+                    "折纸",
+                    "宣纸"
+                ],
+                "sentence": "造纸术是中国古代伟大的四大发明之一。",
+                "icon": "📄",
+                "label": "白纸",
+                "image": "assets/illustrations/zhi_paper.svg",
+                "strokes": 7,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "墨",
+                "pinyin": "mò",
+                "en": "ink",
+                "radical": "土",
+                "words": [
+                    "墨水",
+                    "笔墨",
+                    "水墨"
+                ],
+                "sentence": "毛笔蘸上乌黑发亮的墨汁，在宣纸上挥毫写字。",
+                "icon": "🖤",
+                "label": "笔墨",
+                "image": "assets/illustrations/mo_ink.svg",
+                "strokes": 15,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "琴",
+                "pinyin": "qín",
+                "en": "piano",
+                "radical": "王",
+                "words": [
+                    "钢琴",
+                    "古琴",
+                    "琴声"
+                ],
+                "sentence": "优美动听的钢琴声从音乐教室里飘了出来。",
+                "icon": "🎹",
+                "label": "钢琴",
+                "image": "assets/illustrations/qin_piano.svg",
+                "strokes": 12,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "棋",
+                "pinyin": "qí",
+                "en": "chess",
+                "radical": "木",
+                "words": [
+                    "下棋",
+                    "围棋",
+                    "象棋"
+                ],
+                "sentence": "周末我和爷爷在棋盘前开心地比赛下围棋。",
+                "icon": "♟️",
+                "label": "下棋",
+                "image": "assets/illustrations/qi_chess.svg",
+                "strokes": 12,
+                "grade": "g2",
+                "difficulty": 3
             }
         ]
     },
@@ -2618,7 +3571,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "一年有春、夏、秋、冬四个美丽的季节。",
                 "icon": "🍀",
                 "label": "四个",
-                "image": "assets/illustrations/si.svg"
+                "image": "assets/illustrations/si.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "五",
@@ -2634,7 +3589,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "五颜六色的气球飞向了蔚蓝的天空。",
                 "icon": "🖐️",
                 "label": "五个",
-                "image": "assets/illustrations/wu.svg"
+                "image": "assets/illustrations/wu.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "六",
@@ -2650,7 +3607,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "六一儿童节是小朋友们最开心的节日。",
                 "icon": "🎲",
                 "label": "六个",
-                "image": "assets/illustrations/liu.svg"
+                "image": "assets/illustrations/liu.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "七",
@@ -2666,7 +3625,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "神奇的七巧板能拼出各种有趣的动物。",
                 "icon": "🌈",
                 "label": "七个",
-                "image": "assets/illustrations/qi.svg"
+                "image": "assets/illustrations/qi.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "八",
@@ -2682,7 +3643,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "八月桂花开，满园飘清香。",
                 "icon": "🪙",
                 "label": "八个",
-                "image": "assets/illustrations/ba_num.svg"
+                "image": "assets/illustrations/ba_num.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "九",
@@ -2698,7 +3661,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "九九乘法表，我们牢牢记心间。",
                 "icon": "🎈",
                 "label": "九个",
-                "image": "assets/illustrations/jiu_nine.svg"
+                "image": "assets/illustrations/jiu_nine.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "百",
@@ -2714,7 +3679,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春天里百花齐放，争奇斗艳。",
                 "icon": "💯",
                 "label": "一百",
-                "image": "assets/illustrations/bai_hundred.svg"
+                "image": "assets/illustrations/bai_hundred.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "千",
@@ -2730,7 +3697,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "千里之行，始于足下，我们要脚踏实地。",
                 "icon": "🧊",
                 "label": "一千",
-                "image": "assets/illustrations/qian_thousand.svg"
+                "image": "assets/illustrations/qian_thousand.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "万",
@@ -2746,7 +3715,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "万里长城蜿蜒起伏，气势雄伟。",
                 "icon": "🔢",
                 "label": "一万",
-                "image": "assets/illustrations/wan_tenthousand.svg"
+                "image": "assets/illustrations/wan_tenthousand.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "亿",
@@ -2762,7 +3733,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "十三亿中华儿女心连心。",
                 "icon": "🌌",
                 "label": "亿万",
-                "image": "assets/illustrations/yi_hundredmillion.svg"
+                "image": "assets/illustrations/yi_hundredmillion.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "东",
@@ -2778,7 +3751,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "红红的太阳从东方冉冉升起。",
                 "icon": "🌅",
                 "label": "东方",
-                "image": "assets/illustrations/dong_east.svg"
+                "image": "assets/illustrations/dong_east.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "西",
@@ -2794,7 +3769,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "夏天吃上一块甜甜的西瓜真惬意。",
                 "icon": "🌇",
                 "label": "西方",
-                "image": "assets/illustrations/xi_west.svg"
+                "image": "assets/illustrations/xi_west.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "南",
@@ -2810,7 +3787,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋天到了，大雁成群结队飞往温暖的南方。",
                 "icon": "🧭",
                 "label": "南方",
-                "image": "assets/illustrations/nan_south.svg"
+                "image": "assets/illustrations/nan_south.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "北",
@@ -2826,7 +3805,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "北斗七星指引着我们前行的方向。",
                 "icon": "❄️",
                 "label": "北方",
-                "image": "assets/illustrations/bei_north.svg"
+                "image": "assets/illustrations/bei_north.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "左",
@@ -2842,7 +3823,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "过马路时要先看左边，再看右边。",
                 "icon": "👈",
                 "label": "左边",
-                "image": "assets/illustrations/zuo.svg"
+                "image": "assets/illustrations/zuo.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "右",
@@ -2858,7 +3841,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我用右手握笔写出工整漂亮的汉字。",
                 "icon": "👉",
                 "label": "右边",
-                "image": "assets/illustrations/you_right.svg"
+                "image": "assets/illustrations/you_right.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "前",
@@ -2874,7 +3859,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "勇敢地向着心中的目标奋力前进。",
                 "icon": "🏃",
                 "label": "向前",
-                "image": "assets/illustrations/qian_front.svg"
+                "image": "assets/illustrations/qian_front.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "后",
@@ -2890,7 +3877,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "排队时站在后面，遵守秩序不拥挤。",
                 "icon": "🚶",
                 "label": "后面",
-                "image": "assets/illustrations/hou_back.svg"
+                "image": "assets/illustrations/hou_back.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "边",
@@ -2906,7 +3895,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "池塘边开满了星星点点的野花。",
                 "icon": "🏞️",
                 "label": "旁边",
-                "image": "assets/illustrations/bian_edge.svg"
+                "image": "assets/illustrations/bian_edge.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "间",
@@ -2922,7 +3913,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我把自己的小房间收拾得整整齐齐、干干净净。",
                 "icon": "⏱️",
                 "label": "房间",
-                "image": "assets/illustrations/jian_room.svg"
+                "image": "assets/illustrations/jian_room.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "里",
@@ -2938,7 +3931,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "清澈的小溪里生活着许多小鱼虾。",
                 "icon": "🏡",
                 "label": "心里",
-                "image": "assets/illustrations/li_inside.svg"
+                "image": "assets/illustrations/li_inside.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "外",
@@ -2954,7 +3949,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "周末爸爸妈妈带我去野外放风筝。",
                 "icon": "⛺",
                 "label": "外边",
-                "image": "assets/illustrations/wai_outside.svg"
+                "image": "assets/illustrations/wai_outside.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "半",
@@ -2970,7 +3967,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "圆圆的饼干分成两半，和小伙伴一起分享。",
                 "icon": "🌗",
                 "label": "一半",
-                "image": "assets/illustrations/ban_cookie.svg"
+                "image": "assets/illustrations/ban_cookie.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "零",
@@ -2986,7 +3985,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "无论是零点还是早晨，指针都在准时前行。",
                 "icon": "⭕",
                 "label": "零点",
-                "image": "assets/illustrations/ling_zero.svg"
+                "image": "assets/illustrations/ling_zero.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "初",
@@ -3002,7 +4003,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "旭日初升，给大地披上了一层金色的霞光。",
                 "icon": "🌱",
                 "label": "初始",
-                "image": "assets/illustrations/chu_beginning.svg"
+                "image": "assets/illustrations/chu_beginning.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "末",
@@ -3018,7 +4021,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "愉快的周末里，我和爸爸一起去放风筝。",
                 "icon": "🔚",
                 "label": "周末",
-                "image": "assets/illustrations/mo_end.svg"
+                "image": "assets/illustrations/mo_end.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "高",
@@ -3034,7 +4039,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "仰望高耸入云的山峰，心中充满敬佩。",
                 "icon": "🗼",
                 "label": "高大",
-                "image": "assets/illustrations/gao_high.svg"
+                "image": "assets/illustrations/gao_high.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "低",
@@ -3050,7 +4057,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "写字时不要把头放得太低，保护好视力。",
                 "icon": "📉",
                 "label": "高低",
-                "image": "assets/illustrations/di_low.svg"
+                "image": "assets/illustrations/di_low.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "远",
@@ -3066,7 +4075,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "树立远大崇高的理想，扬起航海的风帆。",
                 "icon": "🔭",
                 "label": "远方",
-                "image": "assets/illustrations/yuan_far.svg"
+                "image": "assets/illustrations/yuan_far.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "近",
@@ -3082,7 +4093,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "公园离我家很近，步行几分钟就能到达。",
                 "icon": "🔍",
                 "label": "亲近",
-                "image": "assets/illustrations/jin_near.svg"
+                "image": "assets/illustrations/jin_near.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "多",
@@ -3098,7 +4111,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "果园里的红苹果真多呀，装满了大竹篮。",
                 "icon": "🍎",
                 "label": "许多",
-                "image": "assets/illustrations/duo_many.svg"
+                "image": "assets/illustrations/duo_many.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "少",
@@ -3114,7 +4129,117 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "盘子里的果子变少了，只剩下一个红苹果。",
                 "icon": "🍒",
                 "label": "多少",
-                "image": "assets/illustrations/shao_few.svg"
+                "image": "assets/illustrations/shao_few.svg",
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "长",
+                "pinyin": "cháng",
+                "en": "long",
+                "radical": "长",
+                "words": [
+                    "长短",
+                    "长江",
+                    "长城"
+                ],
+                "sentence": "万里长城像一条巨龙蜿蜒在崇山峻岭之间。",
+                "icon": "📏",
+                "label": "长短",
+                "image": "assets/illustrations/chang_long.svg",
+                "strokes": 4,
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "短",
+                "pinyin": "duǎn",
+                "en": "short",
+                "radical": "矢",
+                "words": [
+                    "长短",
+                    "短小",
+                    "短跑"
+                ],
+                "sentence": "尺子比一比，就知道哪支铅笔长、哪支铅笔短。",
+                "icon": "📐",
+                "label": "短小",
+                "image": "assets/illustrations/duan_short.svg",
+                "strokes": 12,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "进",
+                "pinyin": "jìn",
+                "en": "enter",
+                "radical": "辶",
+                "words": [
+                    "前进",
+                    "进步",
+                    "进去"
+                ],
+                "sentence": "每天坚持学习一点点，就能不断取得新进步。",
+                "icon": "➡️",
+                "label": "前进",
+                "image": "assets/illustrations/jin_enter.svg",
+                "strokes": 7,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "退",
+                "pinyin": "tuì",
+                "en": "retreat",
+                "radical": "辶",
+                "words": [
+                    "后退",
+                    "退步",
+                    "退后"
+                ],
+                "sentence": "遇到困难要勇敢向前进，不要害怕往后退。",
+                "icon": "⬅️",
+                "label": "后退",
+                "image": "assets/illustrations/tui_retreat.svg",
+                "strokes": 9,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "深",
+                "pinyin": "shēn",
+                "en": "deep",
+                "radical": "氵",
+                "words": [
+                    "深海",
+                    "深浅",
+                    "深秋"
+                ],
+                "sentence": "蔚蓝的大海深处住着巨大的蓝鲸。",
+                "icon": "🌊",
+                "label": "深浅",
+                "image": "assets/illustrations/shen_deep.svg",
+                "strokes": 11,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "浅",
+                "pinyin": "qiǎn",
+                "en": "shallow",
+                "radical": "氵",
+                "words": [
+                    "浅水",
+                    "深浅",
+                    "浅蓝"
+                ],
+                "sentence": "小鸭子在清澈见底的浅水滩里欢快地戏水。",
+                "icon": "💧",
+                "label": "浅水",
+                "image": "assets/illustrations/qian_shallow.svg",
+                "strokes": 8,
+                "grade": "g2",
+                "difficulty": 2
             }
         ]
     },
@@ -3137,7 +4262,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋天的果园里果实飘香，景色迷人。",
                 "icon": "🍎",
                 "label": "水果",
-                "image": "assets/illustrations/guo.svg"
+                "image": "assets/illustrations/guo.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "瓜",
@@ -3153,7 +4280,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "夏天吃上一片冰甜可口的西瓜真舒服。",
                 "icon": "🍉",
                 "label": "西瓜",
-                "image": "assets/illustrations/gua.svg"
+                "image": "assets/illustrations/gua.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "桃",
@@ -3169,7 +4298,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "粉红色的水蜜桃像小朋友圆圆的笑脸。",
                 "icon": "🍑",
                 "label": "桃子",
-                "image": "assets/illustrations/tao.svg"
+                "image": "assets/illustrations/tao.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "李",
@@ -3185,7 +4316,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春天的果园里桃李争妍，美不胜收。",
                 "icon": "🫐",
                 "label": "李子",
-                "image": "assets/illustrations/li_plum.svg"
+                "image": "assets/illustrations/li_plum.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "梨",
@@ -3201,7 +4334,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "甘甜可口的雪梨生津润肺。",
                 "icon": "🍐",
                 "label": "雪梨",
-                "image": "assets/illustrations/li_pear.svg"
+                "image": "assets/illustrations/li_pear.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "米",
@@ -3217,7 +4352,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "粒粒皆辛苦，我们要珍惜每一粒白米饭。",
                 "icon": "🍚",
                 "label": "大米",
-                "image": "assets/illustrations/mi.svg"
+                "image": "assets/illustrations/mi.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "面",
@@ -3233,7 +4370,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "妈妈煮的热气腾腾的鸡蛋面真香。",
                 "icon": "🍜",
                 "label": "面条",
-                "image": "assets/illustrations/mian.svg"
+                "image": "assets/illustrations/mian.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "菜",
@@ -3249,7 +4388,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "多吃新鲜青菜，摄取丰富的维生素。",
                 "icon": "🥬",
                 "label": "蔬菜",
-                "image": "assets/illustrations/cai.svg"
+                "image": "assets/illustrations/cai.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "豆",
@@ -3265,7 +4406,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "夏天喝一碗消暑的绿豆汤，神清气爽。",
                 "icon": "🫘",
                 "label": "红豆",
-                "image": "assets/illustrations/dou.svg"
+                "image": "assets/illustrations/dou.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "茶",
@@ -3281,7 +4424,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "淡淡的茶香让人心情宁静而愉悦。",
                 "icon": "🍵",
                 "label": "茶叶",
-                "image": "assets/illustrations/cha.svg"
+                "image": "assets/illustrations/cha.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "甜",
@@ -3297,7 +4442,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "熟透的草莓吃起来酸酸甜甜的。",
                 "icon": "🍯",
                 "label": "香甜",
-                "image": "assets/illustrations/tian.svg"
+                "image": "assets/illustrations/tian.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "香",
@@ -3313,7 +4460,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "厨房里飘出了刚出炉面包的诱人香气。",
                 "icon": "🥐",
                 "label": "清香",
-                "image": "assets/illustrations/xiang_aroma.svg"
+                "image": "assets/illustrations/xiang_aroma.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "肉",
@@ -3329,7 +4478,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "多吃新鲜蔬菜少吃肥肉，荤素搭配更健康。",
                 "icon": "🥩",
                 "label": "牛肉",
-                "image": "assets/illustrations/rou.svg"
+                "image": "assets/illustrations/rou.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "饭",
@@ -3345,7 +4496,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "按时吃早饭，上学精神饱满。",
                 "icon": "🍱",
                 "label": "米饭",
-                "image": "assets/illustrations/fan.svg"
+                "image": "assets/illustrations/fan.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "橙",
@@ -3361,7 +4514,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "金黄饱满的橙子榨出来的橙汁酸甜可口。",
                 "icon": "🍊",
                 "label": "橙子",
-                "image": "assets/illustrations/cheng.svg"
+                "image": "assets/illustrations/cheng.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "桔",
@@ -3377,7 +4532,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋天果园里挂满了金灿灿诱人的小桔子。",
                 "icon": "🍊",
                 "label": "桔子",
-                "image": "assets/illustrations/ju.svg"
+                "image": "assets/illustrations/ju.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "杏",
@@ -3393,7 +4550,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "初夏时节，枝头挂满了黄澄澄的甜杏。",
                 "icon": "🍈",
                 "label": "甜杏",
-                "image": "assets/illustrations/xing_apricot.svg"
+                "image": "assets/illustrations/xing_apricot.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "莓",
@@ -3409,7 +4568,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "红彤彤的草莓鲜嫩多汁，香甜诱人。",
                 "icon": "🍓",
                 "label": "草莓",
-                "image": "assets/illustrations/mei.svg"
+                "image": "assets/illustrations/mei.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "汤",
@@ -3425,7 +4586,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "冬天喝一碗热气腾腾的鸡汤，浑身暖和。",
                 "icon": "🍲",
                 "label": "热汤",
-                "image": "assets/illustrations/tang_soup.svg"
+                "image": "assets/illustrations/tang_soup.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "糖",
@@ -3441,7 +4604,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "过年时大家一起分享甜滋滋的各式糖果。",
                 "icon": "🍬",
                 "label": "糖果",
-                "image": "assets/illustrations/tang_sugar.svg"
+                "image": "assets/illustrations/tang_sugar.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "麦",
@@ -3457,7 +4622,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "金色的麦浪随风起伏，预示着大丰收。",
                 "icon": "🌾",
                 "label": "麦穗",
-                "image": "assets/illustrations/mai.svg"
+                "image": "assets/illustrations/mai.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "粮",
@@ -3473,7 +4640,207 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "节约每一粒珍贵的粮食，是对大自然的敬畏。",
                 "icon": "🌽",
                 "label": "粮食",
-                "image": "assets/illustrations/liang.svg"
+                "image": "assets/illustrations/liang.svg",
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "蛋",
+                "pinyin": "dàn",
+                "en": "egg",
+                "radical": "虫",
+                "words": [
+                    "鸡蛋",
+                    "蛋糕",
+                    "鸟蛋"
+                ],
+                "sentence": "每天早餐吃一个营养丰富的鸡蛋，身体棒棒。",
+                "icon": "🥚",
+                "label": "鸡蛋",
+                "image": "assets/illustrations/dan_egg.svg",
+                "strokes": 11,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "糕",
+                "pinyin": "gāo",
+                "en": "cake",
+                "radical": "米",
+                "words": [
+                    "蛋糕",
+                    "年糕",
+                    "糕点"
+                ],
+                "sentence": "生日那天，全家人一起分享香甜的草莓蛋糕。",
+                "icon": "🎂",
+                "label": "蛋糕",
+                "image": "assets/illustrations/gao_cake.svg",
+                "strokes": 16,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "饺",
+                "pinyin": "jiǎo",
+                "en": "dumpling",
+                "radical": "饣",
+                "words": [
+                    "水饺",
+                    "饺子",
+                    "包饺子"
+                ],
+                "sentence": "过年的时候，我们全家人围在一起包热气腾腾的饺子。",
+                "icon": "🥟",
+                "label": "饺子",
+                "image": "assets/illustrations/jiao_dumpling.svg",
+                "strokes": 9,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "碗",
+                "pinyin": "wǎn",
+                "en": "bowl",
+                "radical": "石",
+                "words": [
+                    "饭碗",
+                    "瓷碗",
+                    "洗碗"
+                ],
+                "sentence": "吃完饭后，我主动帮妈妈把饭碗洗得干干净净。",
+                "icon": "🥣",
+                "label": "饭碗",
+                "image": "assets/illustrations/wan_bowl.svg",
+                "strokes": 13,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "筷",
+                "pinyin": "kuài",
+                "en": "chopsticks",
+                "radical": "竹",
+                "words": [
+                    "筷子",
+                    "碗筷",
+                    "竹筷"
+                ],
+                "sentence": "我已经学会自己用筷子夹菜吃饭啦。",
+                "icon": "🥢",
+                "label": "筷子",
+                "image": "assets/illustrations/kuai_chopsticks.svg",
+                "strokes": 13,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "勺",
+                "pinyin": "sháo",
+                "en": "spoon",
+                "radical": "勹",
+                "words": [
+                    "勺子",
+                    "汤勺",
+                    "铁勺"
+                ],
+                "sentence": "喝热汤的时候，用小瓷勺一勺一勺慢慢喝。",
+                "icon": "🥄",
+                "label": "勺子",
+                "image": "assets/illustrations/shao_spoon.svg",
+                "strokes": 3,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "盘",
+                "pinyin": "pán",
+                "en": "plate",
+                "radical": "皿",
+                "words": [
+                    "盘子",
+                    "果盘",
+                    "圆盘"
+                ],
+                "sentence": "圆圆的果盘里摆满了洗干净的红苹果和甜桃子。",
+                "icon": "🍽️",
+                "label": "盘子",
+                "image": "assets/illustrations/pan_plate.svg",
+                "strokes": 11,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "盐",
+                "pinyin": "yán",
+                "en": "salt",
+                "radical": "皿",
+                "words": [
+                    "食盐",
+                    "盐水",
+                    "海盐"
+                ],
+                "sentence": "炒菜时放少许白白的食盐，菜肴味道更鲜美。",
+                "icon": "🧂",
+                "label": "食盐",
+                "image": "assets/illustrations/yan_salt.svg",
+                "strokes": 10,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "油",
+                "pinyin": "yóu",
+                "en": "oil",
+                "radical": "氵",
+                "words": [
+                    "香油",
+                    "油菜",
+                    "加油"
+                ],
+                "sentence": "金灿灿的菜籽油散发着浓郁的清香。",
+                "icon": "🫗",
+                "label": "香油",
+                "image": "assets/illustrations/you_oil.svg",
+                "strokes": 8,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "苦",
+                "pinyin": "kǔ",
+                "en": "bitter",
+                "radical": "艹",
+                "words": [
+                    "苦瓜",
+                    "吃苦",
+                    "辛苦"
+                ],
+                "sentence": "碧绿的苦瓜虽然味道有点苦，但清热又有营养。",
+                "icon": "🥒",
+                "label": "苦瓜",
+                "image": "assets/illustrations/ku_bitter.svg",
+                "strokes": 8,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "酸",
+                "pinyin": "suān",
+                "en": "sour",
+                "radical": "酉",
+                "words": [
+                    "酸甜",
+                    "酸奶",
+                    "酸梅"
+                ],
+                "sentence": "黄澄澄的柠檬尝一口酸溜溜的，做柠檬水最好喝。",
+                "icon": "🍋",
+                "label": "酸甜",
+                "image": "assets/illustrations/suan_sour.svg",
+                "strokes": 14,
+                "grade": "g2",
+                "difficulty": 3
             }
         ]
     },
@@ -3496,7 +4863,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "红红的苹果又香又甜，真好吃！",
                 "icon": "🍎",
                 "label": "红色",
-                "image": "assets/illustrations/hong.svg"
+                "image": "assets/illustrations/hong.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "黄",
@@ -3512,7 +4881,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "秋天的银杏叶呈现出一片金黄。",
                 "icon": "🟡",
                 "label": "黄色",
-                "image": "assets/illustrations/huang.svg"
+                "image": "assets/illustrations/huang.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "蓝",
@@ -3528,7 +4899,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "在蔚蓝的天空下，白鸽自由自在地飞翔。",
                 "icon": "🔷",
                 "label": "蓝色",
-                "image": "assets/illustrations/lan_blue.svg"
+                "image": "assets/illustrations/lan_blue.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "绿",
@@ -3544,7 +4917,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "青山绿水就是我们最宝贵的美好家园。",
                 "icon": "🌿",
                 "label": "绿色",
-                "image": "assets/illustrations/lv.svg"
+                "image": "assets/illustrations/lv.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "黑",
@@ -3560,7 +4935,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "夜晚的天空是深黑色的，繁星闪烁。",
                 "icon": "🖤",
                 "label": "黑色",
-                "image": "assets/illustrations/hei_black.svg"
+                "image": "assets/illustrations/hei_black.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "爱",
@@ -3576,7 +4953,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "爱是相互关怀与真诚的陪伴。",
                 "icon": "💖",
                 "label": "关爱",
-                "image": "assets/illustrations/ai_love.svg"
+                "image": "assets/illustrations/ai_love.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "善",
@@ -3592,7 +4971,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "心怀善良的人，生活处处充满阳光。",
                 "icon": "😇",
                 "label": "善良",
-                "image": "assets/illustrations/shan_kind.svg"
+                "image": "assets/illustrations/shan_kind.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "美",
@@ -3608,7 +4989,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们要用勤劳的双眼发现生活中的真善美。",
                 "icon": "🦚",
                 "label": "美丽",
-                "image": "assets/illustrations/mei_beautiful.svg"
+                "image": "assets/illustrations/mei_beautiful.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "诚",
@@ -3624,7 +5007,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "诚实是做人最重要的美好品质。",
                 "icon": "🤝",
                 "label": "诚实",
-                "image": "assets/illustrations/cheng_honest.svg"
+                "image": "assets/illustrations/cheng_honest.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "礼",
@@ -3640,7 +5025,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "见到师长主动问好，做个讲礼貌的好少年。",
                 "icon": "🎁",
                 "label": "礼貌",
-                "image": "assets/illustrations/li_polite.svg"
+                "image": "assets/illustrations/li_polite.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "信",
@@ -3656,7 +5043,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "言必信，行必果，做个说话算话的人。",
                 "icon": "💌",
                 "label": "自信",
-                "image": "assets/illustrations/xin_trust.svg"
+                "image": "assets/illustrations/xin_trust.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "仁",
@@ -3672,7 +5061,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "仁爱宽厚，温暖身边每一个朋友。",
                 "icon": "🕊️",
                 "label": "仁爱",
-                "image": "assets/illustrations/ren_benevolent.svg"
+                "image": "assets/illustrations/ren_benevolent.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "德",
@@ -3688,7 +5079,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "崇尚美德，做一个有道德守纪律的好学生。",
                 "icon": "🌟",
                 "label": "品德",
-                "image": "assets/illustrations/de_virtue.svg"
+                "image": "assets/illustrations/de_virtue.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "和",
@@ -3704,7 +5097,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "同学之间和睦相处，团结友爱。",
                 "icon": "🕊️",
                 "label": "和平",
-                "image": "assets/illustrations/he_peace.svg"
+                "image": "assets/illustrations/he_peace.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "紫",
@@ -3720,7 +5115,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "初夏的紫藤花如梦幻般的紫色瀑布绽放。",
                 "icon": "🟣",
                 "label": "紫色",
-                "image": "assets/illustrations/zi_color.svg"
+                "image": "assets/illustrations/zi_color.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "青",
@@ -3736,7 +5133,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "青山常在，绿水长流，大自然充满生机。",
                 "icon": "🟢",
                 "label": "青色",
-                "image": "assets/illustrations/qing_cyan.svg"
+                "image": "assets/illustrations/qing_cyan.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "敬",
@@ -3752,7 +5151,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "见到师长主动立正行礼，表达由衷敬意。",
                 "icon": "🫡",
                 "label": "敬礼",
-                "image": "assets/illustrations/jing_respect.svg"
+                "image": "assets/illustrations/jing_respect.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "勤",
@@ -3768,7 +5169,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "勤劳是一切财富与智慧的源泉。",
                 "icon": "🐜",
                 "label": "勤劳",
-                "image": "assets/illustrations/qin_diligent.svg"
+                "image": "assets/illustrations/qin_diligent.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "俭",
@@ -3784,7 +5187,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "勤俭节约是中华民族世代相传的传统美德。",
                 "icon": "🪙",
                 "label": "节俭",
-                "image": "assets/illustrations/jian_jar.svg"
+                "image": "assets/illustrations/jian_jar.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "宽",
@@ -3800,7 +5205,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "拥有宽广的心胸，能包容不同的人和事。",
                 "icon": "🏞️",
                 "label": "宽广",
-                "image": "assets/illustrations/kuan_wide.svg"
+                "image": "assets/illustrations/kuan_wide.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "勇",
@@ -3816,7 +5223,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "面对未知的挑战，我们要勇敢跨出第一步。",
                 "icon": "🛡️",
                 "label": "勇敢",
-                "image": "assets/illustrations/yong_brave.svg"
+                "image": "assets/illustrations/yong_brave.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "恒",
@@ -3832,7 +5241,189 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "只有持之以恒、坚持不懈，才能摘得胜利果实。",
                 "icon": "⏳",
                 "label": "恒久",
-                "image": "assets/illustrations/heng_constant.svg"
+                "image": "assets/illustrations/heng_constant.svg",
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "灰",
+                "pinyin": "huī",
+                "en": "gray",
+                "radical": "火",
+                "words": [
+                    "灰色",
+                    "灰兔",
+                    "银灰"
+                ],
+                "sentence": "毛茸茸的小灰兔竖起长耳朵在草地上吃草。",
+                "icon": "🩶",
+                "label": "灰色",
+                "image": "assets/illustrations/hui_gray.svg",
+                "strokes": 6,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "粉",
+                "pinyin": "fěn",
+                "en": "pink",
+                "radical": "米",
+                "words": [
+                    "粉色",
+                    "粉红",
+                    "花粉"
+                ],
+                "sentence": "春天桃花盛开，满树都是温柔的粉红色。",
+                "icon": "🩷",
+                "label": "粉色",
+                "image": "assets/illustrations/fen_pink.svg",
+                "strokes": 10,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "金",
+                "pinyin": "jīn",
+                "en": "gold",
+                "radical": "金",
+                "words": [
+                    "金色",
+                    "黄金",
+                    "金鱼"
+                ],
+                "sentence": "秋天的稻田像铺上了一层金光闪闪的地毯。",
+                "icon": "🪙",
+                "label": "金色",
+                "image": "assets/illustrations/jin_gold.svg",
+                "strokes": 8,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "银",
+                "pinyin": "yín",
+                "en": "silver",
+                "radical": "钅",
+                "words": [
+                    "银色",
+                    "白银",
+                    "银河"
+                ],
+                "sentence": "晴朗的夏夜，天空中横跨着一条亮晶晶的银河。",
+                "icon": "🥈",
+                "label": "银色",
+                "image": "assets/illustrations/yin_silver.svg",
+                "strokes": 11,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "玉",
+                "pinyin": "yù",
+                "en": "jade",
+                "radical": "王",
+                "words": [
+                    "美玉",
+                    "玉米",
+                    "白玉"
+                ],
+                "sentence": "温润翠绿的美玉雕琢成了精致的玉佩。",
+                "icon": "🟢",
+                "label": "美玉",
+                "image": "assets/illustrations/yu_jade.svg",
+                "strokes": 5,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "宝",
+                "pinyin": "bǎo",
+                "en": "treasure",
+                "radical": "宀",
+                "words": [
+                    "宝贝",
+                    "宝藏",
+                    "宝石"
+                ],
+                "sentence": "大海深处的宝箱里藏着五彩斑斓的宝石。",
+                "icon": "💎",
+                "label": "宝石",
+                "image": "assets/illustrations/bao_treasure.svg",
+                "strokes": 8,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "好",
+                "pinyin": "hǎo",
+                "en": "good",
+                "radical": "女",
+                "words": [
+                    "好人",
+                    "友好",
+                    "美好"
+                ],
+                "sentence": "好朋友之间要互相帮助、团结友爱。",
+                "icon": "👍",
+                "label": "友好",
+                "image": "assets/illustrations/hao_good.svg",
+                "strokes": 6,
+                "grade": "k-1",
+                "difficulty": 1
+            },
+            {
+                "char": "坏",
+                "pinyin": "huài",
+                "en": "bad",
+                "radical": "土",
+                "words": [
+                    "好坏",
+                    "坏人",
+                    "损坏"
+                ],
+                "sentence": "我们要爱护玩具和图书，不要把它们弄坏。",
+                "icon": "👎",
+                "label": "好坏",
+                "image": "assets/illustrations/huai_bad.svg",
+                "strokes": 7,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "对",
+                "pinyin": "duì",
+                "en": "right",
+                "radical": "寸",
+                "words": [
+                    "正确",
+                    "对错",
+                    "回答对"
+                ],
+                "sentence": "这道题你答对啦，老师奖励你一颗小红星。",
+                "icon": "✅",
+                "label": "正确",
+                "image": "assets/illustrations/dui_right.svg",
+                "strokes": 5,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "错",
+                "pinyin": "cuò",
+                "en": "wrong",
+                "radical": "钅",
+                "words": [
+                    "错误",
+                    "对错",
+                    "写错"
+                ],
+                "sentence": "写错字没关系，擦干净重新认真写一遍就会进步。",
+                "icon": "❌",
+                "label": "对错",
+                "image": "assets/illustrations/cuo_wrong.svg",
+                "strokes": 13,
+                "grade": "g2",
+                "difficulty": 3
             }
         ]
     },
@@ -3855,7 +5446,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "站立如松挺且直，展现昂扬好风貌。",
                 "icon": "🧍",
                 "label": "起立",
-                "image": "assets/illustrations/li_stand.svg"
+                "image": "assets/illustrations/li_stand.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "坐",
@@ -3871,7 +5464,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "写字时身坐正，头放平，两臂平展。",
                 "icon": "🪑",
                 "label": "端坐",
-                "image": "assets/illustrations/zuo_sit.svg"
+                "image": "assets/illustrations/zuo_sit.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "走",
@@ -3887,7 +5482,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "饭后走一走，活到九十九。",
                 "icon": "🚶",
                 "label": "走路",
-                "image": "assets/illustrations/zou_walk.svg"
+                "image": "assets/illustrations/zou_walk.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "跑",
@@ -3903,7 +5500,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们在红色的塑胶跑道上奋力奔跑。",
                 "icon": "🏃",
                 "label": "跑步",
-                "image": "assets/illustrations/pao.svg"
+                "image": "assets/illustrations/pao.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "跳",
@@ -3919,7 +5518,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "摇起彩绳跳起来，既强健体魄又开心。",
                 "icon": "🦘",
                 "label": "跳绳",
-                "image": "assets/illustrations/tiao_jump.svg"
+                "image": "assets/illustrations/tiao_jump.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "看",
@@ -3935,7 +5536,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "认真看清每个汉字的间架结构再落笔。",
                 "icon": "👁️",
                 "label": "看见",
-                "image": "assets/illustrations/kan_look.svg"
+                "image": "assets/illustrations/kan_look.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "开",
@@ -3951,7 +5554,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "新学期开始了，校园里开满了美丽的花。",
                 "icon": "🔓",
                 "label": "开门",
-                "image": "assets/illustrations/kai_open.svg"
+                "image": "assets/illustrations/kai_open.svg",
+                "grade": "k-1",
+                "difficulty": 1
             },
             {
                 "char": "关",
@@ -3967,7 +5572,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "我们要互相关心，彼此互相照顾。",
                 "icon": "🔒",
                 "label": "关门",
-                "image": "assets/illustrations/guan_close.svg"
+                "image": "assets/illustrations/guan_close.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "飞",
@@ -3983,7 +5590,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "放飞五彩斑斓的纸飞机，寄托远大理想。",
                 "icon": "🚀",
                 "label": "飞翔",
-                "image": "assets/illustrations/fei.svg"
+                "image": "assets/illustrations/fei.svg",
+                "grade": "k",
+                "difficulty": 1
             },
             {
                 "char": "游",
@@ -3999,7 +5608,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春天老师带我们到大自然中春游踏青。",
                 "icon": "🏊",
                 "label": "游泳",
-                "image": "assets/illustrations/you_swim.svg"
+                "image": "assets/illustrations/you_swim.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "唱",
@@ -4015,7 +5626,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "大家一起合唱一曲动听的少先队队歌。",
                 "icon": "🎤",
                 "label": "唱歌",
-                "image": "assets/illustrations/chang_sing.svg"
+                "image": "assets/illustrations/chang_sing.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "玩",
@@ -4031,7 +5644,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "在安全的游戏区和小朋友们愉快地玩耍。",
                 "icon": "🪀",
                 "label": "玩具",
-                "image": "assets/illustrations/wan_play.svg"
+                "image": "assets/illustrations/wan_play.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "动",
@@ -4047,7 +5662,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "热爱体育运动，保持强健活泼的体魄。",
                 "icon": "⚽",
                 "label": "运动",
-                "image": "assets/illustrations/dong_move.svg"
+                "image": "assets/illustrations/dong_move.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "想",
@@ -4063,7 +5680,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "放飞心中的梦想，用智慧和勤奋创造明天。",
                 "icon": "💭",
                 "label": "梦想",
-                "image": "assets/illustrations/xiang_think.svg"
+                "image": "assets/illustrations/xiang_think.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "抱",
@@ -4079,7 +5698,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "回到家给辛劳的爸爸妈妈一个大大的拥抱。",
                 "icon": "🤗",
                 "label": "拥抱",
-                "image": "assets/illustrations/bao_hug.svg"
+                "image": "assets/illustrations/bao_hug.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "握",
@@ -4095,7 +5716,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "掌握正确的握笔姿势，写出刚劲有力的汉字。",
                 "icon": "✍️",
                 "label": "握笔",
-                "image": "assets/illustrations/wo_grasp.svg"
+                "image": "assets/illustrations/wo_grasp.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "招",
@@ -4111,7 +5734,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "隔着窗户，小朋友热情地向老师招手问好。",
                 "icon": "🙋",
                 "label": "招手",
-                "image": "assets/illustrations/zhao_wave.svg"
+                "image": "assets/illustrations/zhao_wave.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "抬",
@@ -4127,7 +5752,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "昂首挺胸，抬起自信的头颅迎接每一个清晨。",
                 "icon": "🆙",
                 "label": "抬起",
-                "image": "assets/illustrations/tai_lift.svg"
+                "image": "assets/illustrations/tai_lift.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "迈",
@@ -4143,7 +5770,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "迈开坚实有力的脚步，向着梦想殿堂进发。",
                 "icon": "👟",
                 "label": "迈步",
-                "image": "assets/illustrations/mai_stride.svg"
+                "image": "assets/illustrations/mai_stride.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "望",
@@ -4159,7 +5788,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "站在山峰之巅极目眺望，祖国大好河山尽收眼底。",
                 "icon": "🔭",
                 "label": "远望",
-                "image": "assets/illustrations/wang_gaze.svg"
+                "image": "assets/illustrations/wang_gaze.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "追",
@@ -4175,7 +5806,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "在金色的阳光下，我们尽情追逐着五彩肥皂泡。",
                 "icon": "🫧",
                 "label": "追逐",
-                "image": "assets/illustrations/zhui_chase.svg"
+                "image": "assets/illustrations/zhui_chase.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "登",
@@ -4191,7 +5824,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "无限风光在险峰，勇于攀登才能领略绝美风景。",
                 "icon": "🧗",
                 "label": "登山",
-                "image": "assets/illustrations/deng_climb.svg"
+                "image": "assets/illustrations/deng_climb.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "快",
@@ -4207,7 +5842,189 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "高铁列车在平稳的钢轨上飞快地疾驰。",
                 "icon": "🚄",
                 "label": "飞快",
-                "image": "assets/illustrations/kuai_fast.svg"
+                "image": "assets/illustrations/kuai_fast.svg",
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "哭",
+                "pinyin": "kū",
+                "en": "cry",
+                "radical": "口",
+                "words": [
+                    "哭泣",
+                    "哭笑",
+                    "大哭"
+                ],
+                "sentence": "摔倒了不哭泣，自己勇敢地站起来拍拍灰尘。",
+                "icon": "😢",
+                "label": "哭泣",
+                "image": "assets/illustrations/ku_cry.svg",
+                "strokes": 10,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "笑",
+                "pinyin": "xiào",
+                "en": "smile",
+                "radical": "竹",
+                "words": [
+                    "微笑",
+                    "欢笑",
+                    "笑脸"
+                ],
+                "sentence": "小朋友们脸上洋溢着灿烂甜美的笑容。",
+                "icon": "😄",
+                "label": "微笑",
+                "image": "assets/illustrations/xiao_smile.svg",
+                "strokes": 10,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "睡",
+                "pinyin": "shuì",
+                "en": "sleep",
+                "radical": "目",
+                "words": [
+                    "睡觉",
+                    "睡眠",
+                    "午睡"
+                ],
+                "sentence": "晚上早早盖好被子睡觉，明天一早精神百倍。",
+                "icon": "😴",
+                "label": "睡觉",
+                "image": "assets/illustrations/shui_sleep.svg",
+                "strokes": 13,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "穿",
+                "pinyin": "chuān",
+                "en": "wear",
+                "radical": "穴",
+                "words": [
+                    "穿衣",
+                    "穿鞋",
+                    "穿过"
+                ],
+                "sentence": "早上起床后，我自己穿好整洁的衣服去上学。",
+                "icon": "👕",
+                "label": "穿衣",
+                "image": "assets/illustrations/chuan_wear.svg",
+                "strokes": 9,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "洗",
+                "pinyin": "xǐ",
+                "en": "wash",
+                "radical": "氵",
+                "words": [
+                    "洗手",
+                    "洗脸",
+                    "洗衣"
+                ],
+                "sentence": "吃饭前要把小手洗得干干净净，讲卫生不生病。",
+                "icon": "🧼",
+                "label": "洗手",
+                "image": "assets/illustrations/xi_wash.svg",
+                "strokes": 9,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "扫",
+                "pinyin": "sǎo",
+                "en": "sweep",
+                "radical": "扌",
+                "words": [
+                    "打扫",
+                    "扫地",
+                    "扫把"
+                ],
+                "sentence": "我拿小扫把帮爸爸妈妈把地板扫得一尘不染。",
+                "icon": "🧹",
+                "label": "扫地",
+                "image": "assets/illustrations/sao_sweep.svg",
+                "strokes": 6,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "拍",
+                "pinyin": "pāi",
+                "en": "clap / pat",
+                "radical": "扌",
+                "words": [
+                    "拍手",
+                    "拍球",
+                    "拍照"
+                ],
+                "sentence": "伴着欢快的音乐节拍，大家一起开心地拍拍手。",
+                "icon": "👏",
+                "label": "拍球",
+                "image": "assets/illustrations/pai_clap.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "拉",
+                "pinyin": "lā",
+                "en": "pull",
+                "radical": "扌",
+                "words": [
+                    "拉手",
+                    "拉车",
+                    "拔河"
+                ],
+                "sentence": "好朋友手拉着手，排着整齐的队伍去操场。",
+                "icon": "🤝",
+                "label": "拉车",
+                "image": "assets/illustrations/la_pull.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "推",
+                "pinyin": "tuī",
+                "en": "push",
+                "radical": "扌",
+                "words": [
+                    "推车",
+                    "推开",
+                    "推动"
+                ],
+                "sentence": "推开窗户，清晨温暖的阳光和花香扑面而来。",
+                "icon": "👐",
+                "label": "推车",
+                "image": "assets/illustrations/tui_push.svg",
+                "strokes": 11,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "吹",
+                "pinyin": "chuī",
+                "en": "blow",
+                "radical": "口",
+                "words": [
+                    "吹风",
+                    "吹泡泡",
+                    "吹气"
+                ],
+                "sentence": "小朋友鼓起腮帮子，吹出了一串七彩的泡泡。",
+                "icon": "🫧",
+                "label": "吹泡",
+                "image": "assets/illustrations/chui_blow.svg",
+                "strokes": 7,
+                "grade": "g1",
+                "difficulty": 2
             }
         ]
     },
@@ -4230,7 +6047,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "阳光透过窗户洒满了整洁舒适的房间。",
                 "icon": "🏠",
                 "label": "房屋",
-                "image": "assets/illustrations/fang.svg"
+                "image": "assets/illustrations/fang.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "屋",
@@ -4246,7 +6065,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "森林里有一座童话般古朴的小木屋。",
                 "icon": "🛖",
                 "label": "屋子",
-                "image": "assets/illustrations/wu_room.svg"
+                "image": "assets/illustrations/wu_room.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "城",
@@ -4262,7 +6083,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "长城像一条巨龙横卧在巍峨的崇山峻岭间。",
                 "icon": "🏯",
                 "label": "城市",
-                "image": "assets/illustrations/cheng_castle.svg"
+                "image": "assets/illustrations/cheng_castle.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "市",
@@ -4278,7 +6101,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "现代化的大城市整洁美丽，交通四通八达。",
                 "icon": "🏙️",
                 "label": "集市",
-                "image": "assets/illustrations/shi_market.svg"
+                "image": "assets/illustrations/shi_market.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "街",
@@ -4294,7 +6119,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "走在繁华热闹的街道上，自觉遵守交通安全。",
                 "icon": "🛣️",
                 "label": "街道",
-                "image": "assets/illustrations/jie_street.svg"
+                "image": "assets/illustrations/jie_street.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "道",
@@ -4310,7 +6137,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "通往成功的道路需要脚踏实地一步步走。",
                 "icon": "🛤️",
                 "label": "道路",
-                "image": "assets/illustrations/dao_road.svg"
+                "image": "assets/illustrations/dao_road.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "桥",
@@ -4326,7 +6155,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "宏伟的跨海大桥像飞虹横卧在碧波之上。",
                 "icon": "🌉",
                 "label": "大桥",
-                "image": "assets/illustrations/qiao.svg"
+                "image": "assets/illustrations/qiao.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "亭",
@@ -4342,7 +6173,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "雨后在荷花池边的红柱凉亭里小憩。",
                 "icon": "⛩️",
                 "label": "凉亭",
-                "image": "assets/illustrations/ting.svg"
+                "image": "assets/illustrations/ting.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "舟",
@@ -4358,7 +6191,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "端午节江面上敲锣打鼓赛龙舟。",
                 "icon": "🛶",
                 "label": "龙舟",
-                "image": "assets/illustrations/zhou.svg"
+                "image": "assets/illustrations/zhou.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "船",
@@ -4374,7 +6209,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "白色的帆船迎着金色的海风扬帆起航。",
                 "icon": "🚢",
                 "label": "轮船",
-                "image": "assets/illustrations/chuan.svg"
+                "image": "assets/illustrations/chuan.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "车",
@@ -4390,7 +6227,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "乘坐飞驰的高铁列车领略祖国的大好山河。",
                 "icon": "🚗",
                 "label": "汽车",
-                "image": "assets/illustrations/che.svg"
+                "image": "assets/illustrations/che.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "站",
@@ -4406,7 +6245,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "在公交站台耐心排队，文明礼让有序乘车。",
                 "icon": "🚉",
                 "label": "车站",
-                "image": "assets/illustrations/zhan.svg"
+                "image": "assets/illustrations/zhan.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "路",
@@ -4422,7 +6263,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "绿树成荫的林荫马路两旁盛开着各色鲜花。",
                 "icon": "🛤️",
                 "label": "马路",
-                "image": "assets/illustrations/lu_road.svg"
+                "image": "assets/illustrations/lu_road.svg",
+                "grade": "g1",
+                "difficulty": 2
             },
             {
                 "char": "轨",
@@ -4438,7 +6281,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "火车在平整光洁的钢轨上飞速疾驰。",
                 "icon": "🚊",
                 "label": "铁轨",
-                "image": "assets/illustrations/gui_track.svg"
+                "image": "assets/illustrations/gui_track.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "港",
@@ -4454,7 +6299,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "繁华热闹的海港里停泊着来自世界各地的巨轮。",
                 "icon": "⚓",
                 "label": "海港",
-                "image": "assets/illustrations/gang.svg"
+                "image": "assets/illustrations/gang.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "塔",
@@ -4470,7 +6317,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "夜色中明亮的灯塔指引着远航的船只回港。",
                 "icon": "🗼",
                 "label": "宝塔",
-                "image": "assets/illustrations/ta.svg"
+                "image": "assets/illustrations/ta.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "楼",
@@ -4486,7 +6335,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "登上一座高楼极目远眺，令人心旷神怡。",
                 "icon": "🏢",
                 "label": "大楼",
-                "image": "assets/illustrations/lou.svg"
+                "image": "assets/illustrations/lou.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "院",
@@ -4502,7 +6353,135 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "农家小院里种满了香甜的葡萄和石榴。",
                 "icon": "🏡",
                 "label": "庭院",
-                "image": "assets/illustrations/yuan.svg"
+                "image": "assets/illustrations/yuan.svg",
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "村",
+                "pinyin": "cūn",
+                "en": "village",
+                "radical": "木",
+                "words": [
+                    "山村",
+                    "农村",
+                    "村庄"
+                ],
+                "sentence": "青山绿水间坐落着一个宁静美丽的小山村。",
+                "icon": "🏡",
+                "label": "山村",
+                "image": "assets/illustrations/cun_village.svg",
+                "strokes": 7,
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "乡",
+                "pinyin": "xiāng",
+                "en": "hometown",
+                "radical": "乙",
+                "words": [
+                    "家乡",
+                    "故乡",
+                    "乡下"
+                ],
+                "sentence": "我的家乡有一条清澈见底的小河和金黄的稻田。",
+                "icon": "🌾",
+                "label": "家乡",
+                "image": "assets/illustrations/xiang_hometown.svg",
+                "strokes": 3,
+                "grade": "g3",
+                "difficulty": 2
+            },
+            {
+                "char": "园",
+                "pinyin": "yuán",
+                "en": "garden",
+                "radical": "囗",
+                "words": [
+                    "公园",
+                    "花园",
+                    "果园"
+                ],
+                "sentence": "周末爸爸妈妈带我去公园赏花、放风筝。",
+                "icon": "🏞️",
+                "label": "公园",
+                "image": "assets/illustrations/yuan_garden.svg",
+                "strokes": 7,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "场",
+                "pinyin": "chǎng",
+                "en": "field",
+                "radical": "土",
+                "words": [
+                    "操场",
+                    "广场",
+                    "赛场"
+                ],
+                "sentence": "下课铃响了，同学们来到宽阔的操场上做运动。",
+                "icon": "🏟️",
+                "label": "操场",
+                "image": "assets/illustrations/chang_field.svg",
+                "strokes": 6,
+                "grade": "g3",
+                "difficulty": 2
+            },
+            {
+                "char": "店",
+                "pinyin": "diàn",
+                "en": "shop",
+                "radical": "广",
+                "words": [
+                    "书店",
+                    "商店",
+                    "花店"
+                ],
+                "sentence": "街角的书店里摆满了五彩缤纷的儿童绘本。",
+                "icon": "🏪",
+                "label": "商店",
+                "image": "assets/illustrations/dian_shop.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "机",
+                "pinyin": "jī",
+                "en": "airplane",
+                "radical": "木",
+                "words": [
+                    "飞机",
+                    "机器",
+                    "手机"
+                ],
+                "sentence": "银白色的飞机穿过洁白的云层，在蓝天高高飞翔。",
+                "icon": "✈️",
+                "label": "飞机",
+                "image": "assets/illustrations/ji_plane.svg",
+                "strokes": 6,
+                "grade": "g3",
+                "difficulty": 2
+            },
+            {
+                "char": "铁",
+                "pinyin": "tiě",
+                "en": "iron / subway",
+                "radical": "钅",
+                "words": [
+                    "地铁",
+                    "高铁",
+                    "磁铁"
+                ],
+                "sentence": "神奇的马蹄形磁铁能把铁钉稳稳地吸起来。",
+                "icon": "🧲",
+                "label": "磁铁",
+                "image": "assets/illustrations/tie_iron.svg",
+                "strokes": 10,
+                "grade": "g3",
+                "difficulty": 3
             }
         ]
     },
@@ -4525,7 +6504,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "春节是我们中华民族最热闹团圆的传统佳节。",
                 "icon": "🎋",
                 "label": "佳节",
-                "image": "assets/illustrations/jie_festival.svg"
+                "image": "assets/illustrations/jie_festival.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "年",
@@ -4541,7 +6522,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "过年穿新衣戴新帽，大家欢欢喜喜互相拜年。",
                 "icon": "🧧",
                 "label": "过年",
-                "image": "assets/illustrations/nian.svg"
+                "image": "assets/illustrations/nian.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "喜",
@@ -4557,7 +6540,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "全家人围坐在一起吃团圆饭，心里满是喜悦。",
                 "icon": "🥳",
                 "label": "欢喜",
-                "image": "assets/illustrations/xi_joy.svg"
+                "image": "assets/illustrations/xi_joy.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "庆",
@@ -4573,7 +6558,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "锣鼓喧天欢庆国庆节，到处洋溢着节日气氛。",
                 "icon": "🎉",
                 "label": "国庆",
-                "image": "assets/illustrations/qing_celebrate.svg"
+                "image": "assets/illustrations/qing_celebrate.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "贺",
@@ -4589,7 +6576,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "亲手制作一张漂亮的贺卡，写下对老师的祝福。",
                 "icon": "💌",
                 "label": "祝贺",
-                "image": "assets/illustrations/he_congratulate.svg"
+                "image": "assets/illustrations/he_congratulate.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "灯",
@@ -4605,7 +6594,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "元宵节夜晚，街上挂满了五彩缤纷的花灯。",
                 "icon": "🏮",
                 "label": "花灯",
-                "image": "assets/illustrations/deng_lantern.svg"
+                "image": "assets/illustrations/deng_lantern.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "谜",
@@ -4621,7 +6612,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "元宵猜字谜既开动脑筋，又格外有趣。",
                 "icon": "❓",
                 "label": "字谜",
-                "image": "assets/illustrations/mi_riddle.svg"
+                "image": "assets/illustrations/mi_riddle.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "饼",
@@ -4637,7 +6630,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "中秋之夜一边赏满月，一边品尝香甜的月饼。",
                 "icon": "🥮",
                 "label": "月饼",
-                "image": "assets/illustrations/bing_mooncake.svg"
+                "image": "assets/illustrations/bing_mooncake.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "团",
@@ -4653,7 +6648,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "中秋佳节月儿圆，阖家团聚笑开颜。",
                 "icon": "👨‍👩‍👧‍👦",
                 "label": "团聚",
-                "image": "assets/illustrations/tuan_reunion.svg"
+                "image": "assets/illustrations/tuan_reunion.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "圆",
@@ -4669,7 +6666,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "十五的月亮圆又圆，像一个大大的金盘。",
                 "icon": "🌕",
                 "label": "团圆",
-                "image": "assets/illustrations/yuan_tangyuan.svg"
+                "image": "assets/illustrations/yuan_tangyuan.svg",
+                "grade": "k",
+                "difficulty": 2
             },
             {
                 "char": "粽",
@@ -4685,7 +6684,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "端午节吃香软糯的竹叶粽，纪念爱国诗人屈原。",
                 "icon": "🍙",
                 "label": "粽子",
-                "image": "assets/illustrations/zong_dumpling.svg"
+                "image": "assets/illustrations/zong_dumpling.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "鼓",
@@ -4701,7 +6702,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "龙舟争霸赛上，震耳欲聋的鼓声振奋人心。",
                 "icon": "🥁",
                 "label": "打鼓",
-                "image": "assets/illustrations/gu_drum.svg"
+                "image": "assets/illustrations/gu_drum.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "旗",
@@ -4717,7 +6720,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "迎风飘扬的鲜艳旗帜将节日装扮得分外美丽。",
                 "icon": "🚩",
                 "label": "旗帜",
-                "image": "assets/illustrations/qi_flag.svg"
+                "image": "assets/illustrations/qi_flag.svg",
+                "grade": "g2",
+                "difficulty": 3
             },
             {
                 "char": "联",
@@ -4733,7 +6738,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "大年三十贴春联，辞旧迎新福气满堂。",
                 "icon": "🧧",
                 "label": "春联",
-                "image": "assets/illustrations/lian_couplet.svg"
+                "image": "assets/illustrations/lian_couplet.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "钟",
@@ -4749,7 +6756,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "新年零点的钟声敲响，迎来了崭新的一年。",
                 "icon": "🔔",
                 "label": "时钟",
-                "image": "assets/illustrations/zhong_bell.svg"
+                "image": "assets/illustrations/zhong_bell.svg",
+                "grade": "g2",
+                "difficulty": 2
             },
             {
                 "char": "戏",
@@ -4765,7 +6774,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "传统京戏唱腔悠扬，舞台服饰色彩斑斓夺目。",
                 "icon": "🎭",
                 "label": "京戏",
-                "image": "assets/illustrations/xi_opera.svg"
+                "image": "assets/illustrations/xi_opera.svg",
+                "grade": "g3",
+                "difficulty": 2
             },
             {
                 "char": "福",
@@ -4781,7 +6792,9 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "门上贴上了大大的红福字，象征着幸福美满。",
                 "icon": "🧧",
                 "label": "福气",
-                "image": "assets/illustrations/fu_blessing.svg"
+                "image": "assets/illustrations/fu_blessing.svg",
+                "grade": "g3",
+                "difficulty": 3
             },
             {
                 "char": "愿",
@@ -4797,7 +6810,556 @@ const CHARACTER_CATEGORIES = [
                 "sentence": "新的一年，愿祖国繁荣昌盛，大家幸福健康。",
                 "icon": "🌠",
                 "label": "心愿",
-                "image": "assets/illustrations/yuan_wish.svg"
+                "image": "assets/illustrations/yuan_wish.svg",
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "国",
+                "pinyin": "guó",
+                "en": "country",
+                "radical": "囗",
+                "words": [
+                    "祖国",
+                    "中国",
+                    "国家"
+                ],
+                "sentence": "我们热爱美丽的祖国，祝愿祖国繁荣富强。",
+                "icon": "🇨🇳",
+                "label": "祖国",
+                "image": "assets/illustrations/guo_country.svg",
+                "strokes": 8,
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "华",
+                "pinyin": "huá",
+                "en": "splendid",
+                "radical": "十",
+                "words": [
+                    "中华",
+                    "华夏",
+                    "华丽"
+                ],
+                "sentence": "中华传统文化源远流长，汉字是璀璨的瑰宝。",
+                "icon": "🏮",
+                "label": "中华",
+                "image": "assets/illustrations/hua_splendid.svg",
+                "strokes": 6,
+                "grade": "g3",
+                "difficulty": 2
+            },
+            {
+                "char": "京",
+                "pinyin": "jīng",
+                "en": "capital",
+                "radical": "亠",
+                "words": [
+                    "北京",
+                    "京城",
+                    "京剧"
+                ],
+                "sentence": "北京是中国的首都，有雄伟壮观的天安门。",
+                "icon": "🏯",
+                "label": "北京",
+                "image": "assets/illustrations/jing_capital.svg",
+                "strokes": 8,
+                "grade": "g3",
+                "difficulty": 3
+            }
+        ]
+    },
+    {
+        "id": "daily",
+        "name": "🏠 生活日常",
+        "color": "#0ea5e9",
+        "chars": [
+            {
+                "char": "衣",
+                "pinyin": "yī",
+                "en": "clothes",
+                "radical": "衣",
+                "words": [
+                    "衣服",
+                    "上衣",
+                    "毛衣"
+                ],
+                "sentence": "天冷了，妈妈给我穿上温暖舒适的毛衣。",
+                "icon": "👚",
+                "label": "衣服",
+                "image": "assets/illustrations/yi_clothes.svg",
+                "strokes": 6,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "帽",
+                "pinyin": "mào",
+                "en": "hat",
+                "radical": "巾",
+                "words": [
+                    "帽子",
+                    "草帽",
+                    "礼帽"
+                ],
+                "sentence": "夏天出门戴上遮阳草帽，就不怕太阳晒啦。",
+                "icon": "👒",
+                "label": "帽子",
+                "image": "assets/illustrations/mao_hat.svg",
+                "strokes": 12,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "鞋",
+                "pinyin": "xié",
+                "en": "shoe",
+                "radical": "革",
+                "words": [
+                    "鞋子",
+                    "球鞋",
+                    "穿鞋"
+                ],
+                "sentence": "穿上轻便的运动鞋，我们在跑道上跑得飞快。",
+                "icon": "👟",
+                "label": "球鞋",
+                "image": "assets/illustrations/xie_shoe.svg",
+                "strokes": 15,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "袜",
+                "pinyin": "wà",
+                "en": "sock",
+                "radical": "衤",
+                "words": [
+                    "袜子",
+                    "棉袜",
+                    "穿袜"
+                ],
+                "sentence": "柔软的条纹棉袜把小脚丫包裹得暖洋洋的。",
+                "icon": "🧦",
+                "label": "袜子",
+                "image": "assets/illustrations/wa_sock.svg",
+                "strokes": 10,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "伞",
+                "pinyin": "sǎn",
+                "en": "umbrella",
+                "radical": "人",
+                "words": [
+                    "雨伞",
+                    "打伞",
+                    "花伞"
+                ],
+                "sentence": "下雨啦，撑起五颜六色的小雨伞走在雨中。",
+                "icon": "☂️",
+                "label": "雨伞",
+                "image": "assets/illustrations/san_umbrella.svg",
+                "strokes": 6,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "刀",
+                "pinyin": "dāo",
+                "en": "knife",
+                "radical": "刀",
+                "words": [
+                    "小刀",
+                    "剪刀",
+                    "切刀"
+                ],
+                "sentence": "使用手工剪刀和小刀时一定要格外小心安全。",
+                "icon": "🔪",
+                "label": "小刀",
+                "image": "assets/illustrations/dao_knife.svg",
+                "strokes": 2,
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "尺",
+                "pinyin": "chǐ",
+                "en": "ruler",
+                "radical": "尸",
+                "words": [
+                    "尺子",
+                    "直尺",
+                    "尺寸"
+                ],
+                "sentence": "用直尺比着画线，画出来的线条又平又直。",
+                "icon": "📏",
+                "label": "尺子",
+                "image": "assets/illustrations/chi_ruler.svg",
+                "strokes": 4,
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "包",
+                "pinyin": "bāo",
+                "en": "bag",
+                "radical": "勹",
+                "words": [
+                    "书包",
+                    "背包",
+                    "面包"
+                ],
+                "sentence": "每天睡前我都会自己整理好第二天上学背的书包。",
+                "icon": "🎒",
+                "label": "书包",
+                "image": "assets/illustrations/bao_bag.svg",
+                "strokes": 5,
+                "grade": "k",
+                "difficulty": 1
+            },
+            {
+                "char": "床",
+                "pinyin": "chuáng",
+                "en": "bed",
+                "radical": "广",
+                "words": [
+                    "小床",
+                    "起床",
+                    "木床"
+                ],
+                "sentence": "清晨闹钟响了，我立刻从温暖的小床上起床。",
+                "icon": "🛏️",
+                "label": "小床",
+                "image": "assets/illustrations/chuang_bed.svg",
+                "strokes": 7,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "桌",
+                "pinyin": "zhuō",
+                "en": "desk",
+                "radical": "木",
+                "words": [
+                    "书桌",
+                    "桌子",
+                    "课桌"
+                ],
+                "sentence": "我的小书桌上整齐地摆放着课本和台灯。",
+                "icon": "🪑",
+                "label": "书桌",
+                "image": "assets/illustrations/zhuo_desk.svg",
+                "strokes": 10,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "椅",
+                "pinyin": "yǐ",
+                "en": "chair",
+                "radical": "木",
+                "words": [
+                    "椅子",
+                    "木椅",
+                    "桌椅"
+                ],
+                "sentence": "坐在椅子上写字时，要保持腰背挺直的好姿势。",
+                "icon": "🪑",
+                "label": "椅子",
+                "image": "assets/illustrations/yi_chair.svg",
+                "strokes": 12,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "窗",
+                "pinyin": "chuāng",
+                "en": "window",
+                "radical": "穴",
+                "words": [
+                    "窗户",
+                    "窗台",
+                    "窗帘"
+                ],
+                "sentence": "明亮的窗户外面是一片翠绿的草地和蓝天。",
+                "icon": "🪟",
+                "label": "窗户",
+                "image": "assets/illustrations/chuang_window.svg",
+                "strokes": 12,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "球",
+                "pinyin": "qiú",
+                "en": "ball",
+                "radical": "王",
+                "words": [
+                    "皮球",
+                    "足球",
+                    "地球"
+                ],
+                "sentence": "圆圆的皮球在地上拍一拍，高高地跳了起来。",
+                "icon": "🏀",
+                "label": "皮球",
+                "image": "assets/illustrations/qiu_ball.svg",
+                "strokes": 11,
+                "grade": "k",
+                "difficulty": 2
+            },
+            {
+                "char": "镜",
+                "pinyin": "jìng",
+                "en": "mirror",
+                "radical": "钅",
+                "words": [
+                    "镜子",
+                    "眼镜",
+                    "放大镜"
+                ],
+                "sentence": "出门前照一照镜子，看看衣帽有没有穿戴整齐。",
+                "icon": "🪞",
+                "label": "镜子",
+                "image": "assets/illustrations/jing_mirror.svg",
+                "strokes": 16,
+                "grade": "g3",
+                "difficulty": 3
+            },
+            {
+                "char": "冷",
+                "pinyin": "lěng",
+                "en": "cold",
+                "radical": "冫",
+                "words": [
+                    "寒冷",
+                    "冰冷",
+                    "冷热"
+                ],
+                "sentence": "冬天的北风呼呼吹，天气变得十分寒冷。",
+                "icon": "🥶",
+                "label": "寒冷",
+                "image": "assets/illustrations/leng_cold.svg",
+                "strokes": 7,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "热",
+                "pinyin": "rè",
+                "en": "hot",
+                "radical": "灬",
+                "words": [
+                    "炎热",
+                    "火热",
+                    "热水"
+                ],
+                "sentence": "夏天的太阳火辣辣地照着，天气真炎热。",
+                "icon": "🥵",
+                "label": "炎热",
+                "image": "assets/illustrations/re_hot.svg",
+                "strokes": 10,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "慢",
+                "pinyin": "màn",
+                "en": "slow",
+                "radical": "忄",
+                "words": [
+                    "快慢",
+                    "慢慢",
+                    "缓慢"
+                ],
+                "sentence": "小蜗牛背着重重的壳，在树叶上一步一步慢慢爬。",
+                "icon": "🐌",
+                "label": "缓慢",
+                "image": "assets/illustrations/man_slow.svg",
+                "strokes": 14,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "新",
+                "pinyin": "xīn",
+                "en": "new",
+                "radical": "斤",
+                "words": [
+                    "崭新",
+                    "新年",
+                    "新衣"
+                ],
+                "sentence": "新学期开始了，老师发给我们崭新的语文课本。",
+                "icon": "✨",
+                "label": "崭新",
+                "image": "assets/illustrations/xin_new.svg",
+                "strokes": 13,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "旧",
+                "pinyin": "jiù",
+                "en": "old",
+                "radical": "日",
+                "words": [
+                    "新旧",
+                    "陈旧",
+                    "旧书"
+                ],
+                "sentence": "虽然这件衣服旧了，但洗得干干净净一样舒适。",
+                "icon": "🕰️",
+                "label": "新旧",
+                "image": "assets/illustrations/jiu_old.svg",
+                "strokes": 5,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "轻",
+                "pinyin": "qīng",
+                "en": "light",
+                "radical": "车",
+                "words": [
+                    "轻轻",
+                    "轻重",
+                    "轻巧"
+                ],
+                "sentence": "洁白的羽毛轻轻地飘落在碧绿的草地上。",
+                "icon": "🪶",
+                "label": "轻轻",
+                "image": "assets/illustrations/qing_light.svg",
+                "strokes": 9,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "重",
+                "pinyin": "zhòng",
+                "en": "heavy",
+                "radical": "里",
+                "words": [
+                    "沉重",
+                    "轻重",
+                    "重量"
+                ],
+                "sentence": "这个铁秤砣拿在手里沉甸甸的，真重呀。",
+                "icon": "🏋️",
+                "label": "重量",
+                "image": "assets/illustrations/zhong_heavy.svg",
+                "strokes": 9,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "干",
+                "pinyin": "gān",
+                "en": "dry",
+                "radical": "干",
+                "words": [
+                    "干净",
+                    "晒干",
+                    "饼干"
+                ],
+                "sentence": "洗好的衣服挂在温暖的阳光下，很快就晒干了。",
+                "icon": "👕",
+                "label": "晒干",
+                "image": "assets/illustrations/gan_dry.svg",
+                "strokes": 3,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "净",
+                "pinyin": "jìng",
+                "en": "clean",
+                "radical": "冫",
+                "words": [
+                    "干净",
+                    "洁净",
+                    "明亮"
+                ],
+                "sentence": "擦完的盘子和玻璃窗亮晶晶的，真干净。",
+                "icon": "✨",
+                "label": "干净",
+                "image": "assets/illustrations/jing_clean.svg",
+                "strokes": 8,
+                "grade": "g1",
+                "difficulty": 2
+            },
+            {
+                "char": "粗",
+                "pinyin": "cū",
+                "en": "thick",
+                "radical": "米",
+                "words": [
+                    "粗细",
+                    "粗壮",
+                    "粗大"
+                ],
+                "sentence": "村口那棵百年老槐树的树干又粗又壮。",
+                "icon": "🪵",
+                "label": "粗壮",
+                "image": "assets/illustrations/cu_thick.svg",
+                "strokes": 11,
+                "grade": "g2",
+                "difficulty": 3
+            },
+            {
+                "char": "细",
+                "pinyin": "xì",
+                "en": "thin / fine",
+                "radical": "纟",
+                "words": [
+                    "粗细",
+                    "细线",
+                    "仔细"
+                ],
+                "sentence": "春雨像牛毛、像细丝一样密密地洒向大地。",
+                "icon": "🧵",
+                "label": "细丝",
+                "image": "assets/illustrations/xi_thin.svg",
+                "strokes": 8,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "胖",
+                "pinyin": "pàng",
+                "en": "chubby",
+                "radical": "月",
+                "words": [
+                    "胖瘦",
+                    "胖乎乎",
+                    "小胖"
+                ],
+                "sentence": "胖乎乎的大熊猫抱着竹子吃得津津有味。",
+                "icon": "🐼",
+                "label": "胖瘦",
+                "image": "assets/illustrations/pang_chubby.svg",
+                "strokes": 9,
+                "grade": "g2",
+                "difficulty": 2
+            },
+            {
+                "char": "瘦",
+                "pinyin": "shòu",
+                "en": "slender",
+                "radical": "疒",
+                "words": [
+                    "胖瘦",
+                    "瘦小",
+                    "苗条"
+                ],
+                "sentence": "经常参加体育锻炼，身体结实匀称不挑食。",
+                "icon": "🏃",
+                "label": "瘦小",
+                "image": "assets/illustrations/shou_thin.svg",
+                "strokes": 14,
+                "grade": "g2",
+                "difficulty": 3
             }
         ]
     }
@@ -5453,7 +8015,7 @@ window.CHARACTER_ILLUSTRATION_MAP = {};
 for (const _cat of CHARACTER_CATEGORIES) {
     for (const _item of (_cat.chars || [])) {
         if (_item.image && !_item.image.includes('?')) {
-            _item.image = _item.image + '?v=16';
+            _item.image = _item.image + '?v=17';
         }
         if (!_CHAR_INDEX_MAP[_item.char]) {
             _CHAR_INDEX_MAP[_item.char] = { ..._item, category: _cat.name };
@@ -5514,5 +8076,7 @@ function getCharInfo(char) {
     };
 }
 
+window.CHARACTER_GRADES = CHARACTER_GRADES;
+window.CHARACTER_DIFFICULTIES = CHARACTER_DIFFICULTIES;
 window.CHARACTER_CATEGORIES = CHARACTER_CATEGORIES;
 window.getCharInfo = getCharInfo;

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_she" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_she)"/>
+
+  <!-- Coiled green snake body -->
+  <path d="M52 152 Q100 164 148 152 Q162 134 136 124 Q100 132 68 122 Q48 110 78 98 Q112 104 126 88 Q134 68 104 60" fill="none" stroke="#22c55e" stroke-width="20" stroke-linecap="round"/>
+  <path d="M52 152 Q100 164 148 152 Q162 134 136 124 Q100 132 68 122 Q48 110 78 98 Q112 104 126 88 Q134 68 104 60" fill="none" stroke="#86efac" stroke-width="8" stroke-dasharray="8,10" stroke-linecap="round"/>
+  <!-- Snake head & forked red tongue -->
+  <ellipse cx="96" cy="56" rx="22" ry="16" fill="#22c55e" stroke="#15803d" stroke-width="2.5"/>
+  <circle cx="88" cy="52" r="3.5" fill="#1e293b"/><circle cx="104" cy="52" r="3.5" fill="#1e293b"/>
+  <path d="M74 58 L54 58 M54 58 L46 52 M54 58 L46 64" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+
+</svg>

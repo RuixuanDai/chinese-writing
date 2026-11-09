@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_chui" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_chui)"/>
+
+  <circle cx="58" cy="106" r="28" fill="#fed7aa"/>
+  <path d="M30 100 Q58 66 86 100" fill="#451a03"/>
+  <circle cx="64" cy="100" r="3" fill="#1e293b"/>
+  <!-- Puffed cheek & pursed blowing lips -->
+  <circle cx="72" cy="114" r="9" fill="#fda4af"/>
+  <circle cx="86" cy="112" r="4" fill="#e11d48"/>
+  <!-- Wind streams & floating bubbles -->
+  <path d="M94 110 Q124 102 148 88" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M94 116 Q126 118 156 114" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="154" cy="74" r="14" fill="#bae6fd" stroke="#0284c7" stroke-width="2" opacity="0.8"/>
+  <circle cx="168" cy="114" r="11" fill="#bae6fd" stroke="#0284c7" stroke-width="2" opacity="0.8"/>
+  <circle cx="134" cy="138" r="9" fill="#bae6fd" stroke="#0284c7" stroke-width="2" opacity="0.8"/>
+
+</svg>

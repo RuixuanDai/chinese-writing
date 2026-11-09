@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_bei_sh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fdf2f8"/>
+      <stop offset="100%" stop-color="#fce7f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_bei_sh)"/>
+
+  <!-- Bottom & top scallop shell halves with ribs -->
+  <path d="M36 116 C36 52 164 52 164 116 L132 148 L68 148 Z" fill="#f472b6" stroke="#db2777" stroke-width="3.5" stroke-linejoin="round"/>
+  <line x1="100" y1="68" x2="100" y2="146" stroke="#db2777" stroke-width="2.5"/>
+  <line x1="72" y1="74" x2="84" y2="146" stroke="#db2777" stroke-width="2.5"/>
+  <line x1="128" y1="74" x2="116" y2="146" stroke="#db2777" stroke-width="2.5"/>
+  <line x1="48" y1="90" x2="72" y2="146" stroke="#db2777" stroke-width="2.5"/>
+  <line x1="152" y1="90" x2="128" y2="146" stroke="#db2777" stroke-width="2.5"/>
+  <rect x="64" y="144" width="72" height="14" rx="6" fill="#ec4899" stroke="#be185d" stroke-width="2.5"/>
+  <!-- Glowing white pearl -->
+  <circle cx="100" cy="122" r="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
+  <circle cx="94" cy="116" r="5" fill="#fef08a"/>
+
+</svg>

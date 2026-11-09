@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_la" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_la)"/>
+
+  <line x1="16" y1="166" x2="184" y2="166" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+  <!-- Red wagon on right -->
+  <rect x="116" y="122" width="52" height="26" rx="5" fill="#ef4444" stroke="#b91c1c" stroke-width="2.5"/>
+  <circle cx="128" cy="154" r="10" fill="#1e293b"/><circle cx="156" cy="154" r="10" fill="#1e293b"/>
+  <!-- Rope being pulled left -->
+  <line x1="116" y1="132" x2="74" y2="114" stroke="#78350f" stroke-width="4"/>
+  <!-- Child on left pulling rope -->
+  <circle cx="56" cy="74" r="18" fill="#fed7aa"/><path d="M38 70 Q56 50 74 70" fill="#1e293b"/>
+  <rect x="42" y="94" width="28" height="38" rx="8" fill="#2563eb"/>
+  <line x1="64" y1="106" x2="78" y2="114" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+  <line x1="48" y1="132" x2="38" y2="162" stroke="#1e3a8a" stroke-width="10" stroke-linecap="round"/>
+  <line x1="62" y1="132" x2="72" y2="162" stroke="#1e3a8a" stroke-width="10" stroke-linecap="round"/>
+  <!-- Red pull arrow pointing left -->
+  <path d="M138 82 L88 82" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="80,82 94,72 94,92" fill="#ef4444"/>
+
+</svg>

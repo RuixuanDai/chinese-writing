@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_tie" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_tie)"/>
+
+  <!-- Heavy steel I-beam / anvil + red-blue horseshoe magnet -->
+  <path d="M40 132 L160 132 L148 148 L148 160 L164 168 L36 168 L52 160 L52 148 Z" fill="#475569" stroke="#1e293b" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Horseshoe magnet attracting iron above -->
+  <path d="M72 86 L72 58 A28 28 0 0 1 128 58 L128 86" fill="none" stroke="#ef4444" stroke-width="16" stroke-linecap="butt"/>
+  <rect x="64" y="76" width="16" height="16" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+  <rect x="120" y="76" width="16" height="16" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+  <line x1="72" y1="102" x2="72" y2="118" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4,3"/>
+  <line x1="128" y1="102" x2="128" y2="118" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4,3"/>
+
+</svg>

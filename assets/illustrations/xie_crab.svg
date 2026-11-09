@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_xie_cr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_xie_cr)"/>
+
+  <!-- 8 legs (4 each side) -->
+  <g stroke="#ea580c" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M62 116 Q36 112 28 128"/><path d="M62 126 Q34 126 26 144"/>
+    <path d="M66 136 Q42 142 36 158"/><path d="M72 144 Q54 154 50 166"/>
+    <path d="M138 116 Q164 112 172 128"/><path d="M138 126 Q166 126 174 144"/>
+    <path d="M134 136 Q158 142 164 158"/><path d="M128 144 Q146 154 150 166"/>
+  </g>
+  <!-- Two big pincer claws raised up -->
+  <path d="M68 96 Q48 76 54 56" fill="none" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+  <path d="M54 62 C36 52 38 30 56 38 L52 50 L64 42 C72 52 64 66 54 62 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <path d="M132 96 Q152 76 146 56" fill="none" stroke="#ef4444" stroke-width="7" stroke-linecap="round"/>
+  <path d="M146 62 C164 52 162 30 144 38 L148 50 L136 42 C128 52 136 66 146 62 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <!-- Oval crab shell & stalk eyes -->
+  <ellipse cx="100" cy="120" rx="44" ry="30" fill="#ef4444" stroke="#b91c1c" stroke-width="3"/>
+  <line x1="86" y1="92" x2="86" y2="78" stroke="#b91c1c" stroke-width="4"/>
+  <line x1="114" y1="92" x2="114" y2="78" stroke="#b91c1c" stroke-width="4"/>
+  <circle cx="86" cy="76" r="5" fill="#1e293b"/><circle cx="114" cy="76" r="5" fill="#1e293b"/>
+  <path d="M90 124 Q100 132 110 124" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+
+</svg>

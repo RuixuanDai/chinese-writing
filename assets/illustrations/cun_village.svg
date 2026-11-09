@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg_cun" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="url(#bg_cun)"/>
+
+  <path d="M0 132 Q100 116 200 132 L200 200 L0 200 Z" fill="#4ade80"/>
+  <!-- Trees & two small village cottages -->
+  <circle cx="44" cy="96" r="22" fill="#16a34a"/><rect x="40" y="114" width="8" height="24" fill="#78350f"/>
+  <polygon points="88,76 58,104 118,104" fill="#ea580c"/><rect x="66" y="104" width="44" height="36" fill="#fef3c7"/>
+  <rect x="82" y="118" width="12" height="22" fill="#92400e"/>
+  <polygon points="146,86 122,110 170,110" fill="#d97706"/><rect x="128" y="110" width="36" height="30" fill="#fef3c7"/>
+
+</svg>
