@@ -173,34 +173,10 @@ class KidWritingApp {
             this.initMobileTabs();
         }, 0);
 
-        // 9. 设备检测与针对性弹窗提示
-        const isMobile = this.isMobilePhone();
-        if (isMobile) {
-            const hintBanner = document.getElementById('mobile-hint-banner');
-            if (hintBanner) hintBanner.style.display = 'flex';
-            try {
-                const mobilePromptSeen = sessionStorage.getItem('kid_app_mobile_prompt_seen');
-                if (!mobilePromptSeen) {
-                    setTimeout(() => {
-                        this.openMobileDeviceModal();
-                    }, 350);
-                }
-            } catch (e) {}
-        } else {
-            try {
-                const hasSeenIntro = localStorage.getItem('kid_app_intro_seen');
-                if (!hasSeenIntro) {
-                    setTimeout(() => {
-                        this.openIpadGuideModal();
-                    }, 350);
-                }
-            } catch (e) {}
-        }
-
-        // 10. 初始化移动端 / Android 系统后退导航栈（返回上层页面而非直接退出应用）
+        // 9. 初始化移动端 / Android 系统后退导航栈（返回上层页面而非直接退出应用）
         this.initBackNavigation();
 
-        // 11. 初始化 PWA 离线缓存与桌面安装支持
+        // 10. 初始化 PWA 离线缓存与网页打开时的一键安装 App 弹窗提示
         this.initPWA();
     }
 
@@ -884,7 +860,44 @@ class KidWritingApp {
         if (settingsInstallPwaBtn) {
             settingsInstallPwaBtn.addEventListener('click', () => {
                 if (window.soundManager) window.soundManager.playPop();
-                this.triggerPWAInstall();
+                this.triggerPWAInstall(false);
+            });
+        }
+        const headerInstallPwaBtn = document.getElementById('btn-header-install-pwa');
+        if (headerInstallPwaBtn) {
+            headerInstallPwaBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.triggerPWAInstall(false);
+            });
+        }
+        const pwaModal = document.getElementById('pwa-install-modal');
+        const pwaModalInstallBtn = document.getElementById('btn-pwa-modal-install');
+        const pwaModalDismissBtn = document.getElementById('btn-pwa-modal-dismiss');
+        const pwaModalCloseBtn = document.getElementById('btn-pwa-modal-close');
+        const dismissPwaModal = () => {
+            if (window.soundManager) window.soundManager.playPop();
+            if (pwaModal) pwaModal.classList.remove('visible');
+            try {
+                sessionStorage.setItem('kid_app_pwa_prompt_dismissed', 'true');
+                localStorage.setItem('kid_app_intro_seen', 'true');
+            } catch (e) {}
+            this.scheduleNavSync();
+        };
+        if (pwaModalInstallBtn) {
+            pwaModalInstallBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this.triggerPWAInstall(true);
+            });
+        }
+        if (pwaModalDismissBtn) {
+            pwaModalDismissBtn.addEventListener('click', dismissPwaModal);
+        }
+        if (pwaModalCloseBtn) {
+            pwaModalCloseBtn.addEventListener('click', dismissPwaModal);
+        }
+        if (pwaModal) {
+            pwaModal.addEventListener('click', (e) => {
+                if (e.target === pwaModal) dismissPwaModal();
             });
         }
         if (settingsClearBtn) {
@@ -1898,10 +1911,28 @@ class KidWritingApp {
         return false;
     }
 
-    // 初始化 PWA Service Worker 与桌面安装提示
+    isIOSDevice() {
+        const ua = navigator.userAgent || '';
+        return /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+
+    isMobileOrTabletDevice() {
+        const ua = navigator.userAgent || '';
+        if (/Android|iPhone|iPad|iPod|HarmonyOS|Mobile|Tablet/i.test(ua)) return true;
+        if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
+        if ((navigator.maxTouchPoints > 0 || 'ontouchstart' in window) && window.innerWidth <= 1366) return true;
+        return false;
+    }
+
+    // 初始化 PWA Service Worker 与网页端自动弹出「一键安装 App」提示
     initPWA() {
         const installBtn = document.getElementById('btn-settings-install-pwa');
         const installDesc = document.getElementById('pwa-install-desc');
+        const headerInstallBtn = document.getElementById('btn-header-install-pwa');
+
+        if (window.__deferredPwaPrompt) {
+            this.deferredInstallPrompt = window.__deferredPwaPrompt;
+        }
 
         const markInstalled = (descText) => {
             if (installBtn) {
@@ -1913,34 +1944,83 @@ class KidWritingApp {
             if (installDesc && descText) {
                 installDesc.textContent = descText;
             }
+            if (headerInstallBtn) {
+                headerInstallBtn.style.display = 'none';
+            }
+            const pwaModal = document.getElementById('pwa-install-modal');
+            if (pwaModal) pwaModal.classList.remove('visible');
         };
 
         if (this.isStandaloneMode()) {
             markInstalled('正以桌面 App 模式全屏运行，支持离线练字');
+            return;
         }
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            this.deferredInstallPrompt = e;
-            if (installBtn) {
+        const onPromptCaptured = (e) => {
+            if (e && typeof e.preventDefault === 'function') {
+                e.preventDefault();
+                this.deferredInstallPrompt = e;
+                window.__deferredPwaPrompt = e;
+            } else if (window.__deferredPwaPrompt) {
+                this.deferredInstallPrompt = window.__deferredPwaPrompt;
+            }
+            if (installBtn && !this.isStandaloneMode()) {
                 installBtn.textContent = '立即安装';
             }
-            if (installDesc) {
+            if (installDesc && !this.isStandaloneMode()) {
                 installDesc.textContent = '一键添加到桌面，无地址栏干扰，断网也能练字';
             }
-        });
+            this.syncPwaModalUI(false);
+
+            // 在手机或平板上用浏览器打开时，一旦原生一键安装就绪且当前会话未关闭提示，立即弹出「一键安装 App」窗口
+            if (!this.isStandaloneMode() && this.isMobileOrTabletDevice() && !this._pwaAutoPromptShown) {
+                let dismissed = false;
+                try {
+                    dismissed = sessionStorage.getItem('kid_app_pwa_prompt_dismissed') === 'true';
+                } catch (err) {}
+                if (!dismissed) {
+                    this._pwaAutoPromptShown = true;
+                    this.openPwaInstallModal(false);
+                }
+            }
+        };
+
+        window.addEventListener('beforeinstallprompt', onPromptCaptured);
+        window.addEventListener('pwa-prompt-ready', () => onPromptCaptured(null));
+
+        if (this.deferredInstallPrompt) {
+            onPromptCaptured(null);
+        } else if (this.isMobileOrTabletDevice()) {
+            // 若在手机/平板首次网页打开，且 600ms 内浏览器尚未触发 beforeinstallprompt，也主动弹出安装卡片引导
+            setTimeout(() => {
+                if (this.isStandaloneMode() || this._pwaAutoPromptShown) return;
+                let dismissed = false;
+                let seenIntro = false;
+                try {
+                    dismissed = sessionStorage.getItem('kid_app_pwa_prompt_dismissed') === 'true';
+                    seenIntro = localStorage.getItem('kid_app_intro_seen') === 'true';
+                } catch (err) {}
+                if (!dismissed && (this.deferredInstallPrompt || window.__deferredPwaPrompt || !seenIntro)) {
+                    this._pwaAutoPromptShown = true;
+                    this.openPwaInstallModal(false);
+                }
+            }, 600);
+        }
 
         window.addEventListener('appinstalled', () => {
             this.deferredInstallPrompt = null;
+            window.__deferredPwaPrompt = null;
+            try {
+                localStorage.setItem('kid_app_pwa_installed', 'true');
+                localStorage.setItem('kid_app_intro_seen', 'true');
+            } catch (err) {}
             markInstalled('已添加到桌面，可从桌面图标直接打开');
             this.showToast('🎉 已成功安装「快乐小书法家」到桌面！');
         });
 
         if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch((err) => {
-                    console.warn('ServiceWorker registration warning:', err);
-                });
+            navigator.serviceWorker.register('./sw.js').catch((err) => {
+                console.warn('ServiceWorker registration warning:', err);
             });
             // 离线缓存接管页面后，若设置页正打开则即时刷新「离线可用」状态
             navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -1952,24 +2032,87 @@ class KidWritingApp {
         }
     }
 
+    syncPwaModalUI(showFallbackTip = false) {
+        const tipEl = document.getElementById('pwa-modal-status-tip');
+        const installBtn = document.getElementById('btn-pwa-modal-install');
+        if (!tipEl || !installBtn) return;
+
+        const hasNativePrompt = !!(this.deferredInstallPrompt || window.__deferredPwaPrompt);
+        if (hasNativePrompt) {
+            tipEl.hidden = true;
+            tipEl.innerHTML = '';
+            installBtn.innerHTML = '<span>📲 一键安装到桌面</span>';
+            return;
+        }
+
+        if (this.isIOSDevice()) {
+            tipEl.hidden = false;
+            tipEl.innerHTML = '🍎 <strong>iPad / iPhone 快捷安装：</strong>点击浏览器栏的 <strong>【⎋ 分享】</strong> ➔ 选择 <strong>【➕ 添加到主屏幕】</strong>，即可生成桌面全屏 App！';
+            installBtn.innerHTML = '<span>👌 我知道了，去试试</span>';
+            return;
+        }
+
+        if (showFallbackTip) {
+            tipEl.hidden = false;
+            tipEl.innerHTML = '💡 若系统未直接弹出安装框，说明桌面可能已安装，或请点浏览器右上角/底部 <strong>【⋮ 菜单】➔【安装应用 / 添加到主屏幕】</strong> 即可一键完成！';
+            installBtn.innerHTML = '<span>📲 再试一次一键安装</span>';
+        } else {
+            tipEl.hidden = true;
+            tipEl.innerHTML = '';
+            installBtn.innerHTML = '<span>📲 一键安装到桌面</span>';
+        }
+    }
+
+    openPwaInstallModal(showFallbackTip = false) {
+        if (this.isStandaloneMode()) return;
+        const pwaModal = document.getElementById('pwa-install-modal');
+        if (!pwaModal) return;
+        this.syncPwaModalUI(showFallbackTip);
+        pwaModal.classList.add('visible');
+        this.scheduleNavSync();
+    }
+
     // 是否以桌面独立 App (PWA standalone) 模式运行
     isStandaloneMode() {
         return !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true);
     }
 
-    // 触发 PWA 桌面安装或展示安装指南
-    async triggerPWAInstall() {
+    // 触发 PWA 一键安装
+    async triggerPWAInstall(fromModal = false) {
         if (this.isStandaloneMode()) {
             this.showToast('✅ 当前已经在桌面独立 App 模式下运行啦！');
             return;
         }
 
-        if (this.deferredInstallPrompt) {
+        const settingsModal = document.getElementById('settings-modal');
+        if (settingsModal && settingsModal.classList.contains('visible')) {
+            settingsModal.classList.remove('visible');
+        }
+
+        let promptEvt = this.deferredInstallPrompt || window.__deferredPwaPrompt;
+
+        // 若用户点击极快、Service Worker 刚完成注册，短暂等待 450ms 看浏览器是否立即派发 beforeinstallprompt
+        if (!promptEvt && !this.isIOSDevice()) {
+            for (let i = 0; i < 5; i++) {
+                await new Promise(r => setTimeout(r, 90));
+                promptEvt = this.deferredInstallPrompt || window.__deferredPwaPrompt;
+                if (promptEvt) break;
+            }
+        }
+
+        if (promptEvt) {
             try {
-                this.deferredInstallPrompt.prompt();
-                const { outcome } = await this.deferredInstallPrompt.userChoice;
+                promptEvt.prompt();
+                const { outcome } = await promptEvt.userChoice;
+                this.deferredInstallPrompt = null;
+                window.__deferredPwaPrompt = null;
                 if (outcome === 'accepted') {
-                    this.deferredInstallPrompt = null;
+                    const pwaModal = document.getElementById('pwa-install-modal');
+                    if (pwaModal) pwaModal.classList.remove('visible');
+                    try {
+                        localStorage.setItem('kid_app_pwa_installed', 'true');
+                        localStorage.setItem('kid_app_intro_seen', 'true');
+                    } catch (err) {}
                 }
             } catch (e) {
                 console.warn('PWA install prompt error:', e);
@@ -1977,14 +2120,20 @@ class KidWritingApp {
             return;
         }
 
-        // Safari / 移动端浏览器未触发 beforeinstallprompt 时，打开图文添加到主屏幕指南
-        const settingsModal = document.getElementById('settings-modal');
-        if (settingsModal && settingsModal.classList.contains('visible')) {
-            this._modalOpenedFromSettings = true;
-            settingsModal.classList.remove('visible');
+        // 若是 iOS Safari 且用户在弹窗内点击了「我知道了」，则收起弹窗
+        if (fromModal && this.isIOSDevice()) {
+            const pwaModal = document.getElementById('pwa-install-modal');
+            if (pwaModal) pwaModal.classList.remove('visible');
+            try {
+                sessionStorage.setItem('kid_app_pwa_prompt_dismissed', 'true');
+                localStorage.setItem('kid_app_intro_seen', 'true');
+            } catch (err) {}
+            this.scheduleNavSync();
+            return;
         }
-        this.openIpadGuideModal();
-        this.showToast('💡 请点击浏览器菜单中的【分享 ➔ 添加到主屏幕】或【安装应用】即可生成桌面图标！', 4000);
+
+        // 打开安装卡片并展示精简提示
+        this.openPwaInstallModal(true);
     }
 
     // 打开手机设备提示弹窗
@@ -2882,6 +3031,7 @@ class KidWritingApp {
     getOpenModalStack() {
         const orderedIds = [
             'settings-modal',
+            'pwa-install-modal',
             'mobile-device-modal',
             'ipad-guide-modal',
             'sticker-book-modal',

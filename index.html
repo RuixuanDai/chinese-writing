@@ -17,7 +17,19 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261109_v18">
+    <link rel="stylesheet" href="css/style.css?v=20261109_v19">
+    <script>
+        // 最早阶段捕获浏览器原生 PWA 一键安装事件，确保不错过触发时机，并立即注册 Service Worker
+        window.__deferredPwaPrompt = null;
+        window.addEventListener('beforeinstallprompt', function(e) {
+            e.preventDefault();
+            window.__deferredPwaPrompt = e;
+            window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
+        });
+        if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.protocol === 'http:')) {
+            navigator.serviceWorker.register('./sw.js').catch(function() {});
+        }
+    </script>
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -76,8 +88,8 @@
                     <span>📖 贴纸乐园</span>
                 </button>
                 <button id="btn-sound-toggle" class="sound-toggle-btn">🔊 声音开</button>
-                <button id="btn-toggle-fullscreen" class="fullscreen-toggle-btn" title="切换浏览器全屏显示，沉浸式练字">⛶ 全屏</button>
-                <button id="btn-open-settings" class="settings-trigger-btn" title="家长区与设置：打印字帖、清除数据">
+                <button id="btn-header-install-pwa" class="header-install-pwa-btn" title="一键安装为桌面独立 App，全屏无地址栏">📲 安装App</button>
+                <button id="btn-open-settings" class="settings-trigger-btn" title="家长区与设置：学龄分级、闯关难度、打印字帖">
                     <span>⚙️ 设置</span>
                 </button>
             </div>
@@ -573,6 +585,34 @@
         </div>
     </div>
 
+    <!-- 网页打开时自动弹出的「一键安装桌面 App」弹窗 Modal -->
+    <div id="pwa-install-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pwa-modal-title">
+        <div class="modal-content pwa-install-modal-card">
+            <button type="button" id="btn-pwa-modal-close" class="btn-modal-close" aria-label="关闭">&times;</button>
+            <div class="pwa-modal-app-badge">
+                <img src="assets/icon-192.png" alt="快乐小书法家图标" class="pwa-modal-app-icon">
+                <div class="pwa-modal-app-meta">
+                    <h3 id="pwa-modal-title" class="pwa-modal-title">快乐小书法家 App</h3>
+                    <p class="pwa-modal-subtitle">儿童趣味识字 · 笔顺闯关 · 毛笔临摹</p>
+                </div>
+            </div>
+            <div class="pwa-modal-perks">
+                <span class="pwa-perk-pill">✨ 全屏无地址栏</span>
+                <span class="pwa-perk-pill">📶 支持离线畅玩</span>
+                <span class="pwa-perk-pill">🛡️ 防手掌误触</span>
+            </div>
+            <div id="pwa-modal-status-tip" class="pwa-modal-status-tip" hidden></div>
+            <div class="pwa-modal-actions">
+                <button type="button" id="btn-pwa-modal-install" class="pwa-install-primary-btn">
+                    <span>📲 一键安装到桌面</span>
+                </button>
+                <button type="button" id="btn-pwa-modal-dismiss" class="pwa-install-later-btn">
+                    暂不安装，直接在网页玩 ➔
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 手机访问设备提示弹窗 Modal -->
     <div id="mobile-device-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 480px; max-height: 90vh; overflow-y: auto; text-align: center;">
@@ -1053,15 +1093,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261109_v18"></script>
-    <script src="lib/web-online-tts.js?v=20261109_v18"></script>
-    <script src="js/sound.js?v=20261109_v18"></script>
-    <script src="js/char-data.js?v=20261109_v18"></script>
-    <script src="js/stroke-cache.js?v=20261109_v18"></script>
-    <script src="js/canvas.js?v=20261109_v18"></script>
-    <script src="js/hanzi-guide.js?v=20261109_v18"></script>
-    <script src="js/evaluator.js?v=20261109_v18"></script>
-    <script src="js/quiz-test.js?v=20261109_v18"></script>
-    <script src="js/app.js?v=20261109_v18"></script>
+    <script src="lib/web-natural-tts.js?v=20261109_v19"></script>
+    <script src="lib/web-online-tts.js?v=20261109_v19"></script>
+    <script src="js/sound.js?v=20261109_v19"></script>
+    <script src="js/char-data.js?v=20261109_v19"></script>
+    <script src="js/stroke-cache.js?v=20261109_v19"></script>
+    <script src="js/canvas.js?v=20261109_v19"></script>
+    <script src="js/hanzi-guide.js?v=20261109_v19"></script>
+    <script src="js/evaluator.js?v=20261109_v19"></script>
+    <script src="js/quiz-test.js?v=20261109_v19"></script>
+    <script src="js/app.js?v=20261109_v19"></script>
 </body>
 </html>
