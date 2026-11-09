@@ -1,22 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e0f2fe"/>
-      <stop offset="100%" stop-color="#bae6fd"/>
+    <linearGradient id="bg_jiang" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="100%" stop-color="#e0f2fe"/>
     </linearGradient>
-    
   </defs>
-  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
-  
-      <!-- Distant misty mountain range -->
-      <polygon points="0,98 48,46 98,92 152,38 200,90 200,120 0,120" fill="#86efac"/>
-      <!-- Left & right steep green gorge mountains -->
-      <polygon points="0,115 66,58 112,115 0,115" fill="#22c55e"/>
-      <polygon points="94,115 156,52 200,108 200,115" fill="#16a34a"/>
-      <!-- Land banks -->
-      <rect x="0" y="108" width="200" height="92" fill="#4ade80"/>
-      <!-- Broad winding mighty river -->
-      <path d="M92 106 C76 122 128 136 112 158 C98 176 42 186 24 200 L152 200 C164 180 148 156 130 140 C114 126 112 114 108 106 Z" fill="#2563eb"/>
-      <path d="M98 122 Q108 126 116 122 M84 162 Q102 168 122 162 M64 186 Q96 192 128 184" fill="none" stroke="#93c5fd" stroke-width="3" stroke-linecap="round"/>
-    
+  <rect width="200" height="200" rx="28" fill="url(#bg_jiang)"/>
+
+  <!-- Distant cliffs / Three Gorges on both sides -->
+  <polygon points="0,110 0,44 68,96" fill="#047857"/>
+  <polygon points="200,110 200,38 128,96" fill="#065f46"/>
+  <polygon points="45,96 92,52 140,96" fill="#10b981" opacity="0.65"/>
+  <!-- Wide surging mighty river filling the lower half -->
+  <path d="M0 96 Q100 88 200 96 L200 200 L0 200 Z" fill="#0284c7"/>
+  <!-- Whitecaps / waves -->
+  <path d="M22 126 Q38 116 54 126 T86 126" fill="none" stroke="#e0f2fe" stroke-width="4" stroke-linecap="round"/>
+  <path d="M110 144 Q128 134 146 144 T182 144" fill="none" stroke="#e0f2fe" stroke-width="4" stroke-linecap="round"/>
+  <path d="M36 168 Q56 156 76 168 T116 168" fill="none" stroke="#bae6fd" stroke-width="4" stroke-linecap="round"/>
+  <!-- Sailboat on the wide river -->
+  <polygon points="82,112 122,112 114,124 90,124" fill="#92400e"/>
+  <polygon points="102,68 102,110 124,106" fill="#ffffff"/>
+  <polygon points="100,74 100,110 84,106" fill="#fef08a"/>
+
 </svg>

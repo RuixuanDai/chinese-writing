@@ -1,23 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgShu" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg_shu" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#eff6ff"/>
       <stop offset="100%" stop-color="#dbeafe"/>
-    </radialGradient>
-    <filter id="shadowShu" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgShu)"/>
-  <!-- Colorful Open Book with Bookmark (看书) -->
-  <g filter="url(#shadowShu)">
-    <!-- Cover -->
-    <path d="M 250 350 Q 160 340 90 360 L 90 170 Q 160 150 250 170 Q 340 150 410 170 L 410 360 Q 340 340 250 350 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/>
-    <!-- Left Page -->
-    <path d="M 250 340 Q 165 330 100 350 L 100 180 Q 165 160 250 180 Z" fill="#ffffff"/>
-    <!-- Right Page -->
-    <path d="M 250 340 Q 335 330 400 350 L 400 180 Q 335 160 250 180 Z" fill="#ffffff"/>
-    <!-- Red Ribbon Bookmark -->
-    <path d="M 245 170 L 255 170 L 255 270 L 250 260 L 245 270 Z" fill="#ef4444"/>
-  </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_shu)"/>
+
+  <!-- Hardcover backing -->
+  <rect x="26" y="48" width="148" height="106" rx="8" fill="#2563eb" stroke="#1d4ed8" stroke-width="3"/>
+  <!-- Left & right curved pages -->
+  <path d="M34 54 Q66 48 100 56 L100 146 Q66 138 34 144 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <path d="M100 56 Q134 48 166 54 L166 144 Q134 138 100 146 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <!-- Left page illustration & lines -->
+  <rect x="46" y="66" width="42" height="28" rx="4" fill="#bae6fd"/>
+  <circle cx="58" cy="76" r="5" fill="#facc15"/>
+  <polygon points="48,94 66,78 86,94" fill="#4ade80"/>
+  <line x1="46" y1="106" x2="88" y2="106" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="46" y1="118" x2="88" y2="118" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="46" y1="130" x2="76" y2="130" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Right page lines -->
+  <line x1="112" y1="70" x2="154" y2="70" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="112" y1="84" x2="154" y2="84" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="112" y1="98" x2="154" y2="98" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="112" y1="112" x2="154" y2="112" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="112" y1="126" x2="140" y2="126" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Red ribbon bookmark hanging from center spine -->
+  <polygon points="95,56 105,56 105,166 100,158 95,166" fill="#ef4444"/>
+
 </svg>

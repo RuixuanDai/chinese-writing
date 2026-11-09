@@ -1,29 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fef3c7"/>
-      <stop offset="100%" stop-color="#fde68a"/>
+    <linearGradient id="bg_fu" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
     </linearGradient>
-    
   </defs>
-  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
-  
-      <!-- Shorts & legs -->
-      <rect x="70" y="144" width="26" height="32" rx="6" fill="#2563eb"/>
-      <rect x="104" y="144" width="26" height="32" rx="6" fill="#2563eb"/>
-      <rect x="66" y="138" width="68" height="18" rx="6" fill="#1d4ed8"/>
-      <!-- Round warm belly (腹部) -->
-      <ellipse cx="100" cy="112" rx="40" ry="34" fill="#fed7aa" stroke="#ea580c" stroke-width="3"/>
-      <!-- Cute bellybutton -->
-      <ellipse cx="100" cy="120" rx="4" ry="3" fill="#c2410c"/>
-      <!-- Lifted t-shirt at chest & smiling chin peek -->
-      <circle cx="100" cy="40" r="20" fill="#fed7aa"/>
-      <path d="M93 44 Q100 50 107 44" fill="none" stroke="#c2410c" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M60 62 Q100 54 140 62 L144 90 Q100 78 56 90 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="2.5"/>
-      <!-- Arms patting the round belly -->
-      <path d="M58 72 Q40 102 68 114" fill="none" stroke="#fed7aa" stroke-width="12" stroke-linecap="round"/>
-      <path d="M142 72 Q160 102 132 114" fill="none" stroke="#fed7aa" stroke-width="12" stroke-linecap="round"/>
-      <!-- Highlight ring around belly -->
-      <ellipse cx="100" cy="115" rx="28" ry="20" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="5 5"/>
-    
+  <rect width="200" height="200" rx="28" fill="url(#bg_fu)"/>
+
+  <!-- Head with complete eyes & smile -->
+  <circle cx="100" cy="48" r="20" fill="#fed7aa"/>
+  <path d="M80 44 Q100 22 120 44" fill="#451a03"/>
+  <circle cx="93" cy="48" r="2.3" fill="#1e293b"/><circle cx="107" cy="48" r="2.3" fill="#1e293b"/>
+  <path d="M94 55 Q100 60 106 55" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Raised shirt top & arms -->
+  <path d="M68 70 L50 102" stroke="#fed7aa" stroke-width="10" stroke-linecap="round"/>
+  <path d="M132 70 L150 102" stroke="#fed7aa" stroke-width="10" stroke-linecap="round"/>
+  <rect x="68" y="68" width="64" height="22" rx="8" fill="#38bdf8"/>
+  <!-- Round exposed belly (腹部) -->
+  <ellipse cx="100" cy="116" rx="34" ry="28" fill="#fed7aa" stroke="#f97316" stroke-width="2"/>
+  <circle cx="100" cy="120" r="3" fill="#d97706"/>
+  <!-- Dashed highlight ring & arrow pointing to belly -->
+  <circle cx="100" cy="116" r="24" fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="5,4"/>
+  <path d="M168 116 L134 116" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round"/>
+  <polygon points="128,116 140,108 140,124" fill="#ef4444"/>
+  <!-- Shorts & legs -->
+  <rect x="70" y="140" width="60" height="18" rx="6" fill="#2563eb"/>
+  <rect x="76" y="156" width="14" height="22" rx="6" fill="#fed7aa"/>
+  <rect x="110" y="156" width="14" height="22" rx="6" fill="#fed7aa"/>
+
 </svg>

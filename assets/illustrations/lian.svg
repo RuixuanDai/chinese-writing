@@ -1,34 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgLian" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowLian" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ca8a04" flood-opacity="0.25"/>
-    </filter>
+    <linearGradient id="bg_lian" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgLian)"/>
-  <g filter="url(#shadowLian)">
-    <!-- Big Chubby Child Face (脸庞) -->
-    <circle cx="250" cy="250" r="150" fill="#fed7aa"/>
-    <!-- Ears -->
-    <circle cx="95" cy="250" r="28" fill="#fed7aa"/>
-    <circle cx="95" cy="250" r="16" fill="#fca5a5"/>
-    <circle cx="405" cy="250" r="28" fill="#fed7aa"/>
-    <circle cx="405" cy="250" r="16" fill="#fca5a5"/>
-    <!-- Hair bangs on forehead -->
-    <path d="M 120 190 C 180 120 320 120 380 190 C 330 160 300 170 250 165 C 200 170 170 160 120 190 Z" fill="#78350f"/>
-    <!-- Sparkling Eyes -->
-    <circle cx="195" cy="235" r="14" fill="#1e293b"/>
-    <circle cx="190" cy="229" r="5" fill="#ffffff"/>
-    <circle cx="305" cy="235" r="14" fill="#1e293b"/>
-    <circle cx="300" cy="229" r="5" fill="#ffffff"/>
-    <!-- Big Cheerful Smile -->
-    <path d="M 205 290 Q 250 345 295 290 Z" fill="#f43f5e"/>
-    <path d="M 220 290 Q 250 310 280 290" fill="#ffffff"/>
-    <!-- Cute Pink Cheeks / Dimples -->
-    <circle cx="150" cy="285" r="22" fill="#f43f5e" opacity="0.4"/>
-    <circle cx="350" cy="285" r="22" fill="#f43f5e" opacity="0.4"/>
-  </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_lian)"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="100" r="48" fill="#fed7aa" stroke="#f97316" stroke-width="2"/>
+  <path d="M52 94 Q100 46 148 94 Q124 76 100 78 Q76 76 52 94 Z" fill="#451a03"/>
+  <!-- Happy curved eyes -->
+  <path d="M74 94 Q82 86 90 94" fill="none" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M110 94 Q118 86 126 94" fill="none" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Prominent rosy cheeks (脸蛋) highlighted with dashed circles -->
+  <circle cx="70" cy="114" r="13" fill="#fb7185" opacity="0.65"/>
+  <circle cx="70" cy="114" r="16" fill="none" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="4,3"/>
+  <circle cx="130" cy="114" r="13" fill="#fb7185" opacity="0.65"/>
+  <circle cx="130" cy="114" r="16" fill="none" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="4,3"/>
+  <!-- Big smile -->
+  <path d="M86 118 Q100 132 114 118" fill="none" stroke="#e11d48" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Two little hands cupping the cheeks -->
+  <path d="M46 124 Q52 146 72 144" fill="none" stroke="#fdba74" stroke-width="12" stroke-linecap="round"/>
+  <path d="M154 124 Q148 146 128 144" fill="none" stroke="#fdba74" stroke-width="12" stroke-linecap="round"/>
+  <!-- Left & right red arrows pointing to the cheeks -->
+  <path d="M18 114 L46 114" stroke="#e11d48" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="50,114 40,107 40,121" fill="#e11d48"/>
+  <path d="M182 114 L154 114" stroke="#e11d48" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="150,114 160,107 160,121" fill="#e11d48"/>
+
 </svg>

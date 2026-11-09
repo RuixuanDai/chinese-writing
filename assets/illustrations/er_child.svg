@@ -1,37 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgErChild" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowErChild" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg_er_child" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgErChild)"/>
-  <ellipse cx="250" cy="440" rx="160" ry="30" fill="#fed7aa" opacity="0.6"/>
-  <g filter="url(#shadowErChild)">
-    <!-- Toddler Overalls / Romper -->
-    <path d="M 170 340 L 190 430 L 230 430 L 240 370 L 260 370 L 270 430 L 310 430 L 330 340 Z" fill="#38bdf8"/>
-    <!-- Cute Yellow T-Shirt -->
-    <rect x="180" y="240" width="140" height="110" rx="20" fill="#facc15"/>
-    <!-- Arms Waving -->
-    <path d="M 180 260 L 120 210" stroke="#facc15" stroke-width="26" stroke-linecap="round"/>
-    <circle cx="115" cy="205" r="16" fill="#fed7aa"/>
-    <path d="M 320 260 L 380 210" stroke="#facc15" stroke-width="26" stroke-linecap="round"/>
-    <circle cx="385" cy="205" r="16" fill="#fed7aa"/>
-    <!-- Head -->
-    <circle cx="250" cy="170" r="75" fill="#fed7aa"/>
-    <!-- Cute Sprout Hair tuft -->
-    <path d="M 250 95 Q 230 65 220 60 M 250 95 Q 270 65 280 60" stroke="#78350f" stroke-width="6" stroke-linecap="round" fill="none"/>
-    <!-- Big Innocent Eyes -->
-    <circle cx="220" cy="165" r="10" fill="#1e293b"/>
-    <circle cx="217" cy="161" r="3.5" fill="#ffffff"/>
-    <circle cx="280" cy="165" r="10" fill="#1e293b"/>
-    <circle cx="277" cy="161" r="3.5" fill="#ffffff"/>
-    <!-- Smile & Rosy Blushes -->
-    <path d="M 235 195 Q 250 215 265 195" stroke="#78350f" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-    <circle cx="190" cy="190" r="12" fill="#f43f5e" opacity="0.4"/>
-    <circle cx="310" cy="190" r="12" fill="#f43f5e" opacity="0.4"/>
-  </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_er_child)"/>
+
+  <ellipse cx="100" cy="172" rx="74" ry="9" fill="#f59e0b" opacity="0.22"/>
+  <!-- Red balloon held by girl -->
+  <line x1="146" y1="112" x2="162" y2="58" stroke="#64748b" stroke-width="2"/>
+  <ellipse cx="164" cy="42" rx="15" ry="18" fill="#ef4444"/>
+  <circle cx="159" cy="36" r="4" fill="#fff" opacity="0.6"/>
+  <!-- Boy (left) -->
+  <circle cx="64" cy="78" r="20" fill="#fed7aa"/>
+  <path d="M44 74 Q64 50 84 74" fill="#451a03"/>
+  <circle cx="58" cy="78" r="2.5" fill="#1e293b"/><circle cx="70" cy="78" r="2.5" fill="#1e293b"/>
+  <circle cx="52" cy="84" r="4" fill="#fca5a5"/><circle cx="76" cy="84" r="4" fill="#fca5a5"/>
+  <path d="M58 86 Q64 92 70 86" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M46 102 L32 88" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+  <path d="M82 104 L98 114" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+  <rect x="46" y="98" width="36" height="40" rx="12" fill="#3b82f6"/>
+  <rect x="50" y="136" width="11" height="28" rx="5" fill="#1e3a8a"/>
+  <rect x="67" y="136" width="11" height="28" rx="5" fill="#1e3a8a"/>
+  <!-- Girl with pigtails (right) -->
+  <circle cx="108" cy="68" r="8" fill="#451a03"/>
+  <circle cx="152" cy="68" r="8" fill="#451a03"/>
+  <circle cx="130" cy="80" r="20" fill="#fed7aa"/>
+  <path d="M110 74 Q130 52 150 74" fill="#451a03"/>
+  <circle cx="124" cy="80" r="2.5" fill="#1e293b"/><circle cx="136" cy="80" r="2.5" fill="#1e293b"/>
+  <circle cx="118" cy="86" r="4" fill="#fca5a5"/><circle cx="142" cy="86" r="4" fill="#fca5a5"/>
+  <path d="M124 88 Q130 94 136 88" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M114 106 L98 114" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+  <path d="M146 106 L154 94" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="130,98 108,142 152,142" fill="#ec4899"/>
+  <rect x="118" y="140" width="10" height="24" rx="5" fill="#fed7aa"/>
+  <rect x="132" y="140" width="10" height="24" rx="5" fill="#fed7aa"/>
+
 </svg>

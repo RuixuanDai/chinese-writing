@@ -1,24 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="bg_wo" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#fefce8"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fef08a"/>
     </linearGradient>
-    
   </defs>
-  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
-  
-      <!-- Left blue sleeve & wrist -->
-      <rect x="14" y="76" width="42" height="34" rx="8" transform="rotate(12 35 93)" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2.5"/>
-      <!-- Right red sleeve & wrist -->
-      <rect x="144" y="76" width="42" height="34" rx="8" transform="rotate(-12 165 93)" fill="#ef4444" stroke="#b91c1c" stroke-width="2.5"/>
-      <!-- Clasped hands in center -->
-      <path d="M52 84 C72 72 96 72 114 82 L138 96 C144 104 138 124 122 128 L86 130 C66 128 54 114 52 104 Z" fill="#fed7aa" stroke="#c2410c" stroke-width="3"/>
-      <path d="M148 84 C128 72 104 72 86 82" fill="none" stroke="#c2410c" stroke-width="3" stroke-linecap="round"/>
-      <!-- Thumbs & wrapped clasping fingers -->
-      <rect x="82" y="74" width="32" height="13" rx="6.5" transform="rotate(-14 98 80)" fill="#fdba74" stroke="#c2410c" stroke-width="2.5"/>
-      <rect x="74" y="112" width="11" height="22" rx="5.5" transform="rotate(24 80 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/><rect x="85" y="110" width="11" height="22" rx="5.5" transform="rotate(24 91 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/><rect x="96" y="108" width="11" height="22" rx="5.5" transform="rotate(24 102 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/><rect x="107" y="106" width="11" height="22" rx="5.5" transform="rotate(24 113 122)" fill="#fdba74" stroke="#c2410c" stroke-width="2.2"/>
-      <!-- Warm heart/sparkle lines above handshake -->
-      <path d="M100 44 L100 56 M80 50 L86 60 M120 50 L114 60" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
-    
+  <rect width="200" height="200" rx="28" fill="url(#bg_wo)"/>
+
+  <!-- Pencil being grasped firmly -->
+  <g transform="rotate(28 100 100)">
+    <rect x="92" y="22" width="16" height="128" rx="3" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2.5"/>
+    <rect x="92" y="18" width="16" height="12" rx="3" fill="#f43f5e"/>
+    <polygon points="92,150 108,150 100,174" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+    <polygon points="97,165 103,165 100,174" fill="#1e293b"/>
+  </g>
+  <!-- Hand & fingers wrapping around the pencil (握笔) -->
+  <path d="M42 108 Q58 84 88 86 L108 86 Q120 86 120 98 Q120 110 104 110 L76 112" fill="#fed7aa" stroke="#ea580c" stroke-width="3" stroke-linecap="round"/>
+  <rect x="78" y="96" width="38" height="15" rx="7.5" fill="#fed7aa" stroke="#ea580c" stroke-width="2.5"/>
+  <rect x="74" y="110" width="36" height="15" rx="7.5" fill="#fed7aa" stroke="#ea580c" stroke-width="2.5"/>
+  <rect x="70" y="124" width="32" height="14" rx="7" fill="#fed7aa" stroke="#ea580c" stroke-width="2.5"/>
+  <!-- Grip emphasis rays -->
+  <line x1="134" y1="84" x2="146" y2="78" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="138" y1="100" x2="152" y2="100" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round"/>
+
 </svg>

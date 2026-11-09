@@ -1,23 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgCheng" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
-    </radialGradient>
-    <filter id="shadowCheng" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#b45309" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg_cheng_h" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef08a"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgCheng)"/>
-  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fde68a" opacity="0.6"/>
-  <!-- Pinky Promise (拉钩约定) -->
-  <g filter="url(#shadowCheng)">
-    <!-- Left Hand Pinky Hooked -->
-    <path d="M 120 280 L 190 280 C 220 280 235 240 235 210 C 235 180 215 180 215 210 L 215 250" stroke="#f59e0b" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- Right Hand Pinky Hooked into it -->
-    <path d="M 380 280 L 310 280 C 280 280 265 240 265 210 C 265 180 285 180 285 210 L 285 250" stroke="#d97706" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- Golden Promise Glow Star in the middle of hooked pinkies -->
-    <polygon points="250,170 258,195 285,195 264,212 272,238 250,222 228,238 236,212 215,195 242,195" fill="#eab308"/>
-    <circle cx="250" cy="205" r="8" fill="#ffffff"/>
-  </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_cheng_h)"/>
+
+  <!-- Speech bubble with a pure red heart (真心话/诚实) -->
+  <rect x="116" y="24" width="62" height="48" rx="16" fill="#ffffff" stroke="#f59e0b" stroke-width="3"/>
+  <polygon points="126,72 114,86 138,72" fill="#ffffff" stroke="#f59e0b" stroke-width="2.5"/>
+  <path d="M147 44 C142 36 132 40 135 48 C138 55 147 60 147 60 C147 60 156 55 159 48 C162 40 152 36 147 44 Z" fill="#ef4444"/>
+  <!-- Sincere smiling child -->
+  <circle cx="84" cy="78" r="24" fill="#fed7aa"/>
+  <path d="M60 72 Q84 44 108 72" fill="#451a03"/>
+  <circle cx="76" cy="78" r="2.8" fill="#1e293b"/><circle cx="92" cy="78" r="2.8" fill="#1e293b"/>
+  <path d="M77 88 Q84 94 91 88" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M52 172 Q54 106 84 106 Q114 106 116 172 Z" fill="#3b82f6"/>
+  <!-- Right hand placed sincerely over chest/heart -->
+  <path d="M112 132 L88 128" stroke="#2563eb" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="84" cy="128" r="9" fill="#fed7aa" stroke="#ea580c" stroke-width="2"/>
+
 </svg>

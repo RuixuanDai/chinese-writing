@@ -1,96 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#faf5ff"/>
-      <stop offset="100%" stop-color="#f3e8ff"/>
+    <linearGradient id="bg_num9" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#ede9fe"/>
     </linearGradient>
-    
   </defs>
-  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
-  
-        <g transform="translate(62, 68) scale(0.95, 0.95)">
-        <g transform="translate(-24, 2) rotate(-32)">
-                <rect x="-6.5" y="-24" width="13" height="32" rx="6.5" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-19" rx="4.03" ry="3.8" fill="#ffedd5"/>
-            </g><g transform="translate(-13, -12) rotate(-7)">
-                <rect x="-6" y="-32" width="12" height="40" rx="6" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-27" rx="3.7199999999999998" ry="3.8" fill="#ffedd5"/>
-            </g><g transform="translate(-2, -15) rotate(0)">
-                <rect x="-6" y="-36" width="12" height="44" rx="6" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-31" rx="3.7199999999999998" ry="3.8" fill="#ffedd5"/>
-            </g><g transform="translate(9, -13) rotate(6)">
-                <rect x="-6" y="-33" width="12" height="41" rx="6" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-28" rx="3.7199999999999998" ry="3.8" fill="#ffedd5"/>
-            </g><g transform="translate(19, -8) rotate(14)">
-                <rect x="-5.5" y="-26" width="11" height="34" rx="5.5" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-21" rx="3.41" ry="3.8" fill="#ffedd5"/>
-            </g>
-        <!-- Palm -->
-        <rect x="-21" y="-14" width="46" height="40" rx="16" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-        <!-- Wrist cuff -->
-        <rect x="-14" y="22" width="32" height="12" rx="5" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/>
-        
-        <path d="M-10 6 Q3 12 14 5" fill="none" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
-    </g>
-        <g transform="translate(140, 68) scale(-0.95, 0.95)">
-        <g transform="translate(-13, -12) rotate(-7)">
-                <rect x="-6" y="-32" width="12" height="40" rx="6" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-27" rx="3.7199999999999998" ry="3.8" fill="#ffedd5"/>
-            </g><g transform="translate(-2, -15) rotate(0)">
-                <rect x="-6" y="-36" width="12" height="44" rx="6" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-31" rx="3.7199999999999998" ry="3.8" fill="#ffedd5"/>
-            </g><g transform="translate(9, -13) rotate(6)">
-                <rect x="-6" y="-33" width="12" height="41" rx="6" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-28" rx="3.7199999999999998" ry="3.8" fill="#ffedd5"/>
-            </g><g transform="translate(19, -8) rotate(14)">
-                <rect x="-5.5" y="-26" width="11" height="34" rx="5.5" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-                <ellipse cx="0" cy="-21" rx="3.41" ry="3.8" fill="#ffedd5"/>
-            </g>
-        <!-- Palm -->
-        <rect x="-21" y="-14" width="46" height="40" rx="16" fill="#fed7aa" stroke="#ea580c" stroke-width="2.2"/>
-        <!-- Wrist cuff -->
-        <rect x="-14" y="22" width="32" height="12" rx="5" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/>
-        <rect x="-22" y="-4" width="22" height="12" rx="6" transform="rotate(18 -11 2)" fill="#fdba74" stroke="#ea580c" stroke-width="2.2"/>
-        <path d="M-10 6 Q3 12 14 5" fill="none" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
-    </g>
-        <rect x="20" y="122" width="160" height="62" rx="18" fill="#ffffff" opacity="0.88"/>
-        <g transform="translate(44, 140)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#a855f7" stroke="#6b21a8" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g><g transform="translate(72, 140)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#a855f7" stroke="#6b21a8" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g><g transform="translate(100, 140)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#a855f7" stroke="#6b21a8" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g><g transform="translate(128, 140)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#a855f7" stroke="#6b21a8" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g><g transform="translate(156, 140)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#a855f7" stroke="#6b21a8" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g>
-        <g transform="translate(58, 166)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#ec4899" stroke="#9d174d" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g><g transform="translate(86, 166)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#ec4899" stroke="#9d174d" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g><g transform="translate(114, 166)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#ec4899" stroke="#9d174d" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g><g transform="translate(142, 166)">
-        <circle cx="0" cy="2" r="8.2" fill="rgba(15,23,42,0.1)"/>
-        <circle cx="0" cy="0" r="8.2" fill="#ec4899" stroke="#9d174d" stroke-width="2.2"/>
-        <circle cx="-2.6239999999999997" cy="-2.6239999999999997" r="2.296" fill="#ffffff" opacity="0.75"/>
-    </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_num9)"/>
+
+  <!-- Left Hand (5 fingers) -->
+  <g transform="translate(22, 26)">
+    <!-- Thumb extended left -->
+    <rect x="2" y="34" width="13" height="26" rx="6.5" transform="rotate(-32 8 46)" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <!-- 4 fingers extended up -->
+    <rect x="14" y="8" width="12" height="38" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <rect x="28" y="3" width="12" height="43" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <rect x="42" y="6" width="12" height="40" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <rect x="56" y="14" width="11" height="32" rx="5.5" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <!-- Palm -->
+    <rect x="12" y="36" width="56" height="42" rx="16" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <!-- Cuff -->
+    <rect x="20" y="76" width="40" height="10" rx="5" fill="#3b82f6"/>
+  </g>
+  <!-- Right Hand (4 fingers up, thumb + 0 folded) -->
+  <g transform="translate(106, 26)">
+    <rect x="12" y="8" width="12" height="38" rx="6.0" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/><rect x="26" y="3" width="12" height="43" rx="6.0" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/><rect x="40" y="6" width="12" height="40" rx="6.0" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/><rect x="54" y="14" width="11" height="32" rx="5.5" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <!-- Palm -->
+    <rect x="10" y="36" width="56" height="42" rx="16" fill="#ffedd5" stroke="#ea580c" stroke-width="2.5"/>
+    <!-- Folded fingers -->
     
+    <!-- Folded thumb across palm -->
+    <rect x="8" y="48" width="26" height="13" rx="6.5" transform="rotate(15 20 54)" fill="#fdba74" stroke="#ea580c" stroke-width="2.5"/>
+    <!-- Cuff -->
+    <rect x="18" y="76" width="40" height="10" rx="5" fill="#3b82f6"/>
+  </g>
+  <rect x="26" y="124" width="148" height="58" rx="14" fill="#ffffff" opacity="0.92" stroke="#e2e8f0" stroke-width="2"/>
+  <circle cx="52" cy="142" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="49" cy="139" r="2.5" fill="#fff" opacity="0.8"/><circle cx="76" cy="142" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="73" cy="139" r="2.5" fill="#fff" opacity="0.8"/><circle cx="100" cy="142" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="97" cy="139" r="2.5" fill="#fff" opacity="0.8"/><circle cx="124" cy="142" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="121" cy="139" r="2.5" fill="#fff" opacity="0.8"/><circle cx="148" cy="142" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="145" cy="139" r="2.5" fill="#fff" opacity="0.8"/><circle cx="52" cy="166" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="49" cy="163" r="2.5" fill="#fff" opacity="0.8"/><circle cx="76" cy="166" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="73" cy="163" r="2.5" fill="#fff" opacity="0.8"/><circle cx="100" cy="166" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="97" cy="163" r="2.5" fill="#fff" opacity="0.8"/><circle cx="124" cy="166" r="9" fill="#7c3aed" stroke="#fff" stroke-width="2"/><circle cx="121" cy="163" r="2.5" fill="#fff" opacity="0.8"/>
 </svg>

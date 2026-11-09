@@ -1,33 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgBen" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fff1f2"/>
-      <stop offset="100%" stop-color="#ffe4e6"/>
-    </radialGradient>
-    <filter id="shadowBen" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#9f1239" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg_ben" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef2f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgBen)"/>
-  <ellipse cx="250" cy="430" rx="170" ry="25" fill="#fecdd3" opacity="0.6"/>
-  <g filter="url(#shadowBen)">
-    <!-- Open Book Left and Right Pages -->
-    <path d="M 250 340 C 200 340 140 330 90 350 L 90 190 C 140 170 200 180 250 180 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
-    <path d="M 250 340 C 300 340 360 330 410 350 L 410 190 C 360 170 300 180 250 180 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
-    <!-- Book Hardcover bottom -->
-    <path d="M 80 355 C 130 335 195 345 250 345 C 305 345 370 335 420 355" stroke="#0284c7" stroke-width="12" fill="none" stroke-linecap="round"/>
-    <!-- Lines of Text in Book -->
-    <line x1="120" y1="220" x2="220" y2="220" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
-    <line x1="120" y1="250" x2="220" y2="250" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
-    <line x1="120" y1="280" x2="190" y2="280" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
-    <line x1="280" y1="220" x2="380" y2="220" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
-    <line x1="280" y1="250" x2="380" y2="250" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
-    <line x1="280" y1="280" x2="340" y2="280" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
-    <!-- Ribbon Bookmark -->
-    <path d="M 250 170 L 250 370 L 265 355 L 280 370 L 280 170 Z" fill="#ef4444"/>
-    <!-- Magic Stars Floating from Pages -->
-    <circle cx="210" cy="140" r="8" fill="#facc15"/>
-    <circle cx="290" cy="130" r="10" fill="#facc15"/>
-    <circle cx="250" cy="110" r="6" fill="#facc15"/>
+  <rect width="200" height="200" rx="28" fill="url(#bg_ben)"/>
+
+  <!-- Notebook shadow & body -->
+  <rect x="48" y="38" width="104" height="134" rx="10" fill="#ffffff" stroke="#f97316" stroke-width="4"/>
+  <!-- Left margin red line & horizontal blue ruled lines -->
+  <line x1="68" y1="42" x2="68" y2="168" stroke="#fca5a5" stroke-width="2"/>
+  <g stroke="#bae6fd" stroke-width="2.5">
+    <line x1="52" y1="68" x2="148" y2="68"/>
+    <line x1="52" y1="86" x2="148" y2="86"/>
+    <line x1="52" y1="104" x2="148" y2="104"/>
+    <line x1="52" y1="122" x2="148" y2="122"/>
+    <line x1="52" y1="140" x2="148" y2="140"/>
+    <line x1="52" y1="156" x2="148" y2="156"/>
   </g>
+  <!-- Name label sticker in center -->
+  <rect x="76" y="76" width="56" height="32" rx="6" fill="#fef08a" stroke="#eab308" stroke-width="2"/>
+  <polygon points="104,84 106,90 112,90 107,94 109,100 104,96 99,100 101,94 96,90 102,90" fill="#ef4444"/>
+  <!-- Top spiral rings (练习本特征) -->
+  <g fill="none" stroke="#475569" stroke-width="4" stroke-linecap="round">
+    <path d="M62 30 L62 46"/><path d="M78 30 L78 46"/><path d="M94 30 L94 46"/>
+    <path d="M110 30 L110 46"/><path d="M126 30 L126 46"/><path d="M140 30 L140 46"/>
+  </g>
+
 </svg>

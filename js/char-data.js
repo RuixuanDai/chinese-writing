@@ -3049,7 +3049,7 @@ const CHARACTER_CATEGORIES = [
                 ],
                 "sentence": "写字时不要把头放得太低，保护好视力。",
                 "icon": "📉",
-                "label": "低头",
+                "label": "高低",
                 "image": "assets/illustrations/di_low.svg"
             },
             {
@@ -4126,7 +4126,7 @@ const CHARACTER_CATEGORIES = [
                 ],
                 "sentence": "昂首挺胸，抬起自信的头颅迎接每一个清晨。",
                 "icon": "🆙",
-                "label": "抬头",
+                "label": "抬起",
                 "image": "assets/illustrations/tai_lift.svg"
             },
             {
@@ -4245,7 +4245,7 @@ const CHARACTER_CATEGORIES = [
                 ],
                 "sentence": "森林里有一座童话般古朴的小木屋。",
                 "icon": "🛖",
-                "label": "房屋",
+                "label": "屋子",
                 "image": "assets/illustrations/wu_room.svg"
             },
             {
@@ -5452,6 +5452,9 @@ window.CHARACTER_ILLUSTRATION_MAP = {};
 
 for (const _cat of CHARACTER_CATEGORIES) {
     for (const _item of (_cat.chars || [])) {
+        if (_item.image && !_item.image.includes('?')) {
+            _item.image = _item.image + '?v=16';
+        }
         if (!_CHAR_INDEX_MAP[_item.char]) {
             _CHAR_INDEX_MAP[_item.char] = { ..._item, category: _cat.name };
         }

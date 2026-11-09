@@ -1,21 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgWuFog" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#f8fafc"/>
+    <linearGradient id="bg_wu_fog" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/>
       <stop offset="100%" stop-color="#cbd5e1"/>
-    </radialGradient>
-    <filter id="shadowWuFog" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#64748b" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgWuFog)"/>
-  <!-- Mountain Silhouette in Mist -->
-  <polygon points="80,380 200,200 320,380" fill="#94a3b8" opacity="0.6"/>
-  <polygon points="220,380 340,160 460,380" fill="#64748b" opacity="0.5"/>
-  <g filter="url(#shadowWuFog)">
-    <!-- Wavy Translucent Mist Layers -->
-    <path d="M 40 220 Q 150 180 250 220 T 460 220" stroke="#ffffff" stroke-width="26" stroke-linecap="round" opacity="0.75"/>
-    <path d="M 60 290 Q 180 250 290 290 T 480 290" stroke="#ffffff" stroke-width="32" stroke-linecap="round" opacity="0.85"/>
-    <path d="M 30 360 Q 160 320 270 360 T 470 360" stroke="#ffffff" stroke-width="36" stroke-linecap="round" opacity="0.9"/>
+  <rect width="200" height="200" rx="28" fill="url(#bg_wu_fog)"/>
+
+  <!-- Distant mountain peaks -->
+  <polygon points="16,144 68,54 124,144" fill="#64748b"/>
+  <polygon points="78,144 134,44 188,144" fill="#475569"/>
+  <!-- Soft translucent fog clouds drifting across mountains -->
+  <g fill="#ffffff" opacity="0.88">
+    <rect x="18" y="76" width="144" height="20" rx="10"/>
+    <circle cx="48" cy="76" r="14"/><circle cx="88" cy="74" r="16"/><circle cx="128" cy="76" r="13"/>
   </g>
+  <g fill="#f8fafc" opacity="0.92">
+    <rect x="28" y="110" width="152" height="22" rx="11"/>
+    <circle cx="64" cy="110" r="15"/><circle cx="108" cy="108" r="18"/><circle cx="148" cy="110" r="14"/>
+  </g>
+  <g fill="#ffffff" opacity="0.85">
+    <rect x="14" y="144" width="164" height="20" rx="10"/>
+    <circle cx="52" cy="144" r="13"/><circle cx="100" cy="142" r="15"/><circle cx="144" cy="144" r="12"/>
+  </g>
+
 </svg>

@@ -1,31 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgDong" cx="50%" cy="50%" r="50%">
+    <linearGradient id="bg_dong_mv" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#eff6ff"/>
       <stop offset="100%" stop-color="#dbeafe"/>
-    </radialGradient>
-    <filter id="shadowDong" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1e3a8a" flood-opacity="0.2"/>
-    </filter>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgDong)"/>
-  <ellipse cx="250" cy="435" rx="170" ry="24" fill="#bfdbfe" opacity="0.6"/>
-  <!-- Motion Swirl Lines -->
-  <path d="M 80 320 Q 150 200 250 250" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" fill="none"/>
-  <path d="M 120 370 Q 200 280 320 300" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" fill="none"/>
-  <!-- Dynamic Soccer Ball Bouncing in Air -->
-  <g filter="url(#shadowDong)">
-    <circle cx="260" cy="230" r="95" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
-    <!-- Black Pentagons -->
-    <polygon points="260,195 240,215 247,240 273,240 280,215" fill="#18181b"/>
-    <polygon points="260,140 245,155 250,170 270,170 275,155" fill="#18181b"/>
-    <polygon points="180,220 195,210 210,225 205,245 185,240" fill="#18181b"/>
-    <polygon points="340,220 325,210 310,225 315,245 335,240" fill="#18181b"/>
-    <!-- Connecting lines -->
-    <line x1="260" y1="195" x2="260" y2="170" stroke="#18181b" stroke-width="4"/>
-    <line x1="240" y1="215" x2="210" y2="225" stroke="#18181b" stroke-width="4"/>
-    <line x1="280" y1="215" x2="310" y2="225" stroke="#18181b" stroke-width="4"/>
-    <!-- Speed Motion Trails -->
-    <polygon points="380,230 450,210 420,230 460,240 380,245" fill="#f59e0b"/>
-  </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_dong_mv)"/>
+
+  <!-- Speed motion lines -->
+  <line x1="20" y1="78" x2="48" y2="78" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
+  <line x1="16" y1="104" x2="42" y2="104" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
+  <!-- Energetic child kicking ball -->
+  <circle cx="82" cy="56" r="18" fill="#fed7aa"/>
+  <path d="M64 52 Q82 32 100 52" fill="#1e293b"/>
+  <circle cx="77" cy="56" r="2.2" fill="#1e293b"/><circle cx="89" cy="56" r="2.2" fill="#1e293b"/>
+  <path d="M78 63 Q84 68 90 63" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Arms swinging -->
+  <line x1="72" y1="86" x2="48" y2="102" stroke="#ef4444" stroke-width="10" stroke-linecap="round"/>
+  <line x1="94" y1="86" x2="118" y2="72" stroke="#ef4444" stroke-width="10" stroke-linecap="round"/>
+  <!-- Running/kicking legs -->
+  <line x1="78" y1="114" x2="58" y2="156" stroke="#1e3a8a" stroke-width="11" stroke-linecap="round"/>
+  <line x1="90" y1="114" x2="126" y2="128" stroke="#1e3a8a" stroke-width="11" stroke-linecap="round"/>
+  <rect x="68" y="74" width="30" height="42" rx="10" fill="#ef4444"/>
+  <!-- Soccer ball flying forward -->
+  <circle cx="154" cy="122" r="18" fill="#ffffff" stroke="#1e293b" stroke-width="3"/>
+  <polygon points="154,113 162,119 159,128 149,128 146,119" fill="#1e293b"/>
+
 </svg>

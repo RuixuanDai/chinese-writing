@@ -1,37 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgShen" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#f0fdf4"/>
-      <stop offset="100%" stop-color="#bbf7d0"/>
-    </radialGradient>
-    <filter id="shadowShen" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg_shen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgShen)"/>
-  <ellipse cx="250" cy="450" rx="160" ry="30" fill="#86efac" opacity="0.6"/>
-  <g filter="url(#shadowShen)">
-    <!-- Legs in dynamic running/jumping pose -->
-    <rect x="210" y="320" width="28" height="110" rx="14" fill="#3b82f6"/>
-    <rect x="265" y="320" width="28" height="110" rx="14" fill="#3b82f6"/>
-    <!-- Red Sneakers -->
-    <ellipse cx="215" cy="430" rx="24" ry="14" fill="#ef4444"/>
-    <ellipse cx="285" cy="430" rx="24" ry="14" fill="#ef4444"/>
-    <!-- Torso / Yellow T-Shirt -->
-    <rect x="190" y="200" width="120" height="135" rx="20" fill="#facc15"/>
-    <circle cx="250" cy="260" r="18" fill="#ea580c"/>
-    <!-- Arms waving cheerfully -->
-    <path d="M 195 215 L 120 160" stroke="#facc15" stroke-width="26" stroke-linecap="round"/>
-    <circle cx="115" cy="155" r="16" fill="#fed7aa"/>
-    <path d="M 305 215 L 380 160" stroke="#facc15" stroke-width="26" stroke-linecap="round"/>
-    <circle cx="385" cy="155" r="16" fill="#fed7aa"/>
-    <!-- Head -->
-    <circle cx="250" cy="135" r="55" fill="#fed7aa"/>
-    <!-- Hair -->
-    <path d="M 195 130 C 190 70 310 70 305 130 Z" fill="#78350f"/>
-    <!-- Smiling Face -->
-    <circle cx="230" cy="130" r="6" fill="#1e293b"/>
-    <circle cx="270" cy="130" r="6" fill="#1e293b"/>
-    <path d="M 235 150 Q 250 165 265 150" stroke="#78350f" stroke-width="3" stroke-linecap="round" fill="none"/>
-  </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_shen)"/>
+
+  <!-- Dashed body outline box & bracket highlighting the body (身体) -->
+  <rect x="52" y="68" width="76" height="96" rx="16" fill="#fef08a" opacity="0.35" stroke="#ef4444" stroke-width="3" stroke-dasharray="6,4"/>
+  <!-- Double-headed vertical indicator arrow on the right for 身体 -->
+  <line x1="148" y1="70" x2="148" y2="162" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="148,64 141,76 155,76" fill="#ef4444"/>
+  <polygon points="148,168 141,156 155,156" fill="#ef4444"/>
+  <line x1="134" y1="68" x2="154" y2="68" stroke="#ef4444" stroke-width="3"/>
+  <line x1="134" y1="164" x2="154" y2="164" stroke="#ef4444" stroke-width="3"/>
+  <!-- Child figure -->
+  <circle cx="90" cy="44" r="18" fill="#fed7aa"/>
+  <path d="M72 40 Q90 20 108 40" fill="#451a03"/>
+  <circle cx="84" cy="44" r="2.2" fill="#1e293b"/><circle cx="96" cy="44" r="2.2" fill="#1e293b"/>
+  <path d="M85 51 Q90 55 95 51" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
+  <!-- Arms with hands -->
+  <line x1="70" y1="78" x2="48" y2="108" stroke="#f97316" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="46" cy="111" r="6" fill="#fed7aa"/>
+  <line x1="110" y1="78" x2="124" y2="108" stroke="#f97316" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="126" cy="111" r="6" fill="#fed7aa"/>
+  <!-- Torso (highlighted) -->
+  <rect x="68" y="68" width="44" height="52" rx="12" fill="#f97316"/>
+  <!-- Heart badge on chest -->
+  <circle cx="90" cy="92" r="9" fill="#fff" opacity="0.9"/>
+  <!-- Legs & shoes -->
+  <rect x="72" y="116" width="14" height="38" rx="6" fill="#2563eb"/>
+  <rect x="94" y="116" width="14" height="38" rx="6" fill="#2563eb"/>
+  <ellipse cx="78" cy="156" rx="10" ry="5" fill="#1e3a8a"/>
+  <ellipse cx="102" cy="156" rx="10" ry="5" fill="#1e3a8a"/>
+
 </svg>

@@ -1,25 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="bg_mi" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#fefce8"/>
       <stop offset="100%" stop-color="#fef08a"/>
     </linearGradient>
-    
   </defs>
-  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
-  
-      <!-- Mound of pearly white uncooked rice grains -->
-      <path d="M44 116 C52 72 148 72 156 116 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
-      <!-- Individual plump rice grain ovals -->
-      <ellipse cx="76" cy="94" rx="6.5" ry="3.4" transform="rotate(-20 76 94)" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.4"/><ellipse cx="96" cy="86" rx="6.5" ry="3.4" transform="rotate(12 96 86)" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.4"/><ellipse cx="116" cy="92" rx="6.5" ry="3.4" transform="rotate(-15 116 92)" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.4"/><ellipse cx="86" cy="104" rx="6.5" ry="3.4" transform="rotate(25 86 104)" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.4"/><ellipse cx="108" cy="104" rx="6.5" ry="3.4" transform="rotate(-8 108 104)" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.4"/><ellipse cx="130" cy="104" rx="6.5" ry="3.4" transform="rotate(18 130 104)" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.4"/><ellipse cx="66" cy="106" rx="6.5" ry="3.4" transform="rotate(-12 66 106)" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.4"/>
-      <!-- Traditional wooden rice measure bowl -->
-      <path d="M40 114 L160 114 L146 164 Q100 172 54 164 Z" fill="#b45309" stroke="#78350f" stroke-width="3"/>
-      <rect x="44" y="128" width="112" height="8" fill="#78350f" opacity="0.55"/>
-      <!-- Scattered white rice grains in front -->
-      <ellipse cx="74" cy="174" rx="6" ry="3" transform="rotate(14 74 174)" fill="#ffffff" stroke="#94a3b8" stroke-width="1.2"/>
-      <ellipse cx="92" cy="177" rx="6" ry="3" transform="rotate(-18 92 177)" fill="#ffffff" stroke="#94a3b8" stroke-width="1.2"/>
-      <!-- Golden rice stalk (稻穗) leaning beside -->
-      <path d="M148 92 Q162 56 142 36" fill="none" stroke="#ca8a04" stroke-width="3" stroke-linecap="round"/>
-      <ellipse cx="154" cy="68" rx="6" ry="3.5" transform="rotate(-30 154 68)" fill="#facc15" stroke="#ca8a04" stroke-width="1.2"/><ellipse cx="150" cy="54" rx="6" ry="3.5" transform="rotate(-30 150 54)" fill="#facc15" stroke="#ca8a04" stroke-width="1.2"/><ellipse cx="144" cy="42" rx="6" ry="3.5" transform="rotate(-30 144 42)" fill="#facc15" stroke="#ca8a04" stroke-width="1.2"/>
-    
+  <rect width="200" height="200" rx="28" fill="url(#bg_mi)"/>
+
+  <!-- Golden rice stalk (稻穗) curving behind -->
+  <path d="M132 112 Q148 64 168 44" fill="none" stroke="#eab308" stroke-width="4" stroke-linecap="round"/>
+  <g fill="#facc15" stroke="#ca8a04" stroke-width="1.5">
+    <ellipse cx="146" cy="72" rx="7" ry="4" transform="rotate(-30 146 72)"/>
+    <ellipse cx="156" cy="58" rx="7" ry="4" transform="rotate(-30 156 58)"/>
+    <ellipse cx="164" cy="46" rx="7" ry="4" transform="rotate(-30 164 46)"/>
+    <ellipse cx="156" cy="78" rx="7" ry="4" transform="rotate(20 156 78)"/>
+    <ellipse cx="166" cy="64" rx="7" ry="4" transform="rotate(20 166 64)"/>
+  </g>
+  <!-- Fluffy white mound of uncooked/cooked rice grains -->
+  <path d="M44 112 Q100 54 156 112 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
+  <!-- Individual rice grain ovals -->
+  <g fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5">
+    <ellipse cx="82" cy="96" rx="7" ry="3.5" transform="rotate(-15 82 96)"/>
+    <ellipse cx="102" cy="88" rx="7" ry="3.5" transform="rotate(12 102 88)"/>
+    <ellipse cx="120" cy="98" rx="7" ry="3.5" transform="rotate(-20 120 98)"/>
+    <ellipse cx="92" cy="106" rx="7" ry="3.5" transform="rotate(8 92 106)"/>
+    <ellipse cx="112" cy="106" rx="7" ry="3.5" transform="rotate(-10 112 106)"/>
+    <ellipse cx="70" cy="106" rx="7" ry="3.5" transform="rotate(18 70 106)"/>
+  </g>
+  <!-- Blue-and-white porcelain bowl -->
+  <path d="M40 112 L160 112 C156 154 132 166 100 166 C68 166 44 154 40 112 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="3"/>
+  <line x1="44" y1="124" x2="156" y2="124" stroke="#eff6ff" stroke-width="4"/>
+  <rect x="76" y="164" width="48" height="8" rx="4" fill="#1e3a8a"/>
+
 </svg>

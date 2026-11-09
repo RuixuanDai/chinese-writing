@@ -1,24 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgKong" cx="50%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="100%" stop-color="#0284c7"/>
-    </radialGradient>
-    <filter id="shadowKong" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0369a1" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg_kong" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgKong)"/>
-  <g filter="url(#shadowKong)">
-    <!-- Fluffy Clouds Floating Across Vast Sky -->
-    <ellipse cx="170" cy="180" rx="80" ry="45" fill="#ffffff"/>
-    <circle cx="130" cy="165" r="40" fill="#ffffff"/>
-    <circle cx="205" cy="155" r="45" fill="#ffffff"/>
-    <ellipse cx="360" cy="270" rx="90" ry="50" fill="#ffffff"/>
-    <circle cx="320" cy="250" r="45" fill="#ffffff"/>
-    <circle cx="400" cy="245" r="50" fill="#ffffff"/>
-    <!-- Soaring Bird High in Sky -->
-    <path d="M 230 110 Q 245 95 260 110 Q 275 95 290 110" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
-    <path d="M 290 80 Q 300 70 310 80 Q 320 70 330 80" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <rect width="200" height="200" rx="28" fill="url(#bg_kong)"/>
+
+  <!-- Distant low horizon at very bottom to emphasize vast sky above -->
+  <path d="M0 176 Q100 164 200 176 L200 200 L0 200 Z" fill="#4ade80"/>
+  <!-- High wispy clouds -->
+  <g fill="#ffffff" opacity="0.88">
+    <circle cx="44" cy="52" r="14"/><circle cx="60" cy="48" r="18"/><circle cx="76" cy="54" r="12"/>
+    <circle cx="144" cy="112" r="11"/><circle cx="158" cy="108" r="14"/><circle cx="170" cy="113" r="10"/>
   </g>
+  <!-- Colorful hot-air balloon floating high in the sky -->
+  <line x1="112" y1="84" x2="115" y2="96" stroke="#78350f" stroke-width="2"/>
+  <line x1="128" y1="84" x2="125" y2="96" stroke="#78350f" stroke-width="2"/>
+  <rect x="113" y="95" width="14" height="11" rx="2" fill="#b45309"/>
+  <circle cx="120" cy="60" r="26" fill="#ef4444"/>
+  <ellipse cx="120" cy="60" rx="14" ry="26" fill="#facc15"/>
+  <ellipse cx="120" cy="60" rx="5" ry="26" fill="#3b82f6"/>
+  <!-- Soaring birds -->
+  <path d="M46 106 Q52 98 58 106 Q64 98 70 106" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M72 88 Q77 82 82 88 Q87 82 92 88" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+
 </svg>

@@ -1,49 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="bg_ge" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#eff6ff"/>
       <stop offset="100%" stop-color="#dbeafe"/>
     </linearGradient>
-    
   </defs>
-  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
-  
-      <ellipse cx="100" cy="176" rx="70" ry="8" fill="#93c5fd" opacity="0.45"/>
-      <g transform="translate(68, 174) scale(1.05)" >
-      <!-- Legs & shoes -->
-      <rect x="-14" y="-34" width="10" height="28" rx="4" fill="#334155"/>
-      <rect x="4" y="-34" width="10" height="28" rx="4" fill="#334155"/>
-      <ellipse cx="-9" cy="-4" rx="8" ry="4.5" fill="#1e293b"/>
-      <ellipse cx="9" cy="-4" rx="8" ry="4.5" fill="#1e293b"/>
-      <!-- Shirt & arms -->
-      <path d="M-20 -72 Q0 -78 20 -72 L24 -32 L-24 -32 Z" fill="#2563eb"/>
-      <path d="M-20 -68 L-32 -44 M20 -68 L32 -44" stroke="#fed7aa" stroke-width="9" stroke-linecap="round"/>
-      <!-- Head & hair -->
-      <circle cx="0" cy="-98" r="24" fill="#fed7aa"/>
-      <path d="M-24 -100 C-24 -126 24 -126 24 -100 Q12 -108 0 -104 Q-12 -108 -24 -100 Z" fill="#451a03"/>
-      <circle cx="-8" cy="-96" r="2.8" fill="#1e293b"/>
-      <circle cx="8" cy="-96" r="2.8" fill="#1e293b"/>
-      <path d="M-7 -86 Q0 -80 7 -86" fill="none" stroke="#b45309" stroke-width="2.4" stroke-linecap="round"/>
-    </g>
-      <g transform="translate(138, 174) scale(0.72)" opacity="0.48">
-      <!-- Legs & shoes -->
-      <rect x="-14" y="-34" width="10" height="28" rx="4" fill="#334155"/>
-      <rect x="4" y="-34" width="10" height="28" rx="4" fill="#334155"/>
-      <ellipse cx="-9" cy="-4" rx="8" ry="4.5" fill="#1e293b"/>
-      <ellipse cx="9" cy="-4" rx="8" ry="4.5" fill="#1e293b"/>
-      <!-- Shirt & arms -->
-      <path d="M-20 -72 Q0 -78 20 -72 L24 -32 L-24 -32 Z" fill="#10b981"/>
-      <path d="M-20 -68 L-32 -44 M20 -68 L32 -44" stroke="#fed7aa" stroke-width="9" stroke-linecap="round"/>
-      <!-- Head & hair -->
-      <circle cx="0" cy="-98" r="24" fill="#fed7aa"/>
-      <path d="M-24 -100 C-24 -126 24 -126 24 -100 Q12 -108 0 -104 Q-12 -108 -24 -100 Z" fill="#451a03"/>
-      <circle cx="-8" cy="-96" r="2.8" fill="#1e293b"/>
-      <circle cx="8" cy="-96" r="2.8" fill="#1e293b"/>
-      <path d="M-7 -86 Q0 -80 7 -86" fill="none" stroke="#b45309" stroke-width="2.4" stroke-linecap="round"/>
-    </g>
-      <g transform="translate(68, 34)">
-      <line x1="0" y1="-22" x2="0" y2="-4" stroke="#f97316" stroke-width="7" stroke-linecap="round"/>
-      <polygon points="0,8 -11,-8 11,-8" fill="#f97316"/>
-    </g>
-    
+  <rect width="200" height="200" rx="28" fill="url(#bg_ge)"/>
+
+  <!-- Red arrow pointing to Older Brother (left) -->
+  <path d="M68 18 L68 38" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="68,44 59,32 77,32" fill="#ef4444"/>
+  <!-- Older Brother (Tall, highlighted) -->
+  <circle cx="68" cy="68" r="20" fill="#fed7aa"/>
+  <path d="M48 64 Q68 42 88 64" fill="#1e293b"/>
+  <circle cx="62" cy="68" r="2.5" fill="#1e293b"/><circle cx="74" cy="68" r="2.5" fill="#1e293b"/>
+  <path d="M62 76 Q68 81 74 76" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="48" y1="98" x2="34" y2="122" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+  <line x1="88" y1="98" x2="104" y2="118" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+  <rect x="48" y="88" width="40" height="46" rx="10" fill="#2563eb"/>
+  <line x1="48" y1="104" x2="88" y2="104" stroke="#93c5fd" stroke-width="4"/>
+  <line x1="48" y1="118" x2="88" y2="118" stroke="#93c5fd" stroke-width="4"/>
+  <rect x="52" y="132" width="13" height="38" rx="5" fill="#1e3a8a"/>
+  <rect x="71" y="132" width="13" height="38" rx="5" fill="#1e3a8a"/>
+  <!-- Younger Brother (shorter, right, slightly de-emphasized) -->
+  <g opacity="0.65">
+    <circle cx="136" cy="96" r="15" fill="#fed7aa"/>
+    <path d="M121 92 Q136 76 151 92" fill="#451a03"/>
+    <circle cx="131" cy="96" r="2" fill="#1e293b"/><circle cx="141" cy="96" r="2" fill="#1e293b"/>
+    <path d="M132 102 Q136 106 140 102" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/>
+    <rect x="120" y="112" width="32" height="34" rx="8" fill="#10b981"/>
+    <rect x="124" y="144" width="10" height="26" rx="4" fill="#065f46"/>
+    <rect x="138" y="144" width="10" height="26" rx="4" fill="#065f46"/>
+  </g>
+
 </svg>

@@ -1,59 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#faf5ff"/>
-      <stop offset="100%" stop-color="#f3e8ff"/>
+    <linearGradient id="bg_mei_sis" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#ede9fe"/>
     </linearGradient>
-    
   </defs>
-  <rect width="200" height="200" rx="32" fill="url(#bg)"/>
-  
-      <ellipse cx="100" cy="176" rx="70" ry="8" fill="#d8b4fe" opacity="0.45"/>
-      <g transform="translate(66, 174) scale(1.02)" opacity="0.48">
-      <!-- Pigtails behind -->
-      <circle cx="-26" cy="-104" r="9" fill="#451a03"/>
-      <circle cx="26" cy="-104" r="9" fill="#451a03"/>
-      <!-- Legs & shoes -->
-      <rect x="-12" y="-32" width="8" height="26" rx="4" fill="#fed7aa"/>
-      <rect x="4" y="-32" width="8" height="26" rx="4" fill="#fed7aa"/>
-      <ellipse cx="-8" cy="-4" rx="7.5" ry="4.5" fill="#e11d48"/>
-      <ellipse cx="8" cy="-4" rx="7.5" ry="4.5" fill="#e11d48"/>
-      <!-- Dress & arms -->
-      <path d="M-16 -72 L16 -72 L28 -30 L-28 -30 Z" fill="#ec4899"/>
-      <path d="M-16 -68 L-28 -46 M16 -68 L28 -46" stroke="#fed7aa" stroke-width="8.5" stroke-linecap="round"/>
-      <!-- Head & bangs -->
-      <circle cx="0" cy="-98" r="23" fill="#fed7aa"/>
-      <path d="M-23 -98 C-23 -124 23 -124 23 -98 Q10 -106 0 -100 Q-10 -106 -23 -98 Z" fill="#451a03"/>
-      <circle cx="-19" cy="-105" r="4" fill="#f43f5e"/>
-      <circle cx="19" cy="-105" r="4" fill="#f43f5e"/>
-      <circle cx="-8" cy="-95" r="2.8" fill="#1e293b"/>
-      <circle cx="8" cy="-95" r="2.8" fill="#1e293b"/>
-      <path d="M-7 -86 Q0 -80 7 -86" fill="none" stroke="#e11d48" stroke-width="2.4" stroke-linecap="round"/>
-    </g>
-      <g transform="translate(136, 174) scale(0.74)" >
-      <!-- Pigtails behind -->
-      <circle cx="-26" cy="-104" r="9" fill="#451a03"/>
-      <circle cx="26" cy="-104" r="9" fill="#451a03"/>
-      <!-- Legs & shoes -->
-      <rect x="-12" y="-32" width="8" height="26" rx="4" fill="#fed7aa"/>
-      <rect x="4" y="-32" width="8" height="26" rx="4" fill="#fed7aa"/>
-      <ellipse cx="-8" cy="-4" rx="7.5" ry="4.5" fill="#e11d48"/>
-      <ellipse cx="8" cy="-4" rx="7.5" ry="4.5" fill="#e11d48"/>
-      <!-- Dress & arms -->
-      <path d="M-16 -72 L16 -72 L28 -30 L-28 -30 Z" fill="#a855f7"/>
-      <path d="M-16 -68 L-28 -46 M16 -68 L28 -46" stroke="#fed7aa" stroke-width="8.5" stroke-linecap="round"/>
-      <!-- Head & bangs -->
-      <circle cx="0" cy="-98" r="23" fill="#fed7aa"/>
-      <path d="M-23 -98 C-23 -124 23 -124 23 -98 Q10 -106 0 -100 Q-10 -106 -23 -98 Z" fill="#451a03"/>
-      <circle cx="-19" cy="-105" r="4" fill="#f43f5e"/>
-      <circle cx="19" cy="-105" r="4" fill="#f43f5e"/>
-      <circle cx="-8" cy="-95" r="2.8" fill="#1e293b"/>
-      <circle cx="8" cy="-95" r="2.8" fill="#1e293b"/>
-      <path d="M-7 -86 Q0 -80 7 -86" fill="none" stroke="#e11d48" stroke-width="2.4" stroke-linecap="round"/>
-    </g>
-      <g transform="translate(136, 68)">
-      <line x1="0" y1="-22" x2="0" y2="-4" stroke="#e11d48" stroke-width="7" stroke-linecap="round"/>
-      <polygon points="0,8 -11,-8 11,-8" fill="#e11d48"/>
-    </g>
-    
+  <rect width="200" height="200" rx="28" fill="url(#bg_mei_sis)"/>
+
+  <!-- Older Sister (left, de-emphasized) -->
+  <g opacity="0.55">
+    <circle cx="64" cy="68" r="19" fill="#fed7aa"/>
+    <path d="M45 62 Q64 44 83 62" fill="#451a03"/>
+    <circle cx="58" cy="68" r="2.5" fill="#1e293b"/><circle cx="70" cy="68" r="2.5" fill="#1e293b"/>
+    <path d="M58 76 Q64 81 70 76" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round"/>
+    <polygon points="64,86 40,140 88,140" fill="#94a3b8"/>
+    <rect x="50" y="140" width="10" height="30" rx="5" fill="#fed7aa"/>
+    <rect x="68" y="140" width="10" height="30" rx="5" fill="#fed7aa"/>
+  </g>
+  <!-- Red arrow pointing to Younger Sister (right) -->
+  <path d="M136 46 L136 66" stroke="#e11d48" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="136,72 127,60 145,60" fill="#e11d48"/>
+  <!-- Younger Sister (right, highlighted) -->
+  <circle cx="115" cy="88" r="7" fill="#451a03"/><circle cx="157" cy="88" r="7" fill="#451a03"/>
+  <circle cx="136" cy="94" r="17" fill="#fed7aa"/>
+  <path d="M119 90 Q136 72 153 90" fill="#451a03"/>
+  <circle cx="130" cy="94" r="2.3" fill="#1e293b"/><circle cx="142" cy="94" r="2.3" fill="#1e293b"/>
+  <circle cx="125" cy="99" r="3.5" fill="#fca5a5"/><circle cx="147" cy="99" r="3.5" fill="#fca5a5"/>
+  <path d="M131 101 Q136 106 141 101" fill="none" stroke="#e11d48" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="120" y1="118" x2="106" y2="132" stroke="#fed7aa" stroke-width="7" stroke-linecap="round"/>
+  <line x1="152" y1="118" x2="166" y2="106" stroke="#fed7aa" stroke-width="7" stroke-linecap="round"/>
+  <polygon points="136,110 112,148 160,148" fill="#a855f7"/>
+  <rect x="124" y="148" width="9" height="22" rx="4.5" fill="#fed7aa"/>
+  <rect x="139" y="148" width="9" height="22" rx="4.5" fill="#fed7aa"/>
+
 </svg>

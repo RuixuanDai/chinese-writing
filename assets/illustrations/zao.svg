@@ -1,34 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgZao" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fffbeb"/>
+    <linearGradient id="bg_zao" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffedd5"/>
       <stop offset="100%" stop-color="#fed7aa"/>
-    </radialGradient>
-    <filter id="shadowZao" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.25"/>
-    </filter>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgZao)"/>
-  <!-- Morning Horizon Hills -->
-  <polygon points="0,380 180,300 360,400 500,340 500,500 0,500" fill="#4ade80"/>
-  <g filter="url(#shadowZao)">
-    <!-- Glorious Golden Morning Sun Rising over Hill -->
-    <circle cx="250" cy="270" r="100" fill="#facc15"/>
-    <circle cx="250" cy="270" r="80" fill="#fef08a"/>
-    <!-- Warm Beams -->
-    <line x1="250" y1="140" x2="250" y2="90" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
-    <line x1="160" y1="180" x2="125" y2="145" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
-    <line x1="340" y1="180" x2="375" y2="145" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
-    <!-- Cheerful Rooster Crowing on hill -->
-    <circle cx="160" cy="300" r="32" fill="#ffffff"/>
-    <polygon points="175,295 205,302 175,310" fill="#f97316"/>
-    <!-- Rooster Red Comb -->
-    <circle cx="150" cy="275" r="10" fill="#ef4444"/>
-    <circle cx="162" cy="272" r="12" fill="#ef4444"/>
-    <circle cx="174" cy="276" r="10" fill="#ef4444"/>
-    <!-- Eye -->
-    <circle cx="165" cy="295" r="4" fill="#1e293b"/>
-    <!-- "早" text in morning clouds -->
-    <text x="350" y="240" font-family="'KaiTi', 'STKaiti', sans-serif" font-size="70" font-weight="bold" fill="#ea580c">早！</text>
+  <rect width="200" height="200" rx="28" fill="url(#bg_zao)"/>
+
+  <!-- Rising morning sun with rays -->
+  <circle cx="132" cy="88" r="36" fill="#facc15" stroke="#f97316" stroke-width="3"/>
+  <g stroke="#f97316" stroke-width="4" stroke-linecap="round">
+    <line x1="132" y1="36" x2="132" y2="44"/>
+    <line x1="168" y1="52" x2="162" y2="58"/>
+    <line x1="184" y1="88" x2="176" y2="88"/>
+    <line x1="96" y1="52" x2="102" y2="58"/>
   </g>
+  <!-- Green morning hills -->
+  <path d="M0 132 Q65 104 135 128 T200 124 L200 200 L0 200 Z" fill="#22c55e"/>
+  <path d="M0 152 Q90 134 200 152 L200 200 L0 200 Z" fill="#16a34a"/>
+  <!-- Cute rooster crowing on the left hill -->
+  <path d="M40 120 Q22 102 28 128" fill="none" stroke="#047857" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="58" cy="126" rx="20" ry="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+  <circle cx="70" cy="106" r="12" fill="#ffffff"/>
+  <!-- Red comb & wattle -->
+  <circle cx="66" cy="93" r="4.5" fill="#ef4444"/>
+  <circle cx="73" cy="94" r="4.5" fill="#ef4444"/>
+  <circle cx="78" cy="97" r="4" fill="#ef4444"/>
+  <circle cx="76" cy="114" r="3.5" fill="#ef4444"/>
+  <!-- Beak & eye -->
+  <polygon points="81,103 92,107 81,111" fill="#f97316"/>
+  <circle cx="73" cy="105" r="2" fill="#1e293b"/>
+  <!-- Legs -->
+  <line x1="54" y1="140" x2="54" y2="152" stroke="#f97316" stroke-width="3"/>
+  <line x1="64" y1="140" x2="64" y2="152" stroke="#f97316" stroke-width="3"/>
+
 </svg>

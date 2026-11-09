@@ -1,29 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <radialGradient id="bgCha" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#f0fdf4"/>
-      <stop offset="100%" stop-color="#dcfce7"/>
-    </radialGradient>
-    <filter id="shadowCha" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#15803d" flood-opacity="0.2"/>
-    </filter>
+    <linearGradient id="bg_cha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
   </defs>
-  <rect width="500" height="500" rx="30" fill="url(#bgCha)"/>
-  <ellipse cx="250" cy="430" rx="180" ry="35" fill="#bbf7d0" opacity="0.6"/>
-  <!-- Delicate Steam -->
-  <path d="M 230 160 Q 210 120 230 90 M 270 160 Q 290 120 270 90" stroke="#22c55e" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
-  <g filter="url(#shadowCha)">
-    <!-- Wooden Saucer -->
-    <ellipse cx="250" cy="380" rx="150" ry="35" fill="#92400e"/>
-    <ellipse cx="250" cy="375" rx="140" ry="30" fill="#b45309"/>
-    <!-- Ceramic Teacup -->
-    <path d="M 150 250 C 150 370 350 370 350 250 Z" fill="#f8fafc"/>
-    <ellipse cx="250" cy="250" rx="100" ry="35" fill="#e2e8f0"/>
-    <!-- Green Tea Liquid -->
-    <ellipse cx="250" cy="252" rx="90" ry="30" fill="#84cc16"/>
-    <!-- Floating Tea Leaf (茶尖) -->
-    <path d="M 240 245 C 230 255 260 260 250 245 Z" fill="#3f6212"/>
-    <!-- Teacup Handle -->
-    <path d="M 330 265 Q 390 280 340 330" stroke="#f8fafc" stroke-width="18" fill="none"/>
-  </g>
+  <rect width="200" height="200" rx="28" fill="url(#bg_cha)"/>
+
+  <!-- Fragrant steam curls -->
+  <path d="M84 68 Q78 52 86 38" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.65"/>
+  <path d="M108 64 Q102 48 110 34" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.65"/>
+  <!-- Saucer directly supporting the teacup (no floating gap!) -->
+  <ellipse cx="96" cy="152" rx="58" ry="14" fill="#92400e" stroke="#78350f" stroke-width="2.5"/>
+  <ellipse cx="96" cy="150" rx="42" ry="8" fill="#b45309"/>
+  <!-- Cup handle -->
+  <path d="M136 102 C158 102 158 134 134 134" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  <!-- Porcelain teacup body resting on saucer at y=150 -->
+  <path d="M50 92 L142 92 C140 132 122 150 96 150 C70 150 52 132 50 92 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+  <!-- Green tea liquid inside top rim -->
+  <ellipse cx="96" cy="92" rx="46" ry="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <ellipse cx="96" cy="94" rx="40" ry="9" fill="#84cc16"/>
+  <!-- Fresh green tea leaves beside saucer -->
+  <path d="M142 158 Q164 142 174 160 Q154 172 142 158 Z" fill="#16a34a" stroke="#15803d" stroke-width="2"/>
+  <path d="M136 162 Q148 144 158 154 Q148 168 136 162 Z" fill="#22c55e" stroke="#15803d" stroke-width="1.5"/>
+
 </svg>
