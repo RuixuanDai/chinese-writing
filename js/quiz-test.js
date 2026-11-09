@@ -90,7 +90,62 @@ const GP_STROKE_TYPE_DATA = {
     '豆': 'heng shu hengzhe heng dian pie heng', '红': 'piezhe piezhe ti heng shu heng',
     '车': 'heng piezhe heng shu', '舟': 'pie pie hengzhegou dian heng dian', '年': 'pie heng heng shu heng shu',
     '会': 'pie na heng heng piezhe dian', '妈': '? pie ti hengzhe ? heng', '江': 'dian dian ti heng shu heng',
-    '冰': 'dian ti shugou hengpie pie na', '边': 'hengzhegou pie dian ? ?'
+    '冰': 'dian ti shugou hengpie pie na', '边': 'hengzhegou pie dian ? ?',
+    '虎': 'shu heng hengou pie heng shuwangou pie ?', '兔': 'pie hengpie shu hengzhe heng pie shuwangou dian',
+    '鸭': 'shu hengzhe heng heng shu pie hengzhegou dian ? heng', '龟': 'pie hengpie shu hengzhe heng heng shuwangou',
+    '鸡': 'hengpie dian pie hengzhegou dian ? heng', '豹': 'pie dian dian pie ? ? ? pie hengzhegou dian',
+    '狗': 'pie ? pie pie hengzhegou shu hengzhe heng', '狸': 'pie ? pie shu hengzhe heng heng shu heng heng',
+    '海': 'dian dian ti pie heng shuzhe ? dian heng dian', '狮': 'pie ? pie shu pie heng shu hengzhegou shu',
+    '星': 'shu hengzhe heng heng pie heng heng shu heng', '林': 'heng shu pie dian heng shu pie na',
+    '空': 'dian dian hengou pie dian heng shu heng', '树': 'heng shu pie dian hengpie dian heng shugou dian',
+    '河': 'dian dian ti heng shu hengzhe heng shugou', '泉': 'pie shu hengzhe heng heng shugou hengpie pie na',
+    '狼': 'pie ? pie dian hengzhe heng heng ? pie na', '阴': '? shu pie hengzhegou heng heng',
+    '虹': 'shu hengzhe heng shu ti dian heng shu heng', '爸': 'pie dian pie na hengzhe shu heng shuwangou',
+    '家': 'dian dian hengou heng pie ? pie pie pie na', '弟': 'dian pie hengzhe heng ? shugou pie',
+    '妹': 'piezhe pie heng heng heng shu pie na', '身': 'pie shu hengzhegou heng heng ti pie',
+    '泥': 'dian dian ti hengzhe heng pie pie shuwangou', '哥': 'heng shu hengzhe heng shu heng shu hengzhe heng shugou',
+    '爷': 'pie dian pie na ? shu', '奶': 'piezhe pie heng ? pie',
+    '眉': 'hengzhe shu heng pie shu hengzhe heng heng heng', '骨': 'shu hengzhe hengzhe dian hengou shu hengzhegou heng heng',
+    '姐': 'piezhe pie heng shu hengzhe heng heng heng', '亲': 'dian heng dian pie heng heng shugou pie dian',
+    '读': 'dian ? heng shu hengou dian dian heng pie dian', '校': 'heng shu pie dian dian heng pie dian pie na',
+    '笔': 'pie heng dian pie heng dian pie heng heng shuwangou', '幼': 'piezhe piezhe dian hengzhegou pie',
+    '课': 'dian ? shu hengzhe heng heng heng shu pie na', '师': 'shu pie heng shu hengzhegou shu',
+    '问': 'dian shu hengzhegou shu hengzhe heng', '听': 'shu hengzhe heng pie pie heng shu',
+    '诗': 'dian ? heng shu heng heng shugou dian', '说': 'dian ? dian pie shu hengzhe heng pie shuwangou',
+    '知': 'pie heng heng pie dian shu hengzhe heng', '画': 'heng shu hengzhe heng shu heng shuzhe shu',
+    '乐': 'pie shuzhe shugou pie dian', '思': 'shu hengzhe heng shu heng dian ? dian dian',
+    '识': 'dian ? shu hengzhe heng pie dian', '草': 'heng shu shu shu hengzhe heng heng heng shu',
+    '记': 'dian ? hengzhe heng shuwangou', '亿': 'pie shu ?', '远': 'heng heng pie shuwangou dian ? ?',
+    '狐': 'pie ? pie pie pie ? dian na', '初': 'dian hengpie shu pie dian hengzhegou pie',
+    '南': 'heng shu shu hengzhegou dian pie heng heng shu', '桃': 'heng shu pie dian pie dian ti shuwangou pie dian',
+    '册': 'pie hengzhegou pie hengzhegou heng', '奖': 'dian ti shu pie hengpie dian heng pie na',
+    '李': 'heng shu pie na hengpie shugou heng', '面': 'heng pie shu hengzhegou shu shu heng heng heng',
+    '末': 'heng heng shu pie na', '近': 'pie pie heng shu dian ? ?',
+    '间': 'dian shu hengzhegou shu hengzhe heng heng', '香': 'pie heng shu pie na shu hengzhe heng heng',
+    '肉': 'shu hengzhegou pie dian pie dian', '饭': 'pie hengou ? pie pie hengpie na',
+    '茶': 'heng shu shu pie na heng shugou pie dian', '杏': 'heng shu pie na shu hengzhe heng',
+    '汤': 'dian dian ti ? pie pie', '麦': 'heng heng shu heng pie hengpie na',
+    '爱': 'pie dian dian pie dian hengou heng pie hengpie na', '美': 'dian pie heng heng shu heng heng pie na',
+    '礼': 'dian hengpie shu dian shuwangou', '莓': 'heng shu shu pie heng shuzhe ? dian heng dian',
+    '和': 'pie heng shu pie dian shu hengzhe heng', '诚': 'dian ? heng pie hengzhegou ? pie dian',
+    '仁': 'pie shu heng heng', '信': 'pie shu dian heng heng heng shu hengzhe heng',
+    '青': 'heng heng shu heng shu hengzhegou heng heng', '宽': 'dian dian hengou heng shu shu shu hengzhe pie shuwangou',
+    '恒': 'dian dian shu heng shu hengzhe heng heng heng', '看': 'pie heng heng pie shu hengzhe heng heng heng',
+    '俭': 'pie shu pie na heng dian dian pie heng', '抬': 'heng shugou ti piezhe dian shu hengzhe heng',
+    '招': 'heng shugou ti hengzhegou pie shu hengzhe heng', '勇': 'hengpie dian shu hengzhegou heng heng shu hengzhegou pie',
+    '抱': 'heng shugou ti pie hengzhegou hengzhe heng shuwangou', '快': 'dian dian shu hengzhe heng pie na',
+    '追': 'pie shu hengzhe heng hengzhe heng dian ? ?', '动': 'heng heng piezhe dian hengzhegou pie',
+    '房': 'dian hengzhe heng pie dian heng hengzhegou pie', '城': 'heng shu ti heng pie hengzhegou ? pie dian',
+    '市': 'dian heng shu hengzhegou shu', '迈': 'heng hengzhegou pie dian ? ?',
+    '屋': 'hengzhe heng pie heng piezhe dian heng shu heng', '站': 'dian heng dian pie ti shu heng shu hengzhe heng',
+    '桥': 'heng shu pie dian pie heng pie na pie shu', '院': '? shu dian dian hengou heng heng pie shuwangou',
+    '节': 'heng shu shu ? shu', '庆': 'dian heng pie heng pie na',
+    '亭': 'dian heng shu hengzhe heng dian hengou heng shugou', '轨': 'heng piezhe shu ti pie ?',
+    '贺': 'hengzhegou pie shu hengzhe heng shu hengzhe pie dian', '桔': 'heng shu pie dian heng shu heng shu hengzhe heng',
+    '饼': 'pie hengou ? dian pie heng heng pie shu', '团': 'shu hengzhe heng shugou pie heng',
+    '圆': 'shu hengzhe shu hengzhe heng shu hengzhe pie dian heng', '灯': 'dian pie pie dian heng shugou',
+    '戏': 'hengpie dian heng ? pie dian', '钟': 'pie heng heng heng ? shu hengzhe heng shu',
+    '玩': 'heng heng shu ti heng heng pie shuwangou'
 };
 
 // ==================== 3. 反义词好朋友（35 组，可配小图标帮助理解） ====================
@@ -222,6 +277,8 @@ class ExamCenter {
         this.strokeAnimTimer = null;
 
         this.storedStars = this.loadJSON('kid_app_game_stars_v1', {});
+        this.weakChars = this.loadJSON('kid_app_weak_chars_v1', {});
+        this.scopeMode = 'all'; // 'all' | 'cat' | 'weak'
         this.todayStats = this.loadToday();
     }
 
@@ -271,7 +328,7 @@ class ExamCenter {
         this.picturePool = this.allChars.filter(ch => this.charInfoMap[ch].image && !abstract.has(ch) && !textInPic.has(ch));
         this.picturePoolSet = new Set(this.picturePool);
         this.listenPool = this.allChars.filter(ch => this.charInfoMap[ch].pinyin);
-        this.writingPool = this.allChars.filter(ch => cache[ch] && cache[ch].medians && cache[ch].medians.length <= 8
+        this.writingPool = this.allChars.filter(ch => cache[ch] && cache[ch].medians && cache[ch].medians.length <= 10
             && this.charInfoMap[ch].image && !abstract.has(ch) && !writeEx.has(ch) && !textInPic.has(ch));
         this.strokePool = Object.keys(cache).filter(ch => cache[ch].medians && cache[ch].medians.length <= 10);
 
@@ -304,13 +361,51 @@ class ExamCenter {
         return info ? info.pinyin : '';
     }
 
-    // 从题库随机无限出题（洗牌队列，避免连续重复）
+    // 提取题目条目对应的目标汉字（兼容单字字符串或 { target, word, idx } 组词对象）
+    itemChar(item) {
+        if (!item) return '';
+        return typeof item === 'string' ? item : (item.target || '');
+    }
+
+    // 根据当前出题范围模式（全部题库 / 当前分类 / 错题巩固）过滤题池，并在题数不足时平滑兜底
+    filterPoolByScope(pool) {
+        if (!pool || !pool.length || this.scopeMode === 'all') return pool;
+        if (this.scopeMode === 'cat') {
+            const catId = (this.app && this.app.currentCategory) || 'starter';
+            const filtered = pool.filter(it => {
+                const info = this.info(this.itemChar(it));
+                return info && info.catId === catId;
+            });
+            return filtered.length >= 4 ? filtered : pool;
+        }
+        if (this.scopeMode === 'weak') {
+            const weakKeys = new Set(Object.keys(this.weakChars || {}).filter(k => this.weakChars[k] > 0));
+            const weakFiltered = pool.filter(it => weakKeys.has(this.itemChar(it)));
+            if (weakFiltered.length >= 4) return weakFiltered;
+            const completed = new Set((this.app && Array.isArray(this.app.completedChars)) ? this.app.completedChars : []);
+            const unmastered = pool.filter(it => weakKeys.has(this.itemChar(it)) || !completed.has(this.itemChar(it)));
+            return unmastered.length >= 4 ? unmastered : pool;
+        }
+        return pool;
+    }
+
+    // 从题库随机无限出题（洗牌队列 + 错题智能优先复现，避免连续重复）
     pickNext(key, pool) {
         if (!pool || !pool.length) return null;
         let q = this.queues[key];
         if (!q || !q.length) {
-            q = gpShuffle(pool.slice());
+            const scoped = this.filterPoolByScope(pool);
+            q = gpShuffle(scoped.slice());
             const last = this.lastPicked[key];
+            // 错题加权：将薄弱汉字优先排在队列后半段（pop 时更早出现），帮助自然复习巩固
+            const weakMap = this.weakChars || {};
+            if (Object.keys(weakMap).length > 0 && q.length > 4) {
+                q.sort((a, b) => {
+                    const wa = weakMap[this.itemChar(a)] ? 1 : 0;
+                    const wb = weakMap[this.itemChar(b)] ? 1 : 0;
+                    return wa - wb;
+                });
+            }
             if (q.length > 1 && q[q.length - 1] === last) {
                 [q[0], q[q.length - 1]] = [q[q.length - 1], q[0]];
             }
@@ -319,6 +414,111 @@ class ExamCenter {
         const item = q.pop();
         this.lastPicked[key] = item;
         return item;
+    }
+
+    // 记录薄弱/答错汉字（用于智能复习队列）
+    markWeakChar(ch, delta = 1) {
+        if (!ch || typeof ch !== 'string') return;
+        this.weakChars = this.weakChars || {};
+        this.weakChars[ch] = Math.min(5, (this.weakChars[ch] || 0) + delta);
+        this.saveJSON('kid_app_weak_chars_v1', this.weakChars);
+        this.updateScopeBtn();
+    }
+
+    // 答对后逐步消解薄弱标记
+    markMasteredChar(ch) {
+        if (!ch || !this.weakChars || !this.weakChars[ch]) return;
+        this.weakChars[ch] -= 1;
+        if (this.weakChars[ch] <= 0) {
+            delete this.weakChars[ch];
+        }
+        this.saveJSON('kid_app_weak_chars_v1', this.weakChars);
+        this.updateScopeBtn();
+    }
+
+    // 获取当前舞台题目对应的核心目标汉字
+    currentTargetChar() {
+        switch (this.activeGame) {
+            case 'picwrite': return (this.pw && this.pw.char) || '';
+            case 'balloon': return (this.bl && this.bl.char) || '';
+            case 'listen': return (this.ls && this.ls.char) || '';
+            case 'word': return (this.wd && this.wd.target) || '';
+            case 'stroke': return (this.sk && this.sk.char) || '';
+            case 'mole': return (this.ml && this.ml.target) || '';
+            default: return '';
+        }
+    }
+
+    // 同步舞台右上角「📖 学这字」联动按钮显隐
+    syncPracticeCharBtn() {
+        const btn = document.getElementById('btn-game-practice-char');
+        if (!btn) return;
+        const ch = this.currentTargetChar();
+        btn.hidden = !ch;
+    }
+
+    // 一键跳转到「趣味练字」学习当前题目汉字并自动播放笔顺演示
+    practiceCurrentChar() {
+        const ch = this.currentTargetChar();
+        if (!ch || !this.app) return;
+        this.sfx('playPop');
+        this.markWeakChar(ch, 1);
+        this.switchAppTab('practice');
+        if (typeof this.app.selectChar === 'function') {
+            this.app.selectChar(ch);
+        }
+        setTimeout(() => {
+            if (this.app.hanziGuide && typeof this.app.hanziGuide.animate === 'function') {
+                this.app.hanziGuide.animate();
+            }
+            if (typeof this.app.showToast === 'function') {
+                this.app.showToast(`📖 已为您打开「${ch}」的笔顺演示与画板，练好后点顶部「🎮 闯关乐园」即可继续闯关！`);
+            }
+        }, 200);
+    }
+
+    // 切换大厅闯关出题范围（全部题库 -> 当前分类 -> 错题巩固）
+    cycleScopeMode() {
+        this.sfx('playPop');
+        const order = ['all', 'cat', 'weak'];
+        const nextIdx = (order.indexOf(this.scopeMode) + 1) % order.length;
+        this.scopeMode = order[nextIdx];
+        this.queues = {};
+        this.updateScopeBtn();
+        if (this.app && typeof this.app.showToast === 'function') {
+            if (this.scopeMode === 'all') {
+                this.app.showToast('🌟 已切换为【全部题库】：从全部 11 大主题 295 个汉字中随机出题');
+            } else if (this.scopeMode === 'cat') {
+                const cats = (typeof CHARACTER_CATEGORIES !== 'undefined') ? CHARACTER_CATEGORIES : (window.CHARACTER_CATEGORIES || []);
+                const cur = cats.find(c => c.id === (this.app.currentCategory || 'starter'));
+                const name = cur ? cur.name : '当前分类';
+                this.app.showToast(`🎯 已切换为【${name}】：优先从当前选中的练字主题出题`);
+            } else {
+                const weakCount = Object.keys(this.weakChars || {}).length;
+                this.app.showToast(weakCount > 0
+                    ? `💡 已切换为【错题巩固】：优先复习 ${weakCount} 个易错汉字与未掌握汉字`
+                    : '💡 已切换为【巩固未练字】：优先考察还没有拿过小红花的汉字');
+            }
+        }
+    }
+
+    updateScopeBtn() {
+        const btn = document.getElementById('btn-game-scope');
+        if (!btn) return;
+        if (this.scopeMode === 'cat') {
+            const cats = (typeof CHARACTER_CATEGORIES !== 'undefined') ? CHARACTER_CATEGORIES : (window.CHARACTER_CATEGORIES || []);
+            const cur = cats.find(c => c.id === ((this.app && this.app.currentCategory) || 'starter'));
+            const shortName = cur ? cur.name.replace(/^[^\s]+\s*/, '') : '当前分类';
+            btn.textContent = `🎯 ${shortName}`;
+            btn.dataset.scope = 'cat';
+        } else if (this.scopeMode === 'weak') {
+            const weakCount = Object.keys(this.weakChars || {}).length;
+            btn.textContent = weakCount > 0 ? `💡 错题(${weakCount})` : '💡 待巩固';
+            btn.dataset.scope = 'weak';
+        } else {
+            btn.textContent = '🌟 全部题库';
+            btn.dataset.scope = 'all';
+        }
     }
 
     sameGroup(a, b) {
@@ -553,6 +753,8 @@ class ExamCenter {
         }
         const today = document.getElementById('game-hub-today');
         if (today) today.textContent = `⭐ 今日 ${this.todayStats.stars}`;
+        this.updateScopeBtn();
+        this.syncPracticeCharBtn();
     }
 
     enterGame(gameId) {
@@ -623,6 +825,7 @@ class ExamCenter {
             void bubble.offsetWidth;
             bubble.classList.add('pop');
         }
+        this.syncPracticeCharBtn();
     }
 
     praise() {
@@ -634,6 +837,8 @@ class ExamCenter {
 
     registerCorrect() {
         this.combo += 1;
+        const cur = this.currentTargetChar();
+        if (cur) this.markMasteredChar(cur);
         this.updateStats();
         if (this.combo >= 5 && this.combo % 5 === 0) {
             if (this.app && typeof this.app.fireConfetti === 'function') this.app.fireConfetti();
@@ -643,6 +848,8 @@ class ExamCenter {
 
     registerWrong() {
         this.combo = 0;
+        const cur = this.currentTargetChar();
+        if (cur) this.markWeakChar(cur, 1);
         this.updateStats();
     }
 
@@ -936,6 +1143,7 @@ class ExamCenter {
                     </div>
                     <div class="pw-fb-actions">
                         <button type="button" class="btn-hint tone-red" data-pw-act="trace">✏️ 描红订正</button>
+                        <button type="button" class="btn-hint tone-gold" data-pw-act="practice">📖 学笔顺</button>
                         <button type="button" class="btn-hint tone-blue" data-pw-act="next">下一题 ➔</button>
                     </div>
                 </div>
@@ -950,6 +1158,8 @@ class ExamCenter {
         if (act === 'next') {
             this.sfx('playPop');
             this.nextPicwrite();
+        } else if (act === 'practice') {
+            this.practiceCurrentChar();
         } else if (act === 'clear') {
             this.sfx('playEraser');
             if (this.examCanvas) this.examCanvas.clear(false);
@@ -2058,6 +2268,8 @@ class ExamCenter {
             this.sfx('playPop');
             this.enterGame(gpPick(GP_GAMES).id);
         });
+        on('btn-game-scope', 'click', () => this.cycleScopeMode());
+        on('btn-game-practice-char', 'click', () => this.practiceCurrentChar());
         on('btn-exam-print-paper', 'click', () => this.printExamPaper());
 
         // 看图写字

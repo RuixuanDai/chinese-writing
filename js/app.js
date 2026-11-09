@@ -139,23 +139,34 @@ class KidWritingApp {
         this.renderCategories();
         this.renderCharList(targetCat);
 
-        // 5. 绑定界面事件
+        // 5. 绑定界面事件与更新星数
         this.bindEvents();
-
-        // 6. 恢复并自动选中上次完成/练习的汉字
-        this.selectChar(targetChar);
-
-        // 7. 更新星数显示
         this.updateStarUI();
 
-        // 8. 设备检测与针对性弹窗提示
+        // 6. 初始化奖励系统与扭蛋徽章
+        this.updateGashaponBadge();
+        this.bindRewardEvents();
+
+        // 7. 优先初始化 🎮 汉字闯关乐园（默认首页），首屏零阻塞呈现
+        if (typeof ExamCenter === 'function') {
+            this.examCenter = new ExamCenter(this);
+            this.examCenter.initIfNeeded();
+            window.examCenter = this.examCenter;
+            this.examCenter.switchAppTab('exam');
+        }
+
+        // 8. 空闲帧初始化隐藏的「趣味练字」汉字选中状态与移动端 Tab
+        this.currentChar = targetChar;
+        setTimeout(() => {
+            this.selectChar(targetChar);
+            this.initMobileTabs();
+        }, 0);
+
+        // 9. 设备检测与针对性弹窗提示
         const isMobile = this.isMobilePhone();
         if (isMobile) {
-            // 在手机端显示顶部温馨提醒条
             const hintBanner = document.getElementById('mobile-hint-banner');
             if (hintBanner) hintBanner.style.display = 'flex';
-
-            // 手机打开时，提示使用 iPad 或大屏幕设备
             try {
                 const mobilePromptSeen = sessionStorage.getItem('kid_app_mobile_prompt_seen');
                 if (!mobilePromptSeen) {
@@ -165,7 +176,6 @@ class KidWritingApp {
                 }
             } catch (e) {}
         } else {
-            // 平板/电脑端：首次打开 App 时，自动弹出简介与隐私免责声明弹窗
             try {
                 const hasSeenIntro = localStorage.getItem('kid_app_intro_seen');
                 if (!hasSeenIntro) {
@@ -176,25 +186,10 @@ class KidWritingApp {
             } catch (e) {}
         }
 
-        // 9. 初始化手机端标签页切换与便捷跳转
-        this.initMobileTabs();
-
-        // 10. 初始化奖励系统与扭蛋徽章
-        this.updateGashaponBadge();
-        this.bindRewardEvents();
-
-        // 11. 初始化 🎮 汉字闯关乐园，并设为默认首页
-        if (typeof ExamCenter === 'function') {
-            this.examCenter = new ExamCenter(this);
-            this.examCenter.initIfNeeded();
-            window.examCenter = this.examCenter;
-            this.examCenter.switchAppTab('exam');
-        }
-
-        // 11.5 初始化移动端 / Android 系统后退导航栈（返回上层页面而非直接退出应用）
+        // 10. 初始化移动端 / Android 系统后退导航栈（返回上层页面而非直接退出应用）
         this.initBackNavigation();
 
-        // 12. 初始化 PWA 离线缓存与桌面安装支持
+        // 11. 初始化 PWA 离线缓存与桌面安装支持
         this.initPWA();
     }
 

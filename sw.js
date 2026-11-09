@@ -5,7 +5,7 @@
  * 2. 断网/弱网状态下无缝回退到本地 Cache Storage，支持 100% 离线练字、笔顺演示与离线语音。
  */
 
-const CACHE_NAME = 'chinese-writing-pwa-v3.11';
+const CACHE_NAME = 'chinese-writing-pwa-v3.12';
 
 const CORE_ASSETS = [
     './',
@@ -72,7 +72,35 @@ self.addEventListener('fetch', (event) => {
 
     const url = new URL(req.url);
 
-    // 针对同源资源及笔顺 CDN JSON 数据：采用 Network-First (网络优先，离线兜底)
+    // 1. 动态签名语音接口 (/api/tts) 直接走网络与内存 Blob 缓存，避免带 ts/sig 的一次性 URL 写入 Cache Storage
+    if (url.pathname.startsWith('/api/')) return;
+
+    // 2. 针对看图识字插画与第三方基础库：采用 Cache-First + 后台静默更新 (Stale-While-Revalidate)，实现插画秒开
+    const isStaticAsset =
+        url.origin === self.location.origin &&
+        (url.pathname.includes('/assets/') ||
+            url.pathname.endsWith('/confetti.browser.min.js') ||
+            url.pathname.endsWith('/hanzi-writer.min.js'));
+
+    if (isStaticAsset) {
+        event.respondWith(
+            caches.match(req, { ignoreSearch: true }).then((cachedRes) => {
+                const networkFetch = fetch(req)
+                    .then((networkRes) => {
+                        if (networkRes && networkRes.status === 200) {
+                            const resClone = networkRes.clone();
+                            caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+                        }
+                        return networkRes;
+                    })
+                    .catch(() => cachedRes);
+                return cachedRes || networkFetch;
+            })
+        );
+        return;
+    }
+
+    // 3. 针对同源 HTML/CSS/JS 及笔顺 CDN JSON 数据：采用 Network-First (网络优先，离线兜底)
     if (url.origin === self.location.origin || url.hostname.includes('jsdelivr.net')) {
         event.respondWith(
             fetch(req)

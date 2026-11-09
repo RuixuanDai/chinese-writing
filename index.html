@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261107_v14">
+    <link rel="stylesheet" href="css/style.css?v=20261109_v15">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -376,6 +376,7 @@
                 </div>
                 <div class="game-hub-hero-right">
                     <span id="game-hub-today" class="game-hub-today" title="今天在闯关乐园赢得的星星">⭐ 今日 0</span>
+                    <button type="button" id="btn-game-scope" class="btn-hub-action scope" title="点击切换闯关出题范围（全部汉字 / 当前练字分类 / 错题巩固）">🌟 全部题库</button>
                     <button type="button" id="btn-game-random" class="btn-hub-action random">🎲 随机玩</button>
                     <button type="button" id="btn-exam-print-paper" class="btn-hub-action" title="随机生成一张 A4 纸质测试卷">🖨️ 打印试卷</button>
                 </div>
@@ -396,6 +397,7 @@
                     <div id="game-mascot-bubble" class="game-mascot-bubble"></div>
                 </div>
                 <div class="game-topbar-stats">
+                    <button type="button" id="btn-game-practice-char" class="btn-game-practice-char" title="前往趣味练字学习这个字的笔顺与写法" hidden>📖 学这字</button>
                     <span id="game-combo" class="game-combo-pill" hidden>🔥 连对 ×2</span>
                     <span id="game-stars" class="game-stars-pill" title="本轮赢得的星星">⭐ 0</span>
                 </div>
@@ -1014,15 +1016,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261107_v14"></script>
-    <script src="lib/web-online-tts.js?v=20261107_v14"></script>
-    <script src="js/sound.js?v=20261107_v14"></script>
-    <script src="js/char-data.js?v=20261107_v14"></script>
-    <script src="js/stroke-cache.js?v=20261107_v14"></script>
-    <script src="js/canvas.js?v=20261107_v14"></script>
-    <script src="js/hanzi-guide.js?v=20261107_v14"></script>
-    <script src="js/evaluator.js?v=20261107_v14"></script>
-    <script src="js/quiz-test.js?v=20261107_v14"></script>
-    <script src="js/app.js?v=20261107_v14"></script>
+    <script src="lib/web-natural-tts.js?v=20261109_v15"></script>
+    <script src="lib/web-online-tts.js?v=20261109_v15"></script>
+    <script src="js/sound.js?v=20261109_v15"></script>
+    <script src="js/char-data.js?v=20261109_v15"></script>
+    <script src="js/stroke-cache.js?v=20261109_v15"></script>
+    <script src="js/canvas.js?v=20261109_v15"></script>
+    <script src="js/hanzi-guide.js?v=20261109_v15"></script>
+    <script src="js/evaluator.js?v=20261109_v15"></script>
+    <script src="js/quiz-test.js?v=20261109_v15"></script>
+    <script src="js/app.js?v=20261109_v15"></script>
 </body>
 </html>

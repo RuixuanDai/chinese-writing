@@ -5520,6 +5520,24 @@ body.app-mode-exam #header-search-box {
     box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
 }
 
+.btn-hub-action.scope {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    color: #1d4ed8;
+}
+
+.btn-hub-action.scope[data-scope="cat"] {
+    background: #ecfdf5;
+    border-color: #6ee7b7;
+    color: #047857;
+}
+
+.btn-hub-action.scope[data-scope="weak"] {
+    background: #fff1f2;
+    border-color: #fda4af;
+    color: #be123c;
+}
+
 .game-card-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -5767,6 +5785,24 @@ body.app-mode-exam #header-search-box {
     align-items: center;
     gap: 6px;
     flex-shrink: 0;
+}
+
+.btn-game-practice-char {
+    background: #eff6ff;
+    border: 1.5px solid #93c5fd;
+    color: #1d4ed8;
+    font-weight: 800;
+    font-size: 12.5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn-game-practice-char:hover {
+    background: #dbeafe;
+    transform: translateY(-1px);
 }
 
 .game-combo-pill {
