@@ -415,7 +415,6 @@ class KidWritingApp {
             card.innerHTML = `
                 <span class="char-py">${item.pinyin}</span>
                 <span class="char-hz">${item.char}</span>
-                <span class="char-grade-tag g-${item.grade || 'g1'}">${gShort}</span>
                 ${isCompleted ? '<span class="char-badge">⭐</span>' : ''}
             `;
 
@@ -735,6 +734,9 @@ class KidWritingApp {
                 }
             });
         }
+        if (this.examCenter && typeof this.examCenter.renderLevelBar === 'function') {
+            this.examCenter.renderLevelBar();
+        }
         this.updateSoundUI(window.soundManager ? window.soundManager.enabled : true);
 
         // 2.0 设置页：评分后自动朗读点评开关
@@ -778,6 +780,17 @@ class KidWritingApp {
 
         if (openSettingsBtn && settingsModal) {
             openSettingsBtn.addEventListener('click', () => {
+                if (window.soundManager) window.soundManager.playPop();
+                this._modalOpenedFromSettings = false;
+                this.refreshSettingsPanel();
+                settingsModal.classList.add('visible');
+            });
+        }
+        const gradeBadgeEl = document.getElementById('info-grade-badge');
+        if (gradeBadgeEl && settingsModal) {
+            gradeBadgeEl.style.cursor = 'pointer';
+            gradeBadgeEl.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (window.soundManager) window.soundManager.playPop();
                 this._modalOpenedFromSettings = false;
                 this.refreshSettingsPanel();
@@ -2103,6 +2116,9 @@ class KidWritingApp {
         setText('settings-stat-stickers', `${(this.unlockedStickers && this.unlockedStickers.length) || 0}/${CALLIGRAPHY_STICKERS.length}`);
         setText('setting-print-desc', `「${this.currentChar}」字 A4 田字格字帖（描红 + 临摹）`);
 
+        if (this.examCenter && typeof this.examCenter.renderLevelBar === 'function') {
+            this.examCenter.renderLevelBar();
+        }
         this.updateSoundUI(window.soundManager ? window.soundManager.enabled : true);
         const autoSpeechSwitch = document.getElementById('setting-auto-eval-speech-switch');
         if (autoSpeechSwitch) autoSpeechSwitch.checked = !!this.autoEvalSpeech;

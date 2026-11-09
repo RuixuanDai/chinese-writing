@@ -539,18 +539,44 @@ class ExamCenter {
             diffContainer.innerHTML = diffs.map(d => {
                 const active = this.difficulty === d.id ? 'active' : '';
                 return `<button type="button" class="gp-diff-pill diff-${d.id} ${active}" data-diff="${d.id}" title="${d.name}：${d.desc}">
-                    <span>${d.name}</span>
+                    <span class="gp-pill-name">${d.name}</span>
+                    <span class="gp-pill-sub">${d.desc}</span>
                 </button>`;
             }).join('');
         }
 
+        const gCur = grades.find(g => g.id === this.gradeFilter) || grades[0];
+        const dCur = diffs.find(d => d.id === this.difficulty) || diffs[1];
+        const dEmoji = this.difficulty === 'easy' ? '🌱' : (this.difficulty === 'hard' ? '🔥' : '⭐');
+        const gIconMatch = gCur.name.match(/^[^\s]+/);
+        const gIcon = gIconMatch ? gIconMatch[0] : '🎓';
+        const dShortLabel = (dCur.short || dCur.name || '').replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+/, '').trim();
+
+        const hubBadge = document.getElementById('btn-hub-level-setting');
+        if (hubBadge) {
+            hubBadge.textContent = `${gIcon} ${gCur.short} · ${dEmoji}${dShortLabel}`;
+            hubBadge.dataset.diff = this.difficulty;
+            hubBadge.dataset.grade = this.gradeFilter;
+        }
+
         const stageBadge = document.getElementById('btn-game-stage-diff');
         if (stageBadge) {
-            const gCur = grades.find(g => g.id === this.gradeFilter) || grades[0];
-            const dCur = diffs.find(d => d.id === this.difficulty) || diffs[1];
-            const dEmoji = this.difficulty === 'easy' ? '🌱' : (this.difficulty === 'hard' ? '🔥' : '⭐');
-            stageBadge.textContent = `${gCur.short} · ${dEmoji}${dCur.short.replace(/^[^\s]+\s*/, '')}`;
+            stageBadge.textContent = `${gCur.short} · ${dEmoji}${dShortLabel}`;
             stageBadge.dataset.diff = this.difficulty;
+        }
+    }
+
+    openLevelSettings() {
+        this.sfx('playPop');
+        const settingsModal = document.getElementById('settings-modal');
+        if (!settingsModal) return;
+        this.renderLevelBar();
+        if (this.app && typeof this.app.refreshSettingsPanel === 'function') {
+            this.app.refreshSettingsPanel();
+        }
+        settingsModal.classList.add('visible');
+        if (this.app && typeof this.app.scheduleNavSync === 'function') {
+            this.app.scheduleNavSync();
         }
     }
 
@@ -2474,8 +2500,13 @@ class ExamCenter {
             this.enterGame(gpPick(GP_GAMES).id);
         });
         on('btn-game-scope', 'click', () => this.cycleScopeMode());
+        on('btn-hub-level-setting', 'click', () => this.openLevelSettings());
         on('btn-game-practice-char', 'click', () => this.practiceCurrentChar());
-        on('btn-exam-print-paper', 'click', () => this.printExamPaper());
+        on('btn-exam-print-paper', 'click', () => {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) settingsModal.classList.remove('visible');
+            this.printExamPaper();
+        });
         delegate('game-grade-pills', '.gp-grade-pill', (pill) => {
             this.sfx('playPop');
             this.setGradeFilter(pill.dataset.grade, true);

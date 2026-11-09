@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261109_v17">
+    <link rel="stylesheet" href="css/style.css?v=20261109_v18">
     <!-- 引入笔顺与烟花动效引擎 -->
     <script src="lib/confetti.browser.min.js"></script>
     <script src="lib/hanzi-writer.min.js"></script>
@@ -96,9 +96,8 @@
         </div>
     </div>
 
-    <!-- 汉字分类与选单条（支持按学龄分级 K-1 / K / G1 / G2 / G3+ 与 12 大趣味主题筛选） -->
+    <!-- 汉字分类与选单条（学龄分级与难度已收纳至⚙️设置页，主界面保持简洁） -->
     <section class="char-selector-section">
-        <div id="practice-grade-bar" class="practice-grade-bar"></div>
         <div id="category-bar" class="category-bar"></div>
         <div id="char-list-grid" class="char-list-grid"></div>
     </section>
@@ -378,20 +377,9 @@
                 </div>
                 <div class="game-hub-hero-right">
                     <span id="game-hub-today" class="game-hub-today" title="今天在闯关乐园赢得的星星">⭐ 今日 0</span>
+                    <button type="button" id="btn-hub-level-setting" class="btn-hub-action level-badge" title="点击打开设置，调整学龄分级与闯关难度">🎓 全部 · ⭐标准</button>
                     <button type="button" id="btn-game-scope" class="btn-hub-action scope" title="点击切换闯关出题范围（全部汉字 / 当前练字分类 / 错题巩固）">🌟 全部题库</button>
                     <button type="button" id="btn-game-random" class="btn-hub-action random">🎲 随机玩</button>
-                    <button type="button" id="btn-exam-print-paper" class="btn-hub-action" title="随机生成一张 A4 纸质测试卷">🖨️ 打印试卷</button>
-                </div>
-            </div>
-            <!-- 学龄分级 (K-1 / K / G1 / G2 / G3+) 与 难度调节 (轻松 / 标准 / 挑战) 筛选条 -->
-            <div class="game-level-bar" aria-label="学龄分级与闯关难度选择">
-                <div class="game-level-group grade-group">
-                    <span class="game-level-label">🎓 学龄分级：</span>
-                    <div id="game-grade-pills" class="game-grade-pills" role="group" aria-label="选择适龄阶段"></div>
-                </div>
-                <div class="game-level-group diff-group">
-                    <span class="game-level-label">⚡ 闯关难度：</span>
-                    <div id="game-diff-pills" class="game-diff-pills" role="group" aria-label="选择闯关难度"></div>
                 </div>
             </div>
             <div id="game-card-grid" class="game-card-grid" role="list" aria-label="闯关小游戏"></div>
@@ -694,7 +682,7 @@
                     <span class="settings-header-icon">⚙️</span>
                     <div class="settings-header-text">
                         <h3 id="settings-title" class="settings-title">家长区与设置</h3>
-                        <div class="settings-subtitle">练字偏好 · 桌面安装 · 打印字帖 · 数据管理</div>
+                        <div class="settings-subtitle">学龄分级 · 闯关难度 · 练字偏好 · 打印字帖与试卷</div>
                     </div>
                 </div>
                 <button id="btn-close-settings" class="settings-close-btn" aria-label="关闭设置">&times;</button>
@@ -728,7 +716,34 @@
                 </div>
 
                 <div class="settings-sections">
-                    <!-- 分组 1：练字偏好 -->
+                    <!-- 分组 1：学龄分级与闯关难度（全宽置顶） -->
+                    <section class="settings-group settings-group-full" id="settings-group-level">
+                        <h4 class="settings-group-title">学龄分级与闯关难度</h4>
+                        <div class="settings-group-card settings-level-card">
+                            <div class="settings-level-block">
+                                <div class="settings-level-head">
+                                    <span class="settings-row-icon tone-blue">🎓</span>
+                                    <div class="settings-row-text">
+                                        <span class="settings-row-title">学龄分级（汉字题库范围）</span>
+                                        <span class="settings-row-desc">按孩子年龄段筛选适龄汉字，联动「闯关乐园」与「趣味练字」</span>
+                                    </div>
+                                </div>
+                                <div id="game-grade-pills" class="game-grade-pills settings-grade-grid" role="group" aria-label="选择适龄阶段"></div>
+                            </div>
+                            <div class="settings-level-block">
+                                <div class="settings-level-head">
+                                    <span class="settings-row-icon tone-amber">⚡</span>
+                                    <div class="settings-row-text">
+                                        <span class="settings-row-title">闯关与书写评测难度</span>
+                                        <span class="settings-row-desc">调节闯关选项数量、提示方式、打地鼠速度及手写评分严格度</span>
+                                    </div>
+                                </div>
+                                <div id="game-diff-pills" class="game-diff-pills settings-diff-grid" role="group" aria-label="选择闯关难度"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 分组 2：练字偏好 -->
                     <section class="settings-group">
                         <h4 class="settings-group-title">练字偏好</h4>
                         <div class="settings-group-card">
@@ -818,7 +833,15 @@
                                     <span class="settings-row-title">打印纸质字帖</span>
                                     <span id="setting-print-desc" class="settings-row-desc">A4 田字格字帖（描红 + 临摹）</span>
                                 </span>
-                                <button id="btn-settings-print" class="btn-settings-action">打印</button>
+                                <button id="btn-settings-print" class="btn-settings-action">打印字帖</button>
+                            </div>
+                            <div class="settings-row" id="setting-row-print-exam">
+                                <span class="settings-row-icon tone-purple">📄</span>
+                                <span class="settings-row-text">
+                                    <span class="settings-row-title">打印闯关测试卷</span>
+                                    <span class="settings-row-desc">随机生成 A4 纸质看图写字、数笔画与反义词连线试卷</span>
+                                </span>
+                                <button type="button" id="btn-exam-print-paper" class="btn-settings-action">打印试卷</button>
                             </div>
                             <div class="settings-row" id="setting-row-ipad">
                                 <span class="settings-row-icon tone-amber">📖</span>
@@ -1030,15 +1053,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261109_v17"></script>
-    <script src="lib/web-online-tts.js?v=20261109_v17"></script>
-    <script src="js/sound.js?v=20261109_v17"></script>
-    <script src="js/char-data.js?v=20261109_v17"></script>
-    <script src="js/stroke-cache.js?v=20261109_v17"></script>
-    <script src="js/canvas.js?v=20261109_v17"></script>
-    <script src="js/hanzi-guide.js?v=20261109_v17"></script>
-    <script src="js/evaluator.js?v=20261109_v17"></script>
-    <script src="js/quiz-test.js?v=20261109_v17"></script>
-    <script src="js/app.js?v=20261109_v17"></script>
+    <script src="lib/web-natural-tts.js?v=20261109_v18"></script>
+    <script src="lib/web-online-tts.js?v=20261109_v18"></script>
+    <script src="js/sound.js?v=20261109_v18"></script>
+    <script src="js/char-data.js?v=20261109_v18"></script>
+    <script src="js/stroke-cache.js?v=20261109_v18"></script>
+    <script src="js/canvas.js?v=20261109_v18"></script>
+    <script src="js/hanzi-guide.js?v=20261109_v18"></script>
+    <script src="js/evaluator.js?v=20261109_v18"></script>
+    <script src="js/quiz-test.js?v=20261109_v18"></script>
+    <script src="js/app.js?v=20261109_v18"></script>
 </body>
 </html>
