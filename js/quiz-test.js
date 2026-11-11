@@ -329,6 +329,7 @@ class ExamCenter {
         this.introSpoken = {};
         this.svgUid = 0;
         this.strokeAnimTimer = null;
+        this.pendingGameReturn = null; // 从游戏内点击「学这字」跳转练字时的原游戏上下文
 
         this.storedStars = this.loadJSON('kid_app_game_stars_v1', {});
         this.weakChars = this.loadJSON('kid_app_weak_chars_v1', {});
@@ -648,22 +649,191 @@ class ExamCenter {
         btn.hidden = !ch;
     }
 
-    // 一键跳转到「趣味练字」学习当前题目汉字并自动播放笔顺演示
+    hasPendingGameReturn() {
+        return !!(this.pendingGameReturn && this.pendingGameReturn.gameId && this.activeGame === this.pendingGameReturn.gameId);
+    }
+
+    getPendingGameReturn() {
+        return this.hasPendingGameReturn() ? this.pendingGameReturn : null;
+    }
+
+    syncGameReturnBanner() {
+        const section = document.getElementById('char-selector-section');
+        const banner = document.getElementById('game-return-banner');
+        const iconEl = document.getElementById('game-return-icon');
+        const textEl = document.getElementById('game-return-text');
+        const backBtn = document.getElementById('btn-game-return-back');
+        const ret = this.getPendingGameReturn();
+
+        if (ret) {
+            if (section) section.classList.add('is-game-return-mode');
+            if (banner) banner.hidden = false;
+            if (iconEl) iconEl.textContent = ret.gameIcon || '🎮';
+            if (textEl) {
+                textEl.innerHTML = `正在学习【<strong>${ret.gameTitle}</strong>】里的「<strong>${ret.char}</strong>」字 · 完成练习后自动返回游戏`;
+            }
+            if (backBtn) {
+                backBtn.textContent = `✅ 学好啦，返回${ret.gameTitle} ➔`;
+            }
+        } else {
+            if (section) section.classList.remove('is-game-return-mode');
+            if (banner) banner.hidden = true;
+        }
+
+        if (this.app) {
+            requestAnimationFrame(() => {
+                if (this.app.canvasEngine) this.app.canvasEngine.resize(true);
+                if (this.app.hanziGuide && typeof this.app.hanziGuide.resize === 'function') {
+                    this.app.hanziGuide.resize();
+                }
+            });
+        }
+    }
+
+    clearPendingGameReturn() {
+        if (!this.pendingGameReturn) return;
+        this.pendingGameReturn = null;
+        this.syncGameReturnBanner();
+    }
+
+    returnToGameFromPractice(opts = {}) {
+        const ret = this.getPendingGameReturn();
+        this.clearPendingGameReturn();
+        if (this.app && typeof this.app.exitQuizGuideMode === 'function') {
+            this.app.exitQuizGuideMode();
+        }
+        this.switchAppTab('exam');
+        if (ret && this.activeGame === ret.gameId) {
+            this.later(() => this.resumeGameAfterPractice(ret, !!opts.completed), 80);
+        }
+    }
+
+    resumeGameAfterPractice(ret, completed = false) {
+        if (!ret || this.activeGame !== ret.gameId) return;
+        const ch = ret.char;
+        if (completed) {
+            this.markMasteredChar(ch);
+        }
+
+        switch (this.activeGame) {
+            case 'picwrite': {
+                if (this.examCanvas) this.examCanvas.resize(true);
+                if (!this.pw) break;
+                if (this.pw.status === 'correct') {
+                    this.nextPicwrite();
+                } else {
+                    if (this.pw.status === 'wrong') {
+                        this.pw.status = 'idle';
+                        const stamp = document.getElementById('pw-stamp');
+                        if (stamp) {
+                            stamp.className = 'pw-stamp';
+                            stamp.textContent = '';
+                        }
+                        if (this.examCanvas) this.examCanvas.clear(false);
+                        this.setPwFeedback('idle');
+                        this.setPwSubmitLabel(false);
+                    }
+                    this.setMascot(`太棒啦！刚学会了“${ch}”，现在在米字格里写出来吧！`, 'happy');
+                }
+                break;
+            }
+            case 'balloon': {
+                if (this.bl && this.bl.locked) {
+                    this.nextBalloon();
+                } else {
+                    this.setMascot(`学会啦！快来戳破写着“${ch}”字的气球吧！`, 'happy');
+                }
+                break;
+            }
+            case 'listen': {
+                if (this.ls && this.ls.locked) {
+                    this.nextListen();
+                } else {
+                    this.setMascot('🔊 欢迎回来！再听一遍，找出刚刚学的字吧！', 'happy');
+                    this.later(() => this.playListenPrompt(), 300);
+                }
+                break;
+            }
+            case 'word': {
+                if (this.wd && this.wd.locked) {
+                    this.nextWord();
+                } else {
+                    this.setMascot('欢迎回来！把刚刚学的字填进词语里吧！', 'happy');
+                    if (this.wd && this.wd.word) {
+                        this.later(() => this.speak(this.wd.word), 300);
+                    }
+                }
+                break;
+            }
+            case 'stroke': {
+                if (!this.sk) break;
+                if (this.sk.done) {
+                    this.setMascot(`学会“${ch}”啦！点“下一题”继续挑战吧！`, 'happy');
+                } else if (this.sk.step === 1 && this.sk.locked) {
+                    this.goStrokeStep2();
+                } else {
+                    this.setMascot(`刚学完“${ch}”的笔顺，快来选出正确答案吧！`, 'happy');
+                }
+                break;
+            }
+            case 'mole': {
+                this.setMascot('欢迎回来！看图片，敲出刚刚学的字吧！', 'happy');
+                this.moleLater(() => {
+                    if (this.activeGame === 'mole' && this.ml && !this.ml.running) {
+                        this.resumeMole();
+                    }
+                }, 400);
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    // 一键跳转到「趣味练字」学习当前题目汉字并自动播放笔顺演示（学完返回原游戏页）
     practiceCurrentChar() {
         const ch = this.currentTargetChar();
-        if (!ch || !this.app) return;
+        if (!ch || !this.app || !this.activeGame) return;
+        const g = GP_GAMES.find(x => x.id === this.activeGame);
+        const gameTitle = g ? g.title : '闯关游戏';
         this.sfx('playPop');
         this.markWeakChar(ch, 1);
+
+        this.pendingGameReturn = {
+            gameId: this.activeGame,
+            gameTitle,
+            gameIcon: g ? g.icon : '🎮',
+            char: ch
+        };
+
         this.switchAppTab('practice');
-        if (typeof this.app.selectChar === 'function') {
+        if (window.innerWidth <= 600 && typeof this.app.switchMobileTab === 'function') {
+            this.app.switchMobileTab('studio');
+        }
+        if (typeof this.app.selectCharWithCategory === 'function') {
+            this.app.selectCharWithCategory(ch);
+        } else if (typeof this.app.selectChar === 'function') {
             this.app.selectChar(ch);
         }
+        this.syncGameReturnBanner();
+
         setTimeout(() => {
+            if (this.app.canvasEngine) this.app.canvasEngine.resize(true);
+            if (this.app.hanziGuide && typeof this.app.hanziGuide.resize === 'function') {
+                this.app.hanziGuide.resize();
+            }
             if (this.app.hanziGuide && typeof this.app.hanziGuide.animate === 'function') {
-                this.app.hanziGuide.animate();
+                this.app.hanziGuide.animate(() => {
+                    if (!this.hasPendingGameReturn()) return;
+                    const startQuizBtn = document.getElementById('btn-start-quiz');
+                    if (startQuizBtn) startQuizBtn.classList.add('pulse');
+                    if (typeof this.app.setQuizStatus === 'function') {
+                        this.app.setQuizStatus(`👆 试试点下方“笔顺跟写闯关”描一遍，完成后将自动返回【${gameTitle}】！`);
+                    }
+                });
             }
             if (typeof this.app.showToast === 'function') {
-                this.app.showToast(`📖 已为您打开「${ch}」的笔顺演示与画板，练好后点顶部「🎮 闯关乐园」即可继续闯关！`);
+                this.app.showToast(`📖 正在学习「${ch}」，完成练习后将返回【${gameTitle}】继续闯关！`);
             }
         }, 200);
     }
@@ -864,9 +1034,17 @@ class ExamCenter {
         if (examContainer) examContainer.style.display = '';
 
         if (tabName === 'exam') {
+            const ret = this.getPendingGameReturn();
+            if (ret) this.clearPendingGameReturn();
             document.body.classList.add('app-mode-exam');
-            this.later(() => this.onStageVisible(), 60);
+            this.later(() => {
+                this.onStageVisible();
+                if (ret && this.activeGame === ret.gameId) {
+                    this.resumeGameAfterPractice(ret, false);
+                }
+            }, 60);
         } else {
+            this.clearTimers();
             this.pauseMole();
             this.stopStrokeAnimation();
             if (window.soundManager && typeof window.soundManager.stopSpeaking === 'function') {
@@ -911,6 +1089,7 @@ class ExamCenter {
 
     // ==================== 游戏大厅 ====================
     showHub() {
+        this.clearPendingGameReturn();
         this.clearTimers();
         this.pauseMole();
         this.stopStrokeAnimation();
@@ -953,6 +1132,7 @@ class ExamCenter {
     enterGame(gameId) {
         const g = GP_GAMES.find(x => x.id === gameId);
         if (!g) return;
+        this.clearPendingGameReturn();
         this.clearTimers();
         this.pauseMole();
         this.stopStrokeAnimation();
@@ -2471,11 +2651,27 @@ class ExamCenter {
         // 顶栏主 Tab
         on('primary-tab-practice', 'click', () => {
             this.sfx('playPop');
+            this.clearPendingGameReturn();
             this.switchAppTab('practice');
         });
         on('primary-tab-exam', 'click', () => {
             this.sfx('playPop');
-            this.switchAppTab('exam');
+            if (this.hasPendingGameReturn()) {
+                this.returnToGameFromPractice({ completed: false });
+            } else {
+                this.switchAppTab('exam');
+            }
+        });
+        on('btn-game-return-back', 'click', () => {
+            this.sfx('playPop');
+            this.returnToGameFromPractice({ completed: true });
+        });
+        on('btn-game-return-browse', 'click', () => {
+            this.sfx('playPop');
+            this.clearPendingGameReturn();
+            if (this.app && typeof this.app.showToast === 'function') {
+                this.app.showToast('📚 已展开全部分类与汉字，想继续闯关可随时点顶部「🎮 闯关乐园」');
+            }
         });
         on('btn-settings-exam', 'click', () => {
             this.sfx('playPop');

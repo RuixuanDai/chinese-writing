@@ -8653,5 +8653,147 @@ body.app-mode-exam #header-search-box {
     color: #334155;
 }
 
+/* ==================== 从闯关游戏点击「学这字」跳转后的专属返回游戏导航条 ==================== */
+.char-selector-section.is-game-return-mode {
+    background: linear-gradient(90deg, #fffdf5 0%, #eff6ff 100%);
+    border-bottom: 1.5px solid #bfdbfe;
+    padding: 6px 16px;
+}
+
+.char-selector-section.is-game-return-mode .category-bar,
+.char-selector-section.is-game-return-mode .char-list-grid {
+    display: none;
+}
+
+.game-return-banner {
+    max-width: 1480px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.game-return-banner[hidden] {
+    display: none !important;
+}
+
+.game-return-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.game-return-icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.game-return-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.game-return-text strong {
+    color: #d97706;
+    font-weight: 900;
+}
+
+.game-return-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-game-return-browse {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.btn-game-return-browse:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.btn-game-return-back {
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 900;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-game-return-back:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(16, 185, 129, 0.4);
+}
+
+.btn-game-return-back:active {
+    transform: scale(0.97);
+}
+
+.modal-actions.has-three-btns {
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.modal-actions.has-three-btns .btn-modal {
+    padding: 11px 12px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    .char-selector-section.is-game-return-mode {
+        padding: 5px 10px;
+    }
+    .game-return-banner {
+        gap: 8px;
+    }
+    .game-return-info {
+        font-size: 12.5px;
+    }
+    .btn-game-return-browse {
+        height: 30px;
+        padding: 0 9px;
+        font-size: 12px;
+    }
+    .btn-game-return-back {
+        height: 32px;
+        padding: 0 12px;
+        font-size: 12.5px;
+    }
+    .modal-actions.has-three-btns #modal-next-btn {
+        flex-basis: 100%;
+    }
+}
+
+
 
 

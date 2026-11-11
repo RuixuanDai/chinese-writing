@@ -407,6 +407,25 @@ class KidWritingApp {
         });
     }
 
+    // 跨分类选择指定汉字（同步定位左侧分类栏与汉字卡片列表）
+    selectCharWithCategory(char) {
+        if (!char) return;
+        const ownerCat = (typeof CHARACTER_CATEGORIES !== 'undefined' ? CHARACTER_CATEGORIES : []).find(
+            cat => (cat.chars || []).some(item => item.char === char)
+        );
+        if (ownerCat) {
+            const gFilter = this.gradeFilter || 'all';
+            const inCurrentGradeAll = (this.currentCategory === '__grade_all__' && gFilter !== 'all' &&
+                (ownerCat.chars || []).some(item => item.char === char && item.grade === gFilter));
+            if (!inCurrentGradeAll && this.currentCategory !== ownerCat.id) {
+                this.currentCategory = ownerCat.id;
+                this.renderCategories();
+                this.renderCharList(ownerCat.id);
+            }
+        }
+        this.selectChar(char);
+    }
+
     // 选择指定汉字
     selectChar(char) {
         this.currentChar = char;
@@ -1048,10 +1067,13 @@ class KidWritingApp {
                 return;
             }
             const firstChar = hanziMatch[0];
+            if (this.examCenter && typeof this.examCenter.clearPendingGameReturn === 'function') {
+                this.examCenter.clearPendingGameReturn();
+            }
             if (this.examCenter && this.examCenter.activeAppTab === 'exam') {
                 this.examCenter.switchAppTab('practice');
             }
-            this.selectChar(firstChar);
+            this.selectCharWithCategory(firstChar);
             customInput.value = '';
             if (window.soundManager) window.soundManager.playPop();
             this.scheduleNavSync();
@@ -1476,7 +1498,11 @@ class KidWritingApp {
                 handleCloseEvalModal();
                 if (window.soundManager) window.soundManager.playPop();
                 evalModal.classList.remove('visible');
-                this.selectNextChar();
+                if (this.examCenter && typeof this.examCenter.hasPendingGameReturn === 'function' && this.examCenter.hasPendingGameReturn()) {
+                    this.examCenter.returnToGameFromPractice({ completed: true });
+                } else {
+                    this.selectNextChar();
+                }
             });
         }
 
@@ -1518,7 +1544,7 @@ class KidWritingApp {
         if (el) el.textContent = text;
     }
 
-    // 【第 1 步】：跟写闯关通过逻辑 (完成笔顺后，引导必须前往右侧画板亲手独立书写)
+    // 【第 1 步】：跟写闯关通过逻辑 (若从游戏「学这字」进入，完成后可直接跳回原游戏页；否则引导前往右侧画板书写)
     handleQuizPassed(summary) {
         const mistakes = summary ? (summary.totalMistakes || 0) : 0;
         const quizScore = Math.max(72, 100 - mistakes * 7);
@@ -1529,6 +1555,27 @@ class KidWritingApp {
         let gradeBadge = '【优等 · 笔顺小达人】';
         if (mistakes === 0) gradeBadge = '【特优 · 一笔不错】';
         else if (mistakes <= 2) gradeBadge = '【良好 · 笔顺清晰】';
+
+        const gameRet = (this.examCenter && typeof this.examCenter.getPendingGameReturn === 'function')
+            ? this.examCenter.getPendingGameReturn()
+            : null;
+
+        if (gameRet) {
+            this.showQuizSuccessModal({
+                title: '🎉 笔顺闯关成功！',
+                subtitle: `笔顺得分：${quizScore} 分（失误：${mistakes} 次）！\n你已掌握“${this.currentChar}”字的正确笔顺！现在回到【${gameRet.gameTitle}】继续闯关吧！`,
+                starsEarned: 5,
+                badge: gradeBadge,
+                gameReturnTitle: gameRet.gameTitle,
+                onReturnGame: () => {
+                    this.examCenter.returnToGameFromPractice({ completed: true });
+                },
+                onContinue: () => {
+                    this.highlightCanvasForPractice();
+                }
+            });
+            return;
+        }
 
         // 阶段性成功弹窗：引导必须在右侧画板完成亲手书写！
         this.showQuizSuccessModal({
@@ -1543,7 +1590,7 @@ class KidWritingApp {
     }
 
     // 笔顺过关引导弹窗
-    showQuizSuccessModal({ title, subtitle, starsEarned, badge, onContinue }) {
+    showQuizSuccessModal({ title, subtitle, starsEarned, badge, gameReturnTitle, onReturnGame, onContinue }) {
         const modal = document.getElementById('reward-modal');
         if (!modal) return;
 
@@ -1553,12 +1600,9 @@ class KidWritingApp {
         document.getElementById('modal-badge-name').textContent = badge;
 
         const closeBtn = document.getElementById('modal-close-btn');
+        const extraBtn = document.getElementById('modal-extra-btn');
         const nextBtn = document.getElementById('modal-next-btn');
-
-        closeBtn.textContent = '再练一遍笔顺';
-        nextBtn.textContent = '👉 前往画板书写 ➔';
-
-        modal.classList.add('visible');
+        const actionsBox = modal.querySelector('.modal-actions');
 
         const closeModal = () => {
             modal.classList.remove('visible');
@@ -1566,15 +1610,44 @@ class KidWritingApp {
             this.scheduleNavSync();
         };
 
+        if (gameReturnTitle && typeof onReturnGame === 'function') {
+            closeBtn.textContent = '🔄 再练笔顺';
+            if (extraBtn) {
+                extraBtn.style.display = 'inline-flex';
+                extraBtn.style.alignItems = 'center';
+                extraBtn.style.justifyContent = 'center';
+                extraBtn.textContent = '✍️ 去画板写写';
+                extraBtn.onclick = () => {
+                    closeModal();
+                    if (onContinue) onContinue();
+                };
+            }
+            if (actionsBox) actionsBox.classList.add('has-three-btns');
+            nextBtn.textContent = `🎮 返回${gameReturnTitle} ➔`;
+            nextBtn.onclick = () => {
+                closeModal();
+                onReturnGame();
+            };
+        } else {
+            closeBtn.textContent = '再练一遍笔顺';
+            if (extraBtn) {
+                extraBtn.style.display = 'none';
+                extraBtn.onclick = null;
+            }
+            if (actionsBox) actionsBox.classList.remove('has-three-btns');
+            nextBtn.textContent = '👉 前往画板书写 ➔';
+            nextBtn.onclick = () => {
+                closeModal();
+                if (onContinue) onContinue();
+            };
+        }
+
+        modal.classList.add('visible');
+
         closeBtn.onclick = () => {
             closeModal();
             const startQuizBtn = document.getElementById('btn-start-quiz');
             if (startQuizBtn) startQuizBtn.click();
-        };
-
-        nextBtn.onclick = () => {
-            closeModal();
-            if (onContinue) onContinue();
         };
     }
 
@@ -1673,10 +1746,19 @@ class KidWritingApp {
         this.addStars(starsAwarded, '智能书写评测');
         this.markCharCompleted(this.currentChar);
 
-        // 如果拥有足够星星，显示扭蛋快捷按钮
+        // 若当前是从闯关游戏「学这字」进入，主操作按钮切换为返回原游戏，否则保持「挑战下一个字」
+        const gameRet = (this.examCenter && typeof this.examCenter.getPendingGameReturn === 'function')
+            ? this.examCenter.getPendingGameReturn()
+            : null;
+        const evalNextBtn = document.getElementById('btn-eval-next');
+        if (evalNextBtn) {
+            evalNextBtn.textContent = gameRet ? `🎮 返回${gameRet.gameTitle} ➔` : '挑战下一个字 ➔';
+        }
+
+        // 如果拥有足够星星（且非闯关中途学字状态），显示扭蛋快捷按钮
         const evalGashaponBtn = document.getElementById('btn-eval-gashapon');
         if (evalGashaponBtn) {
-            evalGashaponBtn.style.display = (this.stars >= this.eggCost) ? 'inline-flex' : 'none';
+            evalGashaponBtn.style.display = (!gameRet && this.stars >= this.eggCost) ? 'inline-flex' : 'none';
         }
 
         // 弹出报告弹窗并自动播放语音点评 (温柔姐姐晓晓神经语音)
@@ -1762,8 +1844,15 @@ class KidWritingApp {
         modal.classList.add('visible');
 
         const closeBtn = document.getElementById('modal-close-btn');
+        const extraBtn = document.getElementById('modal-extra-btn');
         const nextBtn = document.getElementById('modal-next-btn');
+        const actionsBox = modal.querySelector('.modal-actions');
 
+        if (extraBtn) {
+            extraBtn.style.display = 'none';
+            extraBtn.onclick = null;
+        }
+        if (actionsBox) actionsBox.classList.remove('has-three-btns');
         closeBtn.textContent = '再练一次';
         nextBtn.textContent = '练下一个字 ➔';
 
@@ -3398,7 +3487,11 @@ class KidWritingApp {
             }
 
             if (window.soundManager) window.soundManager.playPop();
-            this.examCenter.switchAppTab('exam');
+            if (typeof this.examCenter.hasPendingGameReturn === 'function' && this.examCenter.hasPendingGameReturn()) {
+                this.examCenter.returnToGameFromPractice({ completed: false });
+            } else {
+                this.examCenter.switchAppTab('exam');
+            }
             return true;
         }
 

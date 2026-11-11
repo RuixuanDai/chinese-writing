@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261110_v22">
+    <link rel="stylesheet" href="css/style.css?v=20261110_v23">
     <script>
         // 最早阶段识别 iPad/iOS、Android 与桌面独立 App (standalone) 状态，精准计算真实可视高度
         (function() {
@@ -126,8 +126,18 @@
         </div>
     </div>
 
-    <!-- 汉字分类与选单条（学龄分级与难度已收纳至⚙️设置页，主界面保持简洁） -->
-    <section class="char-selector-section">
+    <!-- 汉字分类与选单条（从游戏点「学这字」进入时自动切换为精简的返回游戏导航条） -->
+    <section id="char-selector-section" class="char-selector-section">
+        <div id="game-return-banner" class="game-return-banner" hidden>
+            <div class="game-return-info">
+                <span id="game-return-icon" class="game-return-icon" aria-hidden="true">🎮</span>
+                <span id="game-return-text" class="game-return-text">正在学习闯关汉字</span>
+            </div>
+            <div class="game-return-actions">
+                <button type="button" id="btn-game-return-browse" class="btn-game-return-browse" title="展开分类与汉字列表，留在趣味练字自由选字">📚 自由选字</button>
+                <button type="button" id="btn-game-return-back" class="btn-game-return-back">✅ 学好啦，返回游戏继续闯关 ➔</button>
+            </div>
+        </div>
         <div id="category-bar" class="category-bar"></div>
         <div id="char-list-grid" class="char-list-grid"></div>
     </section>
@@ -598,6 +608,7 @@
 
             <div class="modal-actions">
                 <button id="modal-close-btn" class="btn-modal secondary">再练一次</button>
+                <button id="modal-extra-btn" class="btn-modal secondary" style="display: none;">✍️ 去画板写写</button>
                 <button id="modal-next-btn" class="btn-modal primary">练下一个字 ➔</button>
             </div>
         </div>
@@ -1111,15 +1122,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261110_v22"></script>
-    <script src="lib/web-online-tts.js?v=20261110_v22"></script>
-    <script src="js/sound.js?v=20261110_v22"></script>
-    <script src="js/char-data.js?v=20261110_v22"></script>
-    <script src="js/stroke-cache.js?v=20261110_v22"></script>
-    <script src="js/canvas.js?v=20261110_v22"></script>
-    <script src="js/hanzi-guide.js?v=20261110_v22"></script>
-    <script src="js/evaluator.js?v=20261110_v22"></script>
-    <script src="js/quiz-test.js?v=20261110_v22"></script>
-    <script src="js/app.js?v=20261110_v22"></script>
+    <script src="lib/web-natural-tts.js?v=20261110_v23"></script>
+    <script src="lib/web-online-tts.js?v=20261110_v23"></script>
+    <script src="js/sound.js?v=20261110_v23"></script>
+    <script src="js/char-data.js?v=20261110_v23"></script>
+    <script src="js/stroke-cache.js?v=20261110_v23"></script>
+    <script src="js/canvas.js?v=20261110_v23"></script>
+    <script src="js/hanzi-guide.js?v=20261110_v23"></script>
+    <script src="js/evaluator.js?v=20261110_v23"></script>
+    <script src="js/quiz-test.js?v=20261110_v23"></script>
+    <script src="js/app.js?v=20261110_v23"></script>
 </body>
 </html>
