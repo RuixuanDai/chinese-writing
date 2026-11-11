@@ -2,14 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta id="app-viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>快乐小书法家 · 儿童趣味练字乐园</title>
     <!-- iPad / iOS 触屏与全屏独立 App 优化 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="快乐练字">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#fbf9f5">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -17,15 +17,23 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261110_v20">
+    <link rel="stylesheet" href="css/style.css?v=20261110_v21">
     <script>
-        // 最早阶段识别 iPad/iOS 与桌面独立 App (standalone) 状态，确保首帧顶栏安全区留白零闪烁
+        // 最早阶段识别 iPad/iOS、Android 与桌面独立 App (standalone) 状态，精准计算真实可视高度
         (function() {
             var ua = navigator.userAgent || '';
             var isIOS = /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            var isAndroid = /Android/i.test(ua);
             var isStandalone = !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true);
-            if (isIOS) document.documentElement.classList.add('is-ios');
-            if (isStandalone) document.documentElement.classList.add('is-standalone');
+            var root = document.documentElement;
+            if (isIOS) {
+                root.classList.add('is-ios');
+                // 仅在 iOS/iPadOS 开启 viewport-fit=cover 以支持安全区；避免 Android WebAPK 开启后将状态栏/导航栏高度错误计入 100dvh 导致底部被截断
+                var vp = document.getElementById('app-viewport');
+                if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+            }
+            if (isAndroid) root.classList.add('is-android');
+            if (isStandalone) root.classList.add('is-standalone');
         })();
         // 最早阶段捕获浏览器原生 PWA 一键安装事件，确保不错过触发时机，并立即注册 Service Worker
         window.__deferredPwaPrompt = null;
@@ -1103,15 +1111,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261110_v20"></script>
-    <script src="lib/web-online-tts.js?v=20261110_v20"></script>
-    <script src="js/sound.js?v=20261110_v20"></script>
-    <script src="js/char-data.js?v=20261110_v20"></script>
-    <script src="js/stroke-cache.js?v=20261110_v20"></script>
-    <script src="js/canvas.js?v=20261110_v20"></script>
-    <script src="js/hanzi-guide.js?v=20261110_v20"></script>
-    <script src="js/evaluator.js?v=20261110_v20"></script>
-    <script src="js/quiz-test.js?v=20261110_v20"></script>
-    <script src="js/app.js?v=20261110_v20"></script>
+    <script src="lib/web-natural-tts.js?v=20261110_v21"></script>
+    <script src="lib/web-online-tts.js?v=20261110_v21"></script>
+    <script src="js/sound.js?v=20261110_v21"></script>
+    <script src="js/char-data.js?v=20261110_v21"></script>
+    <script src="js/stroke-cache.js?v=20261110_v21"></script>
+    <script src="js/canvas.js?v=20261110_v21"></script>
+    <script src="js/hanzi-guide.js?v=20261110_v21"></script>
+    <script src="js/evaluator.js?v=20261110_v21"></script>
+    <script src="js/quiz-test.js?v=20261110_v21"></script>
+    <script src="js/app.js?v=20261110_v21"></script>
 </body>
 </html>

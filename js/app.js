@@ -1928,29 +1928,106 @@ class KidWritingApp {
         return false;
     }
 
-    // 同步 iPad / iOS 与桌面独立 App (standalone) 环境类名，保障顶栏安全区留白与触控体验
+    // 同步 iPad / iOS / Android 与桌面独立 App (standalone) 环境类名，并动态校准真实可视高度（解决 Android WebAPK 状态栏+导航栏占用导致 100dvh 溢出裁剪问题）
     syncDeviceEnvironmentClasses() {
-        const applyClasses = () => {
+        if (!this._vhProbe && document.body) {
+            const probe = document.createElement('div');
+            probe.setAttribute('aria-hidden', 'true');
+            probe.style.cssText = 'position:fixed;top:0;bottom:0;left:0;width:0;pointer-events:none;visibility:hidden;z-index:-1;';
+            document.body.appendChild(probe);
+            this._vhProbe = probe;
+        }
+
+        const syncLayoutMetrics = () => {
+            const ua = navigator.userAgent || '';
             const isIOS = this.isIOSDevice();
+            const isAndroid = /Android/i.test(ua);
             const isStandalone = this.isStandaloneMode();
             const isTouch = this.isMobileOrTabletDevice();
+
             [document.documentElement, document.body].forEach((el) => {
                 if (!el) return;
                 el.classList.toggle('is-ios', isIOS);
+                el.classList.toggle('is-android', isAndroid);
                 el.classList.toggle('is-standalone', isStandalone);
                 el.classList.toggle('is-touch', isTouch);
             });
-        };
-        applyClasses();
-        if (window.matchMedia) {
-            try {
-                const mq = window.matchMedia('(display-mode: standalone)');
-                if (typeof mq.addEventListener === 'function') {
-                    mq.addEventListener('change', applyClasses);
-                } else if (typeof mq.addListener === 'function') {
-                    mq.addListener(applyClasses);
+
+            // 输入框聚焦弹出软键盘期间不压缩主界面高度
+            const active = document.activeElement;
+            if (active && /^(INPUT|TEXTAREA)$/i.test(active.tagName)) return;
+
+            const candidates = [];
+            if (this._vhProbe) {
+                const probeH = this._vhProbe.getBoundingClientRect().height;
+                if (probeH > 200) candidates.push(probeH);
+            }
+            if (window.innerHeight > 200) candidates.push(window.innerHeight);
+            if (document.documentElement && document.documentElement.clientHeight > 200) {
+                candidates.push(document.documentElement.clientHeight);
+            }
+            if (window.visualViewport && window.visualViewport.height > 200) {
+                const scale = window.visualViewport.scale || 1;
+                if (Math.abs(scale - 1) < 0.06) {
+                    candidates.push(window.visualViewport.height);
                 }
-            } catch (e) {}
+            }
+            if (isAndroid && isStandalone && window.screen && window.screen.availHeight > 200) {
+                const isLand = window.innerWidth >= window.innerHeight;
+                const availH = isLand
+                    ? Math.min(window.screen.availWidth || window.screen.availHeight, window.screen.availHeight)
+                    : Math.max(window.screen.availWidth || window.screen.availHeight, window.screen.availHeight);
+                if (availH > 200 && availH <= window.innerHeight + 4) {
+                    candidates.push(availH);
+                }
+            }
+
+            const orientedScreenH = (window.screen && window.screen.height > 200 && window.screen.width > 200)
+                ? (window.innerWidth >= window.innerHeight
+                    ? Math.min(window.screen.width, window.screen.height)
+                    : Math.max(window.screen.width, window.screen.height))
+                : 0;
+
+            if (candidates.length) {
+                let realH = Math.floor(Math.min(...candidates));
+                // 部分 Android 平板/折叠屏 ROM 在 standalone WebAPK 模式下仍显示顶部状态栏(~40px)与底部导航条(~18px)，但视口 API 仍返回完整物理屏高
+                if (isAndroid && isStandalone && orientedScreenH > 200 && (orientedScreenH - realH) < 24) {
+                    realH = Math.max(320, orientedScreenH - 64);
+                }
+                document.documentElement.style.setProperty('--app-height', `${realH}px`);
+            }
+
+            // 仅当 iOS 旧版主屏幕书签缓存了 black-translucent（视口高度等于完整屏幕高度）且系统未注入 safe-area-inset-top 时，才补 20px 状态栏避让
+            const header = document.querySelector('.app-header');
+            if (header) {
+                document.documentElement.classList.remove('ios-translucent-fallback');
+                if (isIOS && isStandalone && orientedScreenH > 200 && Math.abs(window.innerHeight - orientedScreenH) <= 4) {
+                    const padTop = parseFloat(window.getComputedStyle(header).paddingTop) || 0;
+                    if (padTop < 16) {
+                        document.documentElement.classList.add('ios-translucent-fallback');
+                    }
+                }
+            }
+        };
+
+        syncLayoutMetrics();
+        if (!this._layoutMetricsEventsBound) {
+            this._layoutMetricsEventsBound = true;
+            window.addEventListener('resize', syncLayoutMetrics, { passive: true });
+            window.addEventListener('orientationchange', () => setTimeout(syncLayoutMetrics, 120), { passive: true });
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', syncLayoutMetrics, { passive: true });
+            }
+            if (window.matchMedia) {
+                try {
+                    const mq = window.matchMedia('(display-mode: standalone)');
+                    if (typeof mq.addEventListener === 'function') {
+                        mq.addEventListener('change', syncLayoutMetrics);
+                    } else if (typeof mq.addListener === 'function') {
+                        mq.addListener(syncLayoutMetrics);
+                    }
+                } catch (e) {}
+            }
         }
     }
 
