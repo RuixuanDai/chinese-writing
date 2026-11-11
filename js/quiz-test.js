@@ -930,17 +930,17 @@ class ExamCenter {
         const grid = document.getElementById('game-card-grid');
         if (grid) {
             grid.innerHTML = GP_GAMES.map((g, i) => `
-                <button type="button" class="game-card theme-${g.theme}" data-game="${g.id}" style="--n:${i}" aria-label="${g.title}：${g.desc}">
-                    <span class="game-card-art"><span class="game-card-emoji">${g.icon}</span></span>
-                    <span class="game-card-body">
+                <div role="button" tabindex="0" class="game-card theme-${g.theme}" data-game="${g.id}" style="--n:${i}" aria-label="${g.title}：${g.desc}">
+                    <div class="game-card-art"><span class="game-card-emoji">${g.icon}</span></div>
+                    <div class="game-card-body">
                         <span class="game-card-title">${g.title}</span>
                         <span class="game-card-desc">${g.desc}</span>
-                    </span>
-                    <span class="game-card-foot">
+                    </div>
+                    <div class="game-card-foot">
                         <span class="game-card-stars">⭐ ${this.storedStars[g.id] || 0}</span>
                         <span class="game-card-play">开始 ▶</span>
-                    </span>
-                </button>
+                    </div>
+                </div>
             `).join('');
         }
         const today = document.getElementById('game-hub-today');
@@ -2130,16 +2130,16 @@ class ExamCenter {
         if (grid) {
             grid.dataset.pairs = String(chosen.length);
             grid.innerHTML = cards.map(card => `
-                <button type="button" class="mm-card" data-id="${card.id}" aria-label="翻牌">
-                    <span class="mm-inner">
-                        <span class="mm-face mm-back"><span class="mm-back-emoji">🐼</span></span>
-                        <span class="mm-face mm-front ${card.kind}">
+                <div role="button" tabindex="0" class="mm-card" data-id="${card.id}" aria-label="翻牌">
+                    <div class="mm-inner">
+                        <div class="mm-face mm-back"><span class="mm-back-emoji">🐼</span></div>
+                        <div class="mm-face mm-front ${card.kind}">
                             ${card.kind === 'pic'
                                 ? `<img src="${this.info(card.key).image}" alt="" draggable="false">`
                                 : `<span class="mm-char">${card.key}</span>`}
-                        </span>
-                    </span>
-                </button>
+                        </div>
+                    </div>
+                </div>
             `).join('');
         }
         const btn = document.getElementById('btn-mm-restart');

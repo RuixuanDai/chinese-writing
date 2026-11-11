@@ -80,6 +80,10 @@ class KidWritingApp {
     }
 
     init() {
+        // 0. 同步 iOS / iPadOS 与桌面独立 App (standalone) 环境类，并开启顶栏触控防吞点保镖
+        this.syncDeviceEnvironmentClasses();
+        this.initHeaderFastTapGuard();
+
         // 1. 初始化手写画板
         this.canvasEngine = new HandwritingCanvas('gridCanvas', 'drawCanvas', 'canvas-box');
         let lastBlockedToast = 0;
@@ -1924,6 +1928,89 @@ class KidWritingApp {
         return false;
     }
 
+    // 同步 iPad / iOS 与桌面独立 App (standalone) 环境类名，保障顶栏安全区留白与触控体验
+    syncDeviceEnvironmentClasses() {
+        const applyClasses = () => {
+            const isIOS = this.isIOSDevice();
+            const isStandalone = this.isStandaloneMode();
+            const isTouch = this.isMobileOrTabletDevice();
+            [document.documentElement, document.body].forEach((el) => {
+                if (!el) return;
+                el.classList.toggle('is-ios', isIOS);
+                el.classList.toggle('is-standalone', isStandalone);
+                el.classList.toggle('is-touch', isTouch);
+            });
+        };
+        applyClasses();
+        if (window.matchMedia) {
+            try {
+                const mq = window.matchMedia('(display-mode: standalone)');
+                if (typeof mq.addEventListener === 'function') {
+                    mq.addEventListener('change', applyClasses);
+                } else if (typeof mq.addListener === 'function') {
+                    mq.addListener(applyClasses);
+                }
+            } catch (e) {}
+        }
+    }
+
+    // 顶栏与导航按钮触控增敏保镖：解决 iPad / 触屏设备上手指轻微滑动 (4~20px) 或贴近顶部时系统吞掉合成 click 事件的问题
+    initHeaderFastTapGuard() {
+        if (this._headerFastTapBound) return;
+        this._headerFastTapBound = true;
+
+        const interactiveSel = '.app-header button, .app-header [role="button"], .game-hub-hero button, .game-topbar button, #mobile-mode-tabs button';
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target && e.target.closest ? e.target.closest(interactiveSel) : null;
+            if (btn) {
+                btn.__lastNativeClickTs = Date.now();
+            }
+        }, true);
+
+        let touchState = null;
+        document.addEventListener('touchstart', (e) => {
+            if (!e.touches || e.touches.length !== 1) {
+                touchState = null;
+                return;
+            }
+            const btn = e.target && e.target.closest ? e.target.closest(interactiveSel) : null;
+            if (!btn || btn.disabled) {
+                touchState = null;
+                return;
+            }
+            const t = e.touches[0];
+            touchState = {
+                btn,
+                x: t.clientX,
+                y: t.clientY,
+                ts: Date.now()
+            };
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            if (!touchState || !e.changedTouches || !e.changedTouches.length) return;
+            const state = touchState;
+            touchState = null;
+            const t = e.changedTouches[0];
+            const dist = Math.hypot(t.clientX - state.x, t.clientY - state.y);
+            const elapsed = Date.now() - state.ts;
+            if (dist > 24 || elapsed > 600) return;
+
+            const endEl = document.elementFromPoint(t.clientX, t.clientY);
+            const endBtn = endEl && endEl.closest ? endEl.closest(interactiveSel) : state.btn;
+            if (endBtn && endBtn !== state.btn) return;
+
+            setTimeout(() => {
+                const lastClick = state.btn.__lastNativeClickTs || 0;
+                if (Date.now() - lastClick > 260 && !state.btn.disabled && document.body.contains(state.btn)) {
+                    state.btn.__lastNativeClickTs = Date.now();
+                    state.btn.click();
+                }
+            }, 55);
+        }, { passive: true });
+    }
+
     // 初始化 PWA Service Worker 与网页端自动弹出「一键安装 App」提示
     initPWA() {
         const installBtn = document.getElementById('btn-settings-install-pwa');
@@ -2019,7 +2106,16 @@ class KidWritingApp {
         });
 
         if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) {
-            navigator.serviceWorker.register('./sw.js').catch((err) => {
+            navigator.serviceWorker.register('./sw.js').then((reg) => {
+                if (reg && typeof reg.update === 'function') {
+                    reg.update().catch(() => {});
+                    document.addEventListener('visibilitychange', () => {
+                        if (document.visibilityState === 'visible') {
+                            reg.update().catch(() => {});
+                        }
+                    });
+                }
+            }).catch((err) => {
                 console.warn('ServiceWorker registration warning:', err);
             });
             // 离线缓存接管页面后，若设置页正打开则即时刷新「离线可用」状态

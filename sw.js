@@ -5,7 +5,7 @@
  * 2. 断网/弱网状态下无缝回退到本地 Cache Storage，支持 100% 离线练字、笔顺演示与离线语音。
  */
 
-const CACHE_NAME = 'chinese-writing-pwa-v3.16';
+const CACHE_NAME = 'chinese-writing-pwa-v3.17';
 
 const CORE_ASSETS = [
     './',
@@ -100,10 +100,11 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // 3. 针对同源 HTML/CSS/JS 及笔顺 CDN JSON 数据：采用 Network-First (网络优先，离线兜底)
+    // 3. 针对同源 HTML/CSS/JS 及笔顺 CDN JSON 数据：采用 Network-First (网络优先，离线兜底；同源请求强制 no-cache 校验最新文件)
     if (url.origin === self.location.origin || url.hostname.includes('jsdelivr.net')) {
+        const fetchOpts = url.origin === self.location.origin ? { cache: 'no-cache' } : undefined;
         event.respondWith(
-            fetch(req)
+            fetch(req, fetchOpts)
                 .then((networkRes) => {
                     if (networkRes && networkRes.status === 200) {
                         const resClone = networkRes.clone();

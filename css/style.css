@@ -75,7 +75,13 @@ img, svg, canvas {
     -webkit-touch-callout: none;
 }
 
-/* 顶部导航栏 */
+button {
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+}
+
+/* 顶部导航栏（自动留出 iPadOS / iOS 独立 App 顶部状态栏安全区，彻底解决顶部与时间/电量重叠不好点击问题） */
 .app-header {
     background: #ffffff;
     border-bottom: 2px solid var(--border-color);
@@ -83,12 +89,24 @@ img, svg, canvas {
     position: relative;
     z-index: 100;
     flex-shrink: 0;
+    padding-top: env(safe-area-inset-top, 0px);
+}
+
+html.is-ios.is-standalone .app-header,
+body.is-ios.is-standalone .app-header {
+    padding-top: max(env(safe-area-inset-top, 0px), 24px);
+}
+
+@media (display-mode: standalone) and (pointer: coarse) {
+    .app-header {
+        padding-top: max(env(safe-area-inset-top, 0px), 22px);
+    }
 }
 
 .header-inner {
     max-width: 1480px;
     margin: 0 auto;
-    padding: 4px 14px;
+    padding: 6px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -111,9 +129,7 @@ img, svg, canvas {
 .logo-title {
     font-size: 20px;
     font-weight: 800;
-    background: linear-gradient(135deg, #ff6b6b, #f368e0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ff5252;
     white-space: nowrap;
 }
 
@@ -1247,6 +1263,10 @@ img, svg, canvas {
 /* 米字格网格线装饰在 HanziWriter 背后 (与右侧画板统一虚线与色系) */
 .writer-grid-lines {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
     pointer-events: none;
 }
@@ -2233,6 +2253,10 @@ body.writing-active .canvas-box {
 }
 .modal-overlay {
     position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
@@ -4602,6 +4626,10 @@ button.settings-stat-card:active {
 
 .settings-switch-slider {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
     background: #cbd5e1;
     border-radius: 14px;
@@ -5266,119 +5294,141 @@ body.app-mode-exam #header-search-box {
     }
 }
 
-/* iPad 横竖屏顶栏自适应 (721px ~ 1180px)：确保所有核心入口一排完整显示、绝不溢出裁切 */
+/* iPad 横竖屏顶栏自适应 (721px ~ 1180px)：加大按钮高度与触控热区，全屏开关归入设置，确保所有顶部按钮一排宽松好点 */
 @media (max-width: 1180px) and (min-width: 721px) {
     .header-inner {
-        padding: 4px 10px;
-        gap: 5px;
+        padding: 6px 12px;
+        gap: 6px;
     }
     .logo-icon {
-        font-size: 18px;
+        font-size: 20px;
     }
     .logo-title {
-        font-size: 16px;
+        font-size: 16.5px;
     }
     .app-primary-tabs {
-        padding: 2px;
-        gap: 2px;
-    }
-    .primary-tab-btn {
-        padding: 4px 9px;
-        font-size: 12px;
+        padding: 3px;
         gap: 3px;
     }
+    .primary-tab-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        padding: 6px 13px;
+        font-size: 13px;
+        gap: 4px;
+        touch-action: manipulation;
+    }
     .search-box {
-        min-width: 102px;
-        width: 112px;
-        padding: 2px 3px 2px 8px;
+        min-width: 108px;
+        width: 120px;
+        padding: 3px 4px 3px 9px;
     }
     .search-box input {
-        font-size: 12px;
-        min-width: 44px;
-        width: 52px;
+        font-size: 12.5px;
+        min-width: 48px;
+        width: 56px;
     }
     .search-box button {
-        padding: 2px 7px;
-        font-size: 11.5px;
+        padding: 4px 8px;
+        font-size: 12px;
     }
     .header-actions {
-        gap: 4px;
+        gap: 5px;
         flex: 0 1 auto;
         min-width: 0;
     }
+    .fullscreen-toggle-btn {
+        display: none;
+    }
     .star-badge,
-    .completed-badge,
+    .completed-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 9px;
+        font-size: 12px;
+        height: 34px;
+        min-height: 34px;
+        flex-shrink: 0;
+    }
     .gashapon-trigger-btn,
     .sticker-book-trigger-btn,
     .sound-toggle-btn,
-    .fullscreen-toggle-btn,
     .header-install-pwa-btn,
     .settings-trigger-btn {
-        padding: 3px 7px;
-        font-size: 11.5px;
-        height: 30px;
-        min-height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 11px;
+        font-size: 12.5px;
+        height: 36px;
+        min-height: 36px;
         flex-shrink: 0;
+        touch-action: manipulation;
     }
 }
 
-/* iPad 竖屏紧凑顶栏 (721px ~ 960px，含 iPad Mini 768px / Air 820px / Pro 11" 834px)：全屏开关归入设置，确保设置与声音按钮 100% 可见 */
+/* iPad 竖屏紧凑顶栏 (721px ~ 960px，含 iPad Mini 768px / Air 820px / Pro 11" 834px)：保持 34px+ 舒适触控高度 */
 @media (max-width: 960px) and (min-width: 721px) {
     .header-inner {
-        padding: 4px 6px;
-        gap: 3px;
+        padding: 6px 8px;
+        gap: 4px;
     }
     .logo-icon {
         display: none;
     }
     .logo-title {
-        font-size: 14px;
+        font-size: 15px;
     }
     .app-primary-tabs {
         padding: 2px;
         gap: 2px;
     }
     .primary-tab-btn {
-        padding: 4px 6px;
-        font-size: 11px;
-        gap: 2px;
+        min-height: 34px;
+        padding: 5px 9px;
+        font-size: 12px;
+        gap: 3px;
     }
     .search-box {
-        min-width: 80px;
-        width: 86px;
-        padding: 2px 2px 2px 6px;
+        min-width: 86px;
+        width: 94px;
+        padding: 2px 3px 2px 7px;
     }
     .search-box input {
-        font-size: 11px;
-        min-width: 34px;
-        width: 38px;
+        font-size: 11.5px;
+        min-width: 36px;
+        width: 42px;
     }
     .search-box button {
-        padding: 2px 5px;
-        font-size: 10.5px;
+        padding: 3px 6px;
+        font-size: 11px;
     }
     .header-actions {
-        gap: 3px;
+        gap: 4px;
         overflow-x: auto;
         scrollbar-width: none;
     }
     .header-actions::-webkit-scrollbar {
         display: none;
     }
-    .fullscreen-toggle-btn {
-        display: none;
-    }
     .star-badge,
-    .completed-badge,
+    .completed-badge {
+        padding: 3px 7px;
+        font-size: 11.5px;
+        height: 32px;
+        min-height: 32px;
+    }
     .gashapon-trigger-btn,
     .sticker-book-trigger-btn,
     .sound-toggle-btn,
     .header-install-pwa-btn,
     .settings-trigger-btn {
-        padding: 2px 5px;
-        font-size: 10.5px;
-        height: 28px;
-        min-height: 28px;
+        padding: 0 8px;
+        font-size: 11.5px;
+        height: 34px;
+        min-height: 34px;
     }
 }
 
@@ -5465,10 +5515,8 @@ body.app-mode-exam #header-search-box {
     margin: 0;
     font-size: 24px;
     font-weight: 900;
-    background: linear-gradient(135deg, #f97316, #ec4899 55%, #8b5cf6);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ea580c;
+    line-height: 1.25;
     white-space: nowrap;
 }
 
@@ -5489,6 +5537,9 @@ body.app-mode-exam #header-search-box {
 }
 
 .game-hub-today {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
     background: #fffbeb;
     border: 1.5px solid #fcd34d;
     color: #b45309;
@@ -5500,15 +5551,20 @@ body.app-mode-exam #header-search-box {
 }
 
 .btn-hub-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
     background: #ffffff;
     border: 1.5px solid #cbd5e1;
     color: #334155;
     font-size: 13px;
     font-weight: 800;
-    padding: 7px 14px;
+    padding: 6px 14px;
     border-radius: 999px;
     cursor: pointer;
     white-space: nowrap;
+    touch-action: manipulation;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -5575,8 +5631,13 @@ body.app-mode-exam #header-search-box {
 
 .game-card {
     position: relative;
+    -webkit-appearance: none;
+    appearance: none;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
     min-height: 0;
     text-align: left;
     padding: 0;
@@ -5585,6 +5646,8 @@ body.app-mode-exam #header-search-box {
     border-radius: 22px;
     overflow: hidden;
     cursor: pointer;
+    touch-action: manipulation;
+    box-sizing: border-box;
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
     animation: gpCardIn 0.45s ease both;
@@ -5603,12 +5666,15 @@ body.app-mode-exam #header-search-box {
 
 .game-card-art {
     position: relative;
+    width: 100%;
+    align-self: stretch;
     height: 108px;
     background: var(--g-grad);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .game-card-art::before,
@@ -5650,9 +5716,13 @@ body.app-mode-exam #header-search-box {
 .game-card-body {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    align-self: stretch;
     gap: 3px;
     padding: 10px 14px 4px;
     flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .game-card-title {
@@ -5662,6 +5732,7 @@ body.app-mode-exam #header-search-box {
 }
 
 .game-card-desc {
+    width: 100%;
     font-size: 12.5px;
     font-weight: 600;
     color: #64748b;
@@ -5671,10 +5742,13 @@ body.app-mode-exam #header-search-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    align-self: stretch;
     gap: 6px;
     padding: 8px 14px 12px;
     margin-top: auto;
     flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .game-card-stars {
@@ -6393,6 +6467,10 @@ body.app-mode-exam #header-search-box {
 
 .ls-ring {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
     border-radius: 50%;
     border: 4px solid rgba(96, 165, 250, 0.6);
@@ -6424,10 +6502,14 @@ body.app-mode-exam #header-search-box {
 .ls-card,
 .wd-piece {
     position: relative;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
     min-height: 130px;
     border-radius: 22px;
     background: #ffffff;
     cursor: pointer;
+    touch-action: manipulation;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6628,6 +6710,7 @@ body.app-mode-exam #header-search-box {
 
 .sk-svg-box {
     width: min(100%, 300px);
+    height: min(36vh, 260px);
     aspect-ratio: 1 / 1;
     border: 3px solid #fca5a5;
     border-radius: 18px;
@@ -6724,12 +6807,17 @@ body.app-mode-exam #header-search-box {
 }
 
 .sk-num {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    min-height: 80px;
     aspect-ratio: 1 / 1;
     max-height: 112px;
     border-radius: 50%;
     border: 3px solid #fde68a;
     background: radial-gradient(circle at 35% 30%, #ffffff, #fef3c7);
     cursor: pointer;
+    touch-action: manipulation;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6927,6 +7015,10 @@ body.app-mode-exam #header-search-box {
 
 .exam-ant-svg {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
     width: 100%;
     height: 100%;
@@ -7015,16 +7107,26 @@ body.app-mode-exam #header-search-box {
 
 .mm-card {
     position: relative;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
     min-height: 96px;
     padding: 0;
     border: none;
     background: none;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .mm-inner {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
+    width: 100%;
+    height: 100%;
     transform-style: preserve-3d;
     transition: transform 0.45s cubic-bezier(0.4, 1.4, 0.6, 1);
 }
@@ -7036,7 +7138,13 @@ body.app-mode-exam #header-search-box {
 
 .mm-face {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7180,7 +7288,13 @@ body.app-mode-exam #header-search-box {
 
 .ml-body {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: 1;
     border-radius: 48% 48% 16% 16% / 55% 55% 12% 12%;
     background: radial-gradient(circle at 40% 28%, #c58f5d 0%, #a16207 58%, #854d0e 100%);
@@ -7191,6 +7305,7 @@ body.app-mode-exam #header-search-box {
     position: absolute;
     top: 3%;
     width: 18%;
+    height: 18%;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     background: #92400e;
@@ -7204,6 +7319,7 @@ body.app-mode-exam #header-search-box {
     top: 20%;
     z-index: 2;
     width: 10%;
+    height: 10%;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     background: #1f2937;
@@ -7219,6 +7335,7 @@ body.app-mode-exam #header-search-box {
     left: 50%;
     z-index: 2;
     width: 15%;
+    height: 11%;
     aspect-ratio: 1.4 / 1;
     border-radius: 50%;
     background: #f472b6;
@@ -7268,6 +7385,10 @@ body.app-mode-exam #header-search-box {
 .ml-hole.hit .ml-eye::before {
     content: '✕';
     position: absolute;
+    top: -60%;
+    right: -60%;
+    bottom: -60%;
+    left: -60%;
     inset: -60%;
     display: flex;
     align-items: center;
@@ -7306,16 +7427,37 @@ body.app-mode-exam #header-search-box {
 @keyframes gpFadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes gpFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 @keyframes gpCardIn { from { opacity: 0; transform: translateY(14px) scale(0.96); } to { opacity: 1; transform: none; } }
-@keyframes gpBounce { 0% { scale: 1; } 40% { scale: 1.25; } 70% { scale: 0.92; } 100% { scale: 1; } }
-@keyframes gpBubblePop { 0% { opacity: 0.3; scale: 0.95; } 100% { opacity: 1; scale: 1; } }
+@keyframes gpBounce { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 70% { transform: scale(0.92); } 100% { transform: scale(1); } }
+@keyframes gpBubblePop { 0% { opacity: 0.3; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes gpPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.45); } 50% { box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); } }
-@keyframes gpBump { 0% { scale: 1; } 35% { scale: 1.28; } 100% { scale: 1; } }
-@keyframes gpStamp { 0% { scale: 2.2; opacity: 0; } 100% { scale: 1; opacity: 1; } }
-@keyframes gpShake { 0%, 100% { translate: 0 0; } 20% { translate: -7px 0; } 40% { translate: 7px 0; } 60% { translate: -5px 0; } 80% { translate: 5px 0; } }
-@keyframes gpWobble { 0%, 100% { rotate: 0deg; } 25% { rotate: -9deg; } 75% { rotate: 9deg; } }
-@keyframes gpCorrectPop { 0% { scale: 1; } 40% { scale: 1.08; } 100% { scale: 1; } }
-@keyframes gpPopIn { 0% { scale: 0.7; opacity: 0.2; } 100% { scale: 1; opacity: 1; } }
+@keyframes gpBump { 0% { transform: scale(1); } 35% { transform: scale(1.28); } 100% { transform: scale(1); } }
+@keyframes gpStamp { 0% { transform: scale(2.2); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes gpShake { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-7px, 0); } 40% { transform: translate(7px, 0); } 60% { transform: translate(-5px, 0); } 80% { transform: translate(5px, 0); } }
+@keyframes gpWobble { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-9deg); } 75% { transform: rotate(9deg); } }
+@keyframes gpCorrectPop { 0% { transform: scale(1); } 40% { transform: scale(1.08); } 100% { transform: scale(1); } }
+@keyframes gpPopIn { 0% { transform: scale(0.7); opacity: 0.2; } 100% { transform: scale(1); opacity: 1; } }
 @keyframes gpBalloonFloat { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-14px) rotate(2deg); } }
+
+/* 触屏设备（iPad / 手机）禁用 :hover 悬浮位移，防止 WebKit 将第一次点击识别为 :hover 导致需连点两次才响应 */
+@media (hover: none), (pointer: coarse) {
+    .settings-trigger-btn:hover,
+    .gashapon-trigger-btn:hover,
+    .sticker-book-trigger-btn:hover,
+    .header-install-pwa-btn:hover,
+    .btn-hub-action:hover,
+    .game-card:hover,
+    .ls-card:hover,
+    .wd-piece:hover,
+    .sk-num:hover,
+    .sk-type:hover,
+    .gp-grade-pill:hover,
+    .gp-diff-pill:hover {
+        transform: none;
+    }
+    .game-card:hover .game-card-emoji {
+        transform: none;
+    }
+}
 @keyframes gpPopBalloon { 0% { transform: scale(1); opacity: 1; } 40% { transform: scale(1.28); opacity: 0.9; } 100% { transform: scale(0.1); opacity: 0; } }
 @keyframes gpFlyAway { to { transform: translateY(-160%); opacity: 0; } }
 @keyframes gpCloud { from { left: -20%; } to { left: 110%; } }
