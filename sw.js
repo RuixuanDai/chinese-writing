@@ -5,7 +5,7 @@
  * 2. 断网/弱网状态下无缝回退到本地 Cache Storage，支持 100% 离线练字、笔顺演示与离线语音。
  */
 
-const CACHE_NAME = 'chinese-writing-pwa-v3.18';
+const CACHE_NAME = 'chinese-writing-pwa-v3.19';
 
 const CORE_ASSETS = [
     './',
@@ -72,7 +72,7 @@ self.addEventListener('fetch', (event) => {
 
     const url = new URL(req.url);
 
-    // 1. 动态签名语音接口 (/api/tts) 直接走网络与内存 Blob 缓存，避免带 ts/sig 的一次性 URL 写入 Cache Storage
+    // 1. 动态签名语音接口 (/api/tts-*) 直接走网络与内存 Blob 缓存，避免带 ts/sig 的一次性 URL 写入 Cache Storage
     if (url.pathname.startsWith('/api/')) return;
 
     // 2. 针对看图识字插画与第三方基础库：采用 Cache-First + 后台静默更新 (Stale-While-Revalidate)，实现插画秒开

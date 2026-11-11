@@ -1,15 +1,30 @@
 /**
- * Cloudflare Pages Function: GET /api/tts
+ * Cloudflare Pages Function: GET /api/tts-i0zv?voice=zh-CN-XiaoxiaoNeural&rate=-2%&text=...&ts=...&sig=...
  *
- * 专属「👩 晓晓 · 温柔姐姐」(zh-CN-XiaoxiaoNeural) 在线 AI 神经网络语音接口（含 5 层防盗刷安全网关）：
- * 1. Origin / Referer 严格域名白名单：仅允许项目自身的 Cloudflare Pages (*.pages.dev)、GitHub Pages (*.github.io) 与本地局域网调试域名访问，拒绝一切第三方网站盗链与无头脚本；
- * 2. 动态时间戳签名校验 (ts + sig)：采用 URL 查询参数传递 ±300 秒内的时间戳与 SHA-256 签名（属于 CORS 简单请求，零 OPTIONS 预检延迟），防止 URL 伪造与重放攻击；
- * 3. 单一音色锁定与输入长度硬上限：仅允许 `zh-CN-XiaoxiaoNeural` 音色，单次文本严格限制 <= 80 字符且必须包含中文或数字，防止多音色缓存碎片化与恶意长文本攻击；
- * 4. Cloudflare 全球边缘永久缓存 (caches.default, 1 年 immutable)：命中缓存的句子直接从边缘节点返回，完全不消耗 Azure 额度；
- * 5. 单 IP「未命中缓存」限流器 (Per-IP Cache-Miss Rate Limiter)：仅对未命中缓存、需实际调用 Azure 合成的新句子按客户端 IP 限流（每分钟最多 20 次，每小时最多 150 次），彻底杜绝黑客脚本刷爆 Free F0 月度 50 万字符免费额度。
+ * 通用在线 AI 神经网络真人语音网关（多音色白名单 + 6 层防盗刷安全架构）：
+ * 1. 服务端密钥隔离：AZURE_SPEECH_KEY 仅存于 Cloudflare Secrets，前端零密钥暴露；
+ * 2. Origin / Referer 严格同项目与专属域名白名单：严禁 *.github.io / *.pages.dev 全网通配，仅放行当前 Pages 项目自身域名（含预览分支）、ruixuandai.github.io、ALLOWED_TTS_HOSTS 与本地局域网调试 IP，边缘直接拦截盗链与裸调（403 零额度消耗）；
+ * 3. 动态时间戳 + 恒定时间 SHA-256 签名校验 (ts + sig)：URL 查询参数传递 ±300s 时间戳与签名（保持 CORS Simple Request，零 OPTIONS 预检延迟），恒定时间比对防侧信道与参数篡改；
+ * 4. 音色白名单 + 80 字截断 + 可选词库正则锁 (ALLOWED_TEXT_REGEX)：杜绝长文本消耗，固定台词应用可锁死句式彻底消除逆向白嫖价值；
+ * 5. Cloudflare 全球边缘缓存优先 (caches.default, 1 年 immutable)：验签后剥离 ts/sig 构造标准缓存键，命中缓存消耗 0 个 Azure 字符且不计入限流；
+ * 6. 单 IP + 全局桶双重「未命中缓存」限流器：仅对需实际调用 Azure 的新句子限流（单 IP 20次/分、150次/时；单节点全局 60次/分、600次/时），严防脚本与代理池刷空 Free F0 月度 50 万免费字符。
  */
 
-const LOCKED_VOICE = "zh-CN-XiaoxiaoNeural";
+const ALLOWED_VOICES = new Set([
+  // 中文精选自然神经音色
+  "zh-CN-XiaoxiaoNeural",         // 👩 晓晓 · 温柔自然女声（默认推荐）
+  "zh-CN-XiaoyiNeural",           // 👧 晓伊 · 甜美童趣绘本音
+  "zh-CN-YunxiaNeural",           // 👦 云夏 · 元气阳光少年
+  "zh-CN-liaoning-XiaobeiNeural", // 🎭 晓北 · 亲切幽默东北腔
+  "zh-CN-YunjianNeural",          // 🦁 云健 · 温暖浑厚鼓励男声
+  "zh-CN-YunxiNeural",            // 🧑 云希 · 清朗故事青年男声
+  "zh-CN-shaanxi-XiaoniNeural",   // 🏮 晓妮 · 俏皮陕西腔女声
+  // 英文精选自然神经音色
+  "en-US-AnaNeural",              // 👧 Ana · 英文纯真童声
+  "en-US-JennyNeural",            // 👩 Jenny · 英文亲切女声
+  "en-US-GuyNeural",              // 🧑 Guy · 英文自然男声
+]);
+const DEFAULT_VOICE = "zh-CN-XiaoxiaoNeural";
 const DEFAULT_CLIENT_SECRET = "kmg-tts-2026-guard-v1";
 const MAX_TEXT_LEN = 80;
 const MAX_MISS_PER_MINUTE = 20;
@@ -17,7 +32,8 @@ const MAX_MISS_PER_HOUR = 150;
 const GLOBAL_MAX_MISS_PER_MINUTE = 60;
 const GLOBAL_MAX_MISS_PER_HOUR = 600;
 
-let globalQuota = { minBucket: 0, minCount: 0, hourBucket: 0, hourCount: 0 };
+// 可选：针对台词/词库固定的游戏，可在此处或环境变量 ALLOWED_TEXT_REGEX 限定允许合成的句式正则
+const LOCKED_TEXT_REGEX: RegExp | null = null;
 
 const TRUSTED_CLIENT_TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4";
 const EDGE_HTTPS_WS_URL = "https://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1";
@@ -30,12 +46,14 @@ const MIX_FIRST_WORD = [0xcf98b111, 0x87085b9f, 0x12ceb96d, 0x257e1d83];
 const MIX_SECOND_WORD = [0xa27416f5, 0xd38396ff, 0x7c932b89, 0xbfa49f69];
 
 const ipRateMap = new Map<string, { minBucket: number; minCount: number; hourBucket: number; hourCount: number }>();
+const globalQuota = { minBucket: 0, minCount: 0, hourBucket: 0, hourCount: 0 };
 
 export interface PagesEnv {
   AZURE_SPEECH_KEY?: string;
   AZURE_SPEECH_REGION?: string;
   TTS_CLIENT_SECRET?: string;
   ALLOWED_TTS_HOSTS?: string;
+  ALLOWED_TEXT_REGEX?: string;
 }
 
 export interface PagesContext {
@@ -44,18 +62,31 @@ export interface PagesContext {
   waitUntil(promise: Promise<unknown>): void;
 }
 
-function isAllowedOriginUrl(rawUrl: string, extraHostsCsv?: string): boolean {
+function getPagesProjectBaseHost(reqHostname: string): string | null {
+  const lower = reqHostname.toLowerCase();
+  if (!lower.endsWith(".pages.dev")) return null;
+  const parts = lower.split(".");
+  if (parts.length >= 3) {
+    return parts.slice(-3).join(".");
+  }
+  return null;
+}
+
+function isAllowedOriginUrl(rawUrl: string, reqHostname: string, extraHostsCsv?: string): boolean {
   if (!rawUrl) return false;
   try {
     const parsed = new URL(rawUrl);
     const host = parsed.hostname.toLowerCase();
-    // 严格限制仅允许本人名下的 GitHub Pages / Cloudflare Pages 项目域名与本地局域网调试访问
+    const normalizedReqHost = reqHostname.toLowerCase();
+    const pagesBase = getPagesProjectBaseHost(normalizedReqHost);
+
+    // 严格限制仅允许：当前请求所属域名/Pages 项目自身（含预览子域名）、本人 GitHub Pages 及局域网调试 IP
     if (
+      host === normalizedReqHost ||
+      (pagesBase !== null && (host === pagesBase || host.endsWith(`.${pagesBase}`))) ||
       host === "ruixuandai.github.io" ||
       host === "kid-math-game.pages.dev" ||
       host.endsWith(".kid-math-game.pages.dev") ||
-      host === "chinese-writing.pages.dev" ||
-      host.endsWith(".chinese-writing.pages.dev") ||
       host === "localhost" ||
       host === "127.0.0.1" ||
       host.startsWith("192.168.") ||
@@ -68,7 +99,11 @@ function isAllowedOriginUrl(rawUrl: string, extraHostsCsv?: string): boolean {
         .split(",")
         .map((s) => s.trim().toLowerCase())
         .filter(Boolean);
-      if (extra.includes(host)) return true;
+      for (const rule of extra) {
+        if (rule.startsWith(".") ? host.endsWith(rule) || host === rule.slice(1) : host === rule) {
+          return true;
+        }
+      }
     }
     return false;
   } catch {
@@ -78,8 +113,8 @@ function isAllowedOriginUrl(rawUrl: string, extraHostsCsv?: string): boolean {
 
 function buildCorsHeaders(request: Request, extraHostsCsv?: string): Record<string, string> {
   const origin = request.headers.get("Origin") ?? "";
-  const reqOrigin = new URL(request.url).origin;
-  const allowedOrigin = isAllowedOriginUrl(origin, extraHostsCsv) ? origin : reqOrigin;
+  const reqUrl = new URL(request.url);
+  const allowedOrigin = isAllowedOriginUrl(origin, reqUrl.hostname, extraHostsCsv) ? origin : reqUrl.origin;
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Methods": "GET, OPTIONS",
@@ -116,7 +151,7 @@ async function verifySignature(
     .join("")
     .slice(0, 32);
   if (sig.length !== expected.length) return false;
-  // 恒定时间比较 (Constant-Time Comparison)，防范计时侧信道攻击
+  // 恒定时间比较 (Constant-Time Comparison)，防范计时侧信道猜解
   let diff = 0;
   for (let i = 0; i < expected.length; i++) {
     diff |= sig.charCodeAt(i) ^ expected.charCodeAt(i);
@@ -129,7 +164,7 @@ function checkAndIncrementIpQuota(ip: string): boolean {
   const minBucket = Math.floor(nowSec / 60);
   const hourBucket = Math.floor(nowSec / 3600);
 
-  // 全局熔断限流保护：防范多 IP 代理池分布式刷量
+  // 全局熔断限流桶：防范多 IP 代理池在同一边缘节点并发刷量
   if (globalQuota.minBucket !== minBucket) {
     globalQuota.minBucket = minBucket;
     globalQuota.minCount = 0;
@@ -177,26 +212,42 @@ function checkAndIncrementIpQuota(ip: string): boolean {
 
 export async function onRequestGet(context: PagesContext): Promise<Response> {
   const { request, env } = context;
+  const url = new URL(request.url);
   const corsHeaders = buildCorsHeaders(request, env?.ALLOWED_TTS_HOSTS);
 
-  // 1. 校验 Origin / Referer 白名单，拦截外部网站盗链与无头脚本直刷
+  // 1. 校验 Origin / Referer 专属域名白名单，边缘直接拦截外部网站盗链与无头脚本直刷（0 额度消耗）
   const origin = request.headers.get("Origin") ?? "";
   const referer = request.headers.get("Referer") ?? "";
 
-  if (!isAllowedOriginUrl(origin, env?.ALLOWED_TTS_HOSTS) && !isAllowedOriginUrl(referer, env?.ALLOWED_TTS_HOSTS)) {
+  if (
+    !isAllowedOriginUrl(origin, url.hostname, env?.ALLOWED_TTS_HOSTS) &&
+    !isAllowedOriginUrl(referer, url.hostname, env?.ALLOWED_TTS_HOSTS)
+  ) {
     return jsonError(403, "Forbidden: unauthorized origin", corsHeaders);
   }
 
-  // 2. 校验与清洗文本（限制 <= 80 字符，且必须含中文或数字）
-  const url = new URL(request.url);
+  // 2. 校验与清洗文本（限制 <= 80 字符，必须含有效中英文或数字，且可选校验词库正则锁）
   const rawText = url.searchParams.get("text") ?? "";
   const cleaned = cleanTtsInput(rawText);
-  if (!cleaned || !/[0-9\u4e00-\u9fa5]/.test(cleaned)) {
+  if (!cleaned || !/[0-9\u4e00-\u9fa5a-zA-Z]/.test(cleaned)) {
     return jsonError(400, "Invalid or empty text", corsHeaders);
   }
+  const customPattern = env?.ALLOWED_TEXT_REGEX?.trim();
+  let activeRegex: RegExp | null = LOCKED_TEXT_REGEX;
+  if (customPattern) {
+    try {
+      activeRegex = new RegExp(customPattern, "u");
+    } catch {
+      activeRegex = LOCKED_TEXT_REGEX;
+    }
+  }
+  if (activeRegex && !activeRegex.test(cleaned)) {
+    return jsonError(403, "Forbidden: text outside allowed vocabulary", corsHeaders);
+  }
 
-  // 3. 强制锁定唯一音色 zh-CN-XiaoxiaoNeural（晓晓）
-  const voice = LOCKED_VOICE;
+  // 3. 校验音色白名单与语速
+  const reqVoice = url.searchParams.get("voice") ?? DEFAULT_VOICE;
+  const voice = ALLOWED_VOICES.has(reqVoice) ? reqVoice : DEFAULT_VOICE;
   const reqRate = url.searchParams.get("rate") ?? "-2%";
   const rate = /^[+-]?\d{1,2}%$/.test(reqRate) ? reqRate : "-2%";
 
@@ -277,9 +328,10 @@ async function synthesizeAzureMp3(
     throw new Error("Invalid AZURE_SPEECH_REGION format");
   }
 
+  const xmlLang = voice.startsWith("en-") ? "en-US" : "zh-CN";
   const endpoint = `https://${cleanRegion}.tts.speech.microsoft.com/cognitiveservices/v1`;
   const ssml =
-    `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='https://www.w3.org/2001/mstts' xml:lang='zh-CN'>` +
+    `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='https://www.w3.org/2001/mstts' xml:lang='${xmlLang}'>` +
     `<voice name='${voice}'><prosody pitch='+0Hz' rate='${rate}' volume='+0%'>${escapeXml(text)}</prosody></voice>` +
     `</speak>`;
 
@@ -343,12 +395,7 @@ function cleanTtsInput(raw: string): string {
 }
 
 function escapeXml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function randomHex(bytes: number): string {
@@ -379,6 +426,7 @@ async function synthesizeEdgeMp3(voice: string, text: string, rate: string): Pro
   }
   (ws as WebSocket & { accept(): void }).accept();
 
+  const xmlLang = voice.startsWith("en-") ? "en-US" : "zh-CN";
   const reqId = randomHex(16);
   const configFrame =
     "Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n" +
@@ -394,7 +442,7 @@ async function synthesizeEdgeMp3(voice: string, text: string, rate: string): Pro
     });
 
   const ssml =
-    `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='zh-CN'>` +
+    `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${xmlLang}'>` +
     `<voice name='${voice}'><prosody pitch='+0Hz' rate='${rate}' volume='+0%'>${escapeXml(text)}</prosody></voice>` +
     `</speak>`;
   const ssmlFrame = `X-RequestId:${reqId}\r\nContent-Type:application/ssml+xml\r\nPath:ssml\r\n\r\n${ssml}`;

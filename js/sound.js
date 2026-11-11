@@ -27,12 +27,12 @@ class SoundManager {
         this.setupAudioUnlock();
     }
 
-    // 初始化 WebOnlineTTS (晓晓真人神经音色) 与 WebNaturalTTS (高品质自然离线兜底)
+    // 初始化 WebOnlineTTS (晓晓真人神经音色 + 随机短码防盲扫路由) 与 WebNaturalTTS (高品质自然离线兜底)
     initTTS() {
         if (typeof window !== 'undefined' && typeof window.OnlineNeuralTTS === 'function') {
             this.onlineTts = new window.OnlineNeuralTTS({
-                endpoint: '/api/tts',
-                fallbackEndpoint: 'https://chinese-writing.pages.dev/api/tts',
+                endpoint: '/api/tts-i0zv',
+                fallbackEndpoint: 'https://chinese-writing.pages.dev/api/tts-i0zv',
                 rate: '-2%',
                 muted: !this.enabled,
                 autoUnlock: true
