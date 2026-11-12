@@ -5465,6 +5465,7 @@ body.app-mode-exam #header-search-box {
 .game-stage[hidden],
 #btn-ls-sound-on[hidden],
 #btn-sk-next[hidden],
+#btn-sk-count[hidden],
 .pw-pinyin-tag[hidden],
 .game-combo-pill[hidden] {
     display: none !important;
@@ -6714,8 +6715,8 @@ body.app-mode-exam #header-search-box {
 }
 
 .sk-svg-box {
-    width: min(100%, 300px);
-    height: min(36vh, 260px);
+    width: min(100%, 310px, 42vh);
+    height: auto;
     aspect-ratio: 1 / 1;
     border: 3px solid #fca5a5;
     border-radius: 18px;
@@ -6750,17 +6751,17 @@ body.app-mode-exam #header-search-box {
     font-size: 160px;
 }
 
-.btn-sk-count {
-    width: min(100%, 300px);
-    padding: 11px 12px;
-    border: none;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 5px 14px rgba(245, 158, 11, 0.3);
+.sk-visual-tip {
+    max-width: 310px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1.5px dashed #fde68a;
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 13.5px;
+    font-weight: 800;
+    text-align: center;
+    user-select: none;
 }
 
 .sk-quiz-card {
@@ -6941,8 +6942,12 @@ body.app-mode-exam #header-search-box {
 .sk-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sk-actions #btn-sk-next {
+    margin-left: auto;
 }
 
 /* ---------- 游戏 6：🔗 反义词连线 ---------- */
@@ -7773,7 +7778,7 @@ body.app-mode-exam #header-search-box {
     .wd-piece-char {
         font-size: 68px;
     }
-    /* 游戏 5 数笔画：上方汉字格与演示按钮左右紧凑并排，下方答题区宽敞清晰 */
+    /* 游戏 5 数笔画：上方汉字格与提示胶囊紧凑居中，下方答题区宽敞清晰 */
     .sk-visual-card {
         flex-direction: row;
         justify-content: center;
@@ -7784,11 +7789,6 @@ body.app-mode-exam #header-search-box {
     }
     .sk-svg-box {
         width: clamp(176px, 22vh, 230px);
-    }
-    .btn-sk-count {
-        width: auto;
-        min-width: 190px;
-        padding: 0 22px;
     }
     .sk-quiz-card {
         justify-content: center;
@@ -7861,8 +7861,7 @@ body.app-mode-exam #header-search-box {
     .sk-visual-card {
         padding: 12px;
     }
-    .sk-svg-box,
-    .btn-sk-count {
+    .sk-svg-box {
         width: min(100%, 250px);
     }
     .exam-ant-board,

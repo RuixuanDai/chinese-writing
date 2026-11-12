@@ -1825,6 +1825,10 @@ class ExamCenter {
         if (fb) fb.innerHTML = '';
         const nextBtn = document.getElementById('btn-sk-next');
         if (nextBtn) nextBtn.hidden = true;
+        const countBtn = document.getElementById('btn-sk-count');
+        if (countBtn) countBtn.hidden = true;
+        const tipEl = document.getElementById('sk-visual-tip');
+        if (tipEl) tipEl.textContent = '👀 小眼睛看仔细，自己数一数有几画吧！';
 
         this.setMascot(`数一数，“${ch}”字一共有几画？`, 'idle');
         this.speak(`数一数，${ch}字一共有几画？`);
@@ -1890,7 +1894,7 @@ class ExamCenter {
                     this.later(() => this.goStrokeStep2(), 1000);
                 });
             } else {
-                this.setMascot('再仔细数一数哦！也可以点“一笔一笔数给我看”。', 'oops');
+                this.setMascot('不对哦，用小手指顺着笔画再仔细数一数吧！', 'oops');
             }
         }
     }
@@ -1914,6 +1918,10 @@ class ExamCenter {
         sk.step = 2;
         sk.tries = 0;
         sk.locked = false;
+        const countBtn = document.getElementById('btn-sk-count');
+        if (countBtn) countBtn.hidden = true;
+        const tipEl = document.getElementById('sk-visual-tip');
+        if (tipEl) tipEl.textContent = '👀 看红色的那一笔，想一想它叫什么笔画？';
         this.renderStrokeStatic(sk.askIdx, sk.total);
         const q = document.getElementById('sk-question');
         if (q) q.innerHTML = `<span class="sk-q-char">“${sk.char}”</span>的第 <span class="sk-q-em">${GP_CN_NUM[sk.askIdx]}</span> 画是什么笔画？`;
@@ -1981,6 +1989,10 @@ class ExamCenter {
                 ${chips ? `<div class="sk-chips">${chips}</div>` : ''}
             `;
         }
+        const countBtn = document.getElementById('btn-sk-count');
+        if (countBtn) countBtn.hidden = false;
+        const tipEl = document.getElementById('sk-visual-tip');
+        if (tipEl) tipEl.textContent = '✨ 回答完成！可点“下一题”继续挑战';
         const nextBtn = document.getElementById('btn-sk-next');
         if (nextBtn) nextBtn.hidden = false;
     }
@@ -2803,7 +2815,7 @@ class ExamCenter {
         delegate('sk-options', '.sk-num', (btn) => this.onStrokeNum(btn));
         delegate('sk-options', '.sk-type', (btn) => this.onStrokeType(btn));
         on('btn-sk-count', 'click', () => {
-            if (!this.sk) return;
+            if (!this.sk || !this.sk.done) return;
             this.playStrokeCount(() => {
                 const sk = this.sk;
                 if (!sk) return;

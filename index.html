@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <link rel="stylesheet" href="css/style.css?v=20261110_v23">
+    <link rel="stylesheet" href="css/style.css?v=20261111_v24">
     <script>
         // 最早阶段识别 iPad/iOS、Android 与桌面独立 App (standalone) 状态，精准计算真实可视高度
         (function() {
@@ -530,7 +530,7 @@
                     <div class="sk-layout">
                         <div class="gp-card sk-visual-card">
                             <div id="sk-svg-box" class="sk-svg-box"></div>
-                            <button type="button" id="btn-sk-count" class="btn-sk-count">🔢 一笔一笔数给我看</button>
+                            <div id="sk-visual-tip" class="sk-visual-tip">👀 小眼睛看仔细，自己数一数有几画吧！</div>
                         </div>
                         <div class="gp-card sk-quiz-card">
                             <div id="sk-question" class="sk-question"></div>
@@ -538,6 +538,7 @@
                             <div id="sk-feedback" class="sk-feedback"></div>
                             <div class="sk-actions">
                                 <button type="button" id="btn-sk-skip" class="btn-tool">⏭️ 换一题</button>
+                                <button type="button" id="btn-sk-count" class="btn-tool" hidden>▶️ 回看笔顺</button>
                                 <button type="button" id="btn-sk-next" class="btn-game-primary" hidden>下一题 ➔</button>
                             </div>
                         </div>
@@ -1122,15 +1123,15 @@
     </div>
 
     <!-- 逻辑脚本 (引入 WebNaturalTTS 离线兜底与 WebOnlineTTS 晓晓 AI 真人神经语音) -->
-    <script src="lib/web-natural-tts.js?v=20261110_v23"></script>
-    <script src="lib/web-online-tts.js?v=20261110_v23"></script>
-    <script src="js/sound.js?v=20261110_v23"></script>
-    <script src="js/char-data.js?v=20261110_v23"></script>
-    <script src="js/stroke-cache.js?v=20261110_v23"></script>
-    <script src="js/canvas.js?v=20261110_v23"></script>
-    <script src="js/hanzi-guide.js?v=20261110_v23"></script>
-    <script src="js/evaluator.js?v=20261110_v23"></script>
-    <script src="js/quiz-test.js?v=20261110_v23"></script>
-    <script src="js/app.js?v=20261110_v23"></script>
+    <script src="lib/web-natural-tts.js?v=20261111_v24"></script>
+    <script src="lib/web-online-tts.js?v=20261111_v24"></script>
+    <script src="js/sound.js?v=20261111_v24"></script>
+    <script src="js/char-data.js?v=20261111_v24"></script>
+    <script src="js/stroke-cache.js?v=20261111_v24"></script>
+    <script src="js/canvas.js?v=20261111_v24"></script>
+    <script src="js/hanzi-guide.js?v=20261111_v24"></script>
+    <script src="js/evaluator.js?v=20261111_v24"></script>
+    <script src="js/quiz-test.js?v=20261111_v24"></script>
+    <script src="js/app.js?v=20261111_v24"></script>
 </body>
 </html>
