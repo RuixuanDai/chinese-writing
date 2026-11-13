@@ -3643,33 +3643,73 @@ body.writing-active .canvas-box {
     box-shadow: 0 6px 16px rgba(238, 82, 83, 0.4);
 }
 
-/* 打印字帖排版 (Printable Worksheet Styles) */
+/* 打印字帖与正反试卷排版 (Printable Worksheet & Duplex Exam Styles) */
 #printable-area {
     display: none;
 }
 
+#printable-area.is-preparing-print {
+    display: block;
+    position: fixed;
+    left: -20000px;
+    top: 0;
+    width: 760px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@page {
+    size: auto;
+    margin: 9mm 11mm;
+}
+
 @media print {
-    body * {
-        visibility: hidden;
+    html,
+    body {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        display: block !important;
+        background: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
-    #printable-area, #printable-area * {
-        visibility: visible;
+
+    body > *:not(#printable-area) {
+        display: none !important;
     }
+
+    #printable-area,
+    #printable-area * {
+        visibility: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
     #printable-area {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background: #fff;
-        padding: 20px 30px;
-        box-sizing: border-box;
+        display: block !important;
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        opacity: 1 !important;
+        z-index: auto !important;
+        background: #ffffff !important;
+        padding: 4px 8px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
     }
 
     .print-sheet {
         max-width: 800px;
         margin: 0 auto;
-        font-family: "KaiTi", "STKaiti", serif;
+        font-family: "KaiTi", "STKaiti", "Kaiti SC", "PingFang SC", "Microsoft YaHei", serif;
         color: #000;
     }
 
@@ -8230,82 +8270,536 @@ body.app-mode-exam #header-search-box {
     }
 }
 
-/* 打印同款课堂试卷 A4 样式 */
+/* 正反双面（2页 · 100分）课堂闯关测试卷 A4 / Letter 兼容打印样式 */
 @media print {
-    .exam-print-sheet h3 {
-        font-size: 15px;
-        margin: 10px 0 6px;
-        color: #111;
+    .exam-print-sheet {
+        max-width: 100%;
+        width: 100%;
+        color: #0f172a;
     }
 
+    .exam-print-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 244mm;
+        box-sizing: border-box;
+        break-inside: avoid;
+    }
+
+    .exam-print-page-1 {
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .exam-print-page-2 {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .exam-print-page-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .exam-print-header {
+        padding-bottom: 8px;
+        margin-bottom: 2px;
+        border-bottom: 2px solid #0f172a;
+    }
+
+    .exam-print-header h2 {
+        font-size: 21px;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    .exam-print-badge {
+        font-size: 13px;
+        font-weight: 700;
+        color: #334155;
+        vertical-align: middle;
+    }
+
+    .exam-print-header .print-meta {
+        font-size: 13px;
+        color: #1e293b;
+    }
+
+    .exam-print-sub-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 6px;
+        margin-bottom: 2px;
+        border-bottom: 1.8px solid #1e293b;
+        font-size: 13px;
+    }
+
+    .exam-print-sub-header .sub-header-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .exam-print-sub-header .sub-header-meta {
+        font-size: 12px;
+        color: #334155;
+    }
+
+    .exam-print-sheet h3 {
+        font-size: 13.8px;
+        font-weight: 800;
+        margin: 2px 0 6px;
+        color: #0f172a;
+        line-height: 1.3;
+    }
+
+    /* 一、看图写汉字（5×2） */
     .exam-print-pic-grid {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-        margin-bottom: 12px;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 7px;
     }
 
     .exam-print-pic-cell {
-        border: 1px solid #cbd5e1;
+        border: 1px solid #94a3b8;
         border-radius: 6px;
-        padding: 4px;
+        padding: 5px 4px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
+        background: #ffffff;
     }
 
     .exam-print-img-box {
-        width: 68px;
-        height: 68px;
+        width: 64px;
+        height: 64px;
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
+        border-radius: 5px;
     }
 
-    .exam-print-img-box img {
-        max-width: 100%;
-        max-height: 100%;
+    .exam-print-img-box img,
+    .exam-print-match-img-card img {
+        width: 100%;
+        height: 100%;
         object-fit: contain;
+        display: block;
+    }
+
+    .exam-print-img-fallback {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        line-height: 1;
+    }
+
+    .exam-print-clue {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1.25;
+        text-align: center;
+    }
+
+    .exam-print-easy-py {
+        display: inline-block;
+        margin-left: 3px;
+        font-size: 11px;
+        font-family: Arial, "Segoe UI", sans-serif;
+        color: #475569;
     }
 
     .exam-print-mizi {
-        position: relative;
-        width: 54px;
-        height: 54px;
-        border: 1.5px solid #333;
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
     }
 
+    .exam-print-mizi-svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    /* 二、看拼音结合词语写汉字（4×2） */
+    .exam-print-py-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 7px;
+    }
+
+    .exam-print-py-cell {
+        border: 1px solid #94a3b8;
+        border-radius: 6px;
+        padding: 5px 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        background: #ffffff;
+    }
+
+    .exam-print-py-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    .exam-print-py-num {
+        font-size: 12px;
+        font-weight: 700;
+        color: #475569;
+        line-height: 1.3;
+    }
+
+    .exam-print-py-texts {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .exam-print-py-ruby {
+        font-family: Arial, "Segoe UI", sans-serif;
+        font-size: 13.5px;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1.15;
+    }
+
+    .exam-print-py-word {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    .exam-print-mizi-sm {
+        width: 46px;
+        height: 46px;
+    }
+
+    /* 三、数笔画填空 & 四、反义词连线（双栏） */
     .exam-print-bottom-cols {
         display: grid;
-        grid-template-columns: 1.25fr 1fr;
-        gap: 18px;
-        margin-top: 8px;
+        grid-template-columns: 1.38fr 1fr;
+        gap: 16px;
+        align-items: start;
+    }
+
+    .exam-print-stk-bank {
+        font-size: 10.8px;
+        color: #334155;
+        background: #f8fafc;
+        border: 1px dashed #94a3b8;
+        border-radius: 5px;
+        padding: 3px 7px;
+        margin-bottom: 4px;
+        line-height: 1.35;
     }
 
     .exam-print-stk-row {
-        font-size: 14px;
-        line-height: 2.2;
+        font-size: 13.5px;
+        line-height: 2.05;
+        color: #0f172a;
+    }
+
+    .exam-print-inline-hanzi-wrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        vertical-align: -4px;
+    }
+
+    .exam-print-inline-hanzi {
+        width: 100%;
+        height: 100%;
     }
 
     .exam-print-line {
         display: inline-block;
-        width: 48px;
-        border-bottom: 1.5px solid #111;
+        width: 54px;
+        border-bottom: 1.4px solid #0f172a;
+        vertical-align: baseline;
+    }
+
+    .exam-print-line.sm {
+        width: 34px;
+    }
+
+    .exam-print-ant-list {
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 5px 14px;
     }
 
     .exam-print-ant-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 18px;
-        font-weight: bold;
-        line-height: 1.9;
-        padding: 0 12px;
+        font-size: 17px;
+        font-weight: 800;
+        line-height: 1.82;
+    }
+
+    .ant-p-dot {
+        font-size: 10px;
+        margin: 0 6px;
+        color: #0f172a;
     }
 
     .ant-p-gap {
         flex: 1;
+    }
+
+    /* 五、看图认字连线（背面） */
+    .exam-print-match-board {
+        border: 1px solid #94a3b8;
+        border-radius: 7px;
+        padding: 7px 10px;
+        background: #ffffff;
+    }
+
+    .exam-print-match-row {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .exam-print-match-top-item,
+    .exam-print-match-bot-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .exam-print-match-img-card {
+        width: 60px;
+        height: 60px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+    }
+
+    .exam-print-match-dot {
+        font-size: 10px;
+        line-height: 1;
+        color: #0f172a;
+    }
+
+    .exam-print-match-lane {
+        height: 30px;
+    }
+
+    .exam-print-match-char-card {
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 2px 10px 3px;
+        min-width: 58px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #f8fafc;
+    }
+
+    .exam-print-match-py {
+        font-family: Arial, "Segoe UI", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: #475569;
+        line-height: 1.15;
+    }
+
+    .exam-print-match-ch {
+        font-size: 21px;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1.15;
+    }
+
+    /* 六、形近字辨析组词（3×2） */
+    .exam-print-confuser-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+    }
+
+    .exam-print-confuser-cell {
+        border: 1px solid #94a3b8;
+        border-radius: 6px;
+        padding: 7px 8px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 15.5px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .exam-print-qidx {
+        font-size: 13px;
+        color: #475569;
+    }
+
+    .exam-print-choice-pair {
+        font-size: 16.5px;
+        letter-spacing: 0.5px;
+    }
+
+    /* 七、选字填空补全句子 */
+    .exam-print-word-bank {
+        border: 1.2px solid #64748b;
+        border-radius: 6px;
+        background: #f8fafc;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 16px;
+        font-size: 13.5px;
+    }
+
+    .exam-print-word-bank .bank-label {
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .exam-print-bank-item em {
+        font-style: normal;
+        font-family: Arial, "Segoe UI", sans-serif;
+        font-size: 12px;
+        color: #475569;
+    }
+
+    .exam-print-sent-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .exam-print-sent-row {
+        font-size: 14px;
+        line-height: 1.82;
+        color: #0f172a;
+    }
+
+    /* 八、小小书法家描红与临摹 */
+    .exam-print-trace-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .exam-print-trace-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 5px 8px;
+    }
+
+    .exam-print-trace-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 112px;
+    }
+
+    .trace-meta-py {
+        font-family: Arial, "Segoe UI", sans-serif;
+        font-size: 14px;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1.2;
+    }
+
+    .trace-meta-sub,
+    .trace-meta-word {
+        font-size: 11.5px;
+        color: #334155;
+        line-height: 1.25;
+    }
+
+    .exam-print-trace-boxes {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
+    .exam-print-mizi-trace {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* 页脚、评语与可折叠倒置参考答案条 */
+    .exam-print-back-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .exam-print-eval-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #1e293b;
+        padding: 4px 8px;
+        border: 1px solid #cbd5e1;
+        border-radius: 5px;
+        background: #f8fafc;
+    }
+
+    .exam-print-answer-strip {
+        padding-top: 2px;
+    }
+
+    .answer-cut-line {
+        text-align: center;
+        font-size: 10px;
+        color: #64748b;
+        margin-bottom: 2px;
+    }
+
+    .answer-upside-down {
+        transform: rotate(180deg);
+        font-size: 9.5px;
+        line-height: 1.38;
+        color: #475569;
+        text-align: center;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    .exam-print-page-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px dashed #94a3b8;
+        padding-top: 4px;
+        font-size: 11.5px;
+        color: #475569;
     }
 }
 

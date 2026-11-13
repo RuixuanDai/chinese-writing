@@ -241,6 +241,64 @@ const GP_VISUAL_CONFUSERS = {
     '女': '妈姐妹好', '子': '字好学', '字': '子宝学', '包': '句勺抱', '勺': '包句', '句': '包勺'
 };
 
+// 试卷「形近字辨析组词」精选零歧义题库（干扰字绝不构成真实常见词，支持按学龄优先抽题）
+const GP_CONFUSER_QUIZ_ITEMS = [
+    { tpl: '（  ）阳', ans: '太', alt: '大', g: 'k-1' },
+    { tpl: '（  ）象', ans: '大', alt: '太', g: 'k-1' },
+    { tpl: '生（  ）', ans: '日', alt: '目', g: 'k-1' },
+    { tpl: '眉（  ）', ans: '目', alt: '日', g: 'g1' },
+    { tpl: '树（  ）', ans: '木', alt: '禾', g: 'k-1' },
+    { tpl: '（  ）苗', ans: '禾', alt: '本', g: 'k' },
+    { tpl: '课（  ）', ans: '本', alt: '木', g: 'g1' },
+    { tpl: '好（  ）', ans: '人', alt: '入', g: 'k-1' },
+    { tpl: '进（  ）', ans: '入', alt: '人', g: 'g1' },
+    { tpl: '白（  ）', ans: '云', alt: '去', g: 'k-1' },
+    { tpl: '回（  ）', ans: '去', alt: '云', g: 'k' },
+    { tpl: '（  ）奶', ans: '牛', alt: '午', g: 'k' },
+    { tpl: '中（  ）', ans: '午', alt: '牛', g: 'g1' },
+    { tpl: '过（  ）', ans: '年', alt: '牛', g: 'g1' },
+    { tpl: '（  ）头', ans: '石', alt: '右', g: 'k' },
+    { tpl: '左（  ）', ans: '右', alt: '石', g: 'k-1' },
+    { tpl: '斑（  ）', ans: '马', alt: '鸟', g: 'g1' },
+    { tpl: '女（  ）', ans: '儿', alt: '几', g: 'k' },
+    { tpl: '（  ）乎', ans: '几', alt: '儿', g: 'g2' },
+    { tpl: '小（  ）', ans: '刀', alt: '力', g: 'k' },
+    { tpl: '努（  ）', ans: '力', alt: '刀', g: 'g2' },
+    { tpl: '（  ）寸', ans: '尺', alt: '刀', g: 'g1' },
+    { tpl: '（  ）壳', ans: '贝', alt: '见', g: 'g1' },
+    { tpl: '看（  ）', ans: '见', alt: '贝', g: 'k' },
+    { tpl: '大（  ）', ans: '米', alt: '来', g: 'k' },
+    { tpl: '回（  ）', ans: '来', alt: '米', g: 'k' },
+    { tpl: '泥（  ）', ans: '土', alt: '干', g: 'k' },
+    { tpl: '国（  ）', ans: '王', alt: '玉', g: 'k' },
+    { tpl: '宝（  ）', ans: '玉', alt: '主', g: 'g1' },
+    { tpl: '公（  ）', ans: '主', alt: '王', g: 'g1' },
+    { tpl: '种（  ）', ans: '田', alt: '电', g: 'k' },
+    { tpl: '闪（  ）', ans: '电', alt: '田', g: 'g1' },
+    { tpl: '喝（  ）', ans: '水', alt: '永', g: 'k-1' },
+    { tpl: '（  ）远', ans: '永', alt: '水', g: 'g2' },
+    { tpl: '（  ）雪', ans: '冰', alt: '水', g: 'g1' },
+    { tpl: '汽（  ）', ans: '车', alt: '东', g: 'k' },
+    { tpl: '（  ）方', ans: '东', alt: '车', g: 'g1' },
+    { tpl: '青（  ）', ans: '草', alt: '早', g: 'k' },
+    { tpl: '（  ）晨', ans: '早', alt: '草', g: 'g1' },
+    { tpl: '学（  ）', ans: '问', alt: '门', g: 'g1' },
+    { tpl: '开（  ）', ans: '门', alt: '问', g: 'k-1' },
+    { tpl: '时（  ）', ans: '间', alt: '问', g: 'g2' },
+    { tpl: '树（  ）', ans: '叶', alt: '十', g: 'k' },
+    { tpl: '（  ）指', ans: '十', alt: '叶', g: 'k-1' },
+    { tpl: '写（  ）', ans: '字', alt: '子', g: 'g1' },
+    { tpl: '桌（  ）', ans: '子', alt: '字', g: 'k' },
+    { tpl: '书（  ）', ans: '包', alt: '句', g: 'g1' },
+    { tpl: '造（  ）', ans: '句', alt: '勺', g: 'g2' },
+    { tpl: '铁（  ）', ans: '勺', alt: '句', g: 'g2' },
+    { tpl: '火（  ）', ans: '红', alt: '江', g: 'k' },
+    { tpl: '昆（  ）', ans: '虫', alt: '中', g: 'g1' },
+    { tpl: '（  ）国', ans: '中', alt: '虫', g: 'k' },
+    { tpl: '火（  ）', ans: '山', alt: '出', g: 'k-1' },
+    { tpl: '日（  ）', ans: '出', alt: '山', g: 'k' }
+];
+
 // 看图写字专属优选双字提示词（彻底消除同义画面歧义，如「太阳」区分“阳/日”，「开门」区分“开/门”）
 const GP_PW_CLUE_WORDS = {
     '一': '第一', '二': '二月', '三': '三个', '四': '四季', '五': '五星',
@@ -372,6 +430,10 @@ class ExamCenter {
                     char: item.char,
                     pinyin: info.pinyin || item.pinyin || '',
                     words: Array.isArray(info.words) ? info.words.filter(w => typeof w === 'string') : [],
+                    sentence: info.sentence || item.sentence || '',
+                    radical: info.radical || item.radical || item.char,
+                    strokes: info.strokes || item.strokes || 0,
+                    icon: info.icon || item.icon || '🖼️',
                     image: info.image || item.image || illMap[item.char] || '',
                     catId: cat.id,
                     grade: info.grade || item.grade || 'g1',
@@ -944,8 +1006,9 @@ class ExamCenter {
     clueWord(ch) {
         if (GP_PW_CLUE_WORDS[ch]) return GP_PW_CLUE_WORDS[ch];
         const info = this.info(ch);
-        const w = info ? info.words.find(x => x.length === 2 && x.includes(ch) && x[0] !== x[1]) : null;
-        return w || '';
+        if (!info || !Array.isArray(info.words)) return '';
+        const candidates = info.words.filter(x => x.length === 2 && x.includes(ch) && x[0] !== x[1]);
+        return candidates.find(x => !GP_WORD_NO_IMAGE.has(x)) || candidates[0] || '';
     }
 
     charPrompt(ch) {
@@ -2565,84 +2628,535 @@ class ExamCenter {
         }
     }
 
-    // ==================== A4 纸质试卷打印（随机出题） ====================
-    printExamPaper() {
-        this.sfx('playPop');
-        let printArea = document.getElementById('printable-area');
-        if (!printArea) {
-            printArea = document.createElement('div');
-            printArea.id = 'printable-area';
-            document.body.appendChild(printArea);
+    // ==================== 正反双面纸质试卷打印（2页 · 100分 · 彩图预解码防丢图） ====================
+    derangeArray(arr) {
+        const out = gpShuffle(arr.slice());
+        if (out.length < 2) return out;
+        for (let i = 0; i < out.length; i++) {
+            if (out[i] === arr[i]) {
+                const swapIdx = (i + 1) % out.length;
+                [out[i], out[swapIdx]] = [out[swapIdx], out[i]];
+            }
         }
-        const cache = window.STROKE_DATA_CACHE || {};
+        return out;
+    }
 
-        const scopedWriting = this.filterPoolByScope(this.writingPool);
-        const picItems = gpShuffle(scopedWriting.slice()).slice(0, 10).map(ch => this.info(ch)).filter(Boolean);
-        const picGridHtml = picItems.map(q => {
-            const cw = this.clueWord(q.char);
-            const clueTxt = cw ? cw.replace(q.char, '（  ）') : '';
-            return `
-            <div class="exam-print-pic-cell">
-                <div class="exam-print-img-box"><img src="${q.image}" alt="看图写字"></div>
-                ${clueTxt ? `<div style="font-size:12px;font-weight:700;color:#334155;">${clueTxt}</div>` : ''}
-                <div class="exam-print-mizi"><span class="grid-cross-h"></span><span class="grid-cross-v"></span></div>
-            </div>
-        `;
-        }).join('');
+    async resolvePrintImageSrc(rawUrl) {
+        if (!rawUrl) return '';
+        if (rawUrl.startsWith('data:')) return rawUrl;
+        this._printImgDataCache = this._printImgDataCache || {};
+        if (this._printImgDataCache[rawUrl]) return this._printImgDataCache[rawUrl];
 
-        const stkItems = gpShuffle(Object.keys(GP_STROKE_TYPE_DATA).filter(ch => {
-            const types = GP_STROKE_TYPE_DATA[ch].split(' ');
-            return cache[ch] && cache[ch].medians.length === types.length && types.length <= 8 && types.some(t => GP_STROKE_TYPES[t]);
-        })).slice(0, 4).map(ch => {
-            const types = GP_STROKE_TYPE_DATA[ch].split(' ');
-            const askable = types.map((t, i) => (GP_STROKE_TYPES[t] ? i : -1)).filter(i => i >= 0);
-            return { char: ch, ask: gpPick(askable) };
+        try {
+            const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+            const timer = ctrl ? setTimeout(() => ctrl.abort(), 6000) : null;
+            const resp = await fetch(rawUrl, ctrl ? { signal: ctrl.signal } : undefined);
+            if (timer) clearTimeout(timer);
+            if (resp && resp.ok) {
+                const blob = await resp.blob();
+                const dataUrl = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+                    reader.onerror = () => resolve('');
+                    reader.readAsDataURL(blob);
+                });
+                if (dataUrl) {
+                    this._printImgDataCache[rawUrl] = dataUrl;
+                    return dataUrl;
+                }
+            }
+        } catch (e) {
+            // file:// 或受限环境回退到 Image 预加载
+        }
+
+        await new Promise((resolve) => {
+            const im = new Image();
+            const done = () => resolve();
+            const t = setTimeout(done, 4000);
+            im.onload = () => { clearTimeout(t); done(); };
+            im.onerror = () => { clearTimeout(t); done(); };
+            im.src = rawUrl;
         });
-        const stkHtml = stkItems.map((q, idx) => `
-            <div class="exam-print-stk-row">
-                （${idx + 1}）“<strong>${q.char}</strong>” 一共有 <span class="exam-print-line"></span> 画，第${GP_CN_NUM[q.ask]}画是 <span class="exam-print-line"></span>。
-            </div>
-        `).join('');
+        return rawUrl;
+    }
 
-        const antPairs = gpShuffle(GP_ANTONYM_PAIRS.slice()).slice(0, 6);
-        const rightOrder = gpShuffle(antPairs.map(p => p.b));
-        const antRowsHtml = antPairs.map((pair, idx) => `
-            <div class="exam-print-ant-row">
-                <span class="ant-p-char">${pair.a}</span>
-                <span class="ant-p-dot">•</span>
-                <span class="ant-p-gap"></span>
-                <span class="ant-p-dot">•</span>
-                <span class="ant-p-char">${rightOrder[idx]}</span>
-            </div>
-        `).join('');
+    printMiziSvg(char = '', mode = 'blank') {
+        const data = char ? (window.STROKE_DATA_CACHE || {})[char] : null;
+        let glyphHtml = '';
+        if (char && mode !== 'blank') {
+            const fill = mode === 'model' ? '#0f172a' : '#cbd5e1';
+            if (data && Array.isArray(data.strokes)) {
+                const paths = data.strokes.map(d => `<path d="${d}" fill="${fill}"/>`).join('');
+                let startBadge = '';
+                if (mode === 'model' && data.medians && data.medians[0] && data.medians[0][0]) {
+                    const [mx, my] = data.medians[0][0];
+                    startBadge = `<circle cx="${mx}" cy="${900 - my}" r="36" fill="#ef4444" stroke="#ffffff" stroke-width="10"/>`;
+                }
+                glyphHtml = `<g transform="scale(1, -1) translate(0, -900)">${paths}</g>${startBadge}`;
+            } else {
+                glyphHtml = `<text x="512" y="548" text-anchor="middle" dominant-baseline="central" font-family="'KaiTi','STKaiti',serif" font-size="740" fill="${fill}">${char}</text>`;
+            }
+        }
+        return `<svg class="exam-print-mizi-svg" viewBox="0 0 1024 1024" aria-hidden="true">
+            <rect x="14" y="14" width="996" height="996" fill="#ffffff" stroke="#334155" stroke-width="26"/>
+            <line x1="14" y1="512" x2="1010" y2="512" stroke="#e17055" stroke-width="14" stroke-dasharray="36 28" opacity="0.65"/>
+            <line x1="512" y1="14" x2="512" y2="1010" stroke="#e17055" stroke-width="14" stroke-dasharray="36 28" opacity="0.65"/>
+            <line x1="14" y1="14" x2="1010" y2="1010" stroke="#e17055" stroke-width="11" stroke-dasharray="36 36" opacity="0.38"/>
+            <line x1="1010" y1="14" x2="14" y2="1010" stroke="#e17055" stroke-width="11" stroke-dasharray="36 36" opacity="0.38"/>
+            ${glyphHtml}
+        </svg>`;
+    }
 
-        printArea.innerHTML = `
-            <div class="print-sheet exam-print-sheet">
-                <div class="print-header">
-                    <h2>快乐小书法家 · 汉字闯关测试卷</h2>
-                    <div class="print-meta">
-                        <span>姓名 (Name)：______________</span>
-                        <span>日期：____年__月__日</span>
-                        <span>得分：【 ______ / 100 】</span>
+    printInlineHanziSvg(char) {
+        const data = (window.STROKE_DATA_CACHE || {})[char];
+        if (!data || !Array.isArray(data.strokes)) {
+            return `<strong class="exam-print-stk-char">${char}</strong>`;
+        }
+        const paths = data.strokes.map(d => `<path d="${d}" fill="#0f172a"/>`).join('');
+        return `<span class="exam-print-inline-hanzi-wrap" aria-label="${char}"><svg viewBox="0 0 1024 1024" class="exam-print-inline-hanzi" aria-hidden="true"><g transform="scale(1, -1) translate(0, -900)">${paths}</g></svg></span>`;
+    }
+
+    pickExamChars(primaryPool, fallbackPool, count, usedSet, opts = {}) {
+        const { avoidSameGroup = false, filterFn = null } = opts;
+        const picked = [];
+        const tryAddFrom = (list, strictUsed, strictGroup) => {
+            for (const ch of gpShuffle(list.slice())) {
+                if (picked.length >= count) break;
+                if (!ch || picked.includes(ch)) continue;
+                if (strictUsed && usedSet.has(ch)) continue;
+                if (filterFn && !filterFn(ch)) continue;
+                if (strictGroup && picked.some(p => this.sameGroup(p, ch))) continue;
+                picked.push(ch);
+            }
+        };
+        tryAddFrom(primaryPool, true, avoidSameGroup);
+        if (picked.length < count) tryAddFrom(fallbackPool, true, avoidSameGroup);
+        if (picked.length < count && avoidSameGroup) {
+            tryAddFrom(primaryPool, true, false);
+            tryAddFrom(fallbackPool, true, false);
+        }
+        if (picked.length < count) {
+            tryAddFrom(primaryPool, false, false);
+            tryAddFrom(fallbackPool, false, false);
+        }
+        picked.forEach(ch => usedSet.add(ch));
+        return picked;
+    }
+
+    async printExamPaper() {
+        if (this._isPrintingExam) return;
+        this._isPrintingExam = true;
+        this.sfx('playPop');
+
+        const printBtn = document.getElementById('btn-exam-print-paper');
+        const origBtnText = printBtn ? printBtn.textContent : '';
+        if (printBtn) {
+            printBtn.disabled = true;
+            printBtn.textContent = '生成中…';
+        }
+        if (this.app && typeof this.app.showToast === 'function') {
+            this.app.showToast('🖨️ 正在排版正反双面测试卷并加载彩图…');
+        }
+
+        try {
+            let printArea = document.getElementById('printable-area');
+            if (!printArea) {
+                printArea = document.createElement('div');
+                printArea.id = 'printable-area';
+                document.body.appendChild(printArea);
+            }
+
+            const cache = window.STROKE_DATA_CACHE || {};
+            const usedChars = new Set();
+            const grades = window.CHARACTER_GRADES || [];
+            const gCur = grades.find(g => g.id === this.gradeFilter);
+            const gradeBadge = (gCur && gCur.id !== 'all')
+                ? gCur.name.replace(/^[^\u4e00-\u9fa5A-Za-z0-9-]+/, '').trim()
+                : '综合闯关';
+
+            // ① 一、看图写汉字（10题 × 2分 = 20分）
+            const scopedWriting = this.filterPoolByScope(this.writingPool);
+            const picChars = this.pickExamChars(scopedWriting, this.writingPool, 10, usedChars, {
+                avoidSameGroup: true,
+                filterFn: ch => !!(this.info(ch) && this.info(ch).image && this.clueWord(ch))
+            });
+            const picItems = picChars.map(ch => this.info(ch)).filter(Boolean);
+
+            // ② 二、看拼音，结合词语写汉字（8题 × 2分 = 16分）
+            const pyFullPool = this.allChars.filter(ch => cache[ch] && cache[ch].medians && cache[ch].medians.length <= 10 && this.py(ch) && this.clueWord(ch));
+            const scopedPy = this.filterPoolByScope(pyFullPool);
+            const pyChars = this.pickExamChars(scopedPy, pyFullPool, 8, usedChars);
+            const pyItems = pyChars.map(ch => {
+                const info = this.info(ch);
+                const cw = this.clueWord(ch);
+                return {
+                    char: ch,
+                    pinyin: info ? info.pinyin : '',
+                    clue: cw ? cw.replace(ch, '（\u00A0\u00A0）') : '（\u00A0\u00A0）'
+                };
+            });
+
+            // ③ 三、数笔画，填空（6题，每空1分，共12分）
+            const stkFullPool = Object.keys(GP_STROKE_TYPE_DATA).filter(ch => {
+                const types = GP_STROKE_TYPE_DATA[ch].split(' ');
+                return cache[ch] && cache[ch].medians && cache[ch].medians.length === types.length && types.length >= 2 && types.length <= 9 && types.some(t => GP_STROKE_TYPES[t]);
+            });
+            const scopedStk = this.filterPoolByScope(stkFullPool);
+            const stkChars = this.pickExamChars(scopedStk, stkFullPool, 6, usedChars);
+            const stkItems = stkChars.map(ch => {
+                const types = GP_STROKE_TYPE_DATA[ch].split(' ');
+                const askable = types.map((t, i) => (GP_STROKE_TYPES[t] ? i : -1)).filter(i => i >= 0);
+                const ask = gpPick(askable);
+                return {
+                    char: ch,
+                    total: types.length,
+                    ask,
+                    strokeName: GP_STROKE_TYPES[types[ask]].name
+                };
+            });
+
+            // ④ 四、反义词连线（6组 × 2分 = 12分）
+            const gradeAnts = (this.gradeFilter && this.gradeFilter !== 'all')
+                ? GP_ANTONYM_PAIRS.filter(p => p.g === this.gradeFilter)
+                : [];
+            const antPairs = [];
+            for (const p of [...gpShuffle(gradeAnts.slice()), ...gpShuffle(GP_ANTONYM_PAIRS.slice())]) {
+                if (antPairs.length >= 6) break;
+                if (!antPairs.includes(p)) antPairs.push(p);
+            }
+            const antRightOrder = this.derangeArray(antPairs.map(p => p.b));
+
+            // ⑤ 五、看图认字连线（6题 × 2分 = 12分，背面首题，严格避免近义画面）
+            const scopedPic = this.filterPoolByScope(this.picturePool);
+            const matchChars = this.pickExamChars(scopedPic, this.picturePool, 6, usedChars, {
+                avoidSameGroup: true,
+                filterFn: ch => !!(this.info(ch) && this.info(ch).image)
+            });
+            const matchItems = matchChars.map(ch => this.info(ch)).filter(Boolean);
+            const matchBottomOrder = this.derangeArray(matchItems);
+
+            // 并行预取并内联全部 16 张彩图（第 1 页 10 张 + 第 2 页 6 张），彻底杜绝打印空白无贴图
+            const [picImgSrcs, matchImgSrcs] = await Promise.all([
+                Promise.all(picItems.map(q => this.resolvePrintImageSrc(q.image))),
+                Promise.all(matchItems.map(q => this.resolvePrintImageSrc(q.image)))
+            ]);
+
+            // ⑥ 六、形近字辨析组词（6题 × 2分 = 12分）
+            const gradeConfusers = (this.gradeFilter && this.gradeFilter !== 'all')
+                ? GP_CONFUSER_QUIZ_ITEMS.filter(it => it.g === this.gradeFilter)
+                : [];
+            const confuserItems = [];
+            const confuserPairUsed = new Set();
+            for (const it of [...gpShuffle(gradeConfusers.slice()), ...gpShuffle(GP_CONFUSER_QUIZ_ITEMS.slice())]) {
+                if (confuserItems.length >= 6) break;
+                const pairKey = [it.ans, it.alt].sort().join('|');
+                if (confuserPairUsed.has(pairKey)) continue;
+                confuserPairUsed.add(pairKey);
+                const pair = Math.random() < 0.5 ? [it.ans, it.alt] : [it.alt, it.ans];
+                confuserItems.push({ ...it, pair });
+            }
+
+            // ⑦ 七、选字填空补全句子（5题 × 2分 = 10分）
+            const numeralBan = new Set('一二三四五六七八九十百千万亿零几');
+            const sentFullPool = this.allChars.filter(ch => {
+                if (numeralBan.has(ch)) return false;
+                const inf = this.info(ch);
+                if (!inf || !inf.sentence) return false;
+                const occ = inf.sentence.split(ch).length - 1;
+                return occ === 1 && inf.sentence.length >= 8 && inf.sentence.length <= 24;
+            });
+            const scopedSent = this.filterPoolByScope(sentFullPool);
+            const sentChars = [];
+            for (const list of [scopedSent, sentFullPool]) {
+                for (const ch of gpShuffle(list.slice())) {
+                    if (sentChars.length >= 5) break;
+                    if (sentChars.includes(ch) || usedChars.has(ch)) continue;
+                    if (sentChars.some(p => this.sameGroup(p, ch))) continue;
+                    const s = this.info(ch).sentence;
+                    if (sentChars.some(p => s.includes(p) || this.info(p).sentence.includes(ch))) continue;
+                    sentChars.push(ch);
+                }
+            }
+            if (sentChars.length < 5) {
+                const extra = this.pickExamChars(scopedSent, sentFullPool, 5 - sentChars.length, usedChars, { avoidSameGroup: true });
+                extra.forEach(c => { if (!sentChars.includes(c)) sentChars.push(c); });
+            }
+            sentChars.forEach(c => usedChars.add(c));
+            const circledNums = ['①', '②', '③', '④', '⑤'];
+            const bankChars = this.derangeArray(sentChars);
+            const bankIndexMap = {};
+            bankChars.forEach((ch, idx) => { bankIndexMap[ch] = circledNums[idx]; });
+            const sentItems = sentChars.map(ch => {
+                const inf = this.info(ch);
+                return {
+                    char: ch,
+                    num: bankIndexMap[ch],
+                    masked: inf.sentence.replace(ch, '（\u00A0\u00A0\u00A0\u00A0\u00A0）')
+                };
+            });
+
+            // ⑧ 八、我是小小书法家 · 描红与临摹（2字 × 3分 = 6分）
+            const traceFullPool = this.allChars.filter(ch => cache[ch] && cache[ch].medians && cache[ch].medians.length >= 3 && cache[ch].medians.length <= 9);
+            const scopedTrace = this.filterPoolByScope(traceFullPool);
+            const traceChars = this.pickExamChars(scopedTrace, traceFullPool, 2, usedChars);
+
+            // 组装各题块 HTML
+            const picGridHtml = picItems.map((q, idx) => {
+                const cw = this.clueWord(q.char);
+                const clueTxt = cw ? cw.replace(q.char, '（\u00A0\u00A0）') : '（\u00A0\u00A0）';
+                const pyHint = this.difficulty === 'easy' ? `<span class="exam-print-easy-py">${q.pinyin}</span>` : '';
+                const fallbackIcon = (this.app && typeof this.app.escapeHtml === 'function')
+                    ? this.app.escapeHtml(q.icon || '🖼️')
+                    : (q.icon || '🖼️');
+                return `
+                    <div class="exam-print-pic-cell">
+                        <div class="exam-print-img-box">
+                            <img src="${picImgSrcs[idx]}" alt="${clueTxt}" loading="eager" decoding="sync" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='flex';">
+                            <span class="exam-print-img-fallback" style="display:none">${fallbackIcon}</span>
+                        </div>
+                        <div class="exam-print-clue">${clueTxt}${pyHint}</div>
+                        <div class="exam-print-mizi">${this.printMiziSvg('', 'blank')}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const pyGridHtml = pyItems.map((q, idx) => `
+                <div class="exam-print-py-cell">
+                    <div class="exam-print-py-left">
+                        <span class="exam-print-py-num">${idx + 1}.</span>
+                        <div class="exam-print-py-texts">
+                            <span class="exam-print-py-ruby">${q.pinyin}</span>
+                            <span class="exam-print-py-word">${q.clue}</span>
+                        </div>
+                    </div>
+                    <div class="exam-print-mizi exam-print-mizi-sm">${this.printMiziSvg('', 'blank')}</div>
+                </div>
+            `).join('');
+
+            const stkHtml = stkItems.map((q, idx) => `
+                <div class="exam-print-stk-row">
+                    <span>（${idx + 1}）“${this.printInlineHanziSvg(q.char)}” 共 <span class="exam-print-line sm"></span> 画，第${GP_CN_NUM[q.ask]}画是 <span class="exam-print-line"></span>。</span>
+                </div>
+            `).join('');
+
+            const antRowsHtml = antPairs.map((pair, idx) => `
+                <div class="exam-print-ant-row">
+                    <span class="ant-p-char">${pair.a}</span>
+                    <span class="ant-p-dot">●</span>
+                    <span class="ant-p-gap"></span>
+                    <span class="ant-p-dot">●</span>
+                    <span class="ant-p-char">${antRightOrder[idx]}</span>
+                </div>
+            `).join('');
+
+            const matchTopHtml = matchItems.map((q, idx) => {
+                const fallbackIcon = q.icon || '🖼️';
+                return `
+                    <div class="exam-print-match-top-item">
+                        <div class="exam-print-match-img-card">
+                            <img src="${matchImgSrcs[idx]}" alt="连线插图${idx + 1}" loading="eager" decoding="sync" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='flex';">
+                            <span class="exam-print-img-fallback" style="display:none">${fallbackIcon}</span>
+                        </div>
+                        <span class="exam-print-match-dot">●</span>
+                    </div>
+                `;
+            }).join('');
+
+            const matchBottomHtml = matchBottomOrder.map(q => `
+                <div class="exam-print-match-bot-item">
+                    <span class="exam-print-match-dot">●</span>
+                    <div class="exam-print-match-char-card">
+                        <span class="exam-print-match-py">${q.pinyin}</span>
+                        <span class="exam-print-match-ch">${q.char}</span>
                     </div>
                 </div>
-                <div class="exam-print-section">
-                    <h3>一、看图写汉字 (Look at each picture and write the Chinese character)</h3>
-                    <div class="exam-print-pic-grid">${picGridHtml}</div>
-                </div>
-                <div class="exam-print-bottom-cols">
-                    <div class="exam-print-section exam-print-col-stk">
-                        <h3>二、数笔画，填空 (Count the strokes and fill in the blanks)</h3>
-                        <div class="exam-print-stk-list">${stkHtml}</div>
+            `).join('');
+
+            const confuserHtml = confuserItems.map((it, idx) => {
+                const display = it.tpl.replace('（  ）', `<span class="exam-print-choice-pair">（ <b>${it.pair[0]}</b> / <b>${it.pair[1]}</b> ）</span>`);
+                return `
+                    <div class="exam-print-confuser-cell">
+                        <span class="exam-print-qidx">（${idx + 1}）</span>
+                        <span class="exam-print-confuser-text">${display}</span>
                     </div>
-                    <div class="exam-print-section exam-print-col-ant">
-                        <h3>三、反义词连线 (Match each word with its opposite)</h3>
-                        <div class="exam-print-ant-list">${antRowsHtml}</div>
+                `;
+            }).join('');
+
+            const wordBankHtml = bankChars.map((ch, idx) => {
+                const inf = this.info(ch);
+                return `<span class="exam-print-bank-item"><b>${circledNums[idx]} ${ch}</b> <em>(${inf ? inf.pinyin : ''})</em></span>`;
+            }).join('');
+
+            const sentRowsHtml = sentItems.map((it, idx) => `
+                <div class="exam-print-sent-row">（${idx + 1}）${it.masked}</div>
+            `).join('');
+
+            const traceRowsHtml = traceChars.map(ch => {
+                const inf = this.info(ch) || {};
+                const strokeCnt = (cache[ch] && cache[ch].medians) ? cache[ch].medians.length : (inf.strokes || '');
+                const radical = inf.radical || ch;
+                const wordSample = (inf.words && inf.words[0]) ? inf.words[0] : '';
+                return `
+                    <div class="exam-print-trace-row">
+                        <div class="exam-print-trace-meta">
+                            <span class="trace-meta-py">${inf.pinyin || ''}</span>
+                            <span class="trace-meta-sub">部首：${radical} · ${strokeCnt}画</span>
+                            ${wordSample ? `<span class="trace-meta-word">组词：${wordSample}</span>` : ''}
+                        </div>
+                        <div class="exam-print-trace-boxes">
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg(ch, 'model')}</div>
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg(ch, 'trace')}</div>
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg(ch, 'trace')}</div>
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg(ch, 'trace')}</div>
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg('', 'blank')}</div>
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg('', 'blank')}</div>
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg('', 'blank')}</div>
+                            <div class="exam-print-mizi exam-print-mizi-trace">${this.printMiziSvg('', 'blank')}</div>
+                        </div>
                     </div>
+                `;
+            }).join('');
+
+            // 倒置折叠参考答案（方便家长/老师快速批改随机卷）
+            const ans1 = picItems.map((q, i) => `${i + 1}.${q.char}`).join(' ');
+            const ans2 = pyItems.map((q, i) => `${i + 1}.${q.char}`).join(' ');
+            const ans3 = stkItems.map((q, i) => `${i + 1}.${q.total}画/${q.strokeName}`).join(' ');
+            const ans4 = antPairs.map(p => `${p.a}-${p.b}`).join(' ');
+            const ans5 = matchItems.map((q, i) => `图${i + 1}-${q.char}`).join(' ');
+            const ans6 = confuserItems.map((it, i) => `${i + 1}.${it.ans}`).join(' ');
+            const ans7 = sentItems.map((it, i) => `${i + 1}.${it.num}${it.char}`).join(' ');
+
+            printArea.innerHTML = `
+                <div class="print-sheet exam-print-sheet">
+                    <!-- ==================== 第 1 页（正面 · 共 60 分） ==================== -->
+                    <section class="exam-print-page exam-print-page-1">
+                        <div class="exam-print-page-body">
+                            <div class="print-header exam-print-header">
+                                <h2>快乐小书法家 · 汉字闯关测试卷 <span class="exam-print-badge">【${gradeBadge} · 正反双面卷】</span></h2>
+                                <div class="print-meta">
+                                    <span>姓名 (Name)：____________</span>
+                                    <span>日期：____年__月__日</span>
+                                    <span>用时：____分钟</span>
+                                    <span>得分：【 ______ / 100 】</span>
+                                </div>
+                            </div>
+
+                            <div class="exam-print-section">
+                                <h3>一、看图写汉字（看插画与词组提示，把缺少的汉字工整写在米字格里 · 每题 2 分，共 20 分）</h3>
+                                <div class="exam-print-pic-grid">${picGridHtml}</div>
+                            </div>
+
+                            <div class="exam-print-section">
+                                <h3>二、看拼音，结合词语写汉字（读准声调，把正确的字写在米字格里 · 每题 2 分，共 16 分）</h3>
+                                <div class="exam-print-py-grid">${pyGridHtml}</div>
+                            </div>
+
+                            <div class="exam-print-bottom-cols">
+                                <div class="exam-print-section exam-print-col-stk">
+                                    <h3>三、数笔画，填空（每空 1 分，共 12 分）</h3>
+                                    <div class="exam-print-stk-bank">笔画参考：横 · 竖 · 撇 · 捺 · 点 · 提 · 横折 · 竖折 · 撇折 · 竖钩 · 横撇 · 横钩 · 横折钩 · 竖弯钩</div>
+                                    <div class="exam-print-stk-list">${stkHtml}</div>
+                                </div>
+                                <div class="exam-print-section exam-print-col-ant">
+                                    <h3>四、反义词连线（每线 2 分，共 12 分）</h3>
+                                    <div class="exam-print-ant-list">${antRowsHtml}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exam-print-page-foot">
+                            <span>第 1 页 / 共 2 页（正面 60 分）</span>
+                            <span>👉 正面答完啦，请翻到背面继续闯关（背面 40 分）➔</span>
+                        </div>
+                    </section>
+
+                    <!-- ==================== 第 2 页（反面 · 共 40 分） ==================== -->
+                    <section class="exam-print-page exam-print-page-2">
+                        <div class="exam-print-page-body">
+                            <div class="exam-print-sub-header">
+                                <span class="sub-header-title">快乐小书法家 · 汉字闯关测试卷（反面）</span>
+                                <span class="sub-header-meta">姓名：____________ &nbsp;&nbsp; 提示：打印时请选择「双面打印（长边翻页）」</span>
+                            </div>
+
+                            <div class="exam-print-section">
+                                <h3>五、看图认字连线（看图找朋友，用直尺把图片和对应的汉字连起来 · 每线 2 分，共 12 分）</h3>
+                                <div class="exam-print-match-board">
+                                    <div class="exam-print-match-row top">${matchTopHtml}</div>
+                                    <div class="exam-print-match-lane"></div>
+                                    <div class="exam-print-match-row bot">${matchBottomHtml}</div>
+                                </div>
+                            </div>
+
+                            <div class="exam-print-section">
+                                <h3>六、比一比，用“○”圈出括号里正确的汉字组成词语（每题 2 分，共 12 分）</h3>
+                                <div class="exam-print-confuser-grid">${confuserHtml}</div>
+                            </div>
+
+                            <div class="exam-print-section">
+                                <h3>七、选字填空，把句子补充完整（可填序号 ①~⑤ 或直接写汉字 · 每题 2 分，共 10 分）</h3>
+                                <div class="exam-print-word-bank">
+                                    <span class="bank-label">备选字库：</span>${wordBankHtml}
+                                </div>
+                                <div class="exam-print-sent-list">${sentRowsHtml}</div>
+                            </div>
+
+                            <div class="exam-print-section">
+                                <h3>八、我是小小书法家 · 描红与临摹（先看起笔红点，描 3 个再独立写 4 个 · 每行 3 分，共 6 分）</h3>
+                                <div class="exam-print-trace-rows">${traceRowsHtml}</div>
+                            </div>
+                        </div>
+
+                        <div class="exam-print-back-bottom">
+                            <div class="exam-print-eval-bar">
+                                <span>书写坐姿与卷面整洁：☆ ☆ ☆ ☆ ☆</span>
+                                <span>家长 / 老师暖心评语：____________________________________________</span>
+                            </div>
+                            <div class="exam-print-answer-strip">
+                                <div class="answer-cut-line">✂️ ┄┄┄┄ 家长 / 老师批改参考答案（答题前可沿虚线向后折起）┄┄┄┄</div>
+                                <div class="answer-upside-down">
+                                    <div>【一】${ans1} &nbsp;｜&nbsp; 【二】${ans2} &nbsp;｜&nbsp; 【三】${ans3}</div>
+                                    <div>【四】${ans4} &nbsp;｜&nbsp; 【五】${ans5} &nbsp;｜&nbsp; 【六】${ans6} &nbsp;｜&nbsp; 【七】${ans7}</div>
+                                </div>
+                            </div>
+                            <div class="exam-print-page-foot">
+                                <span>第 2 页 / 共 2 页（反面 40 分 · 全卷满分 100 分）</span>
+                                <span>🌟 全部完成啦，记得认真检查一遍哦！</span>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            </div>
-        `;
-        window.print();
+            `;
+
+            // 先在屏幕外真实挂载并等待所有 <img> 完成解码，确保首次打印预览 100% 带贴图
+            printArea.classList.add('is-preparing-print');
+            const imgs = Array.from(printArea.querySelectorAll('img'));
+            await Promise.all(imgs.map(img => {
+                if (typeof img.decode === 'function') {
+                    return img.decode().catch(() => {});
+                }
+                if (img.complete) return Promise.resolve();
+                return new Promise(res => {
+                    img.addEventListener('load', res, { once: true });
+                    img.addEventListener('error', res, { once: true });
+                    setTimeout(res, 3000);
+                });
+            }));
+            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+            const cleanupAfterPrint = () => {
+                printArea.classList.remove('is-preparing-print');
+                window.removeEventListener('afterprint', cleanupAfterPrint);
+            };
+            window.addEventListener('afterprint', cleanupAfterPrint);
+            window.print();
+            setTimeout(cleanupAfterPrint, 1500);
+        } finally {
+            this._isPrintingExam = false;
+            if (printBtn) {
+                printBtn.disabled = false;
+                printBtn.textContent = origBtnText || '打印试卷';
+            }
+        }
     }
 
     // ==================== 事件绑定 ====================
